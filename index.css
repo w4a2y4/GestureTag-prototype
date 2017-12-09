@@ -1,0 +1,21 @@
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+html {
+	height: 100%;
+}
+
+body {
+	min-height: 100%;
+	margin: 0;
+}
+
+.block {
+	float: left;
+	border: solid black;
+	height: 33.33%;
+	width: 25%;
+}
