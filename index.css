@@ -13,6 +13,17 @@ body {
 	margin: 0;
 }
 
+#eye_tracker {
+	position: absolute;
+	width: 300px;
+	height: 300px;
+	margin-top: -150px;
+	margin-left: -150px;
+	border-radius: 150px;
+	background: rgba(10, 112, 215, 0.4);
+	-webkit-filter: blur(25px);
+}
+
 .block {
 	position: relative;
 	float: left;
@@ -34,7 +45,7 @@ button {
 }
 
 button img {
-	/*display: none;*/
+	display: none;
 	margin-top: -75px;
 	margin-left: 150px;
 }
