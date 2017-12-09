@@ -14,8 +14,27 @@ body {
 }
 
 .block {
+	position: relative;
 	float: left;
-	border: solid black;
 	height: 33.33%;
 	width: 25%;
+}
+
+button {
+	position: absolute;
+	height: 100px;
+	width: 200px;
+	top: 50%;
+	left: 50%;
+	margin-top: -50px;
+	margin-left: -100px;
+	background-color: #e7e7e7;
+	border-radius: 10px;
+	box-shadow: 0 0 16px 0 rgba(0,0,0,0.2), 0 0 8px 0 rgba(0,0,0,0.19);
+}
+
+button img {
+	/*display: none;*/
+	margin-top: -75px;
+	margin-left: 150px;
 }
