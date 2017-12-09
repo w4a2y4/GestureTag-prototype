@@ -1,0 +1,23 @@
+{
+  "name": "gesturetag-prototype",
+  "version": "1.0.0",
+  "description": "A web prototype for the GestureTag project.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/w4a2y4/GestureTag-prototype.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/w4a2y4/GestureTag-prototype/issues"
+  },
+  "homepage": "https://github.com/w4a2y4/GestureTag-prototype#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "socket.io": "^2.0.4"
+  }
+}
