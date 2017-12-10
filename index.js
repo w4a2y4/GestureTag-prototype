@@ -1,5 +1,7 @@
 // var socket = io.connect();
 
+
+// recieve eye-tracker position
 var eyeX, eyeY;
 
 $(document).mousemove( function(e) {
@@ -7,7 +9,7 @@ $(document).mousemove( function(e) {
 	$('#eye_tracker').css({
 		"left": e.pageX,
 		"top": e.pageY 
-	})
+	});
 
 	for( var i=0; i<3; i++ ) 
 		for( var j=0; j<4; j++) {
@@ -20,6 +22,13 @@ $(document).mousemove( function(e) {
 			else $("#blk"+i+""+j+" button img").hide();
 		}
 });
-// recieve eye-tracker position
 
 // recieve swiping event
+
+$(document).on('click', 'button', ( function(e) {
+	console.log("click!!");
+	$(this).css({ "background": "pink" });
+	setTimeout( () => {
+		$(this).css({ "background": "#e7e7e7" });
+	}, 500);
+}));
