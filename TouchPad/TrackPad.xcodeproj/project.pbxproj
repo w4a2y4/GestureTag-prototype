@@ -1,0 +1,447 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0E513C8823B2208ED5DDE744 /* Pods_TrackPad.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFAF81B74294F3786F727C19 /* Pods_TrackPad.framework */; };
+		807BF4621FDB366A00520A41 /* TouchPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 807BF45E1FDB366A00520A41 /* TouchPoint.m */; };
+		807BF4671FDB415700520A41 /* TouchBroadcaster.m in Sources */ = {isa = PBXBuildFile; fileRef = 807BF4661FDB415700520A41 /* TouchBroadcaster.m */; };
+		807BF46A1FDB436200520A41 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807BF4691FDB435300520A41 /* Cocoa.framework */; };
+		807BF46C1FDB43BF00520A41 /* MultitouchSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807BF46B1FDB43BF00520A41 /* MultitouchSupport.framework */; };
+		80BC54561FDDC1DD00F580BB /* GTGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BC54551FDDC1DD00F580BB /* GTGestureRecognizer.m */; };
+		80D55B541FDB2D4400719D1D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 80D55B531FDB2D4400719D1D /* AppDelegate.m */; };
+		80D55B571FDB2D4400719D1D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80D55B561FDB2D4400719D1D /* ViewController.m */; };
+		80D55B591FDB2D4400719D1D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80D55B581FDB2D4400719D1D /* Assets.xcassets */; };
+		80D55B5C1FDB2D4400719D1D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80D55B5A1FDB2D4400719D1D /* Main.storyboard */; };
+		80D55B5F1FDB2D4400719D1D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 80D55B5E1FDB2D4400719D1D /* main.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		204ADC14E67CB2AF16A559E5 /* Pods-TrackPad.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackPad.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TrackPad/Pods-TrackPad.debug.xcconfig"; sourceTree = "<group>"; };
+		56D49B2EB143C4DD2F047627 /* Pods-TrackPad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackPad.release.xcconfig"; path = "Pods/Target Support Files/Pods-TrackPad/Pods-TrackPad.release.xcconfig"; sourceTree = "<group>"; };
+		807BF45B1FDB366900520A41 /* TouchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchView.h; sourceTree = "<group>"; };
+		807BF45C1FDB366A00520A41 /* TrackpadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackpadView.h; sourceTree = "<group>"; };
+		807BF45D1FDB366A00520A41 /* TouchPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchPoint.h; sourceTree = "<group>"; };
+		807BF45E1FDB366A00520A41 /* TouchPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchPoint.m; sourceTree = "<group>"; };
+		807BF45F1FDB366A00520A41 /* TouchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchView.m; sourceTree = "<group>"; };
+		807BF4601FDB366A00520A41 /* TrackpadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackpadView.m; sourceTree = "<group>"; };
+		807BF4611FDB366A00520A41 /* MultiTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiTouch.h; sourceTree = "<group>"; };
+		807BF4661FDB415700520A41 /* TouchBroadcaster.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TouchBroadcaster.m; sourceTree = "<group>"; };
+		807BF4681FDB418C00520A41 /* TouchBroadcaster.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TouchBroadcaster.h; sourceTree = "<group>"; };
+		807BF4691FDB435300520A41 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		807BF46B1FDB43BF00520A41 /* MultitouchSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MultitouchSupport.framework; path = ../../../../../System/Library/PrivateFrameworks/MultitouchSupport.framework; sourceTree = "<group>"; };
+		807BF46D1FDB44FE00520A41 /* prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
+		80BC54541FDDC1DD00F580BB /* GTGestureRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GTGestureRecognizer.h; sourceTree = "<group>"; };
+		80BC54551FDDC1DD00F580BB /* GTGestureRecognizer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GTGestureRecognizer.m; sourceTree = "<group>"; };
+		80BC54571FDE09F500F580BB /* Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		80D55B4F1FDB2D4400719D1D /* TrackPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrackPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		80D55B521FDB2D4400719D1D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		80D55B531FDB2D4400719D1D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		80D55B551FDB2D4400719D1D /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		80D55B561FDB2D4400719D1D /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		80D55B581FDB2D4400719D1D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		80D55B5B1FDB2D4400719D1D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		80D55B5D1FDB2D4400719D1D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		80D55B5E1FDB2D4400719D1D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		80D55B601FDB2D4400719D1D /* TrackPad.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TrackPad.entitlements; sourceTree = "<group>"; };
+		CFAF81B74294F3786F727C19 /* Pods_TrackPad.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrackPad.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		80D55B4C1FDB2D4400719D1D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				807BF46C1FDB43BF00520A41 /* MultitouchSupport.framework in Frameworks */,
+				807BF46A1FDB436200520A41 /* Cocoa.framework in Frameworks */,
+				0E513C8823B2208ED5DDE744 /* Pods_TrackPad.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		80D55B461FDB2D4300719D1D = {
+			isa = PBXGroup;
+			children = (
+				80D55B511FDB2D4400719D1D /* TrackPad */,
+				80D55B501FDB2D4400719D1D /* Products */,
+				97BC96481F33A6B2C916C703 /* Pods */,
+				8CB560191FC5153948F7BDFD /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		80D55B501FDB2D4400719D1D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				80D55B4F1FDB2D4400719D1D /* TrackPad.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		80D55B511FDB2D4400719D1D /* TrackPad */ = {
+			isa = PBXGroup;
+			children = (
+				807BF46D1FDB44FE00520A41 /* prefix.pch */,
+				80D55B521FDB2D4400719D1D /* AppDelegate.h */,
+				80D55B531FDB2D4400719D1D /* AppDelegate.m */,
+				80D55B551FDB2D4400719D1D /* ViewController.h */,
+				80D55B561FDB2D4400719D1D /* ViewController.m */,
+				80D55B581FDB2D4400719D1D /* Assets.xcassets */,
+				80D55B5A1FDB2D4400719D1D /* Main.storyboard */,
+				80D55B5D1FDB2D4400719D1D /* Info.plist */,
+				80D55B5E1FDB2D4400719D1D /* main.m */,
+				80D55B601FDB2D4400719D1D /* TrackPad.entitlements */,
+				807BF4611FDB366A00520A41 /* MultiTouch.h */,
+				807BF45D1FDB366A00520A41 /* TouchPoint.h */,
+				807BF45E1FDB366A00520A41 /* TouchPoint.m */,
+				807BF45B1FDB366900520A41 /* TouchView.h */,
+				807BF45F1FDB366A00520A41 /* TouchView.m */,
+				807BF45C1FDB366A00520A41 /* TrackpadView.h */,
+				807BF4601FDB366A00520A41 /* TrackpadView.m */,
+				807BF4661FDB415700520A41 /* TouchBroadcaster.m */,
+				807BF4681FDB418C00520A41 /* TouchBroadcaster.h */,
+				80BC54541FDDC1DD00F580BB /* GTGestureRecognizer.h */,
+				80BC54551FDDC1DD00F580BB /* GTGestureRecognizer.m */,
+				80BC54571FDE09F500F580BB /* Utils.h */,
+			);
+			path = TrackPad;
+			sourceTree = "<group>";
+		};
+		8CB560191FC5153948F7BDFD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				807BF46B1FDB43BF00520A41 /* MultitouchSupport.framework */,
+				807BF4691FDB435300520A41 /* Cocoa.framework */,
+				CFAF81B74294F3786F727C19 /* Pods_TrackPad.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		97BC96481F33A6B2C916C703 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				204ADC14E67CB2AF16A559E5 /* Pods-TrackPad.debug.xcconfig */,
+				56D49B2EB143C4DD2F047627 /* Pods-TrackPad.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		80D55B4E1FDB2D4400719D1D /* TrackPad */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 80D55B631FDB2D4400719D1D /* Build configuration list for PBXNativeTarget "TrackPad" */;
+			buildPhases = (
+				0B8C2B75D15CADF6C1A34B4D /* [CP] Check Pods Manifest.lock */,
+				80D55B4B1FDB2D4400719D1D /* Sources */,
+				80D55B4C1FDB2D4400719D1D /* Frameworks */,
+				80D55B4D1FDB2D4400719D1D /* Resources */,
+				2F2816415337143A74E27507 /* [CP] Embed Pods Frameworks */,
+				4D5825265BCB5F540C8C0A2A /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TrackPad;
+			productName = TrackPad;
+			productReference = 80D55B4F1FDB2D4400719D1D /* TrackPad.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		80D55B471FDB2D4300719D1D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0910;
+				ORGANIZATIONNAME = gesturetag;
+				TargetAttributes = {
+					80D55B4E1FDB2D4400719D1D = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 80D55B4A1FDB2D4300719D1D /* Build configuration list for PBXProject "TrackPad" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 80D55B461FDB2D4300719D1D;
+			productRefGroup = 80D55B501FDB2D4400719D1D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				80D55B4E1FDB2D4400719D1D /* TrackPad */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		80D55B4D1FDB2D4400719D1D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				80D55B591FDB2D4400719D1D /* Assets.xcassets in Resources */,
+				80D55B5C1FDB2D4400719D1D /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0B8C2B75D15CADF6C1A34B4D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		2F2816415337143A74E27507 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TrackPad/Pods-TrackPad-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4D5825265BCB5F540C8C0A2A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TrackPad/Pods-TrackPad-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		80D55B4B1FDB2D4400719D1D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				807BF4621FDB366A00520A41 /* TouchPoint.m in Sources */,
+				80D55B571FDB2D4400719D1D /* ViewController.m in Sources */,
+				80BC54561FDDC1DD00F580BB /* GTGestureRecognizer.m in Sources */,
+				80D55B5F1FDB2D4400719D1D /* main.m in Sources */,
+				807BF4671FDB415700520A41 /* TouchBroadcaster.m in Sources */,
+				80D55B541FDB2D4400719D1D /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		80D55B5A1FDB2D4400719D1D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				80D55B5B1FDB2D4400719D1D /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		80D55B611FDB2D4400719D1D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		80D55B621FDB2D4400719D1D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		80D55B641FDB2D4400719D1D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 204ADC14E67CB2AF16A559E5 /* Pods-TrackPad.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = SQ89E7XG9B;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+					../Frameworks,
+				);
+				INFOPLIST_FILE = TrackPad/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = uwcse.TrackPad;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				nm = "";
+			};
+			name = Debug;
+		};
+		80D55B651FDB2D4400719D1D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 56D49B2EB143C4DD2F047627 /* Pods-TrackPad.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = SQ89E7XG9B;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+					../Frameworks,
+				);
+				INFOPLIST_FILE = TrackPad/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = uwcse.TrackPad;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				nm = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		80D55B4A1FDB2D4300719D1D /* Build configuration list for PBXProject "TrackPad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				80D55B611FDB2D4400719D1D /* Debug */,
+				80D55B621FDB2D4400719D1D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		80D55B631FDB2D4400719D1D /* Build configuration list for PBXNativeTarget "TrackPad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				80D55B641FDB2D4400719D1D /* Debug */,
+				80D55B651FDB2D4400719D1D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 80D55B471FDB2D4300719D1D /* Project object */;
+}
