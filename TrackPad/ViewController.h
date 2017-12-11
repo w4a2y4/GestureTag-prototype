@@ -7,6 +7,8 @@
 //
 
 #import <Cocoa/Cocoa.h>
+//#import <SocketRocket/SRWebSocket.h>
+@import SocketIO;
 
 @interface ViewController : NSViewController
 
