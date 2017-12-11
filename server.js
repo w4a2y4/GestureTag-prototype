@@ -9,8 +9,15 @@ io.on('connection', function(socket){
     console.log('a user connected');
 
     // recieve eye-tracker position
+    socket.on('eyemove', function(x, y){
+        io.emit('eyemove', x, y);
+    });
 
     // recieve swiping event
+    socket.on('swipe', function(dir){
+        console.log('swipe' + dir);
+        io.emit('swipe', dir);
+    });
 
 });
 
