@@ -17,6 +17,9 @@
 @synthesize angle;
 @synthesize size;
 @synthesize timestamp;
+@synthesize fingerId;
+@synthesize dX;
+@synthesize dY;
 
 - (id)initWithTouch:(mtTouch *)touch {
   if ((self = [self init])) {
@@ -29,6 +32,9 @@
     velX = touch->normalized.velocity.x;
     velY = touch->normalized.velocity.y;
     timestamp = touch->timestamp;
+    fingerId = touch->identifier;
+      dX = 0.0f;
+      dY = 0.0f;
   }
   return self;
 }
