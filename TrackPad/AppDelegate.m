@@ -18,13 +18,11 @@
 
 static int touchCallback(int device, mtTouch *data, int num_fingers, double timestamp, int frame) {
     // create TouchPoint objects for all touches
-//    NSLog(@"callback");
     NSMutableArray *points = [[NSMutableArray alloc] initWithCapacity: num_fingers];
     for (int i = 0; i < num_fingers; i++){
         TouchPoint *point = [[TouchPoint alloc] initWithTouch:&data[i]];
         [points addObject:point];
     }
-    
     AppDelegate *delegate = (AppDelegate *) [NSApp delegate];
     [delegate performSelectorOnMainThread:@selector(didTouchWithPoints:) withObject:points waitUntilDone:NO];
     
@@ -34,6 +32,10 @@ static int touchCallback(int device, mtTouch *data, int num_fingers, double time
 
 
 @implementation AppDelegate
+@synthesize touchList;
+@synthesize gestureRecognizer;
+@synthesize touchBroadcaster;
+
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
@@ -45,9 +47,10 @@ static int touchCallback(int device, mtTouch *data, int num_fingers, double time
         MTRegisterContactFrameCallback(device, touchCallback);
         MTDeviceStart(device, 0);
     }
-    _touchBroadcaster = [[TouchBroadcaster alloc] init];
-    [_touchBroadcaster initSocketConnection];
-
+    touchBroadcaster = [[TouchBroadcaster alloc] init];
+    [touchBroadcaster initSocketConnection];
+    touchList = [[NSMutableArray alloc] initWithCapacity:1];
+    gestureRecognizer = [[GTGestureRecognizer alloc] init];
 }
 
 
@@ -58,8 +61,29 @@ static int touchCallback(int device, mtTouch *data, int num_fingers, double time
 
 - (void)didTouchWithPoints:(NSArray *)points {
 //    NSLog(@"touch");
-    NSString *event = @"testEvent";
-    [_touchBroadcaster sendTouchEvent:event];
+//    NSString *event = @"testEvent";
+//    [_touchBroadcaster sendTouchEvent:event];
+    if(_state == 0) {
+        // no -> touched
+        NSLog(@"start touch");
+        _timer = [NSTimer scheduledTimerWithTimeInterval:2.f target:self selector:@selector(touchIntervalPassed:) userInfo:nil repeats:NO];
+        _state = 1;
+    } else {
+        [_timer invalidate];
+        _timer = nil;
+        _timer = [NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(touchIntervalPassed:) userInfo:nil repeats:NO];
+    }
+    if([points count] > 0)
+        [touchList addObject:points[0]];
+}
+
+- (void)touchIntervalPassed:(NSTimer *) timer{
+    // send out touch event
+    NSLog(@"touch ended");
+    _state = 0;
+    SwipeGesture gesture = [gestureRecognizer recognizeGesture:touchList];
+    [touchBroadcaster sendSwipeEvent:gesture];
+    [touchList removeAllObjects];
 }
 
 

@@ -8,8 +8,14 @@
 
 #import <Cocoa/Cocoa.h>
 #import "TouchBroadcaster.h"
+#import "GTGestureRecognizer.h"
+#import "Utils.h"
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 @property TouchBroadcaster *touchBroadcaster;
+@property NSTimer *timer;
+@property NSMutableArray *touchList;
+@property GTGestureRecognizer *gestureRecognizer;
+@property int state;
 @end
 
