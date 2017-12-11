@@ -23,18 +23,13 @@
 /* Begin PBXFileReference section */
 		204ADC14E67CB2AF16A559E5 /* Pods-TrackPad.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackPad.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TrackPad/Pods-TrackPad.debug.xcconfig"; sourceTree = "<group>"; };
 		56D49B2EB143C4DD2F047627 /* Pods-TrackPad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackPad.release.xcconfig"; path = "Pods/Target Support Files/Pods-TrackPad/Pods-TrackPad.release.xcconfig"; sourceTree = "<group>"; };
-		807BF45B1FDB366900520A41 /* TouchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchView.h; sourceTree = "<group>"; };
-		807BF45C1FDB366A00520A41 /* TrackpadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackpadView.h; sourceTree = "<group>"; };
 		807BF45D1FDB366A00520A41 /* TouchPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchPoint.h; sourceTree = "<group>"; };
 		807BF45E1FDB366A00520A41 /* TouchPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchPoint.m; sourceTree = "<group>"; };
-		807BF45F1FDB366A00520A41 /* TouchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchView.m; sourceTree = "<group>"; };
-		807BF4601FDB366A00520A41 /* TrackpadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackpadView.m; sourceTree = "<group>"; };
 		807BF4611FDB366A00520A41 /* MultiTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiTouch.h; sourceTree = "<group>"; };
 		807BF4661FDB415700520A41 /* TouchBroadcaster.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TouchBroadcaster.m; sourceTree = "<group>"; };
 		807BF4681FDB418C00520A41 /* TouchBroadcaster.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TouchBroadcaster.h; sourceTree = "<group>"; };
 		807BF4691FDB435300520A41 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		807BF46B1FDB43BF00520A41 /* MultitouchSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MultitouchSupport.framework; path = ../../../../../System/Library/PrivateFrameworks/MultitouchSupport.framework; sourceTree = "<group>"; };
-		807BF46D1FDB44FE00520A41 /* prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
 		80BC54541FDDC1DD00F580BB /* GTGestureRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GTGestureRecognizer.h; sourceTree = "<group>"; };
 		80BC54551FDDC1DD00F580BB /* GTGestureRecognizer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GTGestureRecognizer.m; sourceTree = "<group>"; };
 		80BC54571FDE09F500F580BB /* Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
@@ -86,7 +81,6 @@
 		80D55B511FDB2D4400719D1D /* TrackPad */ = {
 			isa = PBXGroup;
 			children = (
-				807BF46D1FDB44FE00520A41 /* prefix.pch */,
 				80D55B521FDB2D4400719D1D /* AppDelegate.h */,
 				80D55B531FDB2D4400719D1D /* AppDelegate.m */,
 				80D55B551FDB2D4400719D1D /* ViewController.h */,
@@ -99,10 +93,6 @@
 				807BF4611FDB366A00520A41 /* MultiTouch.h */,
 				807BF45D1FDB366A00520A41 /* TouchPoint.h */,
 				807BF45E1FDB366A00520A41 /* TouchPoint.m */,
-				807BF45B1FDB366900520A41 /* TouchView.h */,
-				807BF45F1FDB366A00520A41 /* TouchView.m */,
-				807BF45C1FDB366A00520A41 /* TrackpadView.h */,
-				807BF4601FDB366A00520A41 /* TrackpadView.m */,
 				807BF4661FDB415700520A41 /* TouchBroadcaster.m */,
 				807BF4681FDB418C00520A41 /* TouchBroadcaster.h */,
 				80BC54541FDDC1DD00F580BB /* GTGestureRecognizer.h */,

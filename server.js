@@ -11,6 +11,9 @@ io.on('connection', function(socket){
     // recieve eye-tracker position
 
     // recieve swiping event
+    socket.on('touch', function(data){
+      console.log('event: '+ JSON.stringify(data));
+    });
 
 });
 
