@@ -1,5 +1,6 @@
 var socket = io.connect();
 var button_left, button_right, button_up, button_down;
+var show_left, show_right, show_up, show_down;
 
 // recieve eye-tracker position
 $(document).mousemove( function(e) {
@@ -11,14 +12,10 @@ socket.on('eyemove', function(x, y){
 });
 
 socket.on('swipe', function(dir){
-	var target;
-
-	if( dir == 'up' ) target = button_up;
-	if( dir == 'down' ) target = button_down;
-	if( dir == 'left' ) target = button_left;
-	if( dir == 'right' ) target = button_right;
-
-	if( target != null ) target.click();
+	if( dir == 'up' && show_up ) button_up.click();
+	if( dir == 'down' && show_down ) button_down.click();
+	if( dir == 'left' && show_left ) button_left.click();
+	if( dir == 'right' && show_right ) button_right.click();
 });
 
 function changePos (eyeX, eyeY) {
@@ -27,6 +24,11 @@ function changePos (eyeX, eyeY) {
 		"left": eyeX,
 		"top": eyeY 
 	});
+
+	show_up = false;
+	show_down = false;
+	show_left = false;
+	show_right = false;
 
 	for( var i=0; i<3; i++ ) 
 		for( var j=0; j<4; j++) {
@@ -37,18 +39,12 @@ function changePos (eyeX, eyeY) {
 			var dist = ( btnX - eyeX )*( btnX - eyeX ) + ( btnY - eyeY )*( btnY - eyeY );
 			if ( dist <= 64000 ) {
 				btn.find('img').show();
-				if( i%2 == 0 && j%2 == 0 ) button_up = btn;
-				if( i%2 == 1 && j%2 == 1 ) button_down = btn;
-				if( i%2 == 1 && j%2 == 0 ) button_left = btn;
-				if( i%2 == 0 && j%2 == 1 ) button_right = btn;
+				if( i%2 == 0 && j%2 == 0 ) { button_up = btn;	show_up = true; }
+				if( i%2 == 1 && j%2 == 1 ) { button_down = btn;	show_down = true; }
+				if( i%2 == 1 && j%2 == 0 ) { button_left = btn;	show_left = true; }
+				if( i%2 == 0 && j%2 == 1 ) { button_right = btn;	show_right = true; }
 			}
-			else { 
-				btn.find('img').hide();
-				if( i%2 == 0 && j%2 == 0 && btn == button_up ) button_up = null;
-				if( i%2 == 1 && j%2 == 1 && btn == button_down ) button_down = null;
-				if( i%2 == 1 && j%2 == 0 && btn == button_left ) button_left = null;
-				if( i%2 == 0 && j%2 == 1 && btn == button_right ) button_right = null;
-			}
+			else btn.find('img').hide();
 		}
 }
 
