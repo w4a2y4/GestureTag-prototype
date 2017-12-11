@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E513C8823B2208ED5DDE744 /* Pods_TrackPad.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFAF81B74294F3786F727C19 /* Pods_TrackPad.framework */; };
+		807BF4621FDB366A00520A41 /* TouchPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 807BF45E1FDB366A00520A41 /* TouchPoint.m */; };
+		807BF4671FDB415700520A41 /* TouchBroadcaster.m in Sources */ = {isa = PBXBuildFile; fileRef = 807BF4661FDB415700520A41 /* TouchBroadcaster.m */; };
+		807BF46A1FDB436200520A41 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807BF4691FDB435300520A41 /* Cocoa.framework */; };
+		807BF46C1FDB43BF00520A41 /* MultitouchSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807BF46B1FDB43BF00520A41 /* MultitouchSupport.framework */; };
+		80BC54561FDDC1DD00F580BB /* GTGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 80BC54551FDDC1DD00F580BB /* GTGestureRecognizer.m */; };
 		80D55B541FDB2D4400719D1D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 80D55B531FDB2D4400719D1D /* AppDelegate.m */; };
 		80D55B571FDB2D4400719D1D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80D55B561FDB2D4400719D1D /* ViewController.m */; };
 		80D55B591FDB2D4400719D1D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80D55B581FDB2D4400719D1D /* Assets.xcassets */; };
@@ -15,6 +21,23 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		204ADC14E67CB2AF16A559E5 /* Pods-TrackPad.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackPad.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TrackPad/Pods-TrackPad.debug.xcconfig"; sourceTree = "<group>"; };
+		56D49B2EB143C4DD2F047627 /* Pods-TrackPad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackPad.release.xcconfig"; path = "Pods/Target Support Files/Pods-TrackPad/Pods-TrackPad.release.xcconfig"; sourceTree = "<group>"; };
+		807BF45B1FDB366900520A41 /* TouchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchView.h; sourceTree = "<group>"; };
+		807BF45C1FDB366A00520A41 /* TrackpadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackpadView.h; sourceTree = "<group>"; };
+		807BF45D1FDB366A00520A41 /* TouchPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchPoint.h; sourceTree = "<group>"; };
+		807BF45E1FDB366A00520A41 /* TouchPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchPoint.m; sourceTree = "<group>"; };
+		807BF45F1FDB366A00520A41 /* TouchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchView.m; sourceTree = "<group>"; };
+		807BF4601FDB366A00520A41 /* TrackpadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackpadView.m; sourceTree = "<group>"; };
+		807BF4611FDB366A00520A41 /* MultiTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiTouch.h; sourceTree = "<group>"; };
+		807BF4661FDB415700520A41 /* TouchBroadcaster.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TouchBroadcaster.m; sourceTree = "<group>"; };
+		807BF4681FDB418C00520A41 /* TouchBroadcaster.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TouchBroadcaster.h; sourceTree = "<group>"; };
+		807BF4691FDB435300520A41 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		807BF46B1FDB43BF00520A41 /* MultitouchSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MultitouchSupport.framework; path = ../../../../../System/Library/PrivateFrameworks/MultitouchSupport.framework; sourceTree = "<group>"; };
+		807BF46D1FDB44FE00520A41 /* prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
+		80BC54541FDDC1DD00F580BB /* GTGestureRecognizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GTGestureRecognizer.h; sourceTree = "<group>"; };
+		80BC54551FDDC1DD00F580BB /* GTGestureRecognizer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GTGestureRecognizer.m; sourceTree = "<group>"; };
+		80BC54571FDE09F500F580BB /* Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 		80D55B4F1FDB2D4400719D1D /* TrackPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrackPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		80D55B521FDB2D4400719D1D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		80D55B531FDB2D4400719D1D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -25,6 +48,7 @@
 		80D55B5D1FDB2D4400719D1D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		80D55B5E1FDB2D4400719D1D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		80D55B601FDB2D4400719D1D /* TrackPad.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TrackPad.entitlements; sourceTree = "<group>"; };
+		CFAF81B74294F3786F727C19 /* Pods_TrackPad.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrackPad.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +56,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				807BF46C1FDB43BF00520A41 /* MultitouchSupport.framework in Frameworks */,
+				807BF46A1FDB436200520A41 /* Cocoa.framework in Frameworks */,
+				0E513C8823B2208ED5DDE744 /* Pods_TrackPad.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +70,8 @@
 			children = (
 				80D55B511FDB2D4400719D1D /* TrackPad */,
 				80D55B501FDB2D4400719D1D /* Products */,
+				97BC96481F33A6B2C916C703 /* Pods */,
+				8CB560191FC5153948F7BDFD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,6 +86,7 @@
 		80D55B511FDB2D4400719D1D /* TrackPad */ = {
 			isa = PBXGroup;
 			children = (
+				807BF46D1FDB44FE00520A41 /* prefix.pch */,
 				80D55B521FDB2D4400719D1D /* AppDelegate.h */,
 				80D55B531FDB2D4400719D1D /* AppDelegate.m */,
 				80D55B551FDB2D4400719D1D /* ViewController.h */,
@@ -66,8 +96,39 @@
 				80D55B5D1FDB2D4400719D1D /* Info.plist */,
 				80D55B5E1FDB2D4400719D1D /* main.m */,
 				80D55B601FDB2D4400719D1D /* TrackPad.entitlements */,
+				807BF4611FDB366A00520A41 /* MultiTouch.h */,
+				807BF45D1FDB366A00520A41 /* TouchPoint.h */,
+				807BF45E1FDB366A00520A41 /* TouchPoint.m */,
+				807BF45B1FDB366900520A41 /* TouchView.h */,
+				807BF45F1FDB366A00520A41 /* TouchView.m */,
+				807BF45C1FDB366A00520A41 /* TrackpadView.h */,
+				807BF4601FDB366A00520A41 /* TrackpadView.m */,
+				807BF4661FDB415700520A41 /* TouchBroadcaster.m */,
+				807BF4681FDB418C00520A41 /* TouchBroadcaster.h */,
+				80BC54541FDDC1DD00F580BB /* GTGestureRecognizer.h */,
+				80BC54551FDDC1DD00F580BB /* GTGestureRecognizer.m */,
+				80BC54571FDE09F500F580BB /* Utils.h */,
 			);
 			path = TrackPad;
+			sourceTree = "<group>";
+		};
+		8CB560191FC5153948F7BDFD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				807BF46B1FDB43BF00520A41 /* MultitouchSupport.framework */,
+				807BF4691FDB435300520A41 /* Cocoa.framework */,
+				CFAF81B74294F3786F727C19 /* Pods_TrackPad.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		97BC96481F33A6B2C916C703 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				204ADC14E67CB2AF16A559E5 /* Pods-TrackPad.debug.xcconfig */,
+				56D49B2EB143C4DD2F047627 /* Pods-TrackPad.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -77,9 +138,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 80D55B631FDB2D4400719D1D /* Build configuration list for PBXNativeTarget "TrackPad" */;
 			buildPhases = (
+				0B8C2B75D15CADF6C1A34B4D /* [CP] Check Pods Manifest.lock */,
 				80D55B4B1FDB2D4400719D1D /* Sources */,
 				80D55B4C1FDB2D4400719D1D /* Frameworks */,
 				80D55B4D1FDB2D4400719D1D /* Resources */,
+				2F2816415337143A74E27507 /* [CP] Embed Pods Frameworks */,
+				4D5825265BCB5F540C8C0A2A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -135,13 +199,64 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0B8C2B75D15CADF6C1A34B4D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		2F2816415337143A74E27507 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TrackPad/Pods-TrackPad-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4D5825265BCB5F540C8C0A2A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TrackPad/Pods-TrackPad-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		80D55B4B1FDB2D4400719D1D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				807BF4621FDB366A00520A41 /* TouchPoint.m in Sources */,
 				80D55B571FDB2D4400719D1D /* ViewController.m in Sources */,
+				80BC54561FDDC1DD00F580BB /* GTGestureRecognizer.m in Sources */,
 				80D55B5F1FDB2D4400719D1D /* main.m in Sources */,
+				807BF4671FDB415700520A41 /* TouchBroadcaster.m in Sources */,
 				80D55B541FDB2D4400719D1D /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -265,31 +380,43 @@
 		};
 		80D55B641FDB2D4400719D1D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 204ADC14E67CB2AF16A559E5 /* Pods-TrackPad.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = TrackPad/TrackPad.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = SQ89E7XG9B;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+					../Frameworks,
+				);
 				INFOPLIST_FILE = TrackPad/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = uwcse.TrackPad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				nm = "";
 			};
 			name = Debug;
 		};
 		80D55B651FDB2D4400719D1D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 56D49B2EB143C4DD2F047627 /* Pods-TrackPad.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = TrackPad/TrackPad.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = SQ89E7XG9B;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+					../Frameworks,
+				);
 				INFOPLIST_FILE = TrackPad/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = uwcse.TrackPad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				nm = "";
 			};
 			name = Release;
 		};
