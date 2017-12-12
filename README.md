@@ -10,7 +10,7 @@ TODO...
 ```
 
 ## TouchPad (Xcode Project with CocoaPods)
-Make sure you've installed CocoaPods and Xcode.
+Make sure you have Apple Developer Account (it is free) and have installed CocoaPods and Xcode.
 
 ### Install CocoaPods
 If you don't have Homebrew:
