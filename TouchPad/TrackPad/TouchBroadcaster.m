@@ -26,7 +26,7 @@
 
 - (void)sendTouchEvent:(NSString *)eventType {
     SocketIOClient *socket = _manager.defaultSocket;
-    [socket emit:@"touch" with:@[@{@"event":eventType}]];
+    [socket emit:@"swipe" with:@[eventType]];
 }
 
 
@@ -34,16 +34,16 @@
     NSString *eventType = @"";
     switch (gesture) {
         case SWIPE_RIGHT:
-            eventType = @"SWIPE_RIGHT";
+            eventType = @"right";
             break;
         case SWIPE_LEFT:
-            eventType = @"SWIPE_LEFT";
+            eventType = @"left";
             break;
         case SWIPE_UP:
-            eventType = @"SWIPE_UP";
+            eventType = @"up";
             break;
         case SWIPE_DOWN:
-            eventType = @"SWIPE_DOWN";
+            eventType = @"down";
             break;
         default:
             eventType = @"UNKOWN";
