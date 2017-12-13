@@ -18,21 +18,23 @@
 @synthesize size;
 @synthesize timestamp;
 @synthesize fingerId;
+@synthesize pathIndex;
 @synthesize dX;
 @synthesize dY;
 
-- (id)initWithTouch:(mtTouch *)touch {
+- (id)initWithTouch:(MTTouch *)touch {
   if ((self = [self init])) {
-    x = touch->normalized.position.x;
-    y = touch->normalized.position.y;
+    x = touch->normalizedVector.position.x;
+    y = touch->normalizedVector.position.y;
     minorAxis = touch->minorAxis;
     majorAxis = touch->majorAxis;
     angle = touch->angle;
-    size = touch->size;
-    velX = touch->normalized.velocity.x;
-    velY = touch->normalized.velocity.y;
+    size = touch->zTotal;
+    velX = touch->normalizedVector.velocity.x;
+    velY = touch->normalizedVector.velocity.y;
     timestamp = touch->timestamp;
-    fingerId = touch->identifier;
+    fingerId = touch->fingerID;
+      pathIndex = touch->pathIndex;
       dX = 0.0f;
       dY = 0.0f;
   }
