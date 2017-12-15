@@ -7,21 +7,35 @@ manager.add(swipe);
 
 manager.on('swipe', (e) => {
     var direction = e.offsetDirection;
+    var directionStr = getSwipeDirectionStr(direction);
+    emitSwipeGesture(directionStr);
+    e.target.innerText = directionStr;
+});
+
+const socket = io();
+
+var getSwipeDirectionStr = (direction) => {
+    var gesture = '';
     switch (direction) {
         case Hammer.DIRECTION_LEFT:
-            e.target.innerText = 'LEFT';
+            gesture = 'left';
             break;
         case Hammer.DIRECTION_RIGHT:
-            e.target.innerText = 'RIGHT';
+            gesture = 'right';
             break;
         case Hammer.DIRECTION_UP:
-            e.target.innerText = 'UP';
+            gesture = 'up'
             break;
         case Hammer.DIRECTION_DOWN:
-            e.target.innerText = 'DOWN';
+            gesture = 'down';
             break;
         default:
-            e.target.innerText = 'UNKNOWN';
+            gesture = 'unknown';
             break;
     }
-});
+    return gesture;
+}
+
+var emitSwipeGesture = (gesture) => {
+    socket.emit('swipe', gesture);
+}
