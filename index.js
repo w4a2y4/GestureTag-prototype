@@ -1,7 +1,9 @@
 var socket = io.connect();
 var button_left, button_right, button_up, button_down;
 var show_left, show_right, show_up, show_down;
-var trial_num = 12;
+
+const DEFAULT_TRIAL_NUM = 12;
+var trial_num = DEFAULT_TRIAL_NUM;
 
 // recieve eye-tracker position
 $(document).mousemove( function(e) {
@@ -17,6 +19,11 @@ socket.on('swipe', function(dir){
 	if( dir == 'down' && show_down ) button_down.click();
 	if( dir == 'left' && show_left ) button_left.click();
 	if( dir == 'right' && show_right ) button_right.click();
+});
+
+socket.on('start', function(){
+	trial_num = DEFAULT_TRIAL_NUM;
+	showTarget();
 });
 
 function changePos (eyeX, eyeY) {
