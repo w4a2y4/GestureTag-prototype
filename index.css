@@ -50,6 +50,10 @@ button {
 	box-shadow: 0 0 16px 0 rgba(0,0,0,0.2), 0 0 8px 0 rgba(0,0,0,0.19);
 }
 
+.target {
+	background: #b0e7c6;
+}
+
 button img {
 	display: none;
 	margin-top: -75px;

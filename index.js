@@ -1,6 +1,7 @@
 var socket = io.connect();
 var button_left, button_right, button_up, button_down;
 var show_left, show_right, show_up, show_down;
+var trial_num = 12;
 
 // recieve eye-tracker position
 $(document).mousemove( function(e) {
@@ -48,6 +49,15 @@ function changePos (eyeX, eyeY) {
 		}
 }
 
+function showTarget () {
+	if ( trial_num == 0 ) return;
+	var rand_r = Math.floor( Math.random() * RAW_NUM );
+	var rand_c = Math.floor( Math.random() * COL_NUM );
+	console.log(trial_num+' '+rand_r+' '+rand_c);
+	$('#blk' + rand_r + '' + rand_c + ' button').addClass('target');
+	trial_num -= 1;
+}
+
 // recieve swiping event
 
 $(document).on('click', 'button', ( function(e) {
@@ -55,5 +65,9 @@ $(document).on('click', 'button', ( function(e) {
 	$(this).css({ "background": "pink" });
 	setTimeout( () => {
 		$(this).css({ "background": "#e7e7e7" });
+		if ( $(this).hasClass('target') ) {
+			$(this).removeClass('target');
+			showTarget();
+		}
 	}, 500);
 }));
