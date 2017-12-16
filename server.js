@@ -24,6 +24,11 @@ io.on('connection', function(socket){
         io.emit('start');
     });
 
+    // end of a trial
+    socket.on('end', function(){
+        io.emit('end');
+    });
+
 });
 
 http.listen(3000, function(){

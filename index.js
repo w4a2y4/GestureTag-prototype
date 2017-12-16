@@ -58,7 +58,7 @@ function changePos (eyeX, eyeY) {
 
 function showTarget () {
 	if ( trial_num == 0 ) {
-		alert("End of trial!");
+		socket.emit('end');
 		return;
 	}
 	while( true ) {

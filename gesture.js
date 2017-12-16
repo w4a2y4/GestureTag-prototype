@@ -15,6 +15,10 @@ manager.on('swipe', (e) => {
 
 const socket = io();
 
+socket.on('end', () => {
+    button.disabled = false;
+});
+
 var startTrial = () => {
     button.disabled = true;
     socket.emit('start');
