@@ -16,11 +16,11 @@ manager.on('swipe', (e) => {
 const socket = io();
 
 socket.on('end', () => {
-    button.disabled = false;
+    button.style.display = "block";
 });
 
 var startTrial = () => {
-    button.disabled = true;
+    button.style.display = "none";
     socket.emit('start');
 }
 
