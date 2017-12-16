@@ -32,9 +32,7 @@ body {
 	width: 25%;
 }
 
-.dense-block {
-	position: relative;
-	float: left;
+.dense.block {
 	height: 25%;
 	width: 20%;
 }
