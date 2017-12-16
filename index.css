@@ -32,6 +32,13 @@ body {
 	width: 25%;
 }
 
+.dense-block {
+	position: relative;
+	float: left;
+	height: 25%;
+	width: 20%;
+}
+
 button {
 	position: absolute;
 	height: 100px;
