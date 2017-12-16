@@ -30,8 +30,8 @@ function changePos (eyeX, eyeY) {
 	show_left = false;
 	show_right = false;
 
-	for( var i=0; i<3; i++ ) 
-		for( var j=0; j<4; j++) {
+	for( var i=0; i < RAW_NUM; i++ )
+		for( var j=0; j < COL_NUM; j++) {
 			var btn = $("#blk"+i+""+j+" button");
 			var btnX = btn.offset().left + 100;
 			var btnY = btn.offset().top + 50;
