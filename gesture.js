@@ -1,4 +1,5 @@
 var container = document.querySelector(".container");
+var button = document.querySelector("button");
 const manager = new Hammer.Manager(container);
 
 const swipe = new Hammer.Swipe();
@@ -13,6 +14,15 @@ manager.on('swipe', (e) => {
 });
 
 const socket = io();
+
+socket.on('end', () => {
+    button.style.display = "block";
+});
+
+var startTrial = () => {
+    button.style.display = "none";
+    socket.emit('start');
+}
 
 var getSwipeDirectionStr = (direction) => {
     var gesture = '';

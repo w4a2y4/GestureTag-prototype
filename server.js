@@ -19,6 +19,16 @@ io.on('connection', function(socket){
         io.emit('swipe', dir);
     });
 
+    // start a trial
+    socket.on('start', function(){
+        io.emit('start');
+    });
+
+    // end of a trial
+    socket.on('end', function(){
+        io.emit('end');
+    });
+
 });
 
 http.listen(3000, function(){
