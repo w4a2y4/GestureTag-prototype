@@ -13,6 +13,10 @@ Basically, start the server first and then enable one of trackpad client platfor
 npm install
 npm start
 
+// open the browser
+localhost:3000				=> goes to the page with 3*4 buttons
+localhost:3000/dense.html 	=> goes to the page with 4*5 buttons
+
 // If you are using macOS, then you can open the Mac App.
 // Please follow the instruction in section ## TouchPad ## to install all dependencies before running it.  
 Open and Run TouchPad in Xcode
