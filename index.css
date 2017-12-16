@@ -54,6 +54,10 @@ button {
 	background: #b0e7c6;
 }
 
+.clicked {
+	background: pink;
+}
+
 button img {
 	display: none;
 	margin-top: -75px;

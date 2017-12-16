@@ -50,10 +50,17 @@ function changePos (eyeX, eyeY) {
 }
 
 function showTarget () {
-	if ( trial_num == 0 ) return;
-	var rand_r = Math.floor( Math.random() * RAW_NUM );
-	var rand_c = Math.floor( Math.random() * COL_NUM );
-	console.log(trial_num+' '+rand_r+' '+rand_c);
+	if ( trial_num == 0 ) {
+		alert("End of trial!");
+		return;
+	}
+	while( true ) {
+		var rand_r = Math.floor( Math.random() * RAW_NUM );
+		var rand_c = Math.floor( Math.random() * COL_NUM );
+		console.log(trial_num+' '+rand_r+' '+rand_c);
+		if ( !$('#blk' + rand_r + '' + rand_c + ' button').hasClass('clicked') )
+			break;
+	}
 	$('#blk' + rand_r + '' + rand_c + ' button').addClass('target');
 	trial_num -= 1;
 }
@@ -62,12 +69,12 @@ function showTarget () {
 
 $(document).on('click', 'button', ( function(e) {
 	console.log("click!!");
-	$(this).css({ "background": "pink" });
+	$(this).addClass('clicked');
+	if ( $(this).hasClass('target') ) {
+		$(this).removeClass('target');
+		showTarget();
+	}
 	setTimeout( () => {
-		$(this).css({ "background": "#e7e7e7" });
-		if ( $(this).hasClass('target') ) {
-			$(this).removeClass('target');
-			showTarget();
-		}
+		$(this).removeClass('clicked');
 	}, 500);
 }));
