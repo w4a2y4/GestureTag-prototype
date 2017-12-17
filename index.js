@@ -5,6 +5,8 @@ var show_left, show_right, show_up, show_down;
 const DEFAULT_TRIAL_NUM = 12;
 var trial_num = DEFAULT_TRIAL_NUM;
 
+var clicked_button, target, gesture;
+
 // recieve eye-tracker position
 $(document).mousemove( function(e) {
 	changePos(e.pageX, e.pageY);
@@ -15,6 +17,7 @@ socket.on('eyemove', function(x, y){
 });
 
 socket.on('swipe', function(dir){
+	gesture = dir;
 	if( dir == 'up' && show_up ) button_up.click();
 	if( dir == 'down' && show_down ) button_down.click();
 	if( dir == 'left' && show_left ) button_left.click();
@@ -25,6 +28,12 @@ socket.on('start', function(){
 	trial_num = DEFAULT_TRIAL_NUM;
 	showTarget();
 });
+
+function log () {
+	cnt = DEFAULT_TRIAL_NUM - trial_num;
+	console.log(gesture + ' ' + clicked_btn + ' ' + target);
+	socket.emit('log', cnt, gesture, clicked_btn, target);
+}
 
 function changePos (eyeX, eyeY) {
 
@@ -69,6 +78,7 @@ function showTarget () {
 			break;
 	}
 	$('#blk' + rand_r + '' + rand_c + ' button').addClass('target');
+	target = 'blk' + rand_r + '' + rand_c;
 	trial_num -= 1;
 }
 
@@ -77,6 +87,8 @@ function showTarget () {
 $(document).on('click', 'button', ( function(e) {
 	console.log("click!!");
 	$(this).addClass('clicked');
+	clicked_btn = $(this).parent().attr('id');
+	log();
 	if ( $(this).hasClass('target') ) {
 		$(this).removeClass('target');
 		showTarget();
