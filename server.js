@@ -1,9 +1,21 @@
-const express = require("express");
+const fs = require('fs');
+const moment = require('moment');
+const express = require('express');
 const app = express();
 app.use(express.static(__dirname));
 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+
+function writeLog ( msg ) {
+    var filename = 'tmp.log';
+    var time = moment().format('MM/DD hh:mm:ss');
+    msg = time + ' ' + msg + '\n';
+    console.log(msg);
+    fs.appendFile( filename , msg, function(err){
+        if (err) console.error(err);
+    });
+}
 
 io.on('connection', function(socket){
     console.log('a user connected');
@@ -15,17 +27,18 @@ io.on('connection', function(socket){
 
     // recieve swiping event
     socket.on('swipe', function(dir){
-        console.log('swipe' + dir);
         io.emit('swipe', dir);
     });
 
     // start a trial
     socket.on('start', function(){
+        writeLog('trial start');
         io.emit('start');
     });
 
     // end of a trial
     socket.on('end', function(){
+        writeLog('trial end');
         io.emit('end');
     });
 
