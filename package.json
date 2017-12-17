@@ -4,6 +4,8 @@
   "description": "A web prototype for the GestureTag project.",
   "main": "server.js",
   "scripts": {
+    "tap": "node server.js tap",
+    "swipe": "node server.js swipe",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,6 +19,7 @@
   },
   "homepage": "https://github.com/w4a2y4/GestureTag-prototype#readme",
   "dependencies": {
+    "ejs": "^2.5.7",
     "express": "^4.16.2",
     "fs": "0.0.1-security",
     "moment": "^2.20.0",
