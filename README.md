@@ -11,7 +11,8 @@ Basically, start the server first and then enable one of trackpad client platfor
 ```
 // start the node http server
 npm install
-npm start
+npm run-script tap (config the server for tap tasks)
+npm run-script swipe (config the server for swipe tasks)
 
 // open the browser
 localhost:3000				=> goes to the page with 3*4 buttons
@@ -24,7 +25,7 @@ Open and Run TouchPad in Xcode
 // If you are using Windows, please find a mobile phone or tablet.
 1. Find the local IP address of your laptop
 2. Open the web browser on the mobile device.
-3. Type [ip adrress]:3000/trackpad.html in the address bar.
+3. Type [ip adrress]:3000/swipe or [ip adrress]:3000/tap in the address bar.
 (you should see the page with purple background and 'a user connected' on the console of the server)
 ```
 [How to find your ip address on Windows](https://www.digitalcitizen.life/find-ip-address-windows)
