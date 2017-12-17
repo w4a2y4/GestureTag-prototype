@@ -9,7 +9,7 @@ var io = require('socket.io')(http);
 
 function writeLog ( msg ) {
     var filename = 'tmp.log';
-    var time = moment().format('MM/DD hh:mm:ss');
+    var time = moment().format('MM/DD hh:mm:ss:SSS');
     msg = time + '\t' + msg + '\n';
     console.log(msg);
     fs.appendFile( filename , msg, function(err){
