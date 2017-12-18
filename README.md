@@ -29,6 +29,7 @@ Open and Run TouchPad in Xcode
 (you should see the page with purple background and 'a user connected' on the console of the server)
 ```
 [How to find your ip address on Windows](https://www.digitalcitizen.life/find-ip-address-windows)
+#### How to find your ip address on Mac/Linux: ``ifconfig | grep "inet " | grep -v 127.0.0.1``
 ## TouchPad (Xcode Project with CocoaPods)
 Make sure you have Apple Developer Account (it is free) and have installed CocoaPods and Xcode.
 
