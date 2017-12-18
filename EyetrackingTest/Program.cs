@@ -19,14 +19,14 @@ namespace Interaction_Streams_101
     /// using GazePoint data stream, accessible from Streams property of Host instance.
     /// </summary>
     public class Program
-    { static int count = 0;
+    {
+        static int count = 0;
         static double XData = 0.0;
         static double YData = 0.0;
 
         static bool isRecording = false;
         static List<string> buffer = new List<string>();
         static string log_file_name = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\New_eye_tracking_log.txt";
-        //static string log_file_name = ".MyResult";
         static Socket socket;
         public static void Main(string[] args)
         {
@@ -41,9 +41,8 @@ namespace Interaction_Streams_101
             socket = IO.Socket("http://140.112.30.38:3000/");
             // 3. Get the gaze data!
             gazePointDataStream.GazePoint((x, y, ts) => Write(x, y, ts));
-            
             gazePointDataStream.GazePoint((x, y, ts) => SendData(x, y, ts));
-            // okay, it is 4 lines, but you won't be able to see much without this one :)
+
             while (true)
             {
                 ConsoleKey key = Console.ReadKey().Key;
@@ -68,10 +67,6 @@ namespace Interaction_Streams_101
 
             // we will close the coonection to the Tobii Engine before exit.
             host.DisableConnection();
-
-            ///begin
-            ///
-           
         }
 
         public  static void SendData(double x,double y,double ts)
@@ -79,39 +74,31 @@ namespace Interaction_Streams_101
             if (Program.isRecording)
             {
                 while (count<10)
-            {
-                XData +=x;
-                YData += y;
-                count++;
-            }
-            if (count >= 10)
-            {
-                double aveX = XData / 10.0;
-                double aveY = YData / 10.0;
-                count = 0;
-                XData = 0.0;
-                YData = 0.0;
-               
-
+                {
+                    XData +=x;
+                    YData += y;
+                    count++;
+                }
+                if (count >= 10)
+                {
+                    double aveX = XData / 10.0;
+                    double aveY = YData / 10.0;
+                    count = 0;
+                    XData = 0.0;
+                    YData = 0.0;
                     socket.Emit("eyemove", 1920 + aveX, aveY);
-
                 }
             }
         }
+
         public static void Write(double x, double y, double ts)
         {
             if (Program.isRecording)
             {
                 Console.WriteLine("Timestamp: {0}\t X: {1} Y:{2}", ts, x, y);
                 buffer.Add(string.Format("Timestamp: {0} X: {1} Y:{2}", ts, x, y));
-                              
-
-
             }
         }
-
-       
-
 
     }
 }
