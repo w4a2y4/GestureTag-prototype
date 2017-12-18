@@ -8,9 +8,9 @@ var trial_num = DEFAULT_TRIAL_NUM;
 var clicked_button, target, gesture;
 
 // recieve eye-tracker position
-$(document).mousemove( function(e) {
-	changePos(e.pageX, e.pageY);
-});
+// $(document).mousemove( function(e) {
+// 	changePos(e.pageX, e.pageY);
+// });
 
 socket.on('eyemove', function(x, y){
 	changePos(x, y);
