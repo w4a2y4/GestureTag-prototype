@@ -11,11 +11,13 @@
 @implementation GTGestureRecognizer
 @synthesize timeThreshold;
 @synthesize gestureMode;
+@synthesize points;
 
 -(GTGestureRecognizer *)init {
     self = [super init];
     timeThreshold = 0.2f;
     gestureMode = SWIPE_GESTURE;
+    points = [[NSMutableArray alloc] initWithCapacity:1];
     return self;
 }
 
@@ -45,11 +47,8 @@
             gesture = SWIPE_DOWN;
         }
     }
+    NSLog(@"%u", gesture);
     return gesture;
 }
-
-
-
-
 
 @end

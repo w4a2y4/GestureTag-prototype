@@ -15,7 +15,10 @@
 @property TouchBroadcaster *touchBroadcaster;
 @property NSTimer *timer;
 @property NSMutableArray *touchList;
+@property NSMutableArray *pathList;
+@property NSMutableArray *pathState;
 @property GTGestureRecognizer *gestureRecognizer;
 @property int state;
+-(void)updatePathInfo:(TouchPoint *)point withState:(int)state;
 @end
 

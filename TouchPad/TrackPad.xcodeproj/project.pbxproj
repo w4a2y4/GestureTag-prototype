@@ -150,7 +150,7 @@
 		80D55B471FDB2D4300719D1D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0910;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = gesturetag;
 				TargetAttributes = {
 					80D55B4E1FDB2D4400719D1D = {
@@ -372,6 +372,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 204ADC14E67CB2AF16A559E5 /* Pods-TrackPad.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -393,6 +394,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 56D49B2EB143C4DD2F047627 /* Pods-TrackPad.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;

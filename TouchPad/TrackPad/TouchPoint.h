@@ -20,9 +20,10 @@
 @property (readonly) float velY;
 @property (readonly) float timestamp;
 @property (readonly) int fingerId;
+@property (readonly) int pathIndex;
 @property float dX;
 @property float dY;
 
-- (id)initWithTouch:(mtTouch *)touch;
+- (id)initWithTouch:(MTTouch *)touch;
 
 @end

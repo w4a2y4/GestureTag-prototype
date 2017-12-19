@@ -32,6 +32,11 @@ body {
 	width: 25%;
 }
 
+.dense.block {
+	height: 25%;
+	width: 20%;
+}
+
 button {
 	position: absolute;
 	height: 100px;
@@ -43,6 +48,14 @@ button {
 	background-color: #e7e7e7;
 	border-radius: 10px;
 	box-shadow: 0 0 16px 0 rgba(0,0,0,0.2), 0 0 8px 0 rgba(0,0,0,0.19);
+}
+
+.target {
+	background: #b0e7c6;
+}
+
+.clicked {
+	background: pink;
 }
 
 button img {
