@@ -6,15 +6,38 @@ const DEFAULT_TRIAL_NUM = 12;
 var trial_num = DEFAULT_TRIAL_NUM;
 
 var clicked_button, target, gesture;
-
+var isCalibrated = false;
 // recieve eye-tracker position
 $(document).mousemove( function(e) {
-	changePos(e.pageX, e.pageY);
+	if(!isCalibrated)
+		changePos(e.pageX, e.pageY);
 });
 
-socket.on('eyemove', function(x, y){
-	changePos(x, y);
-});
+
+const freq = 25;
+const beta = 0.00001;
+const fcmin = 0.01;
+const dcutoff = 1;
+
+var fx = OneEuroFilter(freq, fcmin, beta, dcutoff);
+var fy = OneEuroFilter(freq, fcmin, beta, dcutoff);
+
+var readGazePoint = () => {
+	var getPoint = setInterval(() => {
+		var point = webgazer.getCurrentPrediction();
+		var timestamp = Date.now();
+		var x = fx.filter(point.x, timestamp);
+		var y = fy.filter(point.y, timestamp);
+		changePos(x, y);
+	}, 40);
+}
+
+// socket.on('eyemove', function(x, y, timestamp){
+// 	// var x = fx.filter(x, timestamp);
+// 	// var y = fy.filter(y, timestamp);
+// 	console.log(`${x}, ${y}`);
+// 	changePos(x, y);
+// });
 
 socket.on('swipe', function(dir){
 	gesture = dir;
@@ -34,6 +57,8 @@ socket.on('tap', (pos) => {
 
 socket.on('start', function(){
 	trial_num = DEFAULT_TRIAL_NUM;
+	isCalibrated = true;
+	readGazePoint();
 	showTarget();
 });
 
@@ -55,13 +80,9 @@ function changePos (eyeX, eyeY) {
 	show_left = false;
 	show_right = false;
 
-<<<<<<< HEAD:index.js
-	for( var i=0; i<3; i++ )
-		for( var j=0; j<4; j++) {
-=======
+
 	for( var i=0; i < RAW_NUM; i++ )
 		for( var j=0; j < COL_NUM; j++) {
->>>>>>> master:resources/index.js
 			var btn = $("#blk"+i+""+j+" button");
 			var btnX = btn.offset().left + 100;
 			var btnY = btn.offset().top + 50;
@@ -78,27 +99,24 @@ function changePos (eyeX, eyeY) {
 		}
 }
 
-// window.onload = function() {
-// 	webgazer.setRegression('ridge') /* currently must set regression and tracker */
-// 		.setTracker('clmtrackr')
-// 		.setGazeListener(function(data, clock) {
-// 			if(data === null)
-// 			  return;
-// 			// console.log(data); /* data is an object containing an x and y key which are the x and y prediction coordinates (no bounds limiting) */
-// 		 //   console.log(clock); /* elapsed time in milliseconds since webgazer.begin() was called */
-// 			emitEyeMove(data);
-// 		})
-// 		.begin()
-// 		.showPredictionPoints(true);
-// };
-// var emitEyeMove = (data) => {
-// 	// socket.emit('eyemove', data.x, data.y);
-// 	// changePos(data.x, data.y);
-// }
-// window.onbeforeunload = function() {
-// 	//webgazer.end(); //Uncomment if you want to save the data even if you reload the page.
-// 	window.localStorage.clear(); //Comment out if you want to save data across different sessions
-// }
+window.onload = function() {
+	webgazer.setRegression('ridge')
+		.setTracker('clmtrackr')
+		.begin()
+		.showPredictionPoints(true);
+};
+
+var emitEyeMove = (data) => {
+	// socket.emit('eyemove', data.x, data.y);
+	// console.log(`x: ${data.x}, y: ${data.y}`);
+
+	changePos(data.x, data.y);
+}
+window.onbeforeunload = () => {
+	//webgazer.end(); //Uncomment if you want to save the data even if you reload the page.
+	window.localStorage.clear(); //Comment out if you want to save data across different sessions
+}
+
 function showTarget () {
 	if ( trial_num == 0 ) {
 		socket.emit('end');
