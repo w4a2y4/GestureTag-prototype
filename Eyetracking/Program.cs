@@ -38,7 +38,7 @@ namespace Interaction_Streams_101
 
             // 2. Create stream. 
             var gazePointDataStream = host.Streams.CreateGazePointDataStream();
-            socket = IO.Socket("http://140.112.30.38:3000/");
+            socket = IO.Socket("http://localhost:3000/");
             // 3. Get the gaze data!
             gazePointDataStream.GazePoint((x, y, ts) => Write(x, y, ts));
             gazePointDataStream.GazePoint((x, y, ts) => SendData(x, y, ts));

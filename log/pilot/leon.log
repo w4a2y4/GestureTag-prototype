@@ -1,0 +1,84 @@
+12/20 09:08:26:124	trial start
+12/20 09:08:28:712	#1	event:null	target:blk32	click:blk32
+12/20 09:08:29:598	#2	event:null	target:blk34	click:blk34
+12/20 09:08:30:158	#3	event:null	target:blk32	click:blk32
+12/20 09:08:30:966	#4	event:null	target:blk22	click:blk22
+12/20 09:08:31:710	#5	event:null	target:blk21	click:blk21
+12/20 09:08:32:422	#6	event:null	target:blk11	click:blk11
+12/20 09:08:33:295	#7	event:null	target:blk14	click:blk14
+12/20 09:08:33:935	#8	event:null	target:blk02	click:blk02
+12/20 09:08:34:591	#9	event:null	target:blk04	click:blk04
+12/20 09:08:35:142	#10	event:null	target:blk12	click:blk12
+12/20 09:08:35:870	#11	event:null	target:blk22	click:blk22
+12/20 09:08:37:062	#12	event:null	target:blk32	click:blk32
+12/20 09:08:37:063	trial end
+12/20 09:09:09:684	trial start
+12/20 09:09:10:399	#1	event:null	target:blk13	click:blk13
+12/20 09:09:11:009	#2	event:null	target:blk24	click:blk24
+12/20 09:09:11:912	#3	event:null	target:blk11	click:blk11
+12/20 09:09:12:639	#4	event:null	target:blk34	click:blk34
+12/20 09:09:13:464	#5	event:null	target:blk21	click:blk21
+12/20 09:09:14:119	#6	event:null	target:blk01	click:blk01
+12/20 09:09:15:143	#7	event:null	target:blk24	click:blk24
+12/20 09:09:16:008	#8	event:null	target:blk30	click:blk30
+12/20 09:09:16:735	#9	event:null	target:blk10	click:blk10
+12/20 09:09:17:408	#10	event:null	target:blk01	click:blk01
+12/20 09:09:18:376	#11	event:null	target:blk34	click:blk34
+12/20 09:09:19:072	#12	event:null	target:blk10	click:blk10
+12/20 09:09:19:073	trial end
+12/20 09:11:21:287	#12	event:up	target:blk10	click:blk22
+12/20 09:11:23:119	#12	event:right	target:blk10	click:blk23
+12/20 09:11:27:885	#12	event:up	target:blk10	click:blk24
+12/20 09:11:29:730	#12	event:down	target:blk10	click:blk11
+12/20 09:11:31:718	#12	event:down	target:blk10	click:blk13
+12/20 09:11:34:918	#12	event:down	target:blk10	click:blk33
+12/20 09:11:36:851	#12	event:down	target:blk10	click:blk31
+12/20 09:11:38:783	#12	event:up	target:blk10	click:blk22
+12/20 09:11:40:284	#12	event:up	target:blk10	click:blk02
+12/20 09:11:41:721	#12	event:left	target:blk10	click:blk10
+12/20 09:11:43:403	#12	event:up	target:blk10	click:blk22
+12/20 09:11:44:851	#12	event:left	target:blk10	click:blk14
+12/20 09:11:46:420	#12	event:up	target:blk10	click:blk00
+12/20 09:11:48:170	#12	event:right	target:blk10	click:blk23
+12/20 09:11:49:768	#12	event:down	target:blk10	click:blk31
+12/20 09:11:50:934	#12	event:left	target:blk10	click:blk32
+12/20 09:11:52:554	#12	event:up	target:blk10	click:blk02
+12/20 09:11:53:954	#12	event:down	target:blk10	click:blk13
+12/20 09:11:56:406	#12	event:left	target:blk10	click:blk34
+12/20 09:11:57:984	#12	event:up	target:blk10	click:blk20
+12/20 09:11:59:233	#12	event:left	target:blk10	click:blk30
+12/20 09:12:02:622	#12	event:right	target:blk10	click:blk23
+12/20 09:12:04:536	#12	event:up	target:blk10	click:blk04
+12/20 09:12:07:101	#12	event:down	target:blk10	click:blk13
+12/20 09:12:08:989	#12	event:up	target:blk10	click:blk20
+12/20 09:12:11:938	#12	event:down	target:blk10	click:blk11
+12/20 09:12:18:154	#12	event:left	target:blk10	click:blk34
+12/20 09:12:50:644	trial start
+12/20 09:12:52:212	#1	event:up	target:blk22	click:blk22
+12/20 09:12:53:596	#2	event:up	target:blk00	click:blk00
+12/20 09:12:55:104	#3	event:down	target:blk11	click:blk11
+12/20 09:12:56:406	#4	event:right	target:blk23	click:blk23
+12/20 09:12:57:837	#5	event:right	target:blk01	click:blk01
+12/20 09:12:59:003	#6	event:up	target:blk20	click:blk20
+12/20 09:13:00:272	#7	event:left	target:blk10	click:blk10
+12/20 09:13:01:540	#8	event:right	target:blk21	click:blk21
+12/20 09:13:02:770	#9	event:down	target:blk33	click:blk33
+12/20 09:13:04:042	#10	event:right	target:blk21	click:blk21
+12/20 09:13:05:291	#11	event:right	target:blk03	click:blk03
+12/20 09:13:07:520	#12	event:right	target:blk23	click:blk23
+12/20 09:13:07:522	trial end
+12/20 09:14:11:885	trial start
+12/20 09:23:37:093	trial start
+12/20 09:23:40:059	#1	event:topright	target:blk24	click:blk24
+12/20 09:23:41:644	#2	event:topright	target:blk00	click:blk00
+12/20 09:23:43:097	#3	event:topleft	target:blk14	click:blk14
+12/20 09:23:45:125	#4	event:bottomleft	target:blk33	click:blk33
+12/20 09:23:46:577	#5	event:topright	target:blk20	click:blk20
+12/20 09:23:47:994	#6	event:topleft	target:blk14	click:blk14
+12/20 09:23:49:326	#7	event:bottomleft	target:blk33	click:blk33
+12/20 09:23:50:576	#8	event:topright	target:blk24	click:blk24
+12/20 09:23:51:991	#9	event:topleft	target:blk32	click:blk32
+12/20 09:23:53:247	#10	event:topright	target:blk20	click:blk20
+12/20 09:23:54:545	#11	event:bottomleft	target:blk31	click:blk31
+12/20 09:23:55:978	#12	event:topleft	target:blk30	click:blk30
+12/20 09:23:55:979	trial end
