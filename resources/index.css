@@ -11,7 +11,9 @@ html {
 body {
 	min-height: 100%;
 	margin: 0;
+	overflow: hidden;
 }
+
 
 #eye_tracker {
 	pointer-events: none;
