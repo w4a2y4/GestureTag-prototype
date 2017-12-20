@@ -28,13 +28,13 @@ body {
 .block {
 	position: relative;
 	float: left;
-	height: 33.33%;
-	width: 25%;
-}
-
-.dense.block {
 	height: 25%;
 	width: 20%;
+}
+
+.sparse.block {
+	height: 33.33%;
+	width: 25%;
 }
 
 button {
