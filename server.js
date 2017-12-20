@@ -47,6 +47,51 @@ var writeLog = ( msg ) => {
     });
 };
 
+var writeGazeLog = (posX, posY) => {
+    var filename = 'gaze.log';
+    var time = moment().format('x');
+    var log = `${time} ${posX} ${posY}\n`;
+    console.log(log);
+    fs.appendFile(filename, log, (err) => {
+        if (err) console.error(err);
+    });
+};
+
+var readGazeLog = () => {
+    var filename = 'gaze.log';
+    fs.readFile(filename, (err, data) => {
+        if(err) console.error(err);
+        var gazes = data.toString().split('\n');
+        var data = [];
+        gazes.map((g) => {
+            var contents = g.split(' ');
+            const obj = {
+                x: parseInt(contents[1]),
+                y: parseInt(contents[2]),
+                timestamp: parseInt(contents[0])
+            };
+            data.push(obj);
+        });
+        data.reverse();
+        gazeEvent(data);
+    });
+};
+
+var gazeEvent = (data) => {
+    var i = 0;
+    var emitLog = setInterval(() => {
+        var g = data.pop();
+        io.emit('eyemove', g.x, g.y, i * 40);
+        i += 1;
+        if(data.length === 0)
+            stopEmitGaze();
+
+    }, 40);
+    var stopEmitGaze = () => {
+        clearInterval(emitLog);
+    };
+}
+
 var loadImages = () => {
     if(type === 'swipe')
         return swipeImages;
@@ -58,9 +103,11 @@ io.on('connection', function(socket){
     console.log('a user connected');
 
     // recieve eye-tracker position
-    socket.on('eyemove', function(x, y){
-        io.emit('eyemove', x, y);
-    });
+    // socket.on('eyemove', function(x, y){
+    //     // io.emit('eyemove', x, y);
+    //     writeGazeLog(x, y);
+    // });
+    // readGazeLog();
 
     // recieve swiping event
     if(type === 'swipe'){
