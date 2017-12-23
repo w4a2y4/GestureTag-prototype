@@ -38,5 +38,25 @@ body {
 	/*border: solid black 3px;*/
 	margin-left: 280px;
 	height: 1183px;
+	width: cal(100% - 280px);
+}
+
+#tab-bar {
+	/*border: solid black 1px;*/
+	height: 81px;
+	width: 100%;
+}
+
+.tab {
+	/*border: solid black 1px;*/
+	float: left;
+	width: 352px;
+	height: 60px;
+	margin: 11px 0px 10px 0px;
+}
+
+.mail {
+	/*border: solid black 1px;*/
+	height: 56.7px;
 	width: 100%;
 }
