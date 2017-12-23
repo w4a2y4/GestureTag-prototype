@@ -17,7 +17,6 @@ for (var i = 0; i < RAW_NUM; i++) {
     for (var j = 0; j < COL_NUM; j++) {
         already[i][j] = 0;
     }
-
 }
 
 // recieve eye-tracker position
@@ -26,11 +25,7 @@ for (var i = 0; i < RAW_NUM; i++) {
 // });
 
 socket.on('eyemove', function(x, y, ts) {
-    //gesture=eye;
-
-    //console.log(x, y, ts);
     changePos(x, y, ts);
-
 });
 
 socket.on('swipe', function(dir) {
@@ -49,8 +44,6 @@ socket.on('tap', (pos) => {
     if (pos === 'bottomright' && show_right) button_right.click();
 });
 
-
-
 socket.on('start', function() {
     trial_num = DEFAULT_TRIAL_NUM;
     showTarget();
@@ -63,9 +56,7 @@ function log() {
 }
 
 function changePos(eyeX, eyeY, times) {
-    //console.log(times);
 
-    // console.log(typeof(times));
     $('#eye_tracker').css({
         "left": eyeX,
         "top": eyeY
@@ -85,43 +76,26 @@ function changePos(eyeX, eyeY, times) {
             var dist = (btnX - eyeX) * (btnX - eyeX) + (btnY - eyeY) * (btnY - eyeY);
 
             if (dist <= 20000) {
-                //console.log("dist:"+dist);
-                if (already[i][j]) { // 已經有紀錄起點
-                    TimeEnd = Date.now(); //紀錄現在時間
-                    //TimeEnd=times;
-                    //console.log('if');
-                    //console.log("Timestart:"+TimeStart);
-                    //console.log("Time:"+times);
-                    //console.log("Timeend:"+TimeEnd);
+
+                if (already[i][j]) { // Have already looked at the target
+                    TimeEnd = Date.now(); // Record time then
                 } else {
-                    // console.log('else');
-                    // TimeStart= times;
-                    already[i][j] = 1;
-                    TimeStart = Date.now();
-                    //TimeStart = new Date().getTime();
-                    //console.log("first"+TimeStart)
+                    already[i][j] = 1; //First time to look at the target
+                    TimeStart = Date.now(); // Record time then
                 }
 
-
-                console.log(TimeEnd - TimeStart);
-                var isClick = 0;
                 if (already[i][j] == 1 && TimeEnd - TimeStart > 1500.0) {
-                    //gaze more than 1second
-
                     mybutton = btn;
                     mybutton.click();
-
-
                     console.log("Selection Success!!");
-                    already[i][j] = 0;
-
+                    already[i][j] = 0; // reinitialize
                 }
 
+                // Showing image 
                 btn.find('img').show();
                 if (i % 2 == 0 && j % 2 == 0) {
                     button_up = btn;
                     show_up = true;
-                    isClick = 1
                 }
                 if (i % 2 == 1 && j % 2 == 1) {
                     button_down = btn;
@@ -135,14 +109,9 @@ function changePos(eyeX, eyeY, times) {
                     button_right = btn;
                     show_right = true;
                 }
-
-
             } else {
                 btn.find('img').hide();
-                //console.log("go out")
                 already[i][j] = 0;
-                //TimeStart=0.0;
-                //TimeEnd=0.0;
             }
         }
     }
@@ -166,7 +135,6 @@ function showTarget() {
 }
 
 // recieve swiping event
-
 $(document).on('click', 'button', (function(e) {
     console.log("click!!");
     $(this).addClass('clicked');
