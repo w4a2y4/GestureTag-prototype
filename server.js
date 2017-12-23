@@ -23,7 +23,7 @@ app.set('view engine', 'ejs');
 app.get('/', (req, res) => {
     res.render('index', loadImages());
 });
-app.get('/', (req, res) => {
+app.get('/dwell', (req, res) => {
     res.render('dwell', loadImages());
 });
 
