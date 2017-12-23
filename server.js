@@ -16,6 +16,12 @@ const tapImages = {
     OPTION_3: `${resources}/tap_topleft.png`,
     OPTION_4: `${resources}/tap_bottomright.png`
 };
+const dwellImages = {
+    OPTION_1: `${resources}/eye.png`,
+    OPTION_2: `${resources}/eye.png`,
+    OPTION_3: `${resources}/eye.png`,
+    OPTION_4: `${resources}/eye.png`
+};
 const type = process.argv[2];
 app.use(resources, express.static('resources'));
 app.set('views', __dirname + '/views');
@@ -55,6 +61,8 @@ var loadImages = () => {
         return swipeImages;
     else if (type === 'tap')
         return tapImages;
+    else if (type === 'dwell')
+        return dwellImages;
 }
 
 io.on('connection', function(socket) {
