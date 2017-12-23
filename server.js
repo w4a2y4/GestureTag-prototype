@@ -24,6 +24,10 @@ app.get('/', (req, res) => {
     res.render('index', loadImages());
 });
 
+app.get('/gmail', (req, res) => {
+    res.sendFile(path.join(__dirname, 'gmail.html'));
+});
+
 app.get('/swipe', (req, res) => {
     res.sendFile(path.join(__dirname, 'swipe.html'));
     // res.render('swipe');
