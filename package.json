@@ -6,7 +6,7 @@
     "scripts": {
         "tap": "node server.js tap",
         "swipe": "node server.js swipe",
-        "dewell": "node server.js dwell",
+        "dwell": "node server.js dwell",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
