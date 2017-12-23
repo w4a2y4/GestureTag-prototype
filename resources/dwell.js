@@ -1,0 +1,182 @@
+var socket = io.connect();
+var button_left, button_right, button_up, button_down, mybutton;
+var show_left, show_right, show_up, show_down;
+
+const DEFAULT_TRIAL_NUM = 12;
+var trial_num = DEFAULT_TRIAL_NUM;
+
+var clicked_button, target, gesture;
+var TimeStart = new Date().getTime();
+var TimeEnd = new Date().getTime();
+var already = new Array(RAW_NUM);
+for (var i = 0; i < RAW_NUM; i++) {
+    already[i] = new Array(COL_NUM);
+}
+
+for (var i = 0; i < RAW_NUM; i++) {
+    for (var j = 0; j < COL_NUM; j++) {
+        already[i][j] = 0;
+    }
+
+}
+
+// recieve eye-tracker position
+// $(document).mousemove( function(e) {
+// 	changePos(e.pageX, e.pageY);
+// });
+
+socket.on('eyemove', function(x, y, ts) {
+    //gesture=eye;
+
+    //console.log(x, y, ts);
+    changePos(x, y, ts);
+
+});
+
+socket.on('swipe', function(dir) {
+    gesture = dir;
+    if (dir == 'up' && show_up) button_up.click();
+    if (dir == 'down' && show_down) button_down.click();
+    if (dir == 'left' && show_left) button_left.click();
+    if (dir == 'right' && show_right) button_right.click();
+});
+
+socket.on('tap', (pos) => {
+    gesture = pos;
+    if (pos === 'topright' && show_up) button_up.click();
+    if (pos === 'bottomleft' && show_down) button_down.click();
+    if (pos === 'topleft' && show_left) button_left.click();
+    if (pos === 'bottomright' && show_right) button_right.click();
+});
+
+
+
+socket.on('start', function() {
+    trial_num = DEFAULT_TRIAL_NUM;
+    showTarget();
+});
+
+function log() {
+    cnt = DEFAULT_TRIAL_NUM - trial_num;
+    console.log(gesture + ' ' + clicked_btn + ' ' + target);
+    socket.emit('log', cnt, gesture, clicked_btn, target);
+}
+
+function changePos(eyeX, eyeY, times) {
+    //console.log(times);
+
+    // console.log(typeof(times));
+    $('#eye_tracker').css({
+        "left": eyeX,
+        "top": eyeY
+    });
+
+    show_up = false;
+    show_down = false;
+    show_left = false;
+    show_right = false;
+
+    for (var i = 0; i < RAW_NUM; i++) {
+        for (var j = 0; j < COL_NUM; j++) {
+            var btn = $("#blk" + i + "" + j + " button");
+            var btnX = btn.offset().left + 100;
+            var btnY = btn.offset().top + 50;
+
+            var dist = (btnX - eyeX) * (btnX - eyeX) + (btnY - eyeY) * (btnY - eyeY);
+
+            if (dist <= 20000) {
+                //console.log("dist:"+dist);
+                if (already[i][j]) { // 已經有紀錄起點
+                    TimeEnd = Date.now(); //紀錄現在時間
+                    //TimeEnd=times;
+                    //console.log('if');
+                    //console.log("Timestart:"+TimeStart);
+                    //console.log("Time:"+times);
+                    //console.log("Timeend:"+TimeEnd);
+                } else {
+                    // console.log('else');
+                    // TimeStart= times;
+                    already[i][j] = 1;
+                    TimeStart = Date.now();
+                    //TimeStart = new Date().getTime();
+                    //console.log("first"+TimeStart)
+                }
+
+
+                console.log(TimeEnd - TimeStart);
+                var isClick = 0;
+                if (already[i][j] == 1 && TimeEnd - TimeStart > 1500.0) {
+                    //gaze more than 1second
+
+                    mybutton = btn;
+                    mybutton.click();
+
+
+                    console.log("Selection Success!!");
+                    already[i][j] = 0;
+
+                }
+
+                btn.find('img').show();
+                if (i % 2 == 0 && j % 2 == 0) {
+                    button_up = btn;
+                    show_up = true;
+                    isClick = 1
+                }
+                if (i % 2 == 1 && j % 2 == 1) {
+                    button_down = btn;
+                    show_down = true;
+                }
+                if (i % 2 == 1 && j % 2 == 0) {
+                    button_left = btn;
+                    show_left = true;
+                }
+                if (i % 2 == 0 && j % 2 == 1) {
+                    button_right = btn;
+                    show_right = true;
+                }
+
+
+            } else {
+                btn.find('img').hide();
+                //console.log("go out")
+                already[i][j] = 0;
+                //TimeStart=0.0;
+                //TimeEnd=0.0;
+            }
+        }
+    }
+}
+
+function showTarget() {
+    if (trial_num == 0) {
+        socket.emit('end');
+        return;
+    }
+    while (true) {
+        var rand_r = Math.floor(Math.random() * RAW_NUM);
+        var rand_c = Math.floor(Math.random() * COL_NUM);
+        console.log(trial_num + ' ' + rand_r + ' ' + rand_c);
+        if (!$('#blk' + rand_r + '' + rand_c + ' button').hasClass('clicked'))
+            break;
+    }
+    $('#blk' + rand_r + '' + rand_c + ' button').addClass('target');
+    target = 'blk' + rand_r + '' + rand_c;
+    trial_num -= 1;
+}
+
+// recieve swiping event
+
+$(document).on('click', 'button', (function(e) {
+    console.log("click!!");
+    $(this).addClass('clicked');
+    clicked_btn = $(this).parent().attr('id');
+    log();
+    if ($(this).hasClass('target')) {
+        $(this).removeClass('target');
+        showTarget();
+    }
+    setTimeout(() => {
+        $(this).removeClass('clicked');
+    }, 500);
+}));
