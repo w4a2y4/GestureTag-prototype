@@ -68,6 +68,7 @@ var loadImages = () => {
 
 io.on('connection', function(socket){
     console.log('a user connected');
+    io.emit('init', type);
 
     // recieve eye-tracker position
     socket.on('eyemove', function(x, y){
@@ -92,7 +93,7 @@ io.on('connection', function(socket){
     // start a trial
     socket.on('start', function(){
         writeLog('trial start');
-        io.emit('start', type);
+        io.emit('start');
     });
 
     // end of a trial

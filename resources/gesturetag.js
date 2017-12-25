@@ -8,6 +8,7 @@ var trial_num = DEFAULT_TRIAL_NUM;
 var clicked_button, target_btn, gesture;
 var buttons = document.getElementsByTagName('button');
 
+var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
 const swipeImages = {
 	up: img_prefix + 'arrow_up.png',
@@ -21,8 +22,6 @@ const tapImages = {
     left: img_prefix + 'tap_topleft.png',
     right: img_prefix + 'tap_bottomright.png'
 };
-
-var imgSet = swipeImages;
 
 // recieve eye-tracker position
 $(document).mousemove( function(e) {
@@ -49,10 +48,14 @@ socket.on('tap', (pos) => {
 	if( pos === 'bottomright' && show_right ) button_right.click();
 });
 
-socket.on('start', function(type){
-	trial_num = DEFAULT_TRIAL_NUM;
+socket.on('init', function(type){
+	console.log(type);
 	if ( type === 'swipe' ) imgSet = swipeImages;
 	else if ( type === 'tap' ) imgSet = tapImages;
+});
+
+socket.on('start', function() {
+	trial_num = DEFAULT_TRIAL_NUM;
 	showTarget();
 });
 
