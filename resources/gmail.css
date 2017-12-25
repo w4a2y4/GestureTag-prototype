@@ -27,6 +27,18 @@ body {
 	height: 67px;
 }
 
+#option-bar #gmail {
+	margin-right: 128px;
+	margin-left: 40px;
+}
+
+#option-bar div {
+	width: 100px;
+	height: 42px;
+	margin: 12px;
+	float: left;
+}
+
 #side-bar {
 	/*border: solid black 3px;*/
 	position: absolute;
