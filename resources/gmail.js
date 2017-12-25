@@ -2,6 +2,7 @@ var socket = io.connect();
 var button_left, button_right, button_up, button_down;
 var show_left, show_right, show_up, show_down;
 
+const RADIUS = 50;
 const DEFAULT_TRIAL_NUM = 20;
 var trial_num = DEFAULT_TRIAL_NUM;
 
@@ -43,6 +44,29 @@ function log () {
 	cnt = DEFAULT_TRIAL_NUM - trial_num;
 	console.log(gesture + ' ' + clicked_btn + ' ' + target_btn);
 	socket.emit('log', cnt, gesture, clicked_btn, target_btn);
+}
+
+function overlap ( element, X, Y ) {
+	var top = $(element).offset().top;
+	var left = $(element).offset().left;
+	var right = Number($(element).offset().left) + Number($(element).width());
+	var bottom = Number($(element).offset().top) + Number($(element).height());
+
+	// in the element
+	if ( X >= left && X <= right && Y >= top && Y <= bottom ) return true;
+	else if ( X < left && Y >= top && Y <= bottom ) return ( left - X ) <= RADIUS ;
+	else if ( X > right && Y >= top && Y <= bottom ) return ( X - right ) <= RADIUS ;
+	else if ( X >= left && X <= right && Y < top ) return ( top - Y ) <= RADIUS;
+	else if ( X >= left && X <= right && Y > bottom ) return ( Y - bottom ) <= RADIUS;
+	else if ( Math.pow((X - left), 2) + Math.pow((Y - top), 2) <= RADIUS*RADIUS )
+		return true;
+	else if ( Math.pow((X - left), 2) + Math.pow((Y - bottom), 2) <= RADIUS*RADIUS )
+		return true;
+	else if ( Math.pow((X - right), 2) + Math.pow((Y - top), 2) <= RADIUS*RADIUS )
+		return true;
+	else if ( Math.pow((X - right), 2) + Math.pow((Y - bottom), 2) <= RADIUS*RADIUS )
+		return true;
+	return false;
 }
 
 // function changePos (eyeX, eyeY) {
