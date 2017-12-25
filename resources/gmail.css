@@ -19,6 +19,33 @@ body {
 	/*border: solid black 3px;*/
 	width: 100%;
 	height: 83px;
+	padding: 21.5px 40px 21.5px 40px;
+}
+
+#search {
+	position: absolute;
+	height: 40px;
+	width: 902px;
+	margin-left: 242px;
+}
+
+#search #search-bar {
+	height: 100%;
+	width: 820px;
+	float: left;
+}
+
+#search #search-icon {
+	height: 100%;
+	width: 82px;
+	float: left;
+}
+
+#right-block div {
+	float: right;
+	height: 42px;
+	width: 45px;
+	margin-left: 17px;
 }
 
 #option-bar {
