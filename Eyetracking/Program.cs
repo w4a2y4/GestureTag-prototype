@@ -20,10 +20,18 @@ namespace Interaction_Streams_101
     /// </summary>
     public class Program
     {
+        static int insert_index = 9;
+        static int kk=0;
         static int count = 0;
         static double XData = 0.0;
         static double YData = 0.0;
-
+        static double XXData = 0.0;
+        static double YYData = 0.0;
+        static double aveX, aveY, aveYY, aveXX;
+        static double[] Xarray = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+         static double[] Yarray = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+       // static List<double> Xarray = new List<double>();
+        //static List<double> Yarray = new List<double>();
         static bool isRecording = false;
         static List<string> buffer = new List<string>();
         static string log_file_name = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\New_eye_tracking_log.txt";
@@ -69,25 +77,93 @@ namespace Interaction_Streams_101
             host.DisableConnection();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="ts"></param>
         public  static void SendData(double x,double y,double ts)
         {
             if (Program.isRecording)
             {
-                while (count<10)
+                //while (count<30)
+                //{
+                //    XData +=x;
+                //  YData += y;
+                //  count++;
+                // }
+                // if (count >= 30)
+                // {
+                //    double aveX = XData / 30.0;
+                //    double aveY = YData / 30.0;
+                //  count = 0;
+                //  XData = 0.0;
+                //   YData = 0.0;
+                //  socket.Emit("eyemove", aveX, aveY);
+                //}
+                
+                //while ( kk < 9)
+                //{
+                    //Console.WriteLine(kk);
+
+                  // Xarray[kk] = Xarray[kk + 1];
+                    //Yarray[kk] = Yarray[kk + 1];
+                    //kk++;
+                //}
+               Xarray[insert_index] = x;
+                Yarray[insert_index] = y;
+                kk = 0;
+
+                insert_index = (insert_index + 1) % 10;
+                while (kk <= 9)
                 {
-                    XData +=x;
-                    YData += y;
-                    count++;
+                     XData += Xarray[kk]; ;
+                    YData += Yarray[kk];
+                    kk++;
+                   
                 }
-                if (count >= 10)
+
+                //Console.WriteLine(aveX);
+                kk = 0;
+                aveX = XData / 10;
+                aveY = YData / 10;
+
+                while (count<3)
                 {
-                    double aveX = XData / 10.0;
-                    double aveY = YData / 10.0;
-                    count = 0;
-                    XData = 0.0;
-                    YData = 0.0;
-                    socket.Emit("eyemove", aveX, aveY);
+                    XXData +=aveX;
+                  YYData += aveY;
+                  count++;
+                 }
+                 if (count >= 3)
+                 {
+                    double aveXX = XXData / 3.0;
+                    double aveYY = YYData / 3.0;
+                  count = 0;
+                  XXData = 0.0;
+                   YYData = 0.0;
+                  socket.Emit("eyemove", aveXX, aveYY);
                 }
+
+                //while ( kk < 9)
+                //{
+                //Console.WriteLine(kk);
+
+                // Xarray[kk] = Xarray[kk + 1];
+                //Yarray[kk] = Yarray[kk + 1];
+                //kk++;
+                //}
+
+
+
+
+               
+                //socket.Emit("eyemove", aveX, aveY);
+                XData = 0.0;
+                YData = 0.0;
+
+
+
             }
         }
 
