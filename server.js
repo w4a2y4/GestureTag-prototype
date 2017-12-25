@@ -4,6 +4,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const resources = '/resources';
+
 const swipeOptions = {
     OPTION_1: `${resources}/arrow_up.png`,
     OPTION_2: `${resources}/arrow_down.png`,
@@ -25,6 +26,7 @@ const dwellOptions = {
     OPTION_4: `//:0`,
     EYETRACKER: `dwell`
 };
+
 const type = process.argv[2];
 app.use(resources, express.static('resources'));
 app.set('views', __dirname + '/views');
@@ -39,12 +41,10 @@ app.get('/gmail', (req, res) => {
 
 app.get('/swipe', (req, res) => {
     res.sendFile(path.join(__dirname, 'swipe.html'));
-    // res.render('swipe');
 });
 
 app.get('/tap', (req, res) => {
     res.sendFile(path.join(__dirname, 'tap.html'));
-    // res.render('tap');
 });
 
 var http = require('http').Server(app);
@@ -96,7 +96,6 @@ io.on('connection', function(socket) {
     // start a trial
     socket.on('start', function() {
         writeLog('trial start');
-        // io.emit('start');
     });
 
     // end of a trial

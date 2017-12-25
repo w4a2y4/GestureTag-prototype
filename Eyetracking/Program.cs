@@ -7,17 +7,6 @@ using Quobject.SocketIoClientDotNet.Client;
 
 namespace Interaction_Streams_101
 {
-    /// <summary>
-    /// The data streams provide nicely filtered eye-gaze data from the eye tracker 
-    /// transformed to a convenient coordinate system. The point on the screen where 
-    /// your eyes are looking (gaze point), and the points on the screen where your 
-    /// eyes linger to focus on something (fixations) are given as pixel coordinates 
-    /// on the screen. The positions of your eyeballs (eye positions) are given in 
-    /// space coordinates in millimeters relative to the center of the screen.
-    /// 
-    /// Let's see how is simple to find out where are you looking at the screen
-    /// using GazePoint data stream, accessible from Streams property of Host instance.
-    /// </summary>
     public class Program
     {
         static int insert_index = 9;
@@ -29,9 +18,7 @@ namespace Interaction_Streams_101
         static double YYData = 0.0;
         static double aveX, aveY, aveYY, aveXX;
         static double[] Xarray = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
-         static double[] Yarray = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
-       // static List<double> Xarray = new List<double>();
-        //static List<double> Yarray = new List<double>();
+        static double[] Yarray = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
         static bool isRecording = false;
         static List<string> buffer = new List<string>();
         static string log_file_name = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\New_eye_tracking_log.txt";
@@ -87,41 +74,16 @@ namespace Interaction_Streams_101
         {
             if (Program.isRecording)
             {
-                //while (count<30)
-                //{
-                //    XData +=x;
-                //  YData += y;
-                //  count++;
-                // }
-                // if (count >= 30)
-                // {
-                //    double aveX = XData / 30.0;
-                //    double aveY = YData / 30.0;
-                //  count = 0;
-                //  XData = 0.0;
-                //   YData = 0.0;
-                //  socket.Emit("eyemove", aveX, aveY);
-                //}
-                
-                //while ( kk < 9)
-                //{
-                    //Console.WriteLine(kk);
-
-                  // Xarray[kk] = Xarray[kk + 1];
-                    //Yarray[kk] = Yarray[kk + 1];
-                    //kk++;
-                //}
-               Xarray[insert_index] = x;
+                Xarray[insert_index] = x;
                 Yarray[insert_index] = y;
                 kk = 0;
 
                 insert_index = (insert_index + 1) % 10;
                 while (kk <= 9)
                 {
-                     XData += Xarray[kk]; ;
+                    XData += Xarray[kk];
                     YData += Yarray[kk];
                     kk++;
-                   
                 }
 
                 //Console.WriteLine(aveX);
@@ -132,38 +94,21 @@ namespace Interaction_Streams_101
                 while (count<3)
                 {
                     XXData +=aveX;
-                  YYData += aveY;
-                  count++;
-                 }
-                 if (count >= 3)
-                 {
+                    YYData += aveY;
+                    count++;
+                }
+                if (count >= 3)
+                {
                     double aveXX = XXData / 3.0;
                     double aveYY = YYData / 3.0;
-                  count = 0;
-                  XXData = 0.0;
-                   YYData = 0.0;
-                  socket.Emit("eyemove", aveXX, aveYY);
+                    count = 0;
+                    XXData = 0.0;
+                    YYData = 0.0;
+                    socket.Emit("eyemove", aveXX, aveYY);
                 }
 
-                //while ( kk < 9)
-                //{
-                //Console.WriteLine(kk);
-
-                // Xarray[kk] = Xarray[kk + 1];
-                //Yarray[kk] = Yarray[kk + 1];
-                //kk++;
-                //}
-
-
-
-
-               
-                //socket.Emit("eyemove", aveX, aveY);
                 XData = 0.0;
                 YData = 0.0;
-
-
-
             }
         }
 
