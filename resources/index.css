@@ -14,17 +14,31 @@ body {
 	overflow: hidden;
 }
 
-
 #eye_tracker {
 	pointer-events: none;
-	position: absolute;
-	width: 300px;
-	height: 300px;
-	margin-top: -150px;
-	margin-left: -150px;
-	border-radius: 150px;
-	background: rgba(10, 112, 215, 0.4);
-	-webkit-filter: blur(25px);
+    position: absolute;
+}
+
+#eye_tracker.gesturetag{
+	display: block;
+    width: 300px;
+    height: 300px;
+    margin-top: -150px;
+    margin-left: -150px;
+    border-radius: 150px;
+    background: rgba(10, 112, 215, 0.4);
+    -webkit-filter: blur(25px);
+}
+
+#eye_tracker.dwell{
+	display: block;
+    width: 16px;
+    height: 16px;
+    margin-top: -8px;
+    margin-left: -8px;
+    border-radius: 8px;
+    background: red;
+    -webkit-filter: blur(5px);
 }
 
 .block {
