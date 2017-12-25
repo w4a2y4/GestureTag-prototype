@@ -8,20 +8,19 @@ var trial_num = DEFAULT_TRIAL_NUM;
 
 var clicked_button, target_btn, gesture;
 var buttons = document.getElementsByTagName('button');
-var btn_num = buttons.length;
 
 const img_prefix = 'http://localhost:3000/resources/';
 const swipeImages = {
-    up: img_prefix + 'arrow_up.png',
-    down: img_prefix + 'arrow_down.png',
-    left: img_prefix + 'arrow_left.png',
-    right: img_prefix + 'arrow_right.png'
+	up: img_prefix + 'arrow_up.png',
+	down: img_prefix + 'arrow_down.png',
+	left: img_prefix + 'arrow_left.png',
+	right: img_prefix + 'arrow_right.png'
 };
 
 // recieve eye-tracker position
-// $(document).mousemove( function(e) {
-// 	changePos(e.pageX, e.pageY);
-// });
+$(document).mousemove( function(e) {
+	changePos(e.pageX, e.pageY);
+});
 
 socket.on('eyemove', function(x, y){
 	changePos(x, y);
@@ -44,6 +43,22 @@ function log () {
 	cnt = DEFAULT_TRIAL_NUM - trial_num;
 	console.log(gesture + ' ' + clicked_btn + ' ' + target_btn);
 	socket.emit('log', cnt, gesture, clicked_btn, target_btn);
+}
+
+function isUp( btn ) {
+	return swipeImages["up"] == btn.children[0].src;
+}
+
+function isDown( btn ) {
+	return swipeImages["down"] == btn.children[0].src;
+}
+
+function isLeft( btn ) {
+	return swipeImages["left"] == btn.children[0].src;
+}
+
+function isRight( btn ) {
+	return swipeImages["right"] == btn.children[0].src;
 }
 
 function overlap ( element, X, Y ) {
@@ -69,35 +84,32 @@ function overlap ( element, X, Y ) {
 	return false;
 }
 
-// function changePos (eyeX, eyeY) {
+function changePos (eyeX, eyeY) {
 
-// 	$('#eye_tracker').css({
-// 		"left": eyeX,
-// 		"top": eyeY
-// 	});
+	$('#eye_tracker').css({
+		"left": eyeX,
+		"top": eyeY
+	});
 
-// 	show_up = false;
-// 	show_down = false;
-// 	show_left = false;
-// 	show_right = false;
+	show_up = false;
+	show_down = false;
+	show_left = false;
+	show_right = false;
 
-// 	for( var i=0; j < btn_num; i++) {
-// 		var btn = buttons[i];
-// 		var btnX = btn.offset().left + 100;
-// 		var btnY = btn.offset().top + 50;
+	var btn_num = buttons.length;
+	for( var i=0; i < btn_num; i++) {
+		var btn = buttons[i];
+		if ( overlap( btn, eyeX, eyeY ) ) {
+			$(btn).find('img').show();
+			if( isUp(btn) ) { button_up = btn;	show_up = true; }
+			else if( isDown(btn) ) { button_down = btn;	show_down = true; }
+			else if( isLeft(btn) ) { button_left = btn;	show_left = true; }
+			else if( isRight(btn) ) { button_right = btn;	show_right = true; }
+		}
+		else $(btn).find('img').hide();
+	}
 
-// 		var dist = ( btnX - eyeX )*( btnX - eyeX ) + ( btnY - eyeY )*( btnY - eyeY );
-// 		if ( dist <= 64000 ) {
-// 			btn.find('img').show();
-// 			var 
-// 			if( i%2 == 0 && j%2 == 0 ) { button_up = btn;	show_up = true; }
-// 			if( i%2 == 1 && j%2 == 1 ) { button_down = btn;	show_down = true; }
-// 			if( i%2 == 1 && j%2 == 0 ) { button_left = btn;	show_left = true; }
-// 			if( i%2 == 0 && j%2 == 1 ) { button_right = btn;	show_right = true; }
-// 		}
-// 		else btn.find('img').hide();
-// 	}
-// }
+}
 
 function showTarget () {
 	if ( trial_num == 0 ) {
@@ -105,12 +117,13 @@ function showTarget () {
 		return;
 	}
 	while( true ) {
+		var btn_num = buttons.length;
 		var rand = Math.floor( Math.random() * btn_num );
 		console.log(trial_num+' '+rand);
 		if ( !$(buttons[rand]).hasClass('clicked') ) break;
 	}
 	$(buttons[rand]).addClass('target');
-	target_btn = rand;
+	target_btn = $(buttons[rand]).parent().attr('id');
 	trial_num -= 1;
 }
 
