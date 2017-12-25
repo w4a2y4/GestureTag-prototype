@@ -16,12 +16,22 @@ const tapImages = {
     OPTION_3: `${resources}/tap_topleft.png`,
     OPTION_4: `${resources}/tap_bottomright.png`
 };
+const noImages = {
+    OPTION_1: `//:0`,
+    OPTION_2: `//:0`,
+    OPTION_3: `//:0`,
+    OPTION_4: `//:0`
+};
 const type = process.argv[2];
 app.use(resources, express.static('resources'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.get('/', (req, res) => {
     res.render('index', loadImages());
+});
+
+app.get('/gmail', (req, res) => {
+    res.render('gmail', loadImages());
 });
 
 app.get('/swipe', (req, res) => {
@@ -52,6 +62,8 @@ var loadImages = () => {
         return swipeImages;
     else if (type === 'tap')
         return tapImages;
+    else
+        return noImages;
 }
 
 io.on('connection', function(socket){
