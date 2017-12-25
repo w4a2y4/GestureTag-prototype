@@ -81,6 +81,15 @@ function isRight(btn) {
     return imgSet["right"] == btn.children[0].src;
 }
 
+function isIn(element, X, Y) {
+    var top = $(element).offset().top;
+    var left = $(element).offset().left;
+    var right = Number($(element).offset().left) + Number($(element).width());
+    var bottom = Number($(element).offset().top) + Number($(element).height());
+
+    return (X >= left && X <= right && Y >= top && Y <= bottom);
+}
+
 function overlap(element, X, Y) {
     var top = $(element).offset().top;
     var left = $(element).offset().left;
