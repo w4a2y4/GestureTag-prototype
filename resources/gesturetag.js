@@ -62,7 +62,7 @@ socket.on('init', function(method) {
     else if (type === 'tap') imgSet = tapImages;
 });
 
-$(document).keyup(function(e) {
+$(document).keyup((e) => {
     if (e.which === 32) {
         socket.emit('start');
         trial_num = DEFAULT_TRIAL_NUM;
