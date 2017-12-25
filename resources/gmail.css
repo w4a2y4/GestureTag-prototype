@@ -15,6 +15,18 @@ body {
 	background-size: cover;
 }
 
+#eye_tracker {
+	pointer-events: none;
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	margin-top: -50px;
+	margin-left: -50px;
+	border-radius: 50px;
+	background: rgba(10, 112, 215, 0.4);
+	-webkit-filter: blur(10px);
+}
+
 button {
 	height: 100%;
 	width: 100%;
@@ -35,6 +47,7 @@ button {
 
 img {
 	position: relative;
+	visibility: visible;
 	display: none;
 	height: 100%;
 	float: right;
