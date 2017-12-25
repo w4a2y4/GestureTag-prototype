@@ -18,11 +18,11 @@ body {
 #eye_tracker {
 	pointer-events: none;
 	position: absolute;
-	width: 100px;
-	height: 100px;
-	margin-top: -50px;
-	margin-left: -50px;
-	border-radius: 50px;
+	width: 120px;
+	height: 120px;
+	margin-top: -60px;
+	margin-left: -60px;
+	border-radius: 60px;
 	background: rgba(10, 112, 215, 0.4);
 	-webkit-filter: blur(10px);
 }

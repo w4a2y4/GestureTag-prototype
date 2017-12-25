@@ -2,7 +2,7 @@ var socket = io.connect();
 var button_left, button_right, button_up, button_down;
 var show_left, show_right, show_up, show_down;
 
-const RADIUS = 50;
+const RADIUS = 60;
 const DEFAULT_TRIAL_NUM = 20;
 var trial_num = DEFAULT_TRIAL_NUM;
 
