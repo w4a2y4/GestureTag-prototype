@@ -4,23 +4,26 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const resources = '/resources';
-const swipeImages = {
+const swipeOptions = {
     OPTION_1: `${resources}/arrow_up.png`,
     OPTION_2: `${resources}/arrow_down.png`,
     OPTION_3: `${resources}/arrow_left.png`,
-    OPTION_4: `${resources}/arrow_right.png`
+    OPTION_4: `${resources}/arrow_right.png`,
+    EYETRACKER: `gesturetag`
 };
-const tapImages = {
+const tapOptions = {
     OPTION_1: `${resources}/tap_topright.png`,
     OPTION_2: `${resources}/tap_bottomleft.png`,
     OPTION_3: `${resources}/tap_topleft.png`,
-    OPTION_4: `${resources}/tap_bottomright.png`
+    OPTION_4: `${resources}/tap_bottomright.png`,
+    EYETRACKER: `gesturetag`
 };
-const noImages = {
+const dwellOptions = {
     OPTION_1: `//:0`,
     OPTION_2: `//:0`,
     OPTION_3: `//:0`,
-    OPTION_4: `//:0`
+    OPTION_4: `//:0`,
+    EYETRACKER: `dwell`
 };
 const type = process.argv[2];
 app.use(resources, express.static('resources'));
@@ -59,11 +62,11 @@ var writeLog = ( msg ) => {
 
 var loadImages = () => {
     if(type === 'swipe')
-        return swipeImages;
+        return swipeOptions;
     else if (type === 'tap')
-        return tapImages;
+        return tapOptions;
     else
-        return noImages;
+        return dwellOptions;
 }
 
 io.on('connection', function(socket){
