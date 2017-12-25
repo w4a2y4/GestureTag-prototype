@@ -89,13 +89,16 @@ function isRight(btn) {
     return imgSet["right"] == btn.children[0].src;
 }
 
-function isIn(element, X, Y) {
+function overlap(element, X, Y) {
     var top = $(element).offset().top;
     var left = $(element).offset().left;
     var right = Number($(element).offset().left) + Number($(element).width());
     var bottom = Number($(element).offset().top) + Number($(element).height());
-    var threshold = 10;
+    var threshold;
 
+    if (type === 'dwell') threshold = 10;
+    else threshold = RADIUS;
+    // in the element
     if (X >= left && X <= right && Y >= top && Y <= bottom) return true;
     else if (X < left && Y >= top && Y <= bottom) return (left - X) <= threshold;
     else if (X > right && Y >= top && Y <= bottom) return (X - right) <= threshold;
@@ -108,29 +111,6 @@ function isIn(element, X, Y) {
     else if (Math.pow((X - right), 2) + Math.pow((Y - top), 2) <= threshold * threshold)
         return true;
     else if (Math.pow((X - right), 2) + Math.pow((Y - bottom), 2) <= threshold * threshold)
-        return true;
-    return false;
-}
-
-function overlap(element, X, Y) {
-    var top = $(element).offset().top;
-    var left = $(element).offset().left;
-    var right = Number($(element).offset().left) + Number($(element).width());
-    var bottom = Number($(element).offset().top) + Number($(element).height());
-
-    // in the element
-    if (X >= left && X <= right && Y >= top && Y <= bottom) return true;
-    else if (X < left && Y >= top && Y <= bottom) return (left - X) <= RADIUS;
-    else if (X > right && Y >= top && Y <= bottom) return (X - right) <= RADIUS;
-    else if (X >= left && X <= right && Y < top) return (top - Y) <= RADIUS;
-    else if (X >= left && X <= right && Y > bottom) return (Y - bottom) <= RADIUS;
-    else if (Math.pow((X - left), 2) + Math.pow((Y - top), 2) <= RADIUS * RADIUS)
-        return true;
-    else if (Math.pow((X - left), 2) + Math.pow((Y - bottom), 2) <= RADIUS * RADIUS)
-        return true;
-    else if (Math.pow((X - right), 2) + Math.pow((Y - top), 2) <= RADIUS * RADIUS)
-        return true;
-    else if (Math.pow((X - right), 2) + Math.pow((Y - bottom), 2) <= RADIUS * RADIUS)
         return true;
     return false;
 }
@@ -153,7 +133,7 @@ function changePos(eyeX, eyeY) {
         var btn = buttons[i];
 
         if (type === 'dwell') {
-            if (isIn(btn, eyeX, eyeY)) {
+            if (overlap(btn, eyeX, eyeY)) {
                 if (already[i]) { // Have already looked at the target
                     TimeEnd = Date.now(); // Record time then
                 } else {
