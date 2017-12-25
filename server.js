@@ -68,26 +68,31 @@ var loadImages = () => {
 io.on('connection', function(socket) {
     console.log('a user connected');
 
-    // recieve eye-tracker position
-    socket.on('eyemove', function(x, y) {
-        io.emit('eyemove', x, y);
-    });
-
-    // recieve swiping event
-    if (type === 'swipe') {
-        socket.on('swipe', function(dir) {
-            io.emit('swipe', dir);
+    if (type === 'dwell') {
+        socket.on('dwell', function(x, y) {
+            io.emit('dwell', x, y);
         });
-    }
-
-    //recieve tap event
-    if (type === 'tap') {
-        socket.on('tap', (location) => {
-            console.log(`location: ${location}`);
-            io.emit('tap', location);
+    } else {
+        // recieve eye-tracker position
+        socket.on('eyemove', function(x, y) {
+            io.emit('eyemove', x, y);
         });
-    }
 
+        // recieve swiping event
+        if (type === 'swipe') {
+            socket.on('swipe', function(dir) {
+                io.emit('swipe', dir);
+            });
+        }
+
+        //recieve tap event
+        if (type === 'tap') {
+            socket.on('tap', (location) => {
+                console.log(`location: ${location}`);
+                io.emit('tap', location);
+            });
+        }
+    }
     // start a trial
     socket.on('start', function() {
         writeLog('trial start');
