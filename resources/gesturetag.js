@@ -15,6 +15,14 @@ const swipeImages = {
 	left: img_prefix + 'arrow_left.png',
 	right: img_prefix + 'arrow_right.png'
 };
+const tapImages = {
+    up: img_prefix + 'tap_topright.png',
+    down: img_prefix + 'tap_bottomleft.png',
+    left: img_prefix + 'tap_topleft.png',
+    right: img_prefix + 'tap_bottomright.png'
+};
+
+var imgSet = swipeImages;
 
 // recieve eye-tracker position
 $(document).mousemove( function(e) {
@@ -33,8 +41,18 @@ socket.on('swipe', function(dir){
 	if( dir == 'right' && show_right ) button_right.click();
 });
 
-socket.on('start', function(){
+socket.on('tap', (pos) => {
+	gesture = pos;
+	if( pos === 'topright' && show_up ) button_up.click();
+	if( pos === 'bottomleft' && show_down ) button_down.click();
+	if( pos === 'topleft' && show_left ) button_left.click();
+	if( pos === 'bottomright' && show_right ) button_right.click();
+});
+
+socket.on('start', function(type){
 	trial_num = DEFAULT_TRIAL_NUM;
+	if ( type === 'swipe' ) imgSet = swipeImages;
+	else if ( type === 'tap' ) imgSet = tapImages;
 	showTarget();
 });
 
@@ -45,19 +63,19 @@ function log () {
 }
 
 function isUp( btn ) {
-	return swipeImages["up"] == btn.children[0].src;
+	return imgSet["up"] == btn.children[0].src;
 }
 
 function isDown( btn ) {
-	return swipeImages["down"] == btn.children[0].src;
+	return imgSet["down"] == btn.children[0].src;
 }
 
 function isLeft( btn ) {
-	return swipeImages["left"] == btn.children[0].src;
+	return imgSet["left"] == btn.children[0].src;
 }
 
 function isRight( btn ) {
-	return swipeImages["right"] == btn.children[0].src;
+	return imgSet["right"] == btn.children[0].src;
 }
 
 function overlap ( element, X, Y ) {

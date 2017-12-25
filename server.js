@@ -92,7 +92,7 @@ io.on('connection', function(socket){
     // start a trial
     socket.on('start', function(){
         writeLog('trial start');
-        io.emit('start');
+        io.emit('start', type);
     });
 
     // end of a trial
