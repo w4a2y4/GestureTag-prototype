@@ -29,7 +29,7 @@ $(document).mousemove(function(e) {
 });
 
 socket.on('eyemove', function(x, y) {
-    changePos(x, y - 100);
+    changePos(x * 1.11, y * 1.11);
 });
 
 socket.on('swipe', function(dir) {
@@ -121,11 +121,19 @@ function changePos(eyeX, eyeY) {
         var btn = buttons[i];
         if (overlap(btn, eyeX, eyeY)) {
             $(btn).find('img').show();
-            if (isUp(btn)) { button_up = btn;
-                show_up = true; } else if (isDown(btn)) { button_down = btn;
-                show_down = true; } else if (isLeft(btn)) { button_left = btn;
-                show_left = true; } else if (isRight(btn)) { button_right = btn;
-                show_right = true; }
+            if (isUp(btn)) {
+                button_up = btn;
+                show_up = true;
+            } else if (isDown(btn)) {
+                button_down = btn;
+                show_down = true;
+            } else if (isLeft(btn)) {
+                button_left = btn;
+                show_left = true;
+            } else if (isRight(btn)) {
+                button_right = btn;
+                show_right = true;
+            }
         } else $(btn).find('img').hide();
     }
 
