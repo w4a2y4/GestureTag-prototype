@@ -62,10 +62,13 @@ socket.on('init', function(method) {
     else if (type === 'tap') imgSet = tapImages;
 });
 
-socket.on('start', function() {
-    trial_num = DEFAULT_TRIAL_NUM;
-    showTarget();
-});
+$(document).keyup(function(e) {
+    if (e.which === 32) {
+        socket.emit('start');
+        trial_num = DEFAULT_TRIAL_NUM;
+        showTarget();
+    }
+})
 
 function log() {
     cnt = DEFAULT_TRIAL_NUM - trial_num;

@@ -50,18 +50,18 @@ app.get('/tap', (req, res) => {
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-var writeLog = ( msg ) => {
+var writeLog = (msg) => {
     var filename = 'tmp.log';
     var time = moment().format('MM/DD hh:mm:ss:SSS');
     msg = time + '\t' + msg + '\n';
     console.log(msg);
-    fs.appendFile( filename , msg, function(err){
+    fs.appendFile(filename, msg, function(err) {
         if (err) console.error(err);
     });
 };
 
 var loadImages = () => {
-    if(type === 'swipe')
+    if (type === 'swipe')
         return swipeOptions;
     else if (type === 'tap')
         return tapOptions;
@@ -69,24 +69,24 @@ var loadImages = () => {
         return dwellOptions;
 }
 
-io.on('connection', function(socket){
+io.on('connection', function(socket) {
     console.log('a user connected');
     io.emit('init', type);
 
     // recieve eye-tracker position
-    socket.on('eyemove', function(x, y){
+    socket.on('eyemove', function(x, y) {
         io.emit('eyemove', x, y);
     });
 
     // recieve swiping event
-    if(type === 'swipe'){
-        socket.on('swipe', function(dir){
+    if (type === 'swipe') {
+        socket.on('swipe', function(dir) {
             io.emit('swipe', dir);
         });
     }
 
     //recieve tap event
-    if(type === 'tap'){
+    if (type === 'tap') {
         socket.on('tap', (location) => {
             console.log(`location: ${location}`);
             io.emit('tap', location);
@@ -94,18 +94,18 @@ io.on('connection', function(socket){
     }
 
     // start a trial
-    socket.on('start', function(){
+    socket.on('start', function() {
         writeLog('trial start');
-        io.emit('start');
+        // io.emit('start');
     });
 
     // end of a trial
-    socket.on('end', function(){
+    socket.on('end', function() {
         writeLog('trial end');
         io.emit('end');
     });
 
-    socket.on('log', function(cnt, gesture, clicked_btn, target){
+    socket.on('log', function(cnt, gesture, clicked_btn, target) {
         var msg = '#' + cnt;
         msg += '\tevent:' + gesture;
         msg += '\ttarget:' + target;
@@ -114,6 +114,6 @@ io.on('connection', function(socket){
     });
 });
 
-http.listen(3000, function(){
-  console.log('listening on *:3000');
+http.listen(3000, function() {
+    console.log('listening on *:3000');
 });
