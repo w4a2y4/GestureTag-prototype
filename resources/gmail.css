@@ -47,6 +47,7 @@ button {
 
 img {
 	position: relative;
+	visibility: visible;
 	display: none;
 	height: 100%;
 	float: right;
