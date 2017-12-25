@@ -1,181 +1,186 @@
 <html>
-	<head>
-		<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="resources/gmail.css">
-	</head>
 
-	<body>
+<head>
+    <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="resources/gmail.css">
+    <script type="text/javascript">
+        const RADIUS = 50;
+    </script>
+</head>
 
-		<div id="header">
-			<div id="search">
-				<div id="search-bar">
-					<button><img src="<%=OPTION_1%>"></button>
-				</div>
-				<div id="search-icon">
-					<button><img src="<%=OPTION_4%>"></button>
-				</div>
-			</div>
-			<div id="right-block">
-				<div id="profile">
-					<button><img src="<%=OPTION_4%>"></button>
-				</div>
-				<div id="notify">
-					<button><img src="<%=OPTION_1%>"></button>
-				</div>
-				<div id="nine-grid">
-					<button><img src="<%=OPTION_3%>"></button>
-				</div>
-			</div>
-		</div>
+<body>
 
-		<div id="option-bar">
-			<div id="gmail">
-				<button><img src="<%=OPTION_1%>"></button>
-			</div>
-			<div id="checkbox">
-				<button><img src="<%=OPTION_3%>"></button>
-			</div>
-			<div id="reload">
-				<button><img src="<%=OPTION_2%>"></button>
-			</div>
-			<div id="more">
-				<button><img src="<%=OPTION_4%>"></button>
-			</div>
-		</div>
+    <div id="header">
+        <div id="search">
+            <div id="search-bar">
+                <button><img src="<%=OPTION_1%>"></button>
+            </div>
+            <div id="search-icon">
+                <button><img src="<%=OPTION_4%>"></button>
+            </div>
+        </div>
+        <div id="right-block">
+            <div id="profile">
+                <button><img src="<%=OPTION_4%>"></button>
+            </div>
+            <div id="notify">
+                <button><img src="<%=OPTION_1%>"></button>
+            </div>
+            <div id="nine-grid">
+                <button><img src="<%=OPTION_3%>"></button>
+            </div>
+        </div>
+    </div>
 
-		<div id="side-bar">
-			<div id="nav">
-				<div id="write">
-					<button><img src="<%=OPTION_2%>"></button>
-				</div>
-				<div>
-					<button><img src="<%=OPTION_4%>"></button>
-				</div>
-				<div>
-					<button><img src="<%=OPTION_3%>"></button>
-				</div>
-				<div>
-					<button><img src="<%=OPTION_1%>"></button>
-				</div>
-				<div>
-					<button><img src="<%=OPTION_2%>"></button>
-				</div>
-				<div>
-					<button><img src="<%=OPTION_4%>"></button>
-				</div>
-				<div id="category">
-					<button><img src="<%=OPTION_3%>"></button>
-				</div>
-				<div>
-					<button><img src="<%=OPTION_1%>"></button>
-				</div>
-				<div>
-					<button><img src="<%=OPTION_2%>"></button>
-				</div>
-				<div>
-					<button><img src="<%=OPTION_4%>"></button>
-				</div>
-				<div>
-					<button><img src="<%=OPTION_3%>"></button>
-				</div>
-			</div>
-			<div id="hangouts">
-				<div class="friend">
-					<button><img src="<%=OPTION_2%>"></button>
-				</div>
-				<div class="friend">
-					<button><img src="<%=OPTION_1%>"></button>
-				</div>
-				<div id="hangouts-footer">
-					<div class="hangouts-icon">
-						<button><img src="<%=OPTION_3%>"></button>
-					</div>
-					<div class="hangouts-icon">
-						<button><img src="<%=OPTION_1%>"></button>
-					</div>
-					<div class="hangouts-icon">
-						<button><img src="<%=OPTION_4%>"></button>
-					</div>
-				</div>
-			</div>
-		</div>
+    <div id="option-bar">
+        <div id="gmail">
+            <button><img src="<%=OPTION_1%>"></button>
+        </div>
+        <div id="checkbox">
+            <button><img src="<%=OPTION_3%>"></button>
+        </div>
+        <div id="reload">
+            <button><img src="<%=OPTION_2%>"></button>
+        </div>
+        <div id="more">
+            <button><img src="<%=OPTION_4%>"></button>
+        </div>
+    </div>
 
-		<div id="inbox">
-			<div id="tab-bar">
-				<div class="tab">
-					<button><img src="<%=OPTION_1%>"></button>
-				</div>
-				<div class="tab">
-					<button><img src="<%=OPTION_2%>"></button>
-				</div>
-				<div class="tab">
-					<button><img src="<%=OPTION_3%>"></button>
-				</div>
-			</div>
+    <div id="side-bar">
+        <div id="nav">
+            <div id="write">
+                <button><img src="<%=OPTION_2%>"></button>
+            </div>
+            <div>
+                <button><img src="<%=OPTION_4%>"></button>
+            </div>
+            <div>
+                <button><img src="<%=OPTION_3%>"></button>
+            </div>
+            <div>
+                <button><img src="<%=OPTION_1%>"></button>
+            </div>
+            <div>
+                <button><img src="<%=OPTION_2%>"></button>
+            </div>
+            <div>
+                <button><img src="<%=OPTION_4%>"></button>
+            </div>
+            <div id="category">
+                <button><img src="<%=OPTION_3%>"></button>
+            </div>
+            <div>
+                <button><img src="<%=OPTION_1%>"></button>
+            </div>
+            <div>
+                <button><img src="<%=OPTION_2%>"></button>
+            </div>
+            <div>
+                <button><img src="<%=OPTION_4%>"></button>
+            </div>
+            <div>
+                <button><img src="<%=OPTION_3%>"></button>
+            </div>
+        </div>
+        <div id="hangouts">
+            <div class="friend">
+                <button><img src="<%=OPTION_2%>"></button>
+            </div>
+            <div class="friend">
+                <button><img src="<%=OPTION_1%>"></button>
+            </div>
+            <div id="hangouts-footer">
+                <div class="hangouts-icon">
+                    <button><img src="<%=OPTION_3%>"></button>
+                </div>
+                <div class="hangouts-icon">
+                    <button><img src="<%=OPTION_1%>"></button>
+                </div>
+                <div class="hangouts-icon">
+                    <button><img src="<%=OPTION_4%>"></button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-			<div class="mail">
-				<button><img src="<%=OPTION_4%>"></button>
-			</div>
-			<div class="mail">
-				<button><img src="<%=OPTION_3%>"></button>
-			</div>
-			<div class="mail">
-				<button><img src="<%=OPTION_2%>"></button>
-			</div>
-			<div class="mail">
-				<button><img src="<%=OPTION_1%>"></button>
-			</div>
-			<div class="mail">
-				<button><img src="<%=OPTION_4%>"></button>
-			</div>
-			<div class="mail">
-				<button><img src="<%=OPTION_3%>"></button>
-			</div>
-			<div class="mail">
-				<button><img src="<%=OPTION_2%>"></button>
-			</div>
-			<div class="mail">
-				<button><img src="<%=OPTION_1%>"></button>
-			</div>
-			<div class="mail">
-				<button><img src="<%=OPTION_4%>"></button>
-			</div>
-			<div class="mail">
-				<button><img src="<%=OPTION_3%>"></button>
-			</div>
-			<div class="mail">
-				<button><img src="<%=OPTION_2%>"></button>
-			</div>
-			<div class="mail">
-				<button><img src="<%=OPTION_1%>"></button>
-			</div>
-			<div class="mail">
-				<button><img src="<%=OPTION_4%>"></button>
-			</div>
-			<div class="mail">
-				<button><img src="<%=OPTION_3%>"></button>
-			</div>
-			<div class="mail">
-				<button><img src="<%=OPTION_2%>"></button>
-			</div>
-			<div class="mail">
-				<button><img src="<%=OPTION_1%>"></button>
-			</div>
-			<div class="mail">
-				<button><img src="<%=OPTION_4%>"></button>
-			</div>
-			<div class="mail">
-				<button><img src="<%=OPTION_3%>"></button>
-			</div>
-			<div class="mail">
-				<button><img src="<%=OPTION_2%>"></button>
-			</div>
+    <div id="inbox">
+        <div id="tab-bar">
+            <div class="tab">
+                <button><img src="<%=OPTION_1%>"></button>
+            </div>
+            <div class="tab">
+                <button><img src="<%=OPTION_2%>"></button>
+            </div>
+            <div class="tab">
+                <button><img src="<%=OPTION_3%>"></button>
+            </div>
+        </div>
 
-		</div>
+        <div class="mail">
+            <button><img src="<%=OPTION_4%>"></button>
+        </div>
+        <div class="mail">
+            <button><img src="<%=OPTION_3%>"></button>
+        </div>
+        <div class="mail">
+            <button><img src="<%=OPTION_2%>"></button>
+        </div>
+        <div class="mail">
+            <button><img src="<%=OPTION_1%>"></button>
+        </div>
+        <div class="mail">
+            <button><img src="<%=OPTION_4%>"></button>
+        </div>
+        <div class="mail">
+            <button><img src="<%=OPTION_3%>"></button>
+        </div>
+        <div class="mail">
+            <button><img src="<%=OPTION_2%>"></button>
+        </div>
+        <div class="mail">
+            <button><img src="<%=OPTION_1%>"></button>
+        </div>
+        <div class="mail">
+            <button><img src="<%=OPTION_4%>"></button>
+        </div>
+        <div class="mail">
+            <button><img src="<%=OPTION_3%>"></button>
+        </div>
+        <div class="mail">
+            <button><img src="<%=OPTION_2%>"></button>
+        </div>
+        <div class="mail">
+            <button><img src="<%=OPTION_1%>"></button>
+        </div>
+        <div class="mail">
+            <button><img src="<%=OPTION_4%>"></button>
+        </div>
+        <div class="mail">
+            <button><img src="<%=OPTION_3%>"></button>
+        </div>
+        <div class="mail">
+            <button><img src="<%=OPTION_2%>"></button>
+        </div>
+        <div class="mail">
+            <button><img src="<%=OPTION_1%>"></button>
+        </div>
+        <div class="mail">
+            <button><img src="<%=OPTION_4%>"></button>
+        </div>
+        <div class="mail">
+            <button><img src="<%=OPTION_3%>"></button>
+        </div>
+        <div class="mail">
+            <button><img src="<%=OPTION_2%>"></button>
+        </div>
 
-		<div id="eye_tracker"></div>
+    </div>
 
-		<script src="/socket.io/socket.io.js"></script>
-		<script src="resources/gmail.js"></script>
-	</body>
+    <div id="eye_tracker"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="resources/gesturetag.js"></script>
+</body>
+
 </html>

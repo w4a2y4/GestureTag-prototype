@@ -68,6 +68,7 @@ var loadImages = () => {
 
 io.on('connection', function(socket){
     console.log('a user connected');
+    io.emit('init', type);
 
     // recieve eye-tracker position
     socket.on('eyemove', function(x, y){
