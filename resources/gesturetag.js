@@ -153,10 +153,10 @@ function changePos(eyeX, eyeY) {
                     already[i] = 0; // reinitialize
                 }
                 // Showing image 
-                btn.find('img').show();
+                $(btn).find('img').show();
 
             } else {
-                btn.find('img').hide();
+                $(btn).find('img').hide();
                 already[i] = 0;
             }
         } else {
