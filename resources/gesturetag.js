@@ -14,6 +14,7 @@ var already = new Array(buttons.length + 1).join('0').split('').map(parseFloat);
 var TimeStart = new Date().getTime();
 var TimeEnd = new Date().getTime();
 
+
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
 const swipeImages = {
@@ -93,8 +94,22 @@ function isIn(element, X, Y) {
     var left = $(element).offset().left;
     var right = Number($(element).offset().left) + Number($(element).width());
     var bottom = Number($(element).offset().top) + Number($(element).height());
+    var threshold = 10;
 
-    return (X >= left && X <= right && Y >= top && Y <= bottom);
+    if (X >= left && X <= right && Y >= top && Y <= bottom) return true;
+    else if (X < left && Y >= top && Y <= bottom) return (left - X) <= threshold;
+    else if (X > right && Y >= top && Y <= bottom) return (X - right) <= threshold;
+    else if (X >= left && X <= right && Y < top) return (top - Y) <= threshold;
+    else if (X >= left && X <= right && Y > bottom) return (Y - bottom) <= threshold;
+    else if (Math.pow((X - left), 2) + Math.pow((Y - top), 2) <= threshold * threshold)
+        return true;
+    else if (Math.pow((X - left), 2) + Math.pow((Y - bottom), 2) <= threshold * threshold)
+        return true;
+    else if (Math.pow((X - right), 2) + Math.pow((Y - top), 2) <= threshold * threshold)
+        return true;
+    else if (Math.pow((X - right), 2) + Math.pow((Y - bottom), 2) <= threshold * threshold)
+        return true;
+    return false;
 }
 
 function overlap(element, X, Y) {
