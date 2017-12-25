@@ -18,7 +18,7 @@ body {
 button {
 	height: 100%;
 	width: 100%;
-	/*visibility: hidden;*/
+	visibility: hidden;
 }
 
 .target {
@@ -31,6 +31,36 @@ button {
 	visibility: visible;
 	opacity: 0.7;
 	background: pink;
+}
+
+img {
+	position: relative;
+	display: none;
+	height: 100%;
+	float: right;
+}
+
+.mail img {
+	float: left;
+	left: 285px;
+}
+
+#gmail img {
+	left: 50px;
+}
+
+#nav img {
+	left: 50px;
+}
+
+.hangouts-icon img {
+	top: -45px;
+	left: 5px;
+}
+
+#right-block img {
+	top: 42px;
+	left: 5px;
 }
 
 #header {
