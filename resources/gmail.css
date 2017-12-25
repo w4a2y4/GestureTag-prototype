@@ -18,6 +18,19 @@ body {
 button {
 	height: 100%;
 	width: 100%;
+	/*visibility: hidden;*/
+}
+
+.target {
+	visibility: visible;
+	opacity: 0.7;
+	background: #b0e7c6;
+}
+
+.clicked {
+	visibility: visible;
+	opacity: 0.7;
+	background: pink;
 }
 
 #header {

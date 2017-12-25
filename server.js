@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/gmail', (req, res) => {
-    res.sendFile(path.join(__dirname, 'gmail.html'));
+    res.render('gmail', loadImages());
 });
 
 app.get('/swipe', (req, res) => {
