@@ -10,7 +10,7 @@ var trial_num = DEFAULT_TRIAL_NUM;
 var clicked_button, target_btn, gesture;
 var buttons = document.getElementsByTagName('button');
 
-var already = new Array(buttons.length + 1).join('0').split('').map(parseFloat);
+var already = new Array(buttons.length).fill(0);
 var TimeStart = new Date().getTime();
 var TimeEnd = new Date().getTime();
 
@@ -31,9 +31,9 @@ const tapImages = {
 };
 
 // recieve eye-tracker position
-// $(document).mousemove(function(e) {
-//     changePos(e.pageX, e.pageY);
-// });
+$(document).mousemove(function(e) {
+    changePos(e.pageX, e.pageY);
+});
 
 socket.on('eyemove', function(x, y) {
     changePos(x * 1.11, y * 1.11);
