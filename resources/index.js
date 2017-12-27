@@ -31,9 +31,9 @@ const tapImages = {
 };
 
 // recieve eye-tracker position
-$(document).mousemove(function(e) {
-    changePos(e.pageX, e.pageY);
-});
+// $(document).mousemove(function(e) {
+//     changePos(e.pageX, e.pageY);
+// });
 
 socket.on('eyemove', function(x, y) {
     changePos(x * 1.11, y * 1.11);
