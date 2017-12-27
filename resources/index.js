@@ -4,7 +4,7 @@ var show_left, show_right, show_up, show_down;
 var type;
 
 
-const DEFAULT_TRIAL_NUM = 20;
+const DEFAULT_TRIAL_NUM = 12;
 var trial_num = DEFAULT_TRIAL_NUM;
 
 var clicked_button, target_btn, gesture;
