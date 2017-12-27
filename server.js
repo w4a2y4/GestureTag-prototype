@@ -4,6 +4,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const resources = '/resources';
+const logfile = 'log/' + moment().format('MMDD-HHmm') + '.log';
 
 const swipeOptions = {
     OPTION_1: `${resources}/arrow_up.png`,
@@ -51,11 +52,10 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 var writeLog = (msg) => {
-    var filename = 'tmp.log';
-    var time = moment().format('MM/DD hh:mm:ss:SSS');
+    var time = moment().format('MM/DD HH:mm:ss:SSS');
     msg = time + '\t' + msg + '\n';
     console.log(msg);
-    fs.appendFile(filename, msg, function(err) {
+    fs.appendFile(logfile, msg, function(err) {
         if (err) console.error(err);
     });
 };
@@ -95,7 +95,7 @@ io.on('connection', function(socket) {
 
     // start a trial
     socket.on('start', function() {
-        writeLog('trial start');
+        writeLog('trial start (' + type + ')');
     });
 
     // end of a trial
