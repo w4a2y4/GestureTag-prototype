@@ -22,6 +22,7 @@ socket.on('swipe', function(dir){
 	if( dir == 'down' && show_down ) button_down.click();
 	if( dir == 'left' && show_left ) button_left.click();
 	if( dir == 'right' && show_right ) button_right.click();
+	// implement 4 more directions
 });
 
 socket.on('tap', (pos) => {
