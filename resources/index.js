@@ -1,6 +1,6 @@
 var socket = io.connect();
-var button_left, button_right, button_up, button_down;
-var show_left, show_right, show_up, show_down;
+var button_left, button_right, button_up, button_down, button_upright, button_downright, button_downleft, button_upleft;
+var show_left, show_right, show_up, show_down, show_upright, show_downright, show_downleft, show_downright;
 var type;
 
 
@@ -21,7 +21,11 @@ const swipeImages = {
     up: img_prefix + 'arrow_up.png',
     down: img_prefix + 'arrow_down.png',
     left: img_prefix + 'arrow_left.png',
-    right: img_prefix + 'arrow_right.png'
+    right: img_prefix + 'arrow_right.png',
+    upright: img_prefix + 'arrow_upright.png',
+    downright: img_prefix + 'arrow_downright.png',
+    downleft: img_prefix + 'arrow_downleft.png',
+    upleft: img_prefix + 'arrow_upleft.png'
 };
 const tapImages = {
     up: img_prefix + 'tap_topright.png',
@@ -31,9 +35,9 @@ const tapImages = {
 };
 
 // recieve eye-tracker position
-// $(document).mousemove(function(e) {
-//     changePos(e.pageX, e.pageY);
-// });
+$(document).mousemove(function(e) {
+    changePos(e.pageX, e.pageY);
+});
 
 socket.on('eyemove', function(x, y) {
     changePos(x * 1.11, y * 1.11);
@@ -45,6 +49,10 @@ socket.on('swipe', function(dir) {
     if (dir == 'down' && show_down) button_down.click();
     if (dir == 'left' && show_left) button_left.click();
     if (dir == 'right' && show_right) button_right.click();
+    if (dir == 'upright' && show_upright) button_upright.click();
+    if (dir == 'downright' && show_downright) button_downright.click();
+    if (dir == 'downleft' && show_downleft) button_downleft.click();
+    if (dir == 'upleft' && show_upleft) button_upleft.click();
 });
 
 socket.on('tap', (pos) => {
@@ -92,6 +100,22 @@ function isRight(btn) {
     return imgSet["right"] == btn.children[0].src;
 }
 
+function isUpRight(btn) {
+    return imgSet["upright"] == btn.children[0].src;
+}
+
+function isDownRight(btn) {
+    return imgSet["downright"] == btn.children[0].src;
+}
+
+function isDownLeft(btn) {
+    return imgSet["downleft"] == btn.children[0].src;
+}
+
+function isUpLeft(btn) {
+    return imgSet["upleft"] == btn.children[0].src;
+}
+
 function overlap(element, X, Y) {
     var top = $(element).offset().top;
     var left = $(element).offset().left;
@@ -129,6 +153,11 @@ function changePos(eyeX, eyeY) {
     show_down = false;
     show_left = false;
     show_right = false;
+    show_upright = false;
+    show_downright = false;
+    show_downleft = false;
+    show_upleft = false;
+
 
     var btn_num = buttons.length;
 
@@ -172,6 +201,18 @@ function changePos(eyeX, eyeY) {
                 } else if (isRight(btn)) {
                     button_right = btn;
                     show_right = true;
+                } else if (isUpRight(btn)) {
+                    button_upright = btn;
+                    show_upright = true;
+                } else if (isDownRight(btn)) {
+                    button_downright = btn;
+                    show_downright = true;
+                } else if (isDownLeft(btn)) {
+                    button_downleft = btn;
+                    show_downleft = true;
+                } else if (isUpLeft(btn)) {
+                    button_upleft = btn;
+                    show_upleft = true;
                 }
             } else $(btn).find('img').hide();
         }
