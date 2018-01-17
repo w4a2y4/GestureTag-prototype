@@ -4,6 +4,27 @@ const swipe = new Hammer.Swipe();
 
 manager.add(swipe);
 
+var triggerTouchEventBroadCasting = (option) => {
+    if(!option)
+        return;
+    manager.on('hammer.input', (ev) => {
+        const touch = {
+            type: ev.type,
+            pos: {
+                x: ev.center.x,
+                y: ev.center.y
+            }
+        };
+        emitTouchData(touch);
+        // console.log(ev.type);
+    });
+};
+
+realtimeButton.addEventListener('trigger', (e) => {
+    // console.log('listened');
+    triggerTouchEventBroadCasting(true);
+}, false);
+
 manager.on('swipe', (e) => {
     var direction = e.offsetDirection;
     var angle = e.angle;
