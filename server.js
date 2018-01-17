@@ -16,6 +16,7 @@ const tapImages = {
     OPTION_3: `${resources}/tap_topleft.png`,
     OPTION_4: `${resources}/tap_bottomright.png`
 };
+//swipe or tap
 const type = process.argv[2];
 app.use(resources, express.static('resources'));
 app.set('views', __dirname + '/views');
@@ -96,6 +97,16 @@ io.on('connection', function(socket){
         msg += '\tclick:' + clicked_btn;
         writeLog(msg);
     });
+
+    // listen touch raw data
+    socket.on('touch', (event) => {
+        if(event.type === 'hammer.input'){
+            console.log(event.pos);
+            // io.emit('touch', event.pos);
+        }
+    });
+    // }
+
 });
 
 http.listen(3000, function(){
