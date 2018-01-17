@@ -7,7 +7,8 @@
 
     <body>
         <div class="container center-center">
-            <button onclick="startTrial()">Click to start</button>
+            <button id="normal" onclick="startTrial()">Click to start</button>
+            <button id="realtime" onclick="startTrialWithTouchData()">Click to start with Touch Data</button>
         </div>
         <script src="/socket.io/socket.io.js"></script>
         <script src="resources/log.js"></script>
