@@ -11,6 +11,10 @@ const swipeOptions = {
     OPTION_2: `${resources}/arrow_down.png`,
     OPTION_3: `${resources}/arrow_left.png`,
     OPTION_4: `${resources}/arrow_right.png`,
+    OPTION_5: `${resources}/arrow_upright.png`,
+    OPTION_6: `${resources}/arrow_downright.png`,
+    OPTION_7: `${resources}/arrow_downleft.png`,
+    OPTION_8: `${resources}/arrow_upleft.png`,
     EYETRACKER: `gesturetag`
 };
 const tapOptions = {
