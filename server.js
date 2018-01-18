@@ -32,7 +32,9 @@ const dwellOptions = {
     EYETRACKER: `dwell`
 };
 
+// Tap or Swipe
 const type = process.argv[2];
+
 app.use(resources, express.static('resources'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -97,6 +99,14 @@ io.on('connection', function(socket) {
         });
     }
 
+    // receive touch raw data
+    socket.on('touch', (event) => {
+        if (event.type === 'hammer.input') {
+            console.log(event.pos);
+            // io.emit('touch', event.pos);
+        }
+    });
+
     // start a trial
     socket.on('start', function() {
         writeLog('trial start (' + type + ')');
@@ -108,6 +118,7 @@ io.on('connection', function(socket) {
         io.emit('end');
     });
 
+    // log data
     socket.on('log', function(cnt, gesture, clicked_btn, target) {
         var msg = '#' + cnt;
         msg += '\tevent:' + gesture;
@@ -115,6 +126,8 @@ io.on('connection', function(socket) {
         msg += '\tclick:' + clicked_btn;
         writeLog(msg);
     });
+
+
 });
 
 http.listen(3000, function() {
