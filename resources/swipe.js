@@ -13,6 +13,21 @@ manager.on('swipe', (e) => {
     e.target.innerText = `${dirStr}`;
 });
 
+/* send touch raw data */
+manager.on('hammer.input', (ev) => {
+    const touch = {
+        type: ev.type,
+        pos: {
+            x: ev.center.x,
+            y: ev.center.y
+        }
+    };
+
+    emitTouchData(touch);
+    console.log(touch.pos)
+        // console.log(ev.type);
+});
+
 /* right : 0, up: -90, left: 180, down: 90 */
 var getSwipeDirectionFromAngle = (angle) => {
     let dir = '';
