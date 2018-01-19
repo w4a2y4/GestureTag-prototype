@@ -3,7 +3,7 @@ var button_left, button_right, button_up, button_down, button_upright, button_do
 var show_left, show_right, show_up, show_down, show_upright, show_downright, show_downleft, show_downright;
 var type;
 
-var touch_timer;
+var touch_timer, new_path, prevX, prevY;
 
 const DEFAULT_TRIAL_NUM = 12;
 var trial_num = DEFAULT_TRIAL_NUM;
@@ -258,13 +258,22 @@ $(document).on('click', 'button', (function(e) {
 
 var c=document.getElementById("canvas");
 var cxt=c.getContext("2d");
-function changePath(PathX, PathY) {
+function changePath(pathX, pathY) {
     cxt.fillStyle="#FF2345";
-    cxt.fillRect(PathX,PathY,10,10);
+    if ( !new_path ) {
+        cxt.moveTo(prevX, prevY);
+        cxt.lineTo(pathX, pathY);
+        cxt.stroke();
+    }
+    prevX = pathX;
+    prevY = pathY;
+    new_path = false;
 }
 
 function clearCanvas() {
     cxt.clearRect(0, 0, 1000, 1400);
+    cxt.beginPath();
+    new_path = true;
 }
 
 // my path
@@ -273,9 +282,3 @@ socket.on('touch', function(touch) {
     clearTimeout(touch_timer);
     touch_timer = setTimeout(clearCanvas, 300);
 })
-
-
-
-
-
-
