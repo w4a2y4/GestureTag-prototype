@@ -36,9 +36,9 @@ const tapImages = {
 };
 
 // recieve eye-tracker position
-$(document).mousemove(function(e) {
-    changePos(e.pageX, e.pageY);
-});
+// $(document).mousemove(function(e) {
+//     changePos(e.pageX, e.pageY);
+// });
 
 socket.on('eyemove', function(x, y) {
     changePos(x * 1.11, y * 1.11);
@@ -260,6 +260,8 @@ var c=document.getElementById("canvas");
 var cxt=c.getContext("2d");
 function changePath(pathX, pathY) {
     cxt.fillStyle="#FF2345";
+    pathX = pathX*0.8*1.4;
+    pathY = pathY*0.8/1.4;
     if ( !new_path ) {
         cxt.moveTo(prevX, prevY);
         cxt.lineTo(pathX, pathY);
@@ -271,7 +273,7 @@ function changePath(pathX, pathY) {
 }
 
 function clearCanvas() {
-    cxt.clearRect(0, 0, 1000, 1400);
+    cxt.clearRect(0, 0, 1400, 1000);
     cxt.beginPath();
     new_path = true;
 }
