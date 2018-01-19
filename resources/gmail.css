@@ -16,6 +16,13 @@ body {
     overflow: hidden;
 }
 
+#canvas_container {
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+    position: absolute;
+}
+
 #eye_tracker {
 	pointer-events: none;
     position: absolute;

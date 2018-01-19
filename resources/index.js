@@ -3,6 +3,7 @@ var button_left, button_right, button_up, button_down, button_upright, button_do
 var show_left, show_right, show_up, show_down, show_upright, show_downright, show_downleft, show_downright;
 var type;
 
+var touch_timer, new_path, prevX, prevY;
 
 const DEFAULT_TRIAL_NUM = 12;
 var trial_num = DEFAULT_TRIAL_NUM;
@@ -35,9 +36,14 @@ const tapImages = {
 };
 
 // recieve eye-tracker position
-$(document).mousemove(function(e) {
-    changePos(e.pageX, e.pageY);
-});
+$(document).keyup((e) => {
+    if (e.which === 69) {
+        $(document).mousemove(function(e) {
+            changePos(e.pageX, e.pageY);
+        });
+    }
+})
+
 
 socket.on('eyemove', function(x, y) {
     changePos(x * 1.11, y * 1.11);
@@ -149,6 +155,11 @@ function changePos(eyeX, eyeY) {
         "top": eyeY
     });
 
+    $('#canvas_container').css({
+        "left": eyeX - 700,
+        "top": eyeY - 500
+    });
+
     show_up = false;
     show_down = false;
     show_left = false;
@@ -249,3 +260,33 @@ $(document).on('click', 'button', (function(e) {
         $(this).removeClass('clicked');
     }, 500);
 }));
+
+var c = document.getElementById("canvas");
+var cxt = c.getContext("2d");
+
+function changePath(pathX, pathY) {
+    cxt.fillStyle = "#FF2345";
+    pathX = pathX * 0.8 * 1.4;
+    pathY = pathY * 0.8 / 1.4;
+    if (!new_path) {
+        cxt.moveTo(prevX, prevY);
+        cxt.lineTo(pathX, pathY);
+        cxt.stroke();
+    }
+    prevX = pathX;
+    prevY = pathY;
+    new_path = false;
+}
+
+function clearCanvas() {
+    cxt.clearRect(0, 0, 1400, 1000);
+    cxt.beginPath();
+    new_path = true;
+}
+
+// my path
+socket.on('touch', function(touch) {
+    changePath(touch.x, touch.y);
+    clearTimeout(touch_timer);
+    touch_timer = setTimeout(clearCanvas, 300);
+})

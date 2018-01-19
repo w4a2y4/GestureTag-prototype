@@ -103,7 +103,7 @@ io.on('connection', function(socket) {
     socket.on('touch', (event) => {
         if (event.type === 'hammer.input') {
             console.log(event.pos);
-            // io.emit('touch', event.pos);
+            io.emit('touch', event.pos);
         }
     });
 
