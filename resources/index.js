@@ -3,6 +3,7 @@ var button_left, button_right, button_up, button_down, button_upright, button_do
 var show_left, show_right, show_up, show_down, show_upright, show_downright, show_downleft, show_downright;
 var type;
 
+var touch_timer;
 
 const DEFAULT_TRIAL_NUM = 12;
 var trial_num = DEFAULT_TRIAL_NUM;
@@ -149,6 +150,11 @@ function changePos(eyeX, eyeY) {
         "top": eyeY
     });
 
+    $('#canvas_container').css({
+        "left": eyeX - 700,
+        "top": eyeY - 500
+    });
+
     show_up = false;
     show_down = false;
     show_left = false;
@@ -249,3 +255,27 @@ $(document).on('click', 'button', (function(e) {
         $(this).removeClass('clicked');
     }, 500);
 }));
+
+var c=document.getElementById("canvas");
+var cxt=c.getContext("2d");
+function changePath(PathX, PathY) {
+    cxt.fillStyle="#FF2345";
+    cxt.fillRect(PathX,PathY,10,10);
+}
+
+function clearCanvas() {
+    cxt.clearRect(0, 0, 1000, 1400);
+}
+
+// my path
+socket.on('touch', function(touch) {
+    changePath(touch.x, touch.y);
+    clearTimeout(touch_timer);
+    touch_timer = setTimeout(clearCanvas, 300);
+})
+
+
+
+
+
+
