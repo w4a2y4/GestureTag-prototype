@@ -6,6 +6,12 @@ const path = require('path');
 const resources = '/resources';
 const logfile = 'log/' + moment().format('MMDD-HHmm') + '.log';
 
+// Tap or Swipe
+const type = process.argv[2];
+
+// motor or normal
+const user = process.argv[3];
+
 const swipeOptions = {
     OPTION_1: `${resources}/arrow_up.png`,
     OPTION_2: `${resources}/arrow_down.png`,
@@ -32,13 +38,6 @@ const dwellOptions = {
     EYETRACKER: `dwell`
 };
 
-// Tap or Swipe
-const type = process.argv[2];
-
-// M(otor) or N(ormal)
-const user = process.argv[3];
-
-
 app.use(resources, express.static('resources'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -49,6 +48,14 @@ app.get('/', (req, res) => {
 app.get('/gmail', (req, res) => {
     res.render('gmail', loadImages());
 });
+
+app.get('/gmail8', (req, res) => {
+    res.render('gmail8', loadImages());
+})
+
+app.get('/block8', (req, res) => {
+    res.render('block8', loadImages());
+})
 
 app.get('/swipe', (req, res) => {
     res.sendFile(path.join(__dirname, 'swipe.html'));
