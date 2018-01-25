@@ -285,8 +285,12 @@ function clearCanvas() {
 }
 
 // my path
-socket.on('touch', function(touch) {
-    changePath(touch.x, touch.y);
-    clearTimeout(touch_timer);
-    touch_timer = setTimeout(clearCanvas, 300);
+$(document).keyup((e) => {
+    if (e.which === 80) {
+        socket.on('touch', function(touch) {
+            changePath(touch.x, touch.y);
+            clearTimeout(touch_timer);
+            touch_timer = setTimeout(clearCanvas, 300);
+        })
+    }
 })
