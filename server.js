@@ -35,6 +35,10 @@ const dwellOptions = {
 // Tap or Swipe
 const type = process.argv[2];
 
+// M(otor) or N(ormal)
+const user = process.argv[3];
+
+
 app.use(resources, express.static('resources'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -78,6 +82,8 @@ var loadImages = () => {
 io.on('connection', function(socket) {
     console.log('a user connected');
     io.emit('init', type);
+
+    io.emit('user', user);
 
     // recieve eye-tracker position
     socket.on('eyemove', function(x, y) {
