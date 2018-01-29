@@ -47,8 +47,10 @@ Skip this part if testing for dwelling.
 #### How to find your ip address on Mac/Linux:
 ``ifconfig | grep "inet " | grep -v 127.0.0.1``
 
-### start a trial
-Press the space key to start a trial.
+### hot key
+`space`: start a trial.
+`p`: show the finger path on screen (only available in swipe method).
+`e`: use mousemove instead of eyemove.
 
 ## TouchPad (Xcode Project with CocoaPods)
 Make sure you have Apple Developer Account (it is free) and have installed CocoaPods and Xcode.
