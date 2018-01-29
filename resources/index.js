@@ -56,12 +56,12 @@ $(document).keyup((e) => {
         show_path = !show_path;
 })
 
-$(document).mousemove(function(e) {
+$(document).mousemove((e) => {
     if (show_mouse)
         changePos(e.pageX, e.pageY);
 });
 
-$(document).on('click', 'button', (function(e) {
+$(document).on('click', 'button', ((e) => {
     console.log("click!!");
     $(this).addClass('clicked');
     clicked_btn = $(this).parent().attr('id');
@@ -76,11 +76,11 @@ $(document).on('click', 'button', (function(e) {
 }));
 
 
-socket.on('eyemove', function(x, y) {
+socket.on('eyemove', (x, y) => {
     changePos(x * 1.11, y * 1.11);
 });
 
-socket.on('swipe', function(dir) {
+socket.on('swipe', (dir) => {
     gesture = dir;
     if (dir == 'up' && show_up) button_up.click();
     if (dir == 'down' && show_down) button_down.click();
@@ -100,7 +100,7 @@ socket.on('tap', (pos) => {
     if (pos === 'bottomright' && show_right) button_right.click();
 });
 
-socket.on('touch', function(touch) {
+socket.on('touch', (touch) => {
     if (show_path) {
         changePath(touch.x, touch.y);
         clearTimeout(touch_timer);
@@ -108,14 +108,14 @@ socket.on('touch', function(touch) {
     }
 });
 
-socket.on('init', function(method) {
+socket.on('init', (method) => {
     type = method;
     console.log(type);
     if (type === 'swipe') imgSet = swipeImages;
     else if (type === 'tap') imgSet = tapImages;
 });
 
-socket.on('client_init', function(width, height) {
+socket.on('client_init', (width, height) => {
     client_width = width;
     client_height = height;
     console.log(server_height+' '+server_width+' '+client_height+' '+client_width);
