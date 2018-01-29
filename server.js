@@ -49,14 +49,6 @@ app.get('/gmail', (req, res) => {
     res.render('gmail', loadImages());
 });
 
-app.get('/gmail8', (req, res) => {
-    res.render('gmail8', loadImages());
-})
-
-app.get('/block8', (req, res) => {
-    res.render('block8', loadImages());
-})
-
 app.get('/swipe', (req, res) => {
     res.sendFile(path.join(__dirname, 'swipe.html'));
 });
