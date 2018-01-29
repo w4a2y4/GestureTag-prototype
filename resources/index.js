@@ -1,9 +1,10 @@
 var socket = io.connect();
+var show_path = false;
+var show_mouse = false;
+
 var button_left, button_right, button_up, button_down, button_upright, button_downright, button_downleft, button_upleft;
 var show_left, show_right, show_up, show_down, show_upright, show_downright, show_downleft, show_downright;
 var type;
-
-var touch_timer, new_path, prevX, prevY;
 
 const DEFAULT_TRIAL_NUM = 12;
 var trial_num = DEFAULT_TRIAL_NUM;
@@ -15,6 +16,12 @@ var already = new Array(buttons.length).fill(0);
 var TimeStart = new Date().getTime();
 var TimeEnd = new Date().getTime();
 
+var touch_timer, new_path, prevX, prevY;
+var c = document.getElementById("canvas");
+var cxt = c.getContext("2d");
+var server_width = document.documentElement.clientWidth;
+var server_height = document.documentElement.clientHeight;
+var client_width, client_height;
 
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
@@ -35,21 +42,45 @@ const tapImages = {
     right: img_prefix + 'tap_bottomright.png'
 };
 
-// recieve eye-tracker position
+
 $(document).keyup((e) => {
-    if (e.which === 69) {
-        $(document).mousemove(function(e) {
-            changePos(e.pageX, e.pageY);
-        });
+    // key "enter"
+    if (e.which === 32) {
+        socket.emit('start');
+        trial_num = DEFAULT_TRIAL_NUM;
+        showTarget();
     }
+    else if (e.which === 69)    // key "e"
+        show_mouse = !show_mouse;
+    else if (e.which === 80)    // key "p"
+        show_path = !show_path;
 })
 
+$(document).mousemove((e) => {
+    if (show_mouse)
+        changePos(e.pageX, e.pageY);
+});
 
-socket.on('eyemove', function(x, y) {
+$(document).on('click', 'button', ((e) => {
+    console.log("click!!");
+    $(this).addClass('clicked');
+    clicked_btn = $(this).parent().attr('id');
+    log();
+    if ($(this).hasClass('target')) {
+        $(this).removeClass('target');
+        showTarget();
+    }
+    setTimeout(() => {
+        $(this).removeClass('clicked');
+    }, 500);
+}));
+
+
+socket.on('eyemove', (x, y) => {
     changePos(x * 1.11, y * 1.11);
 });
 
-socket.on('swipe', function(dir) {
+socket.on('swipe', (dir) => {
     gesture = dir;
     if (dir == 'up' && show_up) button_up.click();
     if (dir == 'down' && show_down) button_down.click();
@@ -69,20 +100,27 @@ socket.on('tap', (pos) => {
     if (pos === 'bottomright' && show_right) button_right.click();
 });
 
-socket.on('init', function(method) {
+socket.on('touch', (touch) => {
+    if (show_path) {
+        changePath(touch.x, touch.y);
+        clearTimeout(touch_timer);
+        touch_timer = setTimeout(clearCanvas, 300);
+    }
+});
+
+socket.on('init', (method) => {
     type = method;
     console.log(type);
     if (type === 'swipe') imgSet = swipeImages;
     else if (type === 'tap') imgSet = tapImages;
 });
 
-$(document).keyup((e) => {
-    if (e.which === 32) {
-        socket.emit('start');
-        trial_num = DEFAULT_TRIAL_NUM;
-        showTarget();
-    }
-})
+socket.on('client_init', (width, height) => {
+    client_width = width;
+    client_height = height;
+    console.log(server_height+' '+server_width+' '+client_height+' '+client_width);
+});
+
 
 function log() {
     cnt = DEFAULT_TRIAL_NUM - trial_num;
@@ -246,28 +284,10 @@ function showTarget() {
     trial_num -= 1;
 }
 
-// recieve swiping event
-$(document).on('click', 'button', (function(e) {
-    console.log("click!!");
-    $(this).addClass('clicked');
-    clicked_btn = $(this).parent().attr('id');
-    log();
-    if ($(this).hasClass('target')) {
-        $(this).removeClass('target');
-        showTarget();
-    }
-    setTimeout(() => {
-        $(this).removeClass('clicked');
-    }, 500);
-}));
-
-var c = document.getElementById("canvas");
-var cxt = c.getContext("2d");
-
 function changePath(pathX, pathY) {
     cxt.fillStyle = "#FF2345";
-    pathX = pathX * 0.8 * 1.4;
-    pathY = pathY * 0.8 / 1.4;
+    pathX = pathX * server_width / client_width;
+    pathY = pathY * server_height / client_height;
     if (!new_path) {
         cxt.moveTo(prevX, prevY);
         cxt.lineTo(pathX, pathY);
@@ -283,14 +303,3 @@ function clearCanvas() {
     cxt.beginPath();
     new_path = true;
 }
-
-// my path
-$(document).keyup((e) => {
-    if (e.which === 80) {
-        socket.on('touch', function(touch) {
-            changePath(touch.x, touch.y);
-            clearTimeout(touch_timer);
-            touch_timer = setTimeout(clearCanvas, 300);
-        })
-    }
-})
