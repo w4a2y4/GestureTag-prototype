@@ -9,6 +9,13 @@ socket.on('user', function(user) {
     console.log(tester);
 });
 
+socket.on('init', function(method) {
+    width = document.documentElement.clientWidth;
+    height = document.documentElement.clientHeight;
+    console.log(width+' '+height);
+    socket.emit('client_init', width, height);
+});
+
 manager.on('swipe', (e) => {
     var direction = e.offsetDirection;
     var angle = e.angle;

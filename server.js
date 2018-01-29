@@ -89,8 +89,13 @@ var loadImages = () => {
 io.on('connection', function(socket) {
     console.log('a user connected');
     io.emit('init', type);
-
     io.emit('user', user);
+
+    // set client's window size
+    socket.on('client_init', function(width, height) {
+        console.log('client_init');
+        io.emit('client_init', width, height);
+    })
 
     // recieve eye-tracker position
     socket.on('eyemove', function(x, y) {
@@ -115,7 +120,6 @@ io.on('connection', function(socket) {
     // receive touch raw data
     socket.on('touch', (event) => {
         if (event.type === 'hammer.input') {
-            console.log(event.pos);
             io.emit('touch', event.pos);
         }
     });

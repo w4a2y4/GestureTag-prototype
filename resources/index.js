@@ -15,6 +15,9 @@ var already = new Array(buttons.length).fill(0);
 var TimeStart = new Date().getTime();
 var TimeEnd = new Date().getTime();
 
+var server_width = document.documentElement.clientWidth;
+var server_height = document.documentElement.clientHeight;
+var client_width, client_height;
 
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
@@ -74,6 +77,12 @@ socket.on('init', function(method) {
     console.log(type);
     if (type === 'swipe') imgSet = swipeImages;
     else if (type === 'tap') imgSet = tapImages;
+});
+
+socket.on('client_init', function(width, height) {
+    client_width = width;
+    client_height = height;
+    console.log(server_height+' '+server_width+' '+client_height+' '+client_width);
 });
 
 $(document).keyup((e) => {
@@ -266,8 +275,8 @@ var cxt = c.getContext("2d");
 
 function changePath(pathX, pathY) {
     cxt.fillStyle = "#FF2345";
-    pathX = pathX * 0.8 * 1.4;
-    pathY = pathY * 0.8 / 1.4;
+    pathX = pathX * server_width / client_width;
+    pathY = pathY * server_height / client_height;
     if (!new_path) {
         cxt.moveTo(prevX, prevY);
         cxt.lineTo(pathX, pathY);
