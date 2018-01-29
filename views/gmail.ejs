@@ -21,7 +21,13 @@
         </div>
         <div id="right-block">
             <div id="profile">
-                <button><img src="<%=OPTION_4%>"></button>
+                <button>
+                <% if(process.argv[3] === 'motor'){ %>
+                    <img src="<%=OPTION_4%>">
+                <% } else{ %>
+                    <img src="<%=OPTION_5%>"> 
+                <% } %>
+                </button>
             </div>
             <div id="notify">
                 <button><img src="<%=OPTION_1%>"></button>
@@ -34,7 +40,13 @@
 
     <div id="option-bar">
         <div id="gmail">
-            <button><img src="<%=OPTION_1%>"></button>
+            <button>
+            <% if(process.argv[3] === 'motor'){ %>
+                <img src="<%=OPTION_1%>">
+            <% } else{ %>
+                <img src="<%=OPTION_6%>"> 
+            <% } %>
+            </button>
         </div>
         <div id="checkbox">
             <button><img src="<%=OPTION_3%>"></button>
@@ -43,7 +55,13 @@
             <button><img src="<%=OPTION_2%>"></button>
         </div>
         <div id="more">
-            <button><img src="<%=OPTION_4%>"></button>
+            <button>
+            <% if(process.argv[3] === 'motor'){ %>
+                <img src="<%=OPTION_4%>">
+            <% } else{ %>
+                <img src="<%=OPTION_8%>"> 
+            <% } %>
+            </button>
         </div>
     </div>
 
@@ -53,16 +71,34 @@
                 <button><img src="<%=OPTION_2%>"></button>
             </div>
             <div id="nav01">
-                <button><img src="<%=OPTION_4%>"></button>
+                <button>
+                <% if(process.argv[3] === 'motor'){ %>
+                    <img src="<%=OPTION_4%>">
+                <% } else{ %>
+                    <img src="<%=OPTION_5%>"> 
+                <% } %>
+                </button>
             </div>
             <div id="nav02">
-                <button><img src="<%=OPTION_3%>"></button>
+                <button>
+                <% if(process.argv[3] === 'motor'){ %>
+                    <img src="<%=OPTION_3%>">
+                <% } else{ %>
+                    <img src="<%=OPTION_6%>"> 
+                <% } %>
+                </button>
             </div>
             <div id="nav02">
                 <button><img src="<%=OPTION_1%>"></button>
             </div>
             <div id="nav04">
-                <button><img src="<%=OPTION_2%>"></button>
+                <button>
+                <% if(process.argv[3] === 'motor'){ %>
+                    <img src="<%=OPTION_2%>">
+                <% } else{ %>
+                    <img src="<%=OPTION_7%>"> 
+                <% } %>
+                </button>
             </div>
             <div id="nav05">
                 <button><img src="<%=OPTION_4%>"></button>
@@ -85,10 +121,22 @@
         </div>
         <div id="hangouts">
             <div class="friend" id="friend01">
-                <button><img src="<%=OPTION_2%>"></button>
+                <button>
+                <% if(process.argv[3] === 'motor'){ %>
+                    <img src="<%=OPTION_2%>">
+                <% } else{ %>
+                    <img src="<%=OPTION_5%>"> 
+                <% } %>
+                </button>
             </div>
             <div class="friend" id="friend02">
-                <button><img src="<%=OPTION_1%>"></button>
+                <button>
+                <% if(process.argv[3] === 'motor'){ %>
+                    <img src="<%=OPTION_1%>">
+                <% } else{ %>
+                    <img src="<%=OPTION_6%>"> 
+                <% } %>
+                </button>
             </div>
             <div id="hangouts-footer">
                 <div class="hangouts-icon" id="hangouts-icon01">
@@ -130,13 +178,29 @@
             <button><img src="<%=OPTION_1%>"></button>
         </div>
         <div class="mail" id="mail05">
-            <button><img src="<%=OPTION_4%>"></button>
+            <button>
+            <% if(process.argv[3] === 'motor'){ %>
+                <img src="<%=OPTION_4%>">
+            <% } else{ %>
+                <img src="<%=OPTION_7%>"> 
+            <% } %>
+            </button>
         </div>
         <div class="mail" id="mail06">
-            <button><img src="<%=OPTION_3%>"></button>
+            <button>
+            <% if(process.argv[3] === 'motor'){ %>
+                <img src="<%=OPTION_3%>">
+            <% } else{ %>
+                <img src="<%=OPTION_8%>"> 
+            <% } %>
+            </button>
         </div>
         <div class="mail" id="mail07">
-            <button><img src="<%=OPTION_2%>"></button>
+            <button><% if(process.argv[3] === 'motor'){ %>
+                <img src="<%=OPTION_2%>">
+            <% } else{ %>
+                <img src="<%=OPTION_6%>"> 
+            <% } %></button>
         </div>
         <div class="mail" id="mail08">
             <button><img src="<%=OPTION_1%>"></button>
@@ -163,13 +227,25 @@
             <button><img src="<%=OPTION_2%>"></button>
         </div>
         <div class="mail" id="mail16">
-            <button><img src="<%=OPTION_1%>"></button>
+            <button>
+            <% if(process.argv[3] === 'motor'){ %>
+                <img src="<%=OPTION_1%>">
+            <% } else{ %>
+                <img src="<%=OPTION_5%>"> 
+            <% } %>
+            </button>
         </div>
         <div class="mail" id="mail17">
             <button><img src="<%=OPTION_4%>"></button>
         </div>
         <div class="mail" id="mail18">
-            <button><img src="<%=OPTION_3%>"></button>
+            <button>
+            <% if(process.argv[3] === 'motor'){ %>
+                <img src="<%=OPTION_3%>">
+            <% } else{ %>
+                <img src="<%=OPTION_6%>"> 
+            <% } %>
+            </button>
         </div>
         <div class="mail" id="mail19">
             <button><img src="<%=OPTION_2%>"></button>
