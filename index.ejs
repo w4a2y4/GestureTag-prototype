@@ -1,0 +1,177 @@
+<html>
+
+<head>
+    <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
+    <link rel="stylesheet" type="text/css" href="resources/index.css">
+    <script type="text/javascript">
+        const RADIUS = 200;
+    </script>
+</head>
+
+<body>
+
+
+    <div class="block" id="blk00">
+        <button value="">
+        <% if(process.argv[3] === 'motor'){ %>
+            <img src="<%=OPTION_1%>">
+        <% } else{ %>
+            <img src="<%=OPTION_5%>"> 
+        <% } %>
+        </button>
+    </div>
+    <div class="block" id="blk01">
+        <button value="">
+          <img src="<%=OPTION_4%>">
+        </button>
+    </div>
+    <div class="block" id="blk02">
+        <button value="">
+          <img src="<%=OPTION_1%>">
+        </button>
+    </div>
+    <div class="block" id="blk03">
+        <button value="">
+        <% if(process.argv[3] === 'motor'){ %>
+            <img src="<%=OPTION_4%>">
+        <% } else{ %>
+            <img src="<%=OPTION_6%>">
+        <% } %>
+        </button>
+    </div>
+    <div class="block" id="blk04">
+        <button value="">
+        <% if(process.argv[3] === 'motor'){ %>
+            <img src="<%=OPTION_1%>">
+        <% } else{ %>
+            <img src="<%=OPTION_5%>">
+        <% } %>
+        </button>
+    </div>
+
+    <div class="block" id="blk10">
+        <button value="">
+          <img src="<%=OPTION_3%>">
+        </button>
+    </div>
+    <div class="block" id="blk11">
+        <button value="">
+          <img src="<%=OPTION_2%>">
+        </button>
+    </div>
+    <div class="block" id="blk12">
+        <button value="">
+          <img src="<%=OPTION_3%>">
+        </button>
+    </div>
+    <div class="block" id="blk13">
+        <button value="">
+        <% if(process.argv[3] === 'motor'){ %>    
+            <img src="<%=OPTION_2%>">
+        <% } else{ %>
+            <img src="<%=OPTION_7%>">
+        <% } %>
+        </button>
+    </div>
+    <div class="block" id="blk14">
+        <button value="">
+        <% if(process.argv[3] === 'motor'){ %>  
+          <img src="<%=OPTION_3%>">
+        <% } else{ %>
+            <img src="<%=OPTION_8%>">
+        <% } %>    
+        </button>
+    </div>
+
+    <div class="block" id="blk20">
+        <button value="">
+        <% if(process.argv[3] === 'motor'){ %>  
+            <img src="<%=OPTION_1%>">
+        <% } else{ %>
+            <img src="<%=OPTION_8%>">
+        <% } %>    
+        </button>
+    </div>
+    <div class="block" id="blk21">
+        <button value="">
+        <% if(process.argv[3] === 'motor'){ %>  
+            <img src="<%=OPTION_4%>">
+        <% } else{ %>
+            <img src="<%=OPTION_7%>">
+        <% } %>  
+        </button>
+    </div>
+    <div class="block" id="blk22">
+        <button value="">
+        <% if(process.argv[3] === 'motor'){ %>  
+            <img src="<%=OPTION_1%>">
+        <% } else{ %>
+            <img src="<%=OPTION_8%>">
+        <% } %>  
+        </button>
+    </div>
+    <div class="block" id="blk23">
+        <button value="">
+          <img src="<%=OPTION_4%>">
+        </button>
+    </div>
+    <div class="block" id="blk24">
+        <button value="">
+          <img src="<%=OPTION_1%>">
+        </button>
+    </div>
+
+    <div class="block" id="blk30">
+        <button value="">
+        <% if(process.argv[3] === 'motor'){ %>  
+            <img src="<%=OPTION_3%>">
+        <% } else{ %>
+            <img src="<%=OPTION_1%>">
+        <% } %> 
+        </button>
+    </div>
+    <div class="block" id="blk31">
+        <button value="">
+        <% if(process.argv[3] === 'motor'){ %>  
+            <img src="<%=OPTION_2%>">
+        <% } else{ %>
+            <img src="<%=OPTION_6%>">
+        <% } %> 
+        </button>
+    </div>
+    <div class="block" id="blk32">
+        <button value="">
+        <% if(process.argv[3] === 'motor'){ %>  
+            <img src="<%=OPTION_3%>">
+        <% } else{ %>
+            <img src="<%=OPTION_5%>">
+        <% } %> 
+        </button>
+    </div>
+    <div class="block" id="blk33">
+        <button value="">
+          <img src="<%=OPTION_2%>">
+        </button>
+    </div>
+    <div class="block" id="blk34">
+        <button value="">
+          <img src="<%=OPTION_3%>">
+        </button>
+    </div>
+
+     <div id="MobileContainer">
+     </div>
+
+
+    <div id="canvas_container">
+        <canvas id="canvas" width="1400" height="1000"></canvas>
+    </div>
+     
+    <div id="eye_tracker" class="<%=EYETRACKER%>"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="resources/index.js"></script>
+</body>
+
+</html>
