@@ -3,7 +3,7 @@ var show_path = false;
 var show_mouse = false;
 
 var button_left, button_right, button_up, button_down, button_upright, button_downright, button_downleft, button_upleft;
-var show_left, show_right, show_up, show_down, show_upright, show_downright, show_downleft, show_downright;
+var show_left, show_right, show_up, show_down, show_upright, show_downright, show_downleft, show_upleft;
 var type;
 
 const DEFAULT_TRIAL_NUM = 12;
@@ -49,10 +49,9 @@ $(document).keyup((e) => {
         socket.emit('start');
         trial_num = DEFAULT_TRIAL_NUM;
         showTarget();
-    }
-    else if (e.which === 69)    // key "e"
+    } else if (e.which === 69) // key "e"
         show_mouse = !show_mouse;
-    else if (e.which === 80)    // key "p"
+    else if (e.which === 80) // key "p"
         show_path = !show_path;
 })
 
@@ -118,7 +117,7 @@ socket.on('init', (method) => {
 socket.on('client_init', (width, height) => {
     client_width = width;
     client_height = height;
-    console.log(server_height+' '+server_width+' '+client_height+' '+client_width);
+    console.log(server_height + ' ' + server_width + ' ' + client_height + ' ' + client_width);
 });
 
 
