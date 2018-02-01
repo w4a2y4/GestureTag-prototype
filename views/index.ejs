@@ -2,6 +2,7 @@
 
 <head>
     <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
     <link rel="stylesheet" type="text/css" href="resources/index.css">
     <script type="text/javascript">
         const RADIUS = 200;
@@ -9,6 +10,8 @@
 </head>
 
 <body>
+
+
     <div class="block" id="blk00">
         <button value="">
         <% if(process.argv[3] === 'motor'){ %>
@@ -157,10 +160,14 @@
         </button>
     </div>
 
+     <div id="MobileContainer">
+     </div>
+
+
     <div id="canvas_container">
         <canvas id="canvas" width="1400" height="1000"></canvas>
     </div>
-
+     
     <div id="eye_tracker" class="<%=EYETRACKER%>"></div>
 
     <script src="/socket.io/socket.io.js"></script>
