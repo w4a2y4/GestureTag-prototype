@@ -3,7 +3,7 @@ var show_path = false;
 var show_mouse = false;
 
 var button_left, button_right, button_up, button_down, button_upright, button_downright, button_downleft, button_upleft;
-var show_left, show_right, show_up, show_down, show_upright, show_upleft, show_downleft, show_downright;
+var show_left, show_right, show_up, show_down, show_upright, show_downright, show_downleft, show_upleft;
 
 var tester;
 var type;
