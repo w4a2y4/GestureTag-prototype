@@ -1,17 +1,13 @@
-
-var container = document.getElementById("MobileContainer")
-const manager = new Hammer.Manager(container);
-const swipe = new Hammer.Swipe();
-var tester;
-manager.add(swipe);
-
 var socket = io.connect();
 var show_path = false;
 var show_mouse = false;
 
 var button_left, button_right, button_up, button_down, button_upright, button_downright, button_downleft, button_upleft;
 var show_left, show_right, show_up, show_down, show_upright, show_upleft, show_downleft, show_downright;
+
+var tester;
 var type;
+var platform;
 
 const DEFAULT_TRIAL_NUM = 12;
 var trial_num = DEFAULT_TRIAL_NUM;
@@ -29,6 +25,7 @@ var cxt = c.getContext("2d");
 var server_width = document.documentElement.clientWidth;
 var server_height = document.documentElement.clientHeight;
 var client_width, client_height;
+
 
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
@@ -56,10 +53,9 @@ $(document).keyup((e) => {
         socket.emit('start');
         trial_num = DEFAULT_TRIAL_NUM;
         showTarget();
-    }
-    else if (e.which === 69)    // key "e"
+    } else if (e.which === 69) // key "e"
         show_mouse = !show_mouse;
-    else if (e.which === 80)    // key "p"
+    else if (e.which === 80) // key "p"
         show_path = !show_path;
 })
 
@@ -68,7 +64,7 @@ $(document).mousemove((e) => {
         changePos(e.pageX, e.pageY);
 });
 
-$(document).on('click', 'button', ((e) => {
+$(document).on('click', 'button', (function(e) {
     console.log("click!!");
     $(this).addClass('clicked');
     clicked_btn = $(this).parent().attr('id');
@@ -125,7 +121,13 @@ socket.on('init', (method) => {
 socket.on('client_init', (width, height) => {
     client_width = width;
     client_height = height;
-    console.log(server_height+' '+server_width+' '+client_height+' '+client_width);
+    console.log(server_height + ' ' + server_width + ' ' + client_height + ' ' + client_width);
+});
+
+socket.on('device', (device) => {
+    platform = device;
+    console.log(platform);
+    enableSwipe();
 });
 
 
@@ -311,28 +313,6 @@ function clearCanvas() {
     new_path = true;
 }
 
-
-
-manager.on('swipe', (e) => {
-    var direction = e.offsetDirection;
-    var angle = e.angle;
-    const dirStr = getSwipeDirectionFromAngle(angle, direction);
-    //console.log(`${dirStr}, ${angle}`);
-    
-    
-    e.target.innerText = `${dirStr}`;
-    if (dirStr == 'up' && show_up) button_up.click();
-    if (dirStr == 'down' && show_down) button_down.click();
-    if (dirStr == 'left' && show_left) button_left.click();
-    if (dirStr == 'right' && show_right) button_right.click();
-    if (dirStr == 'upright' && show_upright) button_upright.click();
-    if (dirStr == 'downright' && show_downright) button_downright.click();
-    if (dirStr == 'downleft' && show_downleft) button_downleft.click();
-    if (dirStr == 'upleft' && show_upleft) button_upleft.click();
-
-
-});
-
 var getSwipeDirectionFromAngle = (angle, direction) => {
     let dir = '';
     if (tester === 'motor') {
@@ -366,4 +346,31 @@ var getSwipeDirectionFromAngle = (angle, direction) => {
         }
     }
     return dir;
+};
+
+function enableSwipe() {
+    if (platform === 'mobile') {
+        var container = document.getElementById("MobileContainer");
+        const manager = new Hammer.Manager(container);
+        const swipe = new Hammer.Swipe();
+        manager.add(swipe);
+
+        manager.on('swipe', (e) => {
+            var direction = e.offsetDirection;
+            var angle = e.angle;
+            const dirStr = getSwipeDirectionFromAngle(angle, direction);
+            //console.log(`${dirStr}, ${angle}`);
+
+
+            e.target.innerText = `${dirStr}`;
+            if (dirStr == 'up' && show_up) button_up.click();
+            if (dirStr == 'down' && show_down) button_down.click();
+            if (dirStr == 'left' && show_left) button_left.click();
+            if (dirStr == 'right' && show_right) button_right.click();
+            if (dirStr == 'upright' && show_upright) button_upright.click();
+            if (dirStr == 'downright' && show_downright) button_downright.click();
+            if (dirStr == 'downleft' && show_downleft) button_downleft.click();
+            if (dirStr == 'upleft' && show_upleft) button_upleft.click();
+        });
+    }
 };
