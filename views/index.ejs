@@ -159,19 +159,18 @@
           <img src="<%=OPTION_3%>">
         </button>
     </div>
+    <% if(process.argv[4] === 'mobile'){ %>
+        <div id="MobileContainer"></div>
+        <% } %>
 
-     <div id="MobileContainer">
-     </div>
+            <div id="canvas_container">
+                <canvas id="canvas" width="1400" height="1000"></canvas>
+            </div>
 
+            <div id="eye_tracker" class="<%=EYETRACKER%>"></div>
 
-    <div id="canvas_container">
-        <canvas id="canvas" width="1400" height="1000"></canvas>
-    </div>
-     
-    <div id="eye_tracker" class="<%=EYETRACKER%>"></div>
-
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="resources/index.js"></script>
+            <script src="/socket.io/socket.io.js"></script>
+            <script src="resources/index.js"></script>
 </body>
 
 </html>
