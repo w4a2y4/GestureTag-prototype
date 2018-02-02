@@ -60,7 +60,7 @@ $(document).mousemove((e) => {
         changePos(e.pageX, e.pageY);
 });
 
-$(document).on('click', 'button', ((e) => {
+$(document).on('click', 'button', (function(e) {
     console.log("click!!");
     $(this).addClass('clicked');
     clicked_btn = $(this).parent().attr('id');
