@@ -359,10 +359,7 @@ function enableSwipe() {
             var direction = e.offsetDirection;
             var angle = e.angle;
             const dirStr = getSwipeDirectionFromAngle(angle, direction);
-            //console.log(`${dirStr}, ${angle}`);
 
-
-            e.target.innerText = `${dirStr}`;
             if (dirStr == 'up' && show_up) button_up.click();
             if (dirStr == 'down' && show_down) button_down.click();
             if (dirStr == 'left' && show_left) button_left.click();
