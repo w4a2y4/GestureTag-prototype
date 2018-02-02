@@ -38,6 +38,10 @@ const dwellOptions = {
     OPTION_2: `//:0`,
     OPTION_3: `//:0`,
     OPTION_4: `//:0`,
+    OPTION_5: `//:0`,
+    OPTION_6: `//:0`,
+    OPTION_7: `//:0`,
+    OPTION_8: `//:0`,
     EYETRACKER: `dwell`
 };
 
