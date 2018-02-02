@@ -124,6 +124,11 @@ socket.on('client_init', (width, height) => {
     console.log(server_height + ' ' + server_width + ' ' + client_height + ' ' + client_width);
 });
 
+socket.on('user', (user) => {
+    tester = user;
+    console.log(tester);
+});
+
 socket.on('device', (device) => {
     platform = device;
     console.log(platform);
