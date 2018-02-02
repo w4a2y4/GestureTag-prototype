@@ -12,6 +12,9 @@ const type = process.argv[2];
 // motor or normal
 const user = process.argv[3];
 
+// mobile or desktop
+const device = process.argv[4];
+
 const swipeOptions = {
     OPTION_1: `${resources}/arrow_up.png`,
     OPTION_2: `${resources}/arrow_down.png`,
@@ -82,6 +85,7 @@ io.on('connection', function(socket) {
     console.log('a user connected');
     io.emit('init', type);
     io.emit('user', user);
+    io.emit('device', device);
 
     // set client's window size
     socket.on('client_init', function(width, height) {
