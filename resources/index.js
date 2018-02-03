@@ -64,6 +64,7 @@ $(document).on('click', 'button', (function(e) {
     console.log("click!!");
     $(this).addClass('clicked');
     clicked_btn = $(this).parent().attr('id');
+    $(this).find('img').attr('src', swipeImages.up).show();
     log();
     if ($(this).hasClass('target')) {
         $(this).removeClass('target');
@@ -73,6 +74,7 @@ $(document).on('click', 'button', (function(e) {
         $(this).removeClass('clicked');
     }, 500);
 }));
+
 
 
 socket.on('eyemove', (x, y) => {
@@ -227,7 +229,7 @@ function changePos(eyeX, eyeY) {
                     console.log("Selection Success!!");
                     already[i] = 0; // reinitialize
                 }
-                // Showing image 
+                // Showing image
                 $(btn).find('img').show();
 
             } else {
