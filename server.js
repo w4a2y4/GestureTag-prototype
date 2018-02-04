@@ -31,6 +31,10 @@ const tapOptions = {
     OPTION_2: `${resources}/tap_bottomleft.png`,
     OPTION_3: `${resources}/tap_topleft.png`,
     OPTION_4: `${resources}/tap_bottomright.png`,
+    OPTION_5: `${resources}/tap_topright.png`,
+    OPTION_6: `${resources}/tap_bottomleft.png`,
+    OPTION_7: `${resources}/tap_topleft.png`,
+    OPTION_8: `${resources}/tap_bottomright.png`,
     EYETRACKER: `gesturetag`
 };
 const dwellOptions = {
