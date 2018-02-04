@@ -12,7 +12,7 @@ socket.on('user', function(user) {
 socket.on('init', function(method) {
     width = document.documentElement.clientWidth;
     height = document.documentElement.clientHeight;
-    console.log(width+' '+height);
+    console.log(width + ' ' + height);
     socket.emit('client_init', width, height);
 });
 

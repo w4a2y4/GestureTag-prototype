@@ -18,9 +18,9 @@ Basically, start the server first and then enable one of trackpad client platfor
 ```
 npm install
 npm run-script tap (config the server for tap tasks)
-npm run-script swipe (config the server for 8-directional swipe tasks)
-npm run-script swipe motor (config the server for 4-directional swipe tasks)
+npm run-script swipe [tester] [device] (tester: motor (4-dir) /others (8-dir); device: mobile/desktop)
 npm run-script dwell (config the server for dwell tasks)
+
 ```
 
 ### open the browser

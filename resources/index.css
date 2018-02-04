@@ -21,6 +21,15 @@ body {
 	position: absolute;
 }
 
+#MobileContainer {
+	height: 100%;
+	width: 100%;
+	
+	position: absolute;
+}
+
+
+
 #eye_tracker {
 	pointer-events: none;
     position: absolute;
@@ -86,3 +95,6 @@ button img {
 	margin-top: -75px;
 	margin-left: 150px;
 }
+
+
+

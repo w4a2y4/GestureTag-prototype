@@ -23,13 +23,22 @@ body {
     position: absolute;
 }
 
+#MobileContainer {
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    position: fixed;
+}
+
 #eye_tracker {
-	pointer-events: none;
+    pointer-events: none;
     position: absolute;
 }
 
-#eye_tracker.gesturetag{
-	display: block;
+#eye_tracker.gesturetag {
+    display: block;
     width: 100px;
     height: 100px;
     margin-top: -50px;
@@ -39,8 +48,8 @@ body {
     -webkit-filter: blur(10px);
 }
 
-#eye_tracker.dwell{
-	display: block;
+#eye_tracker.dwell {
+    display: block;
     width: 16px;
     height: 16px;
     margin-top: -8px;

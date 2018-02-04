@@ -4,7 +4,10 @@ var show_mouse = false;
 
 var button_left, button_right, button_up, button_down, button_upright, button_downright, button_downleft, button_upleft;
 var show_left, show_right, show_up, show_down, show_upright, show_downright, show_downleft, show_upleft;
+
+var tester;
 var type;
+var platform;
 
 const DEFAULT_TRIAL_NUM = 12;
 var trial_num = DEFAULT_TRIAL_NUM;
@@ -22,6 +25,7 @@ var cxt = c.getContext("2d");
 var server_width = document.documentElement.clientWidth;
 var server_height = document.documentElement.clientHeight;
 var client_width, client_height;
+
 
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
@@ -118,6 +122,17 @@ socket.on('client_init', (width, height) => {
     client_width = width;
     client_height = height;
     console.log(server_height + ' ' + server_width + ' ' + client_height + ' ' + client_width);
+});
+
+socket.on('user', (user) => {
+    tester = user;
+    console.log(tester);
+});
+
+socket.on('device', (device) => {
+    platform = device;
+    console.log(platform);
+    enableSwipe();
 });
 
 
@@ -302,3 +317,62 @@ function clearCanvas() {
     cxt.beginPath();
     new_path = true;
 }
+
+var getSwipeDirectionFromAngle = (angle, direction) => {
+    let dir = '';
+    if (tester === 'motor') {
+        console.log('motor tester');
+        if (direction === Hammer.DIRECTION_RIGHT) {
+            dir = 'right';
+        } else if (direction === Hammer.DIRECTION_UP) {
+            dir = 'up';
+        } else if (direction === Hammer.DIRECTION_LEFT) {
+            dir = 'left';
+        } else if (direction === Hammer.DIRECTION_DOWN) {
+            dir = 'down';
+        }
+    } else {
+        if (angle < 22.5 && angle >= -22.5) {
+            dir = 'right';
+        } else if (angle < -22.5 && angle >= -67.5) {
+            dir = 'upright';
+        } else if (angle < -67.5 && angle >= -112.5) {
+            dir = 'up';
+        } else if (angle < -112.5 && angle >= -157.5) {
+            dir = 'upleft';
+        } else if (angle < -157.5 || angle > 157.5) {
+            dir = 'left';
+        } else if (angle > 112.5 && angle <= 157.5) {
+            dir = 'downleft';
+        } else if (angle > 67.5 && angle <= 112.5) {
+            dir = 'down';
+        } else {
+            dir = 'downright';
+        }
+    }
+    return dir;
+};
+
+function enableSwipe() {
+    if (platform === 'mobile') {
+        var container = document.getElementById("MobileContainer");
+        const manager = new Hammer.Manager(container);
+        const swipe = new Hammer.Swipe();
+        manager.add(swipe);
+
+        manager.on('swipe', (e) => {
+            var direction = e.offsetDirection;
+            var angle = e.angle;
+            const dirStr = getSwipeDirectionFromAngle(angle, direction);
+
+            if (dirStr == 'up' && show_up) button_up.click();
+            if (dirStr == 'down' && show_down) button_down.click();
+            if (dirStr == 'left' && show_left) button_left.click();
+            if (dirStr == 'right' && show_right) button_right.click();
+            if (dirStr == 'upright' && show_upright) button_upright.click();
+            if (dirStr == 'downright' && show_downright) button_downright.click();
+            if (dirStr == 'downleft' && show_downleft) button_downleft.click();
+            if (dirStr == 'upleft' && show_upleft) button_upleft.click();
+        });
+    }
+};

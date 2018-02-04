@@ -2,6 +2,7 @@
 
 <head>
     <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
     <link rel="stylesheet" type="text/css" href="resources/gmail.css">
     <script type="text/javascript">
         const RADIUS = 50;
@@ -253,14 +254,18 @@
 
     </div>
 
-    <div id="canvas_container">
-        <canvas id="canvas" width="1400" height="1000"></canvas>
-    </div>
+    <% if(process.argv[4] === 'mobile'){ %>
+        <div id="MobileContainer"></div>
+        <% } %>
 
-    <div id="eye_tracker" class="<%=EYETRACKER%>"></div>
+            <div id="canvas_container">
+                <canvas id="canvas" width="1400" height="1000"></canvas>
+            </div>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="resources/index.js"></script>
+            <div id="eye_tracker" class="<%=EYETRACKER%>"></div>
+
+            <script src="/socket.io/socket.io.js"></script>
+            <script src="resources/index.js"></script>
 </body>
 
 </html>
