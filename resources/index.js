@@ -75,7 +75,17 @@ $(document).on('click', 'button', (function(e) {
     }, 500);
 }));
 
-
+$(document).keypress((e) => {
+    if(e.which === 13) {
+        // enter pressed
+        // check whether the user finish all trials for the current condition
+        // if true
+            // get or post to ask the server rerender the page with different conditions
+            // clean all the vars
+        // else
+            // 
+    }
+});
 
 socket.on('eyemove', (x, y) => {
     changePos(x * 1.11, y * 1.11);
