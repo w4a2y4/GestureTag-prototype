@@ -1,10 +1,11 @@
 const fs = require('fs');
 const moment = require('moment');
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 const path = require('path');
 const resources = '/resources';
-const logfile = 'log/' + moment().format('MMDD-HHmm') + '.log';
+var logfile = 'log/' + moment().format('MMDD-HHmm') + '.log';
 
 // Tap or Swipe
 const type = process.argv[2];
@@ -38,11 +39,29 @@ const dwellOptions = {
     EYETRACKER: `dwell`
 };
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(resources, express.static('resources'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+
 app.get('/', (req, res) => {
     res.render('index', loadImages());
+});
+
+
+app.get('/user', (req, res) => {
+    res.render('user');
+});
+
+app.post('/enteruser', (req, res) => {
+    console.log(req.body);
+    let id = req.body.inputUserId;
+    let group = req.body.inputUserGroup;
+    console.log(`got ${id} with the group ${group}`);
+    logfile = `/log/user_${id}_group_${group}.log`;
+    res.end('yes');
+    // res.send({redirect: ''});
 });
 
 app.get('/gmail', (req, res) => {
