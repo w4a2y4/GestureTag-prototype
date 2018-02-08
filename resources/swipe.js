@@ -1,6 +1,7 @@
 var container = document.querySelector(".container");
 const manager = new Hammer.Manager(container);
 const swipe = new Hammer.Swipe();
+
 var tester;
 manager.add(swipe);
 
@@ -39,6 +40,10 @@ manager.on('hammer.input', (ev) => {
     console.log(touch.pos)
         // console.log(ev.type);
 });
+
+
+
+
 
 /* right : 0, up: -90, left: 180, down: 90 */
 var getSwipeDirectionFromAngle = (angle, direction) => {
