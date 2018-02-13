@@ -1,11 +1,11 @@
-var DownRightbtnId=0;
-var RightbtnId=0;
-var DownbtnId=0;
-var UpRightbtnId=0;
-var DownLeftbtnId=0;
-var LeftbtnId=0;
-var UpbtnId=0;
-var UpLeftbtnId=0;
+var DownRightbtnId = 0;
+var RightbtnId = 0;
+var DownbtnId = 0;
+var UpRightbtnId = 0;
+var DownLeftbtnId = 0;
+var LeftbtnId = 0;
+var UpbtnId = 0;
+var UpLeftbtnId = 0;
 var touchLock;
 
 var socket = io.connect();
@@ -102,31 +102,71 @@ socket.on('swipe', (dir) => {
     console.log(dir)
 
     $(buttons[UpLeftbtnId]).find('img').show();
-$(buttons[UpRightbtnId]).find('img').show();
-$(buttons[DownLeftbtnId]).find('img').show();
-$(buttons[DownRightbtnId]).find('img').show();
-$(buttons[UpbtnId]).find('img').show();
-$(buttons[LeftbtnId]).find('img').show();
-$(buttons[DownbtnId]).find('img').show();
-$(buttons[RightbtnId]).find('img').show();
+    $(buttons[UpRightbtnId]).find('img').show();
+    $(buttons[DownLeftbtnId]).find('img').show();
+    $(buttons[DownRightbtnId]).find('img').show();
+    $(buttons[UpbtnId]).find('img').show();
+    $(buttons[LeftbtnId]).find('img').show();
+    $(buttons[DownbtnId]).find('img').show();
+    $(buttons[RightbtnId]).find('img').show();
 
-button_upleft = buttons[UpLeftbtnId];
-button_upright = buttons[UpRightbtnId];
-button_downleft = buttons[DownLeftbtnId];
-button_downright = buttons[DownRightbtnId];
-button_up = buttons[UpbtnId];
-button_left = buttons[LeftbtnId];
-button_down = buttons[DownbtnId];
-button_right = buttons[RightbtnId];
+    button_upleft = buttons[UpLeftbtnId];
+    button_upright = buttons[UpRightbtnId];
+    button_downleft = buttons[DownLeftbtnId];
+    button_downright = buttons[DownRightbtnId];
+    button_up = buttons[UpbtnId];
+    button_left = buttons[LeftbtnId];
+    button_down = buttons[DownbtnId];
+    button_right = buttons[RightbtnId];
 
-    if (dir == 'up' && show_up) {button_up.click();already[UpbtnId]=0;touchLock=false;console.log("swipe up:"+String(UpbtnId))};
-    if (dir == 'down' && show_down) {button_down.click();already[DownbtnId]=0;touchLock=false;console.log("swipe down:"+String(DownbtnId))};
-    if (dir == 'left' && show_left) {button_left.click();already[LeftbtnId]=0;touchLock=false;console.log("swipe left:"+String(LeftbtnId))};
-    if (dir == 'right' && show_right) {button_right.click();already[RightbtnId]=0;touchLock=false;console.log("swipe right:"+String(RightbtnId))};
-    if (dir == 'upright' && show_upright) {button_upright.click();already[UpRightbtnId]=0;touchLock=false;console.log("swipe upright:"+String(UpRightbtnId))}
-    if (dir == 'downright' && show_downright) {button_downright.click();already[DownRightbtnId]=0;touchLock=false;console.log("swipe downright:"+String(DownRightbtnId))}
-    if (dir == 'downleft' && show_downleft){ button_downleft.click();already[DownLeftbtnId]=0;touchLock=false;console.log("swipe downleft:"+String(DownLeftbtnId))}
-    if (dir == 'upleft' && show_upleft) {button_upleft.click();;already[UpLeftbtnId]=0;touchLock=false;console.log("swipe upleft:"+String(UpLeftbtnId))}
+    if (dir == 'up' && show_up) {
+        button_up.click();
+        already[UpbtnId] = 0;
+        touchLock = false;
+        console.log("swipe up:" + String(UpbtnId))
+    };
+    if (dir == 'down' && show_down) {
+        button_down.click();
+        already[DownbtnId] = 0;
+        touchLock = false;
+        console.log("swipe down:" + String(DownbtnId))
+    };
+    if (dir == 'left' && show_left) {
+        button_left.click();
+        already[LeftbtnId] = 0;
+        touchLock = false;
+        console.log("swipe left:" + String(LeftbtnId))
+    };
+    if (dir == 'right' && show_right) {
+        button_right.click();
+        already[RightbtnId] = 0;
+        touchLock = false;
+        console.log("swipe right:" + String(RightbtnId))
+    };
+    if (dir == 'upright' && show_upright) {
+        button_upright.click();
+        already[UpRightbtnId] = 0;
+        touchLock = false;
+        console.log("swipe upright:" + String(UpRightbtnId))
+    }
+    if (dir == 'downright' && show_downright) {
+        button_downright.click();
+        already[DownRightbtnId] = 0;
+        touchLock = false;
+        console.log("swipe downright:" + String(DownRightbtnId))
+    }
+    if (dir == 'downleft' && show_downleft) {
+        button_downleft.click();
+        already[DownLeftbtnId] = 0;
+        touchLock = false;
+        console.log("swipe downleft:" + String(DownLeftbtnId))
+    }
+    if (dir == 'upleft' && show_upleft) {
+        button_upleft.click();;
+        already[UpLeftbtnId] = 0;
+        touchLock = false;
+        console.log("swipe upleft:" + String(UpLeftbtnId))
+    }
 
 
 
@@ -142,9 +182,9 @@ socket.on('tap', (pos) => {
 });
 
 socket.on('touch', (touch) => {
-    touchLock=true
+    touchLock = true
     if (show_path) {
-        
+
         changePath(touch.x, touch.y);
         clearTimeout(touch_timer);
         touch_timer = setTimeout(clearCanvas, 300);
@@ -261,9 +301,9 @@ button_down = buttons[DownbtnId];
 button_right = buttons[RightbtnId];
 
 function changePos(eyeX, eyeY) {
-   
-    console.log(String(touchLock)+" Down:"+String(DownbtnId)+"up:"+String(UpbtnId)+"Right:"+String(RightbtnId)+"Left:"+String(LeftbtnId)+"DownRight:"+String(DownRightbtnId)+"UpRight:"+String(UpRightbtnId)+"DownLeft:"+String(DownLeftbtnId)+"UpLeft:"+String(UpLeftbtnId))
-    
+
+    console.log(String(touchLock) + " Down:" + String(DownbtnId) + "up:" + String(UpbtnId) + "Right:" + String(RightbtnId) + "Left:" + String(LeftbtnId) + "DownRight:" + String(DownRightbtnId) + "UpRight:" + String(UpRightbtnId) + "DownLeft:" + String(DownLeftbtnId) + "UpLeft:" + String(UpLeftbtnId))
+
 
     $('#eye_tracker').css({
         "left": eyeX,
@@ -312,7 +352,7 @@ function changePos(eyeX, eyeY) {
                 $(btn).find('img').hide();
                 already[i] = 0;
             }
-        } else {  //swipe
+        } else { //swipe
             if (overlap(btn, eyeX, eyeY)) {
                 if (already[i]) { // Have already looked at the target
                     LockerTimeEnd[i] = Date.now(); // Record time then
@@ -321,84 +361,81 @@ function changePos(eyeX, eyeY) {
                     LockerTimeStart[i] = Date.now(); // Record time then
                 }
 
-                var theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i] 
-                //如果時間間隔大魚100ms
-                if(theTimeInterval>2000.0&&touchLock==false){
+                var theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i]
+                    //如果時間間隔大魚100ms
+                if (theTimeInterval > 80.0 && touchLock == false) {
                     $(btn).find('img').show();
-                    if (isUp(btn)& LockerTimeEnd[UpbtnId]<LockerTimeEnd[i]) {
-                        UpbtnId=i
+                    if (isUp(btn) & LockerTimeEnd[UpbtnId] < LockerTimeEnd[i]) {
+                        UpbtnId = i
                         button_up = btn;
                         show_up = true;
-                    } else if (isDown(btn)& LockerTimeEnd[DownbtnId]<LockerTimeEnd[i]) {
-                        DownbtnId=i
+                    } else if (isDown(btn) & LockerTimeEnd[DownbtnId] < LockerTimeEnd[i]) {
+                        DownbtnId = i
                         button_down = btn;
                         show_down = true;
-                    } else if (isLeft(btn)& LockerTimeEnd[LeftbtnId]<LockerTimeEnd[i]) {
-                        LeftbtnId=i
+                    } else if (isLeft(btn) & LockerTimeEnd[LeftbtnId] < LockerTimeEnd[i]) {
+                        LeftbtnId = i
                         button_left = btn;
                         show_left = true;
-                    } else if (isRight(btn)& LockerTimeEnd[RightbtnId]<LockerTimeEnd[i]) {
-                        RightbtnId=i
+                    } else if (isRight(btn) & LockerTimeEnd[RightbtnId] < LockerTimeEnd[i]) {
+                        RightbtnId = i
                         button_right = btn;
                         show_right = true;
-                    } else if (isUpRight(btn)& LockerTimeEnd[UpRightbtnId]<LockerTimeEnd[i]) {
-                        UpRightbtnId=i
+                    } else if (isUpRight(btn) & LockerTimeEnd[UpRightbtnId] < LockerTimeEnd[i]) {
+                        UpRightbtnId = i
                         button_upright = btn;
                         show_upright = true;
-                    } else if (isDownRight(btn)& LockerTimeEnd[DownRightbtnId]<LockerTimeEnd[i]) {
-                        DownRightbtnId=i
+                    } else if (isDownRight(btn) & LockerTimeEnd[DownRightbtnId] < LockerTimeEnd[i]) {
+                        DownRightbtnId = i
                         button_downright = btn;
                         show_downright = true;
-                    } else if (isDownLeft(btn)& LockerTimeEnd[DownLeftbtnId]<LockerTimeEnd[i]) {
-                        DownLeftbtnId=i
+                    } else if (isDownLeft(btn) & LockerTimeEnd[DownLeftbtnId] < LockerTimeEnd[i]) {
+                        DownLeftbtnId = i
                         button_downleft = btn;
                         show_downleft = true;
-                    } else if (isUpLeft(btn)& LockerTimeEnd[UpLeftbtnId]<LockerTimeEnd[i]) {
-                        UpLeftbtnId=i
+                    } else if (isUpLeft(btn) & LockerTimeEnd[UpLeftbtnId] < LockerTimeEnd[i]) {
+                        UpLeftbtnId = i
                         button_upleft = btn;
                         show_upleft = true;
                     }
                 }
 
 
-            } 
+            } else {
 
-            else  
-                {  
+                show_up = true;
+                show_down = true;
+                show_left = true;
+                show_right = true;
+                show_upright = true;
+                show_downright = true;
+                show_downleft = true;
+                show_upleft = true;
+                $(buttons[UpLeftbtnId]).find('img').show();
+                $(buttons[UpRightbtnId]).find('img').show();
+                $(buttons[DownLeftbtnId]).find('img').show();
+                $(buttons[DownRightbtnId]).find('img').show();
+                $(buttons[UpbtnId]).find('img').show();
+                $(buttons[LeftbtnId]).find('img').show();
+                $(buttons[DownbtnId]).find('img').show();
+                $(buttons[RightbtnId]).find('img').show();
 
-                    show_up = true;
-                    show_down = true;
-                    show_left = true;
-                    show_right = true;
-                    show_upright = true;
-                    show_downright = true;
-                    show_downleft = true;
-                    show_upleft = true;
-                    $(buttons[UpLeftbtnId]).find('img').show();
-                    $(buttons[UpRightbtnId]).find('img').show();
-                    $(buttons[DownLeftbtnId]).find('img').show();
-                    $(buttons[DownRightbtnId]).find('img').show();
-                    $(buttons[UpbtnId]).find('img').show();
-                    $(buttons[LeftbtnId]).find('img').show();
-                    $(buttons[DownbtnId]).find('img').show();
-                    $(buttons[RightbtnId]).find('img').show();
-                    
-                    button_upleft = buttons[UpLeftbtnId];
-                    button_upright = buttons[UpRightbtnId];
-                    button_downleft = buttons[DownLeftbtnId];
-                    button_downright = buttons[DownRightbtnId];
-                    button_up = buttons[UpbtnId];
-                    button_left = buttons[LeftbtnId];
-                    button_down = buttons[DownbtnId];
-                    button_right = buttons[RightbtnId];
-                    
-                    if(i!=DownLeftbtnId &i!=UpLeftbtnId &i!=DownRightbtnId&i!=UpRightbtnId&i!=LeftbtnId&i!=RightbtnId&i!=UpbtnId&i!=DownbtnId){
-                        $(btn).find('img').hide();
-                        LockerTimeEnd[i] = 0.0; // Record time then
-                        LockerTimeStart[i] = 0.0; // Record time then
-                        already[i] = 0;
-                    }
+                button_upleft = buttons[UpLeftbtnId];
+                button_upright = buttons[UpRightbtnId];
+                button_downleft = buttons[DownLeftbtnId];
+                button_downright = buttons[DownRightbtnId];
+                button_up = buttons[UpbtnId];
+                button_left = buttons[LeftbtnId];
+                button_down = buttons[DownbtnId];
+                button_right = buttons[RightbtnId];
+
+                if (i != DownLeftbtnId & i != UpLeftbtnId & i != DownRightbtnId & i != UpRightbtnId & i != LeftbtnId & i != RightbtnId & i != UpbtnId & i != DownbtnId) {
+                    $(btn).find('img').hide();
+                    LockerTimeEnd[i] = 0.0; // Record time then
+                    LockerTimeStart[i] = 0.0; // Record time then
+                    already[i] = 0;
                 }
+            }
         }
     }
 }
@@ -486,14 +523,46 @@ function enableSwipe() {
             var angle = e.angle;
             const dirStr = getSwipeDirectionFromAngle(angle, direction);
 
-            if (dirStr == 'up' && show_up) {button_up.click();already[UpbtnId]=0};
-            if (dirStr == 'down' && show_down) {button_down.click();already[DownbtnId]=0};
-            if (dirStr == 'left' && show_left) {button_left.click();already[LeftbtnId]=0};
-            if (dirStr == 'right' && show_right) {button_right.click();already[RightbtnId]=0};
-            if (dirStr == 'upright' && show_upright) {button_upright.click();already[UpRightbtnId]=0}
-            if (dirStr == 'downright' && show_downright) {button_downright.click();already[DownRightbtnId]=0}
-            if (dirStr == 'downleft' && show_downleft){ button_downleft.click();already[DownLeftbtnId]=0}
-            if (dirStr == 'upleft' && show_upleft) {button_upleft.click();;already[UpLeftbtnId]=0}
+            if (dirStr == 'up' && show_up) {
+                button_up.click();
+                already[UpbtnId] = 0;
+                touchLock = false;
+            };
+            if (dirStr == 'down' && show_down) {
+                button_down.click();
+                already[DownbtnId] = 0;
+                touchLock = false;
+            };
+            if (dirStr == 'left' && show_left) {
+                button_left.click();
+                already[LeftbtnId] = 0;
+                touchLock = false;
+            };
+            if (dirStr == 'right' && show_right) {
+                button_right.click();
+                already[RightbtnId] = 0;
+                touchLock = false;
+            };
+            if (dirStr == 'upright' && show_upright) {
+                button_upright.click();
+                already[UpRightbtnId] = 0;
+                touchLock = false;
+            }
+            if (dirStr == 'downright' && show_downright) {
+                button_downright.click();
+                already[DownRightbtnId] = 0;
+                touchLock = false;
+            }
+            if (dirStr == 'downleft' && show_downleft) {
+                button_downleft.click();
+                already[DownLeftbtnId] = 0;
+                touchLock = false;
+            }
+            if (dirStr == 'upleft' && show_upleft) {
+                button_upleft.click();
+                already[UpLeftbtnId] = 0;
+                touchLock = false;
+            }
         });
     }
 };
