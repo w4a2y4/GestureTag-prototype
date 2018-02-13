@@ -377,7 +377,7 @@ function changePos(eyeX, eyeY) {
                 button_down = buttons[DownbtnId];
                 button_right = buttons[RightbtnId];
 
-                if (i != DownLeftbtnId & i != UpLeftbtnId & i != DownRightbtnId & i != UpRightbtnId & i != LeftbtnId & i != RightbtnId & i != UpbtnId & i != DownbtnId) {
+                if (i != DownLeftbtnId && i != UpLeftbtnId && i != DownRightbtnId && i != UpRightbtnId && i != LeftbtnId && i != RightbtnId && i != UpbtnId && i != DownbtnId) {
                     $(btn).find('img').hide();
                     LockerTimeEnd[i] = 0.0; // Record time then
                     LockerTimeStart[i] = 0.0; // Record time then
