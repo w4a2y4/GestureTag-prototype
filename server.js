@@ -57,7 +57,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/gmail', (req, res) => {
-    res.render('gmail-center', loadImages());
+    res.render('gmail-edge', loadImages());
 });
 
 app.get('/swipe', (req, res) => {

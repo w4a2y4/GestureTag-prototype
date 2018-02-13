@@ -1,0 +1,276 @@
+<html>
+
+<head>
+    <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
+    <link rel="stylesheet" type="text/css" href="resources/gmail-edge.css">
+    <script type="text/javascript">
+        const RADIUS = 50;
+    </script>
+</head>
+
+<body>
+
+    <div id="header">
+        <div id="search">
+            <div id="search-bar">
+                <button><img src=""></button>
+            </div>
+            <div id="search-icon">
+                <button><img src=""></button>
+            </div>
+        </div>
+        <div id="right-block">
+            <div id="profile">
+                <button>
+                <% if(process.argv[3] === 'motor'){ %>
+                    <img src="">
+                <% } else{ %>
+                    <img src="">
+                <% } %>
+                </button>
+            </div>
+            <div id="notify">
+                <button><img src=""></button>
+            </div>
+            <div id="nine-grid">
+                <button><img src=""></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="option-bar">
+        <div id="gmail">
+            <button>
+            <% if(process.argv[3] === 'motor'){ %>
+                <img src="">
+            <% } else{ %>
+                <img src="">
+            <% } %>
+            </button>
+        </div>
+        <div id="checkbox">
+            <button><img src=""></button>
+        </div>
+        <div id="reload">
+            <button><img src=""></button>
+        </div>
+        <div id="more">
+            <button>
+            <% if(process.argv[3] === 'motor'){ %>
+                <img src="">
+            <% } else{ %>
+                <img src="">
+            <% } %>
+            </button>
+        </div>
+    </div>
+
+    <div id="side-bar">
+        <div id="nav">
+            <div id="write">
+                <button><img src=""></button>
+            </div>
+            <div id="nav01">
+                <button>
+                <% if(process.argv[3] === 'motor'){ %>
+                    <img src="">
+                <% } else{ %>
+                    <img src="">
+                <% } %>
+                </button>
+            </div>
+            <div id="nav02">
+                <button>
+                <% if(process.argv[3] === 'motor'){ %>
+                    <img src="">
+                <% } else{ %>
+                    <img src="">
+                <% } %>
+                </button>
+            </div>
+            <div id="nav02">
+                <button><img src=""></button>
+            </div>
+            <div id="nav04">
+                <button>
+                <% if(process.argv[3] === 'motor'){ %>
+                    <img src="">
+                <% } else{ %>
+                    <img src="">
+                <% } %>
+                </button>
+            </div>
+            <div id="nav05">
+                <button><img src=""></button>
+            </div>
+            <div id="category">
+                <button><img src=""></button>
+            </div>
+            <div id="nav06">
+                <button><img src=""></button>
+            </div>
+            <div id="nav07">
+                <button><img src=""></button>
+            </div>
+            <div id="nav08">
+                <button><img src=""></button>
+            </div>
+            <div id="nav09">
+                <button><img src=""></button>
+            </div>
+        </div>
+        <div id="hangouts">
+            <div class="friend" id="friend01">
+                <button>
+                <% if(process.argv[3] === 'motor'){ %>
+                    <img src="">
+                <% } else{ %>
+                    <img src="">
+                <% } %>
+                </button>
+            </div>
+            <div class="friend" id="friend02">
+                <button>
+                <% if(process.argv[3] === 'motor'){ %>
+                    <img src="">
+                <% } else{ %>
+                    <img src="">
+                <% } %>
+                </button>
+            </div>
+            <div id="hangouts-footer">
+                <div class="hangouts-icon" id="hangouts-icon01">
+                    <button><img src=""></button>
+                </div>
+                <div class="hangouts-icon" id="hangouts-icon02">
+                    <button><img src=""></button>
+                </div>
+                <div class="hangouts-icon" id="hangouts-icon03">
+                    <button><img src=""></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="inbox">
+        <div id="tab-bar">
+            <div class="tab" id="tab01">
+                <button><img src=""></button>
+            </div>
+            <div class="tab" id="tab02">
+                <button><img src=""></button>
+            </div>
+            <div class="tab" id="tab03">
+                <button><img src=""></button>
+            </div>
+        </div>
+
+        <div class="mail" id="mail01">
+            <button><img src=""></button>
+        </div>
+        <div class="mail" id="mail02">
+            <button><img src=""></button>
+        </div>
+        <div class="mail" id="mail03">
+            <button><img src=""></button>
+        </div>
+        <div class="mail" id="mail04">
+            <button><img src=""></button>
+        </div>
+        <div class="mail" id="mail05">
+            <button>
+            <% if(process.argv[3] === 'motor'){ %>
+                <img src="">
+            <% } else{ %>
+                <img src="">
+            <% } %>
+            </button>
+        </div>
+        <div class="mail" id="mail06">
+            <button>
+            <% if(process.argv[3] === 'motor'){ %>
+                <img src="">
+            <% } else{ %>
+                <img src="">
+            <% } %>
+            </button>
+        </div>
+        <div class="mail" id="mail07">
+            <button><% if(process.argv[3] === 'motor'){ %>
+                <img src="">
+            <% } else{ %>
+                <img src="">
+            <% } %></button>
+        </div>
+        <div class="mail" id="mail08">
+            <button><img src=""></button>
+        </div>
+        <div class="mail" id="mail09">
+            <button><img src=""></button>
+        </div>
+        <div class="mail" id="mail10">
+            <button><img src=""></button>
+        </div>
+        <div class="mail" id="mail11">
+            <button><img src=""></button>
+        </div>
+        <div class="mail" id="mail12">
+            <button><img src=""></button>
+        </div>
+        <div class="mail" id="mail13">
+            <button><img src=""></button>
+        </div>
+        <div class="mail" id="mail14">
+            <button><img src=""></button>
+        </div>
+        <div class="mail" id="mail15">
+            <button><img src=""></button>
+        </div>
+        <div class="mail" id="mail16">
+            <button>
+            <% if(process.argv[3] === 'motor'){ %>
+                <img src="">
+            <% } else{ %>
+                <img src="">
+            <% } %>
+            </button>
+        </div>
+        <div class="mail" id="mail17">
+            <button><img src=""></button>
+        </div>
+        <div class="mail" id="mail18">
+            <button>
+            <% if(process.argv[3] === 'motor'){ %>
+                <img src="">
+            <% } else{ %>
+                <img src="">
+            <% } %>
+            </button>
+        </div>
+        <div class="mail" id="mail19">
+            <button><img src=""></button>
+        </div>
+
+    </div>
+
+    <% if(process.argv[4] === 'mobile'){ %>
+        <div id="MobileContainer"></div>
+        <% } %>
+
+            <div id="canvas_container">
+                <canvas id="canvas" width="1400" height="1000"></canvas>
+            </div>
+
+            <div id="eye_tracker" class="<%=EYETRACKER%>">
+                <img id="icon_2" src="<%=OPTION_1%>"/> 
+                <img id="icon_4" src="<%=OPTION_2%>"/>
+                <img id="icon_3" src="<%=OPTION_3%>"/>
+                <img id="icon_1" src="<%=OPTION_4%>"/>
+            </div>
+
+            <script src="/socket.io/socket.io.js"></script>
+            <script src="resources/index-center.js"></script>
+</body>
+
+</html>

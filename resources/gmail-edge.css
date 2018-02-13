@@ -1,0 +1,246 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    margin: 0;
+    background-image: url(gmail.png);
+    background-size: cover;
+    overflow: hidden;
+}
+
+#canvas_container {
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+    position: absolute;
+}
+
+#MobileContainer {
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    position: fixed;
+}
+
+#eye_tracker {
+    pointer-events: none;
+    position: absolute;
+}
+
+#eye_tracker.gesturetag {
+    display: block;
+    width: 100px;
+    height: 100px;
+    margin-top: -50px;
+    margin-left: -50px;
+    border-radius: 50px;
+    background: rgba(10, 112, 215, 0.4);
+    /* -webkit-filter: blur(10px); */
+}
+
+#eye_tracker img{
+    width: 25%;
+    height: auto;
+    position: absolute;
+    pointer-events: none;
+}
+
+#eye_tracker.dwell {
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin-top: -8px;
+    margin-left: -8px;
+    border-radius: 8px;
+    background: red;
+    -webkit-filter: blur(5px);
+}
+
+button {
+    height: 100%;
+    width: 100%;
+    visibility: hidden;
+}
+
+.target {
+    visibility: visible;
+    opacity: 0.7;
+    background: #b0e7c6;
+}
+
+.clicked {
+    visibility: visible;
+    opacity: 0.7;
+    background: pink;
+}
+
+img {
+    position: relative;
+    visibility: visible;
+    display: none;
+    height: 100%;
+    /* float: right; */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* .mail img {
+    float: left;
+    left: 285px;
+} */
+
+#gmail img {
+    left: 50px;
+}
+
+/* #nav img {
+    left: 10px;
+} */
+
+#nav button {
+    padding: 0% 20% 0% 20%;
+}
+
+.hangouts-icon img {
+    top: -45px;
+    left: 5px;
+}
+
+#right-block img {
+    /* top: 42px; */
+    left: 5px;
+}
+
+#header {
+    width: 100%;
+    height: 83px;
+    padding: 21.5px 40px 21.5px 40px;
+}
+
+#search {
+    position: absolute;
+    height: 40px;
+    width: calc(7 / 16 * 100%);
+    margin-left: 12%;
+}
+
+#search #search-bar {
+    height: 100%;
+    width: 85%;
+    float: left;
+}
+
+#search #search-icon {
+    height: 100%;
+    width: 10%;
+    float: left;
+}
+
+#right-block div {
+    float: right;
+    height: 42px;
+    width: 45px;
+    margin-left: 17px;
+}
+
+#option-bar {
+    width: 100%;
+    height: 67px;
+}
+
+#option-bar #gmail {
+    margin-right: 6%;
+    /* margin-left: 40px; */
+}
+
+#option-bar div {
+    width: 100px;
+    height: 42px;
+    margin: 12px;
+    float: left;
+}
+
+#side-bar {
+    position: absolute;
+    width: 12.5%;
+    height: 1183px;
+}
+
+#nav {
+    height: 535px;
+    padding: 12px 62px 0 32.5px;
+}
+
+#nav #write {
+    margin: 0 10px 10px 10px;
+    height: 40px;
+}
+
+#nav #category {
+    margin: 10px 0 10px 0;
+    height: 40px;
+}
+
+#nav div {
+    width: 160px;
+    height: 45px;
+}
+
+#hangouts {
+    height: 648px;
+}
+
+.friend {
+    height: 61px;
+    width: 225px;
+    margin-left: 35px;
+}
+
+#hangouts-footer {
+    width: 100%;
+    height: 45px;
+    position: absolute;
+    bottom: 0;
+    padding-left: 75px;
+}
+
+.hangouts-icon {
+    float: left;
+    width: 50px;
+    height: 45px;
+}
+
+#inbox {
+    margin-left: 12.5%;
+    height: 1183px;
+    width: calc(100% - 12.5%);
+}
+
+#tab-bar {
+    height: calc(1 / 25 * 100%);
+    width: 100%;
+    margin-bottom: 0.5%;
+}
+
+.tab {
+    float: left;
+    width: calc(2.7/14 * 100%);
+    height: 60px;
+    /* margin: 11px 0px 10px 0px; */
+    margin: 0px;
+}
+
+.mail {
+    height: 4.3%;
+    width: 100%;
+}

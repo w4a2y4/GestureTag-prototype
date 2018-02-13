@@ -39,6 +39,7 @@ const swipeImages = {
     downleft: img_prefix + 'arrow_downleft.png',
     upleft: img_prefix + 'arrow_upleft.png'
 };
+
 const tapImages = {
     up: img_prefix + 'tap_topright.png',
     down: img_prefix + 'tap_bottomleft.png',
@@ -46,6 +47,12 @@ const tapImages = {
     right: img_prefix + 'tap_bottomright.png'
 };
 
+var currentBtnList = {
+    '1':{},
+    '2':{},
+    '3':{},
+    '4':{}
+};
 
 $(document).keyup((e) => {
     // key "enter"
@@ -242,45 +249,79 @@ function changePos(eyeX, eyeY) {
                     console.log("Selection Success!!");
                     already[i] = 0; // reinitialize
                 }
-                // Showing image 
+                // Showing image
                 $(btn).find('img').show();
-
             } else {
                 $(btn).find('img').hide();
                 already[i] = 0;
             }
         } else {
             if (overlap(btn, eyeX, eyeY)) {
-                $(btn).find('img').show();
-                if (isUp(btn)) {
-                    button_up = btn;
-                    show_up = true;
-                } else if (isDown(btn)) {
-                    button_down = btn;
-                    show_down = true;
-                } else if (isLeft(btn)) {
-                    button_left = btn;
-                    show_left = true;
-                } else if (isRight(btn)) {
-                    button_right = btn;
-                    show_right = true;
-                } else if (isUpRight(btn)) {
-                    button_upright = btn;
-                    show_upright = true;
-                } else if (isDownRight(btn)) {
-                    button_downright = btn;
-                    show_downright = true;
-                } else if (isDownLeft(btn)) {
-                    button_downleft = btn;
-                    show_downleft = true;
-                } else if (isUpLeft(btn)) {
-                    button_upleft = btn;
-                    show_upleft = true;
-                }
+                showIcons(eyeX, eyeY, btn);
+                // $(btn).find('img').show();
+                // if (isUp(btn)) {
+                //     button_up = btn;
+                //     show_up = true;
+                // } else if (isDown(btn)) {
+                //     button_down = btn;
+                //     show_down = true;
+                // } else if (isLeft(btn)) {
+                //     button_left = btn;
+                //     show_left = true;
+                // } else if (isRight(btn)) {
+                //     button_right = btn;
+                //     show_right = true;
+                // } else if (isUpRight(btn)) {
+                //     button_upright = btn;
+                //     show_upright = true;
+                // } else if (isDownRight(btn)) {
+                //     button_downright = btn;
+                //     show_downright = true;
+                // } else if (isDownLeft(btn)) {
+                //     button_downleft = btn;
+                //     show_downleft = true;
+                // } else if (isUpLeft(btn)) {
+                //     button_upleft = btn;
+                //     show_upleft = true;
+                // }
             } else $(btn).find('img').hide();
         }
     }
 }
+
+var showIcons = (cursorX, cursorY, overlapBtn) => {
+    // check which direction overlap
+    let btnCenterX = Number($(overlapBtn).offset().left) + Number($(overlapBtn).width()) / 2;
+    let btnCenterY = Number($(overlapBtn).offset().top) + Number($(overlapBtn).height()) / 2;
+    // assign the icon to that direction
+    let angle = Math.atan2(cursorY - btnCenterY, btnCenterX - cursorX);
+    if(angle >= 0)
+        angle = Math.floor(angle / 90) + 1;
+    else {
+        angle = Math.floor(angle / 90) + 4;
+    }
+    let index = angle.toString();
+    let btnName = $(overlapBtn).parent().attr('id');
+    // save the btn in a tempList
+    for (let key in currentBtnList){
+        if(currentBtnList[key].name === btnName){
+            if(key !== index)
+                currentBtnList[key] = {};
+        }
+    }
+    currentBtnList[index] = {
+        name: btnName,
+        x: btnCenterX,
+        y: btnCenterY
+    };
+
+    for(const [key, btn] of Object.entries(currentBtnList)) {
+        if(btn !== 'undefined')
+            $(`#icon_${key}`).show();
+        else
+            $(`#icon_${key}`).hide();
+    }
+};
 
 function showTarget() {
     if (trial_num == 0) {
