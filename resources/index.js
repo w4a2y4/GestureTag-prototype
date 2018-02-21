@@ -85,14 +85,7 @@ socket.on('eyemove', (x, y) => {
 
 socket.on('swipe', (dir) => {
     gesture = dir;
-    if (dir == 'up' && show_up) button_up.click();
-    if (dir == 'down' && show_down) button_down.click();
-    if (dir == 'left' && show_left) button_left.click();
-    if (dir == 'right' && show_right) button_right.click();
-    if (dir == 'upright' && show_upright) button_upright.click();
-    if (dir == 'downright' && show_downright) button_downright.click();
-    if (dir == 'downleft' && show_downleft) button_downleft.click();
-    if (dir == 'upleft' && show_upleft) button_upleft.click();
+    enableClick(dir);
 });
 
 socket.on('tap', (pos) => {
@@ -364,15 +357,18 @@ function enableSwipe() {
             var direction = e.offsetDirection;
             var angle = e.angle;
             const dirStr = getSwipeDirectionFromAngle(angle, direction);
-
-            if (dirStr == 'up' && show_up) button_up.click();
-            if (dirStr == 'down' && show_down) button_down.click();
-            if (dirStr == 'left' && show_left) button_left.click();
-            if (dirStr == 'right' && show_right) button_right.click();
-            if (dirStr == 'upright' && show_upright) button_upright.click();
-            if (dirStr == 'downright' && show_downright) button_downright.click();
-            if (dirStr == 'downleft' && show_downleft) button_downleft.click();
-            if (dirStr == 'upleft' && show_upleft) button_upleft.click();
+            enableClick(dirStr);
         });
     }
 };
+
+function enableClick(dirStr) {
+    if (dirStr == 'up' && show_up) button_up.click();
+    if (dirStr == 'down' && show_down) button_down.click();
+    if (dirStr == 'left' && show_left) button_left.click();
+    if (dirStr == 'right' && show_right) button_right.click();
+    if (dirStr == 'upright' && show_upright) button_upright.click();
+    if (dirStr == 'downright' && show_downright) button_downright.click();
+    if (dirStr == 'downleft' && show_downleft) button_downleft.click();
+    if (dirStr == 'upleft' && show_upleft) button_upleft.click();
+}
