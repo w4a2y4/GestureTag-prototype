@@ -365,7 +365,7 @@ function enableSwipe() {
             // If one can only do multi-touch swipe
             if (ev.maxPointers > 1) {
                 if (ev.isFinal === true) {
-                    let multidir = ev.direction
+                    let multidir = ev.direction;
                     if (multidir === Hammer.DIRECTION_RIGHT) {
                         dir = 'right';
                     } else if (multidir === Hammer.DIRECTION_UP) {
