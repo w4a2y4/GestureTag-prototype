@@ -9,10 +9,10 @@ html {
 }
 
 body {
-    min-height: 100%;
+    min-weight: 100%;
     margin: 0;
     background-image: url(youtube.png);
-    background-size: cover;
+    /*background-size: cover;*/
     overflow: hidden;
 }
 
@@ -62,7 +62,9 @@ body {
 button {
     height: 100%;
     width: 100%;
-    visibility: hidden;
+    /*visibility: hidden;*/
+    opacity: 0.7;
+    background: pink;
 }
 
 .target {
@@ -100,11 +102,28 @@ img {
     position: absolute;
     margin-left: 238px;
     height: 1053px;
-    width: 1245px;
+    width: 1307px;
 }
 
 #up-next {
-    margin-left: 1483px;
+    margin-left: 1545px;
     height: 1053px;
     width: 437px;
+}
+
+#auto {
+    height: 55px;
+    padding-left: 257px;
+    padding-top: 15px;
+    padding-right: 35px;
+}
+
+.video {
+    height: 89px;
+    width: 162px;
+    margin-top: 9px;
+}
+
+#video01 {
+    margin-bottom: 35px;
 }
