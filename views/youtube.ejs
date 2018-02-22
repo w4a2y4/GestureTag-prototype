@@ -1,0 +1,109 @@
+<html>
+
+<head>
+    <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
+    <link rel="stylesheet" type="text/css" href="resources/youtube.css">
+    <script type="text/javascript">
+        const RADIUS = 50;
+    </script>
+</head>
+
+<body>
+
+    <div id="header">
+        <div id="toggle"></div>
+        <div id="youtube"></div>
+        <div id="search">
+            <div id="search-bar"></div>
+            <div id="search-icon"></div>
+        </div>
+        <div id="right-block">
+            <div id="profile"></div>
+            <div id="notify"></div>
+            <div id="nine-grid"></div>
+            <div id="upload"></div>
+        </div>
+    </div>
+
+    <div id="side-bar">
+        <div id="home"></div>
+        <div id="hot"></div>
+        <div id="following"></div>
+        <div id="medias">
+            <div id="media1"></div>
+            <div id="media2"></div>
+            <div id="media3"></div>
+            <div id="media4"></div>
+            <div id="media5"></div>
+        </div>
+        <div id="channels">
+            <div id="channel01"></div>
+            <div id="channel02"></div>
+            <div id="channel03"></div>
+            <div id="channel04"></div>
+            <div id="channel05"></div>
+            <div id="channel06"></div>
+            <div id="channel07"></div>
+            <div id="channel08"></div>
+            <div id="channel09"></div>
+            <div id="channel10"></div>
+            <div id="channel11"></div>
+            <div id="channel12"></div>
+        </div>
+    </div>
+
+    <div id="main">
+        <div id="video"></div>
+        <div id="control-bar">
+            <div id="play"></div>
+            <div id="fast"></div>
+            <div id="volume"></div>
+            <div id="setting"></div>
+            <div id="theater"></div>
+            <div id="fullscreen"></div>
+        </div>
+        <div id="reaction">
+            <div id="like"></div>
+            <div id="dislike"></div>
+            <div id="share"></div>
+            <div id="playlist"></div>
+            <div id="options"></div>
+        </div>
+        <div id="howfun"></div>
+        <div id="follow"></div>
+        <div id="full-description"></div>
+        <div id="sort"></div>
+    </div>
+
+    <div id="recommend">
+        <div id="auto"></div>
+        <div id="video01"></div>
+        <div id="video02"></div>
+        <div id="video03"></div>
+        <div id="video04"></div>
+        <div id="video05"></div>
+        <div id="video06"></div>
+        <div id="video07"></div>
+        <div id="video08"></div>
+        <div id="video09"></div>
+        <div id="video10"></div>
+    </div>
+
+
+    <% if(process.argv[4] === 'mobile'){ %>
+        <div id="MobileContainer"></div>
+    <% } %>
+
+    <div id="canvas_container">
+        <canvas id="canvas" width="1400" height="1000"></canvas>
+    </div>
+
+    <div id="eye_tracker" class="<%=EYETRACKER%>"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="resources/index.js"></script>
+
+</body>
+
+</html>
