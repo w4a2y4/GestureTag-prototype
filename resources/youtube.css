@@ -1,0 +1,110 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    margin: 0;
+    background-image: url(youtube.png);
+    background-size: cover;
+    overflow: hidden;
+}
+
+#canvas_container {
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+    position: absolute;
+}
+
+#MobileContainer {
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    position: fixed;
+}
+
+#eye_tracker {
+    pointer-events: none;
+    position: absolute;
+}
+
+#eye_tracker.gesturetag {
+    display: block;
+    width: 100px;
+    height: 100px;
+    margin-top: -50px;
+    margin-left: -50px;
+    border-radius: 50px;
+    background: rgba(10, 112, 215, 0.4);
+    -webkit-filter: blur(10px);
+}
+
+#eye_tracker.dwell {
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin-top: -8px;
+    margin-left: -8px;
+    border-radius: 8px;
+    background: red;
+    -webkit-filter: blur(5px);
+}
+
+button {
+    height: 100%;
+    width: 100%;
+    visibility: hidden;
+}
+
+.target {
+    visibility: visible;
+    opacity: 0.7;
+    background: #b0e7c6;
+}
+
+.clicked {
+    visibility: visible;
+    opacity: 0.7;
+    background: pink;
+}
+
+img {
+    position: relative;
+    visibility: visible;
+    display: none;
+    height: 100%;
+    float: right;
+}
+
+#header {
+    width: 100%;
+    height: 57px;
+}
+
+#side-bar {
+    position: absolute;
+    width: 238px;
+    height: 1053px;
+}
+
+#main {
+    position: absolute;
+    margin-left: 238px;
+    height: 1053px;
+    width: 1245px;
+}
+
+#up-next {
+    margin-left: 1483px;
+    height: 1053px;
+    width: 437px;
+}
