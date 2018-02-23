@@ -27,8 +27,10 @@ npm run-script dwell (config the server for dwell tasks)
 ```
 localhost:3000
 localhost:3000/gmail
+localhost:3000/youtube
 ```
-for the gmail page, the `zoom` value of the browser may need to be modified.
+for the mock-up pages, the `zoom` value of the browser may need to be modified.
+ps. size of the mock-up pages are `16:10`.
 
 ### open the touch input client
 

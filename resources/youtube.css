@@ -1,0 +1,300 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    min-weight: 100%;
+    margin: 0;
+    background-image: url(youtube.png);
+    background-size: cover;
+    overflow: hidden;
+}
+
+#canvas_container {
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+    position: absolute;
+}
+
+#MobileContainer {
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    position: fixed;
+}
+
+#eye_tracker {
+    pointer-events: none;
+    position: absolute;
+}
+
+#eye_tracker.gesturetag {
+    display: block;
+    width: 100px;
+    height: 100px;
+    margin-top: -50px;
+    margin-left: -50px;
+    border-radius: 50px;
+    background: rgba(10, 112, 215, 0.4);
+    -webkit-filter: blur(10px);
+}
+
+#eye_tracker.dwell {
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin-top: -8px;
+    margin-left: -8px;
+    border-radius: 8px;
+    background: red;
+    -webkit-filter: blur(5px);
+}
+
+button {
+    height: 100%;
+    width: 100%;
+    visibility: hidden;
+}
+
+.target {
+    visibility: visible;
+    opacity: 0.7;
+    background: #b0e7c6;
+}
+
+.clicked {
+    visibility: visible;
+    opacity: 0.7;
+    background: pink;
+}
+
+img {
+    position: relative;
+    visibility: visible;
+    /*display: none;*/
+    height: 100%;
+    float: right;
+}
+
+#header {
+    width: 100%;
+    height: 63px;
+}
+
+#header div {
+    height: 63px;
+    padding: 10px;
+}
+
+#toggle {
+    position: absolute;
+    width: 63px;
+    margin-left: 10px;
+}
+
+#youtube {
+    position: absolute;
+    margin-left: 60px;
+    width: 150px;
+}
+
+#search {
+    position: absolute;
+    margin-left: 250px;
+    width: 750px;
+    padding: 5px;
+}
+
+#search #search-bar {
+    height: 100%;
+    width: 658px;
+    float: left;
+    padding: 3px;
+}
+
+#search #search-icon {
+    height: 100%;
+    width: 68px;
+    float: left;
+    padding: 3px 0px 3px 0px;
+}
+
+#right-block div {
+    float: right;
+    height: 100%;
+    padding: 0px;
+    width: 39px;
+    margin-right: 15px;
+}
+
+#right-block #profile {
+    width: 40px;
+    margin-right: 22px;
+    margin-left: 7px;
+}
+
+
+#side-bar {
+    position: absolute;
+    width: 260px;
+    height: 1053px;
+}
+
+.side-btn {
+    height: 37px;
+    width: 195px;
+    margin: 8px 0px 8px 20px;
+}
+
+#home {
+    margin-top: 15px;
+}
+
+#library {
+    margin-top: 61px;
+}
+
+#channels {
+    margin-top: 58px;
+}
+
+#channel06 {
+    margin-bottom: 3px;
+}
+
+#channel07 {
+    margin-top: 3px;
+}
+
+#browse {
+    margin-top: 23px;
+}
+
+#settings {
+    margin-top: 25px;
+}
+
+
+#main {
+    position: absolute;
+    margin-left: 260px;
+    height: 1053px;
+    width: 1226px;
+    padding: 20px 20px 0px 50px;
+}
+
+#main-video {
+    height: 615px;
+    width: 100%;
+}
+
+#control-bar {
+    height: 35px;
+}
+
+#control-bar div {
+    width: 35px;
+    float: left;
+}
+
+#control-icon1 {
+    margin-left: 15px;
+}
+
+#control-icon4 {
+    margin-left: 920px;
+}
+
+#reaction {
+    height: 35px;
+    margin-top: 88px;
+    margin-right: 10px;
+}
+
+#reaction div {
+    float: right;
+}
+
+#like {
+    width: 57px;
+}
+
+#dislike {
+    width: 57px;
+}
+
+#share {
+    width: 85px;
+}
+
+#playlist {
+    width: 40px;
+}
+
+#options {
+    width: 40px;
+}
+
+#sigchi {
+    position: absolute;
+    margin-top: 18px;
+    height: 47px;
+    width: 47px;
+}
+
+#subscribe {
+    margin-top: 27px;
+    height: 35px;
+    width: 130px;
+    margin-left: 1010px;
+}
+
+#show-more {
+    margin: 70px 0px 0px 50px;
+    height: 40px;
+    width: 90px;
+}
+
+#sort-by {
+    margin: 20px 0px 0px 100px;
+    height: 35px;
+    width: 110px;
+}
+
+#comment {
+    margin: 15px 0px 0px 45px;
+    height: 35px;
+    width: 170px;
+}
+
+#up-next {
+    margin-left: 1517px;
+    height: 1053px;
+    width: 434px;
+}
+
+#auto {
+    height: 49px;
+    padding-left: 313px;
+    padding-top: 15px;
+    padding-right: 73px;
+}
+
+.video {
+    height: 85px;
+    width: 151px;
+    margin-top: 7px;
+}
+
+#video01 {
+    margin-bottom: 28px;
+}
