@@ -12,7 +12,7 @@ body {
     min-weight: 100%;
     margin: 0;
     background-image: url(youtube.png);
-    /*background-size: cover;*/
+    background-size: cover;
     overflow: hidden;
 }
 
@@ -89,41 +89,62 @@ img {
 
 #header {
     width: 100%;
+    height: 63px;
+}
+
+#header div {
     height: 57px;
+    padding: 10px;
+}
+
+#toggle {
+    position: absolute;
+    width: 57px;
+    margin-left: 10px;
+}
+
+#youtube {
+    position: absolute;
+    margin-left: 60px;
+    width: 135px;
+}
+
+#search {
+    position: absolute;
 }
 
 #side-bar {
     position: absolute;
-    width: 238px;
+    width: 260px;
     height: 1053px;
 }
 
 #main {
     position: absolute;
-    margin-left: 238px;
+    margin-left: 260px;
     height: 1053px;
-    width: 1307px;
+    width: 1226px;
 }
 
 #up-next {
-    margin-left: 1545px;
+    margin-left: 1486px;
     height: 1053px;
-    width: 437px;
+    width: 434px;
 }
 
 #auto {
-    height: 55px;
-    padding-left: 257px;
+    height: 51px;
+    padding-left: 245px;
     padding-top: 15px;
-    padding-right: 35px;
+    padding-right: 70px;
 }
 
 .video {
-    height: 89px;
-    width: 162px;
-    margin-top: 9px;
+    height: 85px;
+    width: 151px;
+    margin-top: 7px;
 }
 
 #video01 {
-    margin-bottom: 35px;
+    margin-bottom: 28px;
 }
