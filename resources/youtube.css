@@ -135,11 +135,13 @@ img {
     height: 100%;
     padding: 0px;
     width: 39px;
-    margin-right: 17px;
+    margin-right: 15px;
 }
 
 #right-block #profile {
-    width: 45px;
+    width: 40px;
+    margin-right: 22px;
+    margin-left: 7px;
 }
 
 
@@ -179,11 +181,96 @@ img {
     margin-top: 25px;
 }
 
+
 #main {
     position: absolute;
     margin-left: 260px;
     height: 1053px;
     width: 1226px;
+    padding: 20px 20px 0px 50px;
+}
+
+#main-video {
+    height: 615px;
+    width: 100%;
+}
+
+#control-bar {
+    height: 35px;
+}
+
+#control-bar div {
+    width: 35px;
+    float: left;
+}
+
+#control-icon1 {
+    margin-left: 15px;
+}
+
+#control-icon4 {
+    margin-left: 920px;
+}
+
+#reaction {
+    height: 35px;
+    margin-top: 48px;
+}
+
+#reaction div {
+    float: right;
+}
+
+#like {
+    width: 57px;
+}
+
+#dislike {
+    width: 57px;
+}
+
+#share {
+    width: 85px;
+}
+
+#playlist {
+    width: 40px;
+}
+
+#options {
+    width: 40px;
+}
+
+#sigchi {
+    position: absolute;
+    margin-top: 18px;
+    height: 47px;
+    width: 47px;
+}
+
+#subscribe {
+    margin-top: 27px;
+    height: 35px;
+    width: 130px;
+    margin-left: 1020px;
+}
+
+#show-more {
+    margin: 70px 0px 0px 50px;
+    height: 40px;
+    width: 90px;
+}
+
+#sort-by {
+    margin: 20px 0px 0px 100px;
+    height: 35px;
+    width: 110px;
+}
+
+#comment {
+    margin: 15px 0px 0px 45px;
+    height: 35px;
+    width: 170px;
 }
 
 #up-next {
