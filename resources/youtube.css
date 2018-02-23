@@ -142,10 +142,41 @@ img {
     width: 45px;
 }
 
+
 #side-bar {
     position: absolute;
     width: 260px;
     height: 1053px;
+}
+
+.side-btn {
+    height: 37px;
+    width: 195px;
+    margin: 8px 0px 8px 20px;
+}
+
+#library {
+    margin-top: 68px;
+}
+
+#channels {
+    margin-top: 58px;
+}
+
+#channel06 {
+    margin-bottom: 5px;
+}
+
+#channel07 {
+    margin-top: 5px;
+}
+
+#browse {
+    margin-top: 20px;
+}
+
+#settings {
+    margin-top: 25px;
 }
 
 #main {
