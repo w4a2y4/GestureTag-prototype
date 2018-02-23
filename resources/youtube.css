@@ -93,24 +93,53 @@ img {
 }
 
 #header div {
-    height: 57px;
+    height: 63px;
     padding: 10px;
 }
 
 #toggle {
     position: absolute;
-    width: 57px;
+    width: 63px;
     margin-left: 10px;
 }
 
 #youtube {
     position: absolute;
     margin-left: 60px;
-    width: 135px;
+    width: 150px;
 }
 
 #search {
     position: absolute;
+    margin-left: 250px;
+    width: 750px;
+    padding: 5px;
+}
+
+#search #search-bar {
+    height: 100%;
+    width: 658px;
+    float: left;
+    padding: 3px;
+}
+
+#search #search-icon {
+    height: 100%;
+    width: 68px;
+    float: left;
+    padding: 3px 0px 3px 0px;
+}
+
+#right-block div {
+    float: right;
+    height: 100%;
+    padding: 0px;
+    width: 39px;
+    margin-right: 17px;
+}
+
+#right-block #profile {
+    width: 45px;
 }
 
 #side-bar {
