@@ -82,7 +82,7 @@ button {
 img {
     position: relative;
     visibility: visible;
-    display: none;
+    /*display: none;*/
     height: 100%;
     float: right;
 }
@@ -157,8 +157,12 @@ img {
     margin: 8px 0px 8px 20px;
 }
 
+#home {
+    margin-top: 15px;
+}
+
 #library {
-    margin-top: 68px;
+    margin-top: 61px;
 }
 
 #channels {
@@ -166,15 +170,15 @@ img {
 }
 
 #channel06 {
-    margin-bottom: 5px;
+    margin-bottom: 3px;
 }
 
 #channel07 {
-    margin-top: 5px;
+    margin-top: 3px;
 }
 
 #browse {
-    margin-top: 20px;
+    margin-top: 23px;
 }
 
 #settings {
@@ -281,9 +285,9 @@ img {
 
 #auto {
     height: 51px;
-    padding-left: 245px;
+    padding-left: 313px;
     padding-top: 15px;
-    padding-right: 70px;
+    padding-right: 73px;
 }
 
 .video {
