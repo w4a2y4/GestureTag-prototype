@@ -26,7 +26,6 @@ var server_width = document.documentElement.clientWidth;
 var server_height = document.documentElement.clientHeight;
 var client_width, client_height;
 
-
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
 const swipeImages = {
@@ -193,6 +192,30 @@ function overlap(element, X, Y) {
     return false;
 }
 
+function distance (element, X, Y) {
+    var midX = element.offsetLeft + 0.5 * element.offsetWidth;
+    var midY = element.offsetTop  + 0.5 * element.offsetHeight;
+    return (Math.pow((X - midX), 2) + Math.pow((Y - midY), 2));
+}
+
+function swap(x, y) {
+    return [y,x];
+}
+
+function isIn(x, arr, len) {
+
+    console.log('isinisIn');
+
+    for (var i = 0; i < len; i++)
+        if ( x == arr[i] ) {
+            console.log(x + 'true');
+            return true;
+        }
+
+    console.log(x + 'false');
+    return false;
+}
+
 function changePos(eyeX, eyeY) {
 
     $('#eye_tracker').css({
@@ -216,12 +239,46 @@ function changePos(eyeX, eyeY) {
 
 
     var btn_num = buttons.length;
+    var candidate = new Array(buttons.length).fill(0);
+    var dist = new Array(buttons.length).fill(0);
+    var cnt = 0;
 
+    // candidate[] contains all overlapped btns' index
+    for (var i = 0; i < btn_num; i++) {
+        var btn = buttons[i];
+        if (overlap(btn, eyeX, eyeY)) {
+            candidate[cnt] = i;
+            dist[i] = distance(btn, eyeX, eyeY);
+            cnt += 1;
+        }
+    }
+
+    if ( cnt > 4 ) {
+        // selection sort by distance (only the 4 minimum)
+        for (var i = 0; i < 4; i++) {
+            var min = 100000, min_index = -1;
+            for (var j = i; j < cnt; j++) {
+                if ( dist[ candidate[j] ] < min ) {
+                    min = dist[ candidate[j] ];
+                    min_index = j;
+                }
+            }
+            if ( min_index != i )
+                swap( candidate[min_index], candidate[i] );
+        }
+    }
+
+    console.log('move~~~~');
+    for (var i = 0; i < cnt; i++) {
+        console.log(candidate[i] + ' ');
+    }
+
+    cnt = Math.min(4, cnt);
     for (var i = 0; i < btn_num; i++) {
         var btn = buttons[i];
 
         if (type === 'dwell') {
-            if (overlap(btn, eyeX, eyeY)) {
+            if ( isIn(i, candidate, cnt) ) {
                 if (already[i]) { // Have already looked at the target
                     TimeEnd = Date.now(); // Record time then
                 } else {
@@ -243,7 +300,7 @@ function changePos(eyeX, eyeY) {
                 already[i] = 0;
             }
         } else {
-            if (overlap(btn, eyeX, eyeY)) {
+            if ( isIn(i, candidate, cnt) ) {
                 $(btn).find('img').show();
                 if (isUp(btn)) {
                     button_up = btn;
