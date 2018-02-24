@@ -203,16 +203,8 @@ function swap(x, y) {
 }
 
 function isIn(x, arr, len) {
-
-    console.log('isinisIn');
-
     for (var i = 0; i < len; i++)
-        if ( x == arr[i] ) {
-            console.log(x + 'true');
-            return true;
-        }
-
-    console.log(x + 'false');
+        if ( x == arr[i] ) return true;
     return false;
 }
 
@@ -266,11 +258,6 @@ function changePos(eyeX, eyeY) {
             if ( min_index != i )
                 swap( candidate[min_index], candidate[i] );
         }
-    }
-
-    console.log('move~~~~');
-    for (var i = 0; i < cnt; i++) {
-        console.log(candidate[i] + ' ');
     }
 
     cnt = Math.min(4, cnt);
