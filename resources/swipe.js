@@ -1,6 +1,7 @@
 var container = document.querySelector(".container");
 const manager = new Hammer.Manager(container);
 const swipe = new Hammer.Swipe();
+
 var tester;
 manager.add(swipe);
 
@@ -58,6 +59,10 @@ manager.on('swipe', (e) => {
     emitSwipeGesture(dirStr);
     e.target.innerText = `${dirStr}`;
 });
+
+
+
+
 
 /* right : 0, up: -90, left: 180, down: 90 */
 var getSwipeDirectionFromAngle = (angle, direction) => {
