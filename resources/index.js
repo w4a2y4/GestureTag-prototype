@@ -193,8 +193,9 @@ function overlap(element, X, Y) {
 }
 
 function distance (element, X, Y) {
-    var midX = element.offsetLeft + 0.5 * element.offsetWidth;
-    var midY = element.offsetTop  + 0.5 * element.offsetHeight;
+    // use jQuery to get ABSOLUTE position
+    var midX = $(element).offset().left + 0.5 * element.offsetWidth;
+    var midY = $(element).offset().top  + 0.5 * element.offsetHeight;
     return (Math.pow((X - midX), 2) + Math.pow((Y - midY), 2));
 }
 
@@ -229,43 +230,47 @@ function changePos(eyeX, eyeY) {
     show_downleft = false;
     show_upleft = false;
 
-
+    // the candidates are the nearest [up, down, left, right]
     var btn_num = buttons.length;
-    var candidate = new Array(buttons.length).fill(0);
-    var dist = new Array(buttons.length).fill(0);
-    var cnt = 0;
+    var candidate = new Array(4).fill(-1);
+    var dist = new Array(4).fill(5000000);
 
-    // candidate[] contains all overlapped btns' index
+    // for each type of gesture, put the nearest's index in candidate[]
     for (var i = 0; i < btn_num; i++) {
         var btn = buttons[i];
         if (overlap(btn, eyeX, eyeY)) {
-            candidate[cnt] = i;
-            dist[i] = distance(btn, eyeX, eyeY);
-            cnt += 1;
-        }
-    }
 
-    if ( cnt > 4 ) {
-        // selection sort by distance (only the 4 minimum)
-        for (var i = 0; i < 4; i++) {
-            var min = 100000, min_index = -1;
-            for (var j = i; j < cnt; j++) {
-                if ( dist[ candidate[j] ] < min ) {
-                    min = dist[ candidate[j] ];
-                    min_index = j;
+            var curr_dist = distance(btn, eyeX, eyeY);
+
+            if (isUp(btn)) {
+                if (curr_dist < dist[0]) {
+                    candidate[0] = i;
+                    dist[0] = curr_dist;
+                }
+            } else if (isDown(btn)) {
+                if (curr_dist < dist[1]) {
+                    candidate[1] = i;
+                    dist[1] = curr_dist;
+                }
+            } else if (isLeft(btn)) {
+                if (curr_dist < dist[2]) {
+                    candidate[2] = i;
+                    dist[2] = curr_dist;
+                }
+            } else if (isRight(btn)) {
+                if (curr_dist < dist[3]) {
+                    candidate[3] = i;
+                    dist[3] = curr_dist;
                 }
             }
-            if ( min_index != i )
-                swap( candidate[min_index], candidate[i] );
         }
     }
 
-    cnt = Math.min(4, cnt);
     for (var i = 0; i < btn_num; i++) {
         var btn = buttons[i];
 
         if (type === 'dwell') {
-            if ( isIn(i, candidate, cnt) ) {
+            if ( overlap(btn, eyeX, eyeY) ) {
                 if (already[i]) { // Have already looked at the target
                     TimeEnd = Date.now(); // Record time then
                 } else {
@@ -287,7 +292,7 @@ function changePos(eyeX, eyeY) {
                 already[i] = 0;
             }
         } else {
-            if ( isIn(i, candidate, cnt) ) {
+            if ( isIn(i, candidate, 4) ) {
                 $(btn).find('img').show();
                 if (isUp(btn)) {
                     button_up = btn;
