@@ -202,10 +202,7 @@ function changePos(eyeX, eyeY) {
         "top": eyeY - 500
     });
 
-    isShown[0] = false;
-    isShown[1] = false;
-    isShown[2] = false;
-    isShown[3] = false;
+    isShown.fill(false);
 
     // the candidates are the nearest [up, down, left, right]
     var btn_num = buttons.length;
@@ -216,28 +213,11 @@ function changePos(eyeX, eyeY) {
     for (var i = 0; i < btn_num; i++) {
         var btn = buttons[i];
         if (overlap(btn, eyeX, eyeY)) {
-
             var curr_dist = distance(btn, eyeX, eyeY);
-
-            if (getBtnType(btn) == UP) {
-                if (curr_dist < dist[0]) {
-                    candidate[0] = i;
-                    dist[0] = curr_dist;
-                }
-            } else if (getBtnType(btn) == DOWN) {
-                if (curr_dist < dist[1]) {
-                    candidate[1] = i;
-                    dist[1] = curr_dist;
-                }
-            } else if (getBtnType(btn) == LEFT) {
-                if (curr_dist < dist[2]) {
-                    candidate[2] = i;
-                    dist[2] = curr_dist;
-                }
-            } else if (getBtnType(btn) == RIGHT) {
-                if (curr_dist < dist[3]) {
-                    candidate[3] = i;
-                    dist[3] = curr_dist;
+            for (var j = 0; j < 4; j++) {
+                if ( getBtnType(btn) == j && curr_dist < dist[j] ) {
+                    candidate[j] = i;
+                    dist[j] = curr_dist;
                 }
             }
         }
@@ -279,36 +259,20 @@ function changePos(eyeX, eyeY) {
                 var theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
                 $(btn).find('img').show();
                 if (theTimeInterval > 150.0 && touchLock == false) {
-                        // $(btn).find('img').show();
-                        if ( getBtnType(btn) == UP & LockerTimeEnd[postBtnId[0]] < LockerTimeEnd[i]) {
-                            postBtnId[0] = i;
-                            currBtn[0] = btn;
-                            isShown[0] = true;
-                        } else if ( getBtnType(btn) == DOWN & LockerTimeEnd[postBtnId[1]] < LockerTimeEnd[i]) {
-                            postBtnId[1] = i;
-                            currBtn[1] = btn;
-                            isShown[1] = true;
-                        } else if ( getBtnType(btn) == LEFT & LockerTimeEnd[postBtnId[2]] < LockerTimeEnd[i]) {
-                            postBtnId[2] = i;
-                            currBtn[2] = btn;
-                            isShown[2] = true;
-                        } else if ( getBtnType(btn) == RIGHT & LockerTimeEnd[ postBtnId[3]] < LockerTimeEnd[i]) {
-                            postBtnId[3] = i;
-                            currBtn[3] = btn;
-                            isShown[3] = true;
+                    for (var j = 0; j < 4; j++ ) {
+                        if ( getBtnType(btn) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
+                            postBtnId[j] = i;
+                            currBtn[j] = btn;
+                            isShown[j] = true;
                         }
                     }
+                }
             } else {
                 $(btn).find('img').hide();
-                isShown[0] = true;
-                isShown[1] = true;
-                isShown[2] = true;
-                isShown[3] = true;
-                currBtn[0] = buttons[postBtnId[0]];
-                currBtn[1] = buttons[postBtnId[2]];
-                currBtn[2] = buttons[postBtnId[1]];
-                currBtn[3] = buttons[postBtnId[3]];
-                if ( i != postBtnId[2] && i != postBtnId[3] && i != postBtnId[0] && i != postBtnId[1]) {
+                isShown.fill(true);
+                for (var j = 0; j < 4; j++)
+                    currBtn[j] = buttons[postBtnId[j]];
+                if ( !isIn(i, postBtnId, 4) ) {
                     LockerTimeEnd[i] = 0.0; // Record time then
                     LockerTimeStart[i] = 0.0; // Record time then
                     already[i] = 0;
@@ -413,7 +377,6 @@ function enableClick(dirStr) {
     if (dirStr == 'left' && isShown[2]) buttons[postBtnId[2]].click();
     if (dirStr == 'right' && isShown[3]) buttons[postBtnId[3]].click();
 }
-
 
 var swipeAndUnlock = (dir) => {
     if (dir == 'up' && isShown[0]) {
