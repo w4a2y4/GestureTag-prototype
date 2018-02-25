@@ -57,6 +57,10 @@ app.get('/', (req, res) => {
 });
 
 app.get('/gmail', (req, res) => {
+    // please modify this part to render different visual designs
+    // gmail : the original setup
+    // gmail-center : the tag is fixed at the center of the button
+    // gmail-edge: tags show up at the edge of the cursor
     res.render('gmail-edge', loadImages());
 });
 
