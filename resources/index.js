@@ -86,10 +86,15 @@ socket.on('eyemove', (x, y) => {
     changePos(x * 1.11, y * 1.11);
 });
 
-socket.on('swipe', (dir) => {
+socket.on('swipe', (dirStr) => {
     gesture = dir;
+    var dir;
+    if (dirStr == 'up') dir = UP;
+    else if (dirStr == 'down') dir = DOWN;
+    else if (dirStr == 'left') dir = LEFT;
+    else if (dirStr == 'right') dir = RIGHT;
     enableClick(dir);
-    swipeAndUnlock(gesture);
+    swipeAndUnlock(dir);
 });
 
 socket.on('tap', (pos) => {
@@ -319,17 +324,11 @@ function clearCanvas() {
 }
 
 var getSwipeDirectionFromAngle = (angle, direction) => {
-    let dir = '';
-    if (direction === Hammer.DIRECTION_RIGHT) {
-        dir = 'right';
-    } else if (direction === Hammer.DIRECTION_UP) {
-        dir = 'up';
-    } else if (direction === Hammer.DIRECTION_LEFT) {
-        dir = 'left';
-    } else if (direction === Hammer.DIRECTION_DOWN) {
-        dir = 'down';
-    }
-    return dir;
+    if (direction === Hammer.DIRECTION_UP) return UP;
+    else if (direction === Hammer.DIRECTION_DOWN) return DOWN;
+    else if (direction === Hammer.DIRECTION_LEFT) return LEFT;
+    else if (direction === Hammer.DIRECTION_RIGHT) return RIGHT;
+    return -1;
 };
 
 function enableSwipe() {
@@ -342,9 +341,9 @@ function enableSwipe() {
         manager.on('swipe', (e) => {
             var direction = e.offsetDirection;
             var angle = e.angle;
-            const dirStr = getSwipeDirectionFromAngle(angle, direction);
-            enableClick(dirStr);
-            swipeAndUnlock(dirStr);
+            var dir = getSwipeDirectionFromAngle(angle, direction);
+            enableClick(dir);
+            swipeAndUnlock(dir);
         });
 
         manager.on('hammer.input', (ev) => {
@@ -353,17 +352,10 @@ function enableSwipe() {
             if (ev.maxPointers > 1) {
                 if (ev.isFinal === true) {
                     let multidir = ev.direction;
-                    if (multidir === Hammer.DIRECTION_RIGHT) {
-                        dir = 'right';
-                    } else if (multidir === Hammer.DIRECTION_UP) {
-                        dir = 'up';
-                    } else if (multidir === Hammer.DIRECTION_LEFT) {
-                        dir = 'left';
-                    } else if (multidir === Hammer.DIRECTION_DOWN) {
-                        dir = 'down';
-                    }
-                    enableClick(dir);
-                    console.log("M: " + dir);
+                    if (multidir === Hammer.DIRECTION_UP) enableClick(UP);
+                    else if (multidir === Hammer.DIRECTION_DOWN) enableClick(DOWN);
+                    else if (multidir === Hammer.DIRECTION_LEFT) enableClick(LEFT);
+                    else if (multidir === Hammer.DIRECTION_RIGHT) enableClick(RIGHT);
                 }
             }
         });
@@ -371,33 +363,16 @@ function enableSwipe() {
     }
 };
 
-function enableClick(dirStr) {
-    if (dirStr == 'up' && isShown[0]) buttons[postBtnId[0]].click();
-    if (dirStr == 'down' && isShown[1]) buttons[postBtnId[1]].click();
-    if (dirStr == 'left' && isShown[2]) buttons[postBtnId[2]].click();
-    if (dirStr == 'right' && isShown[3]) buttons[postBtnId[3]].click();
+function enableClick(dir) {
+    if (isShown[dir])
+        buttons[postBtnId[dir]].click();
 }
 
 var swipeAndUnlock = (dir) => {
-    if (dir == 'up' && isShown[0]) {
-        currBtn[0].click();
-        already[postBtnId[0]] = 0;
+    if (isShown[dir]) {
+        currBtn[dir].click();
+        already[postBtnId[dir]] = 0;
         touchLock = false;
-        console.log("swipe up:" + String(postBtnId[0]))
-    } else if (dir == 'down' && isShown[1]) {
-        currBtn[1].click();
-        already[postBtnId[1]] = 0;
-        touchLock = false;
-        console.log("swipe down:" + String(postBtnId[1]))
-    } else if (dir == 'left' && isShown[2]) {
-        currBtn[2].click();
-        already[postBtnId[2]] = 0;
-        touchLock = false;
-        console.log("swipe left:" + String(postBtnId[2]))
-    } else if (dir == 'right' && isShown[3]) {
-        currBtn[3].click();
-        already[postBtnId[3]] = 0;
-        touchLock = false;
-        console.log("swipe right:" + String(postBtnId[3]))
+        console.log("swipe " + dir + ":" + String(postBtnId[dir]));
     }
 }
