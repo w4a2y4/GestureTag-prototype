@@ -218,19 +218,20 @@ function changePos(eyeX, eyeY) {
     var dist = new Array(4).fill(5000000);
 
     // for each type of gesture, put the nearest's index in candidate[]
-    for (var i = 0; i < btn_num; i++) {
-        var btn = buttons[i];
-        if (overlap(btn, eyeX, eyeY)) {
-            var curr_dist = distance(btn, eyeX, eyeY);
-            for (var j = 0; j < 4; j++) {
-                if (getBtnType(btn) == j && curr_dist < dist[j]) {
-                    candidate[j] = i;
-                    dist[j] = curr_dist;
+    if (type === 'swipe') {
+        for (var i = 0; i < btn_num; i++) {
+            var btn = buttons[i];
+            if (overlap(btn, eyeX, eyeY)) {
+                var curr_dist = distance(btn, eyeX, eyeY);
+                for (var j = 0; j < 4; j++) {
+                    if (getBtnType(btn) == j && curr_dist < dist[j]) {
+                        candidate[j] = i;
+                        dist[j] = curr_dist;
+                    }
                 }
             }
         }
     }
-
     for (var i = 0; i < btn_num; i++) {
         var btn = buttons[i];
 
