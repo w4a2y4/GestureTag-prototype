@@ -47,12 +47,7 @@ const tapImages = {
     right: img_prefix + 'tap_bottomright.png'
 };
 
-var currentBtnList = {
-    '1':{},
-    '2':{},
-    '3':{},
-    '4':{}
-};
+var currentBtnList = [];
 
 $(document).keyup((e) => {
     // key "enter"
@@ -284,7 +279,11 @@ function changePos(eyeX, eyeY) {
                 //     button_upleft = btn;
                 //     show_upleft = true;
                 // }
-            } else $(btn).find('img').hide();
+            } else {
+                // update currentBtnList
+                currentBtnList = currentBtnList.filter((obj) => obj.name !== $(btn).parent().attr('id'));
+            }
+            showImgs(eyeX, eyeY);
         }
     }
 }
@@ -294,34 +293,79 @@ var showIcons = (cursorX, cursorY, overlapBtn) => {
     let btnCenterX = Number($(overlapBtn).offset().left) + Number($(overlapBtn).width()) / 2;
     let btnCenterY = Number($(overlapBtn).offset().top) + Number($(overlapBtn).height()) / 2;
     // assign the icon to that direction
-    let angle = Math.atan2(cursorY - btnCenterY, btnCenterX - cursorX);
-    if(angle >= 0)
-        angle = Math.floor(angle / 90) + 1;
-    else {
-        angle = Math.floor(angle / 90) + 4;
-    }
-    let index = angle.toString();
+    // 1, 2, 3, 4 -> distance from closest to furtherest
     let btnName = $(overlapBtn).parent().attr('id');
-    // save the btn in a tempList
-    for (let key in currentBtnList){
-        if(currentBtnList[key].name === btnName){
-            if(key !== index)
-                currentBtnList[key] = {};
-        }
-    }
-    currentBtnList[index] = {
+    // sort
+    let distance = Math.sqrt(Math.pow(btnCenterY - cursorY, 2) + Math.pow(btnCenterX - cursorX, 2));
+    let btn = {
         name: btnName,
         x: btnCenterX,
-        y: btnCenterY
+        y: btnCenterY,
+        w: Number($(overlapBtn).width()),
+        h: Number($(overlapBtn).height()),
+        dis: distance
     };
-
-    for(const [key, btn] of Object.entries(currentBtnList)) {
-        if(btn !== 'undefined')
-            $(`#icon_${key}`).show();
-        else
-            $(`#icon_${key}`).hide();
+    let r = currentBtnList.findIndex((p) => p.name === $(overlapBtn).parent().attr('id'));
+    if(r < 0)
+        currentBtnList.push(btn);
+    else {
+        currentBtnList[r] = btn;
     }
 };
+
+var showImgs = (cursorX, cursorY) => {
+    currentBtnList.sort((a, b) => {
+        return a.dis > b.dis;
+    });
+
+    for(let j = 0; j < Math.min(currentBtnList.length, 4); j++){
+        let angle = Math.atan2(cursorY - currentBtnList[j].y, currentBtnList[j].x - cursorX) * 57.3;
+        console.log(`${currentBtnList[j].name}, angle: ${angle}`);
+        if(angle >= 0)
+            angle = Math.floor(angle / 90) + 1;
+        else {
+            angle = Math.floor(angle / 90) + 5;
+        }
+        let edgeX = RADIUS;
+        // let edgeY = RADIUS + scale * -(cursorY - currentBtnList[j].y);
+        let edgeY = RADIUS;
+        let topBound = cursorY;
+        let bottomBoound = cursorY + RADIUS;
+        if (angle <= 2){
+            topBound = Math.max(cursorY - RADIUS, currentBtnList[j].y - currentBtnList[j].h / 2);
+            bottomBoound = Math.min(cursorY, currentBtnList[j].y + currentBtnList[j].h / 2);
+
+        }
+        else{
+            topBound = Math.max(cursorY, currentBtnList[j].y - currentBtnList[j].h / 2);
+            bottomBoound = Math.min(cursorY + RADIUS, currentBtnList[j].y + currentBtnList[j].h / 2);
+            // edgeY = RADIUS + (currentBtnList[j].y - currentBtnList[j].h / 2 - cursorY);
+        }
+        let cY =  (topBound + bottomBoound) / 2;
+        edgeY = cY - cursorY ;
+        edgeX = Math.sqrt(Math.pow(RADIUS, 2) - Math.pow(edgeY, 2));
+
+        if(angle === 1 || angle === 4){
+            edgeX = edgeX;
+        }
+        else
+            edgeX = -edgeX;
+
+        edgeX = RADIUS - 12 + edgeX;
+        edgeY += (RADIUS - 12);
+        console.log(`${currentBtnList[j].name}, x: ${edgeX}, y: ${edgeY}, angle: ${angle}`);
+        $(`#icon_${j+1}`).css('top', edgeY).css('left', edgeX).show();
+    }
+
+    if(currentBtnList.length > 4)
+        currentBtnList = currentBtnList.splice(-1, 1);
+    if(currentBtnList.length < 4){
+        for(let j = currentBtnList.length + 1; j <= 4; j++)
+            $(`#icon_${j}`).hide();
+    }
+    // save the btn in a tempList
+    console.log(currentBtnList);
+}
 
 function showTarget() {
     if (trial_num == 0) {
