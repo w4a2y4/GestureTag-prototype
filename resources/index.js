@@ -2,8 +2,10 @@ var socket = io.connect();
 var show_path = false;
 var show_mouse = false;
 
-var button_left, button_right, button_up, button_down;
-var show_left, show_right, show_up, show_down;
+const UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3;
+
+var currBtn = new Array(4).fill(null);
+var isShown = new Array(4).fill(false);
 
 var tester;
 var type;
@@ -29,11 +31,7 @@ var client_width, client_height;
 var LockerTimeEnd = new Array(buttons.length).fill(0.0);
 var LockerTimeStart = new Array(buttons.length).fill(0.0);
 
-var UpbtnId = 0;
-var DownbtnId = 0;
-var LeftbtnId = 0;
-var RightbtnId = 0;
-
+var postBtnId = new Array(4).fill(0);
 var touchLock;
 
 var imgSet;
@@ -96,10 +94,10 @@ socket.on('swipe', (dir) => {
 
 socket.on('tap', (pos) => {
     gesture = pos;
-    if (pos === 'topright' && show_up) button_up.click();
-    if (pos === 'bottomleft' && show_down) button_down.click();
-    if (pos === 'topleft' && show_left) button_left.click();
-    if (pos === 'bottomright' && show_right) button_right.click();
+    if (pos === 'topright' && isShown[0]) currBtn[0].click();
+    if (pos === 'bottomleft' && isShown[1]) currBtn[1].click();
+    if (pos === 'topleft' && isShown[2]) currBtn[2].click();
+    if (pos === 'bottomright' && isShown[3]) currBtn[3].click();
 });
 
 socket.on('touch', (touch) => {
@@ -212,10 +210,10 @@ function changePos(eyeX, eyeY) {
         "top": eyeY - 500
     });
 
-    show_up = false;
-    show_down = false;
-    show_left = false;
-    show_right = false;
+    isShown[0] = false;
+    isShown[1] = false;
+    isShown[2] = false;
+    isShown[3] = false;
 
     // the candidates are the nearest [up, down, left, right]
     var btn_num = buttons.length;
@@ -290,35 +288,35 @@ function changePos(eyeX, eyeY) {
                 $(btn).find('img').show();
                 if (theTimeInterval > 150.0 && touchLock == false) {
                         // $(btn).find('img').show();
-                        if (isUp(btn)& LockerTimeEnd[UpbtnId] < LockerTimeEnd[i]) {
-                            UpbtnId = i;
-                            button_up = btn;
-                            show_up = true;
-                        } else if (isDown(btn)& LockerTimeEnd[DownbtnId] < LockerTimeEnd[i]) {
-                            DownbtnId = i;
-                            button_down = btn;
-                            show_down = true;
-                        } else if (isLeft(btn)& LockerTimeEnd[LeftbtnId] < LockerTimeEnd[i]) {
-                            LeftbtnId = i;
-                            button_left = btn;
-                            show_left = true;
-                        } else if (isRight(btn)& LockerTimeEnd[ RightbtnId] < LockerTimeEnd[i]) {
-                            RightbtnId = i;
-                            button_right = btn;
-                            show_right = true;
+                        if (isUp(btn)& LockerTimeEnd[postBtnId[0]] < LockerTimeEnd[i]) {
+                            postBtnId[0] = i;
+                            currBtn[0] = btn;
+                            isShown[0] = true;
+                        } else if (isDown(btn)& LockerTimeEnd[postBtnId[1]] < LockerTimeEnd[i]) {
+                            postBtnId[1] = i;
+                            currBtn[1] = btn;
+                            isShown[1] = true;
+                        } else if (isLeft(btn)& LockerTimeEnd[postBtnId[2]] < LockerTimeEnd[i]) {
+                            postBtnId[2] = i;
+                            currBtn[2] = btn;
+                            isShown[2] = true;
+                        } else if (isRight(btn)& LockerTimeEnd[ postBtnId[3]] < LockerTimeEnd[i]) {
+                            postBtnId[3] = i;
+                            currBtn[3] = btn;
+                            isShown[3] = true;
                         }
                     }
             } else {
                 $(btn).find('img').hide();
-                show_up = true;
-                show_down = true;
-                show_left = true;
-                show_right = true;
-                button_up = buttons[UpbtnId];
-                button_left = buttons[LeftbtnId];
-                button_down = buttons[DownbtnId];
-                button_right = buttons[RightbtnId];
-                if ( i != LeftbtnId && i != RightbtnId && i != UpbtnId && i != DownbtnId) {
+                isShown[0] = true;
+                isShown[1] = true;
+                isShown[2] = true;
+                isShown[3] = true;
+                currBtn[0] = buttons[postBtnId[0]];
+                currBtn[1] = buttons[postBtnId[2]];
+                currBtn[2] = buttons[postBtnId[1]];
+                currBtn[3] = buttons[postBtnId[3]];
+                if ( i != postBtnId[2] && i != postBtnId[3] && i != postBtnId[0] && i != postBtnId[1]) {
                     LockerTimeEnd[i] = 0.0; // Record time then
                     LockerTimeStart[i] = 0.0; // Record time then
                     already[i] = 0;
@@ -418,33 +416,33 @@ function enableSwipe() {
 };
 
 function enableClick(dirStr) {
-    if (dirStr == 'up' && show_up) buttons[UpbtnId].click();
-    if (dirStr == 'down' && show_down) buttons[DownbtnId].click();
-    if (dirStr == 'left' && show_left) buttons[LeftbtnId].click();
-    if (dirStr == 'right' && show_right) buttons[RightbtnId].click();
+    if (dirStr == 'up' && isShown[0]) buttons[postBtnId[0]].click();
+    if (dirStr == 'down' && isShown[1]) buttons[postBtnId[1]].click();
+    if (dirStr == 'left' && isShown[2]) buttons[postBtnId[2]].click();
+    if (dirStr == 'right' && isShown[3]) buttons[postBtnId[3]].click();
 }
 
 
 var swipeAndUnlock = (dir) => {
-    if (dir == 'up' && show_up) {
-        button_up.click();
-        already[UpbtnId] = 0;
+    if (dir == 'up' && isShown[0]) {
+        currBtn[0].click();
+        already[postBtnId[0]] = 0;
         touchLock = false;
-        console.log("swipe up:" + String(UpbtnId))
-    } else if (dir == 'down' && show_down) {
-        button_down.click();
-        already[DownbtnId] = 0;
+        console.log("swipe up:" + String(postBtnId[0]))
+    } else if (dir == 'down' && isShown[1]) {
+        currBtn[1].click();
+        already[postBtnId[1]] = 0;
         touchLock = false;
-        console.log("swipe down:" + String(DownbtnId))
-    } else if (dir == 'left' && show_left) {
-        button_left.click();
-        already[LeftbtnId] = 0;
+        console.log("swipe down:" + String(postBtnId[1]))
+    } else if (dir == 'left' && isShown[2]) {
+        currBtn[2].click();
+        already[postBtnId[2]] = 0;
         touchLock = false;
-        console.log("swipe left:" + String(LeftbtnId))
-    } else if (dir == 'right' && show_right) {
-        button_right.click();
-        already[RightbtnId] = 0;
+        console.log("swipe left:" + String(postBtnId[2]))
+    } else if (dir == 'right' && isShown[3]) {
+        currBtn[3].click();
+        already[postBtnId[3]] = 0;
         touchLock = false;
-        console.log("swipe right:" + String(RightbtnId))
+        console.log("swipe right:" + String(postBtnId[3]))
     }
 }
