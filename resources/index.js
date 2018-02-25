@@ -2,7 +2,10 @@ var socket = io.connect();
 var show_path = false;
 var show_mouse = false;
 
-const UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3;
+const UP = 0,
+    DOWN = 1,
+    LEFT = 2,
+    RIGHT = 3;
 
 var currBtn = new Array(4).fill(null);
 var isShown = new Array(4).fill(false);
@@ -106,7 +109,7 @@ socket.on('tap', (pos) => {
 });
 
 socket.on('touch', (touch) => {
-    touchLock=true
+    touchLock = true
     if (show_path) {
         changePath(touch.x, touch.y);
         clearTimeout(touch_timer);
@@ -134,7 +137,7 @@ socket.on('user', (user) => {
 socket.on('device', (device) => {
     platform = device;
     console.log(platform);
-    enableSwipe();
+    if (platform === 'mobile') enableSwipe();
 });
 
 
@@ -178,20 +181,20 @@ function overlap(element, X, Y) {
     return false;
 }
 
-function distance (element, X, Y) {
+function distance(element, X, Y) {
     // use jQuery to get ABSOLUTE position
     var midX = $(element).offset().left + 0.5 * element.offsetWidth;
-    var midY = $(element).offset().top  + 0.5 * element.offsetHeight;
+    var midY = $(element).offset().top + 0.5 * element.offsetHeight;
     return (Math.pow((X - midX), 2) + Math.pow((Y - midY), 2));
 }
 
 function swap(x, y) {
-    return [y,x];
+    return [y, x];
 }
 
 function isIn(x, arr, len) {
     for (var i = 0; i < len; i++)
-        if ( x == arr[i] ) return true;
+        if (x == arr[i]) return true;
     return false;
 }
 
@@ -220,7 +223,7 @@ function changePos(eyeX, eyeY) {
         if (overlap(btn, eyeX, eyeY)) {
             var curr_dist = distance(btn, eyeX, eyeY);
             for (var j = 0; j < 4; j++) {
-                if ( getBtnType(btn) == j && curr_dist < dist[j] ) {
+                if (getBtnType(btn) == j && curr_dist < dist[j]) {
                     candidate[j] = i;
                     dist[j] = curr_dist;
                 }
@@ -232,7 +235,7 @@ function changePos(eyeX, eyeY) {
         var btn = buttons[i];
 
         if (type === 'dwell') {
-            if ( overlap(btn, eyeX, eyeY) ) {
+            if (overlap(btn, eyeX, eyeY)) {
                 if (already[i]) { // Have already looked at the target
                     TimeEnd = Date.now(); // Record time then
                 } else {
@@ -254,7 +257,7 @@ function changePos(eyeX, eyeY) {
                 already[i] = 0;
             }
         } else {
-            if ( isIn(i, candidate, 4) ) {
+            if (isIn(i, candidate, 4)) {
                 if (already[i]) { // Have already looked at the target
                     LockerTimeEnd[i] = Date.now(); // Record time then
                 } else {
@@ -264,8 +267,8 @@ function changePos(eyeX, eyeY) {
                 var theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
                 $(btn).find('img').show();
                 if (theTimeInterval > 150.0 && touchLock == false) {
-                    for (var j = 0; j < 4; j++ ) {
-                        if ( getBtnType(btn) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
+                    for (var j = 0; j < 4; j++) {
+                        if (getBtnType(btn) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
                             postBtnId[j] = i;
                             currBtn[j] = btn;
                             isShown[j] = true;
@@ -277,7 +280,7 @@ function changePos(eyeX, eyeY) {
                 isShown.fill(true);
                 for (var j = 0; j < 4; j++)
                     currBtn[j] = buttons[postBtnId[j]];
-                if ( !isIn(i, postBtnId, 4) ) {
+                if (!isIn(i, postBtnId, 4)) {
                     LockerTimeEnd[i] = 0.0; // Record time then
                     LockerTimeStart[i] = 0.0; // Record time then
                     already[i] = 0;
@@ -332,35 +335,32 @@ var getSwipeDirectionFromAngle = (angle, direction) => {
 };
 
 function enableSwipe() {
-    if (platform === 'mobile') {
-        var container = document.getElementById("MobileContainer");
-        const manager = new Hammer.Manager(container);
-        const swipe = new Hammer.Swipe();
-        manager.add(swipe);
+    var container = document.getElementById("MobileContainer");
+    const manager = new Hammer.Manager(container);
+    const swipe = new Hammer.Swipe();
+    manager.add(swipe);
 
-        manager.on('swipe', (e) => {
-            var direction = e.offsetDirection;
-            var angle = e.angle;
-            var dir = getSwipeDirectionFromAngle(angle, direction);
-            enableClick(dir);
-            swipeAndUnlock(dir);
-        });
+    manager.on('swipe', (e) => {
+        var direction = e.offsetDirection;
+        var angle = e.angle;
+        var dir = getSwipeDirectionFromAngle(angle, direction);
+        enableClick(dir);
+        swipeAndUnlock(dir);
+    });
 
-        manager.on('hammer.input', (ev) => {
-            console.log(ev);
-            // If one can only do multi-touch swipe
-            if (ev.maxPointers > 1) {
-                if (ev.isFinal === true) {
-                    let multidir = ev.direction;
-                    if (multidir === Hammer.DIRECTION_UP) enableClick(UP);
-                    else if (multidir === Hammer.DIRECTION_DOWN) enableClick(DOWN);
-                    else if (multidir === Hammer.DIRECTION_LEFT) enableClick(LEFT);
-                    else if (multidir === Hammer.DIRECTION_RIGHT) enableClick(RIGHT);
-                }
+    manager.on('hammer.input', (ev) => {
+        console.log(ev);
+        // If one can only do multi-touch swipe
+        if (ev.maxPointers > 1) {
+            if (ev.isFinal === true) {
+                let multidir = ev.direction;
+                if (multidir === Hammer.DIRECTION_UP) enableClick(UP);
+                else if (multidir === Hammer.DIRECTION_DOWN) enableClick(DOWN);
+                else if (multidir === Hammer.DIRECTION_LEFT) enableClick(LEFT);
+                else if (multidir === Hammer.DIRECTION_RIGHT) enableClick(RIGHT);
             }
-        });
-
-    }
+        }
+    });
 };
 
 function enableClick(dir) {
