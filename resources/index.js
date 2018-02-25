@@ -139,20 +139,12 @@ function log() {
     socket.emit('log', cnt, gesture, clicked_btn, target_btn);
 }
 
-function isUp(btn) {
-    return imgSet["up"] == btn.children[0].src;
-}
-
-function isDown(btn) {
-    return imgSet["down"] == btn.children[0].src;
-}
-
-function isLeft(btn) {
-    return imgSet["left"] == btn.children[0].src;
-}
-
-function isRight(btn) {
-    return imgSet["right"] == btn.children[0].src;
+function getBtnType(btn) {
+    if (imgSet["up"] == btn.children[0].src) return UP;
+    else if (imgSet["down"] == btn.children[0].src) return DOWN;
+    else if (imgSet["left"] == btn.children[0].src) return LEFT;
+    else if (imgSet["right"] == btn.children[0].src) return RIGHT;
+    return -1;
 }
 
 function overlap(element, X, Y) {
@@ -227,22 +219,22 @@ function changePos(eyeX, eyeY) {
 
             var curr_dist = distance(btn, eyeX, eyeY);
 
-            if (isUp(btn)) {
+            if (getBtnType(btn) == UP) {
                 if (curr_dist < dist[0]) {
                     candidate[0] = i;
                     dist[0] = curr_dist;
                 }
-            } else if (isDown(btn)) {
+            } else if (getBtnType(btn) == DOWN) {
                 if (curr_dist < dist[1]) {
                     candidate[1] = i;
                     dist[1] = curr_dist;
                 }
-            } else if (isLeft(btn)) {
+            } else if (getBtnType(btn) == LEFT) {
                 if (curr_dist < dist[2]) {
                     candidate[2] = i;
                     dist[2] = curr_dist;
                 }
-            } else if (isRight(btn)) {
+            } else if (getBtnType(btn) == RIGHT) {
                 if (curr_dist < dist[3]) {
                     candidate[3] = i;
                     dist[3] = curr_dist;
@@ -288,19 +280,19 @@ function changePos(eyeX, eyeY) {
                 $(btn).find('img').show();
                 if (theTimeInterval > 150.0 && touchLock == false) {
                         // $(btn).find('img').show();
-                        if (isUp(btn)& LockerTimeEnd[postBtnId[0]] < LockerTimeEnd[i]) {
+                        if ( getBtnType(btn) == UP & LockerTimeEnd[postBtnId[0]] < LockerTimeEnd[i]) {
                             postBtnId[0] = i;
                             currBtn[0] = btn;
                             isShown[0] = true;
-                        } else if (isDown(btn)& LockerTimeEnd[postBtnId[1]] < LockerTimeEnd[i]) {
+                        } else if ( getBtnType(btn) == DOWN & LockerTimeEnd[postBtnId[1]] < LockerTimeEnd[i]) {
                             postBtnId[1] = i;
                             currBtn[1] = btn;
                             isShown[1] = true;
-                        } else if (isLeft(btn)& LockerTimeEnd[postBtnId[2]] < LockerTimeEnd[i]) {
+                        } else if ( getBtnType(btn) == LEFT & LockerTimeEnd[postBtnId[2]] < LockerTimeEnd[i]) {
                             postBtnId[2] = i;
                             currBtn[2] = btn;
                             isShown[2] = true;
-                        } else if (isRight(btn)& LockerTimeEnd[ postBtnId[3]] < LockerTimeEnd[i]) {
+                        } else if ( getBtnType(btn) == RIGHT & LockerTimeEnd[ postBtnId[3]] < LockerTimeEnd[i]) {
                             postBtnId[3] = i;
                             currBtn[3] = btn;
                             isShown[3] = true;
