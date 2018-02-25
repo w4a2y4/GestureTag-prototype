@@ -2,8 +2,8 @@ var socket = io.connect();
 var show_path = false;
 var show_mouse = false;
 
-var button_left, button_right, button_up, button_down, button_upright, button_downright, button_downleft, button_upleft;
-var show_left, show_right, show_up, show_down, show_upright, show_downright, show_downleft, show_upleft;
+var button_left, button_right, button_up, button_down;
+var show_left, show_right, show_up, show_down;
 
 var tester;
 var type;
@@ -28,14 +28,12 @@ var client_width, client_height;
 
 var LockerTimeEnd = new Array(buttons.length).fill(0.0);
 var LockerTimeStart = new Array(buttons.length).fill(0.0);
-var DownRightbtnId = 0;
-var RightbtnId = 0;
-var DownbtnId = 0;
-var UpRightbtnId = 0;
-var DownLeftbtnId = 0;
-var LeftbtnId = 0;
+
 var UpbtnId = 0;
-var UpLeftbtnId = 0;
+var DownbtnId = 0;
+var LeftbtnId = 0;
+var RightbtnId = 0;
+
 var touchLock;
 
 var imgSet;
@@ -44,11 +42,7 @@ const swipeImages = {
     up: img_prefix + 'arrow_up.png',
     down: img_prefix + 'arrow_down.png',
     left: img_prefix + 'arrow_left.png',
-    right: img_prefix + 'arrow_right.png',
-    upright: img_prefix + 'arrow_upright.png',
-    downright: img_prefix + 'arrow_downright.png',
-    downleft: img_prefix + 'arrow_downleft.png',
-    upleft: img_prefix + 'arrow_upleft.png'
+    right: img_prefix + 'arrow_right.png'
 };
 const tapImages = {
     up: img_prefix + 'tap_topright.png',
@@ -127,7 +121,6 @@ socket.on('init', (method) => {
 socket.on('client_init', (width, height) => {
     client_width = width;
     client_height = height;
-    console.log(server_height + ' ' + server_width + ' ' + client_height + ' ' + client_width);
 });
 
 socket.on('user', (user) => {
@@ -162,22 +155,6 @@ function isLeft(btn) {
 
 function isRight(btn) {
     return imgSet["right"] == btn.children[0].src;
-}
-
-function isUpRight(btn) {
-    return imgSet["upright"] == btn.children[0].src;
-}
-
-function isDownRight(btn) {
-    return imgSet["downright"] == btn.children[0].src;
-}
-
-function isDownLeft(btn) {
-    return imgSet["downleft"] == btn.children[0].src;
-}
-
-function isUpLeft(btn) {
-    return imgSet["upleft"] == btn.children[0].src;
 }
 
 function overlap(element, X, Y) {
@@ -239,10 +216,6 @@ function changePos(eyeX, eyeY) {
     show_down = false;
     show_left = false;
     show_right = false;
-    show_upright = false;
-    show_downright = false;
-    show_downleft = false;
-    show_upleft = false;
 
     // the candidates are the nearest [up, down, left, right]
     var btn_num = buttons.length;
@@ -333,22 +306,6 @@ function changePos(eyeX, eyeY) {
                             RightbtnId = i;
                             button_right = btn;
                             show_right = true;
-                        } else if (isUpRight(btn)& LockerTimeEnd[ UpRightbtnId] < LockerTimeEnd[i]) {
-                            UpRightbtnId = i;
-                            button_upright = btn;
-                            show_upright = true;
-                        } else if (isDownRight(btn)& LockerTimeEnd[DownRightbtnId] < LockerTimeEnd[i]) {
-                            DownRightbtnId = i;
-                            button_downright = btn;
-                            show_downright = true;
-                        } else if (isDownLeft(btn)& LockerTimeEnd[DownLeftbtnId] < LockerTimeEnd[i]) {
-                            DownLeftbtnId = i;
-                            button_downleft = btn;
-                            show_downleft = true;
-                        } else if (isUpLeft(btn)& LockerTimeEnd[ UpLeftbtnId] < LockerTimeEnd[i]) {
-                            UpLeftbtnId = i;
-                            button_upleft = btn;
-                            show_upleft = true;
                         }
                     }
             } else {
@@ -357,19 +314,11 @@ function changePos(eyeX, eyeY) {
                 show_down = true;
                 show_left = true;
                 show_right = true;
-                show_upright = true;
-                show_downright = true;
-                show_downleft = true;
-                show_upleft = true;
-                button_upleft = buttons[UpLeftbtnId];
-                button_upright = buttons[UpRightbtnId];
-                button_downleft = buttons[DownLeftbtnId];
-                button_downright = buttons[DownRightbtnId];
                 button_up = buttons[UpbtnId];
                 button_left = buttons[LeftbtnId];
                 button_down = buttons[DownbtnId];
                 button_right = buttons[RightbtnId];
-                if (i != DownLeftbtnId && i != UpLeftbtnId && i != DownRightbtnId && i != UpRightbtnId && i != LeftbtnId && i != RightbtnId && i != UpbtnId && i != DownbtnId) {
+                if ( i != LeftbtnId && i != RightbtnId && i != UpbtnId && i != DownbtnId) {
                     LockerTimeEnd[i] = 0.0; // Record time then
                     LockerTimeStart[i] = 0.0; // Record time then
                     already[i] = 0;
@@ -417,35 +366,14 @@ function clearCanvas() {
 
 var getSwipeDirectionFromAngle = (angle, direction) => {
     let dir = '';
-    if (tester === 'motor') {
-        console.log('motor tester');
-        if (direction === Hammer.DIRECTION_RIGHT) {
-            dir = 'right';
-        } else if (direction === Hammer.DIRECTION_UP) {
-            dir = 'up';
-        } else if (direction === Hammer.DIRECTION_LEFT) {
-            dir = 'left';
-        } else if (direction === Hammer.DIRECTION_DOWN) {
-            dir = 'down';
-        }
-    } else {
-        if (angle < 22.5 && angle >= -22.5) {
-            dir = 'right';
-        } else if (angle < -22.5 && angle >= -67.5) {
-            dir = 'upright';
-        } else if (angle < -67.5 && angle >= -112.5) {
-            dir = 'up';
-        } else if (angle < -112.5 && angle >= -157.5) {
-            dir = 'upleft';
-        } else if (angle < -157.5 || angle > 157.5) {
-            dir = 'left';
-        } else if (angle > 112.5 && angle <= 157.5) {
-            dir = 'downleft';
-        } else if (angle > 67.5 && angle <= 112.5) {
-            dir = 'down';
-        } else {
-            dir = 'downright';
-        }
+    if (direction === Hammer.DIRECTION_RIGHT) {
+        dir = 'right';
+    } else if (direction === Hammer.DIRECTION_UP) {
+        dir = 'up';
+    } else if (direction === Hammer.DIRECTION_LEFT) {
+        dir = 'left';
+    } else if (direction === Hammer.DIRECTION_DOWN) {
+        dir = 'down';
     }
     return dir;
 };
@@ -490,15 +418,10 @@ function enableSwipe() {
 };
 
 function enableClick(dirStr) {
-    console.log(DownRightbtnId+' '+RightbtnId+' '+DownbtnId+' '+UpRightbtnId+' '+DownLeftbtnId+' '+LeftbtnId+' '+UpbtnId+' '+UpLeftbtnId)
     if (dirStr == 'up' && show_up) buttons[UpbtnId].click();
     if (dirStr == 'down' && show_down) buttons[DownbtnId].click();
     if (dirStr == 'left' && show_left) buttons[LeftbtnId].click();
     if (dirStr == 'right' && show_right) buttons[RightbtnId].click();
-    if (dirStr == 'upright' && show_upright) buttons[UpRightbtnId].click();
-    if (dirStr == 'downright' && show_downright) buttons[DownRightbtnId].click();
-    if (dirStr == 'downleft' && show_downleft) buttons[DownLeftbtnId].click();
-    if (dirStr == 'upleft' && show_upleft) buttons[UpLeftbtnId].click();
 }
 
 
@@ -523,26 +446,5 @@ var swipeAndUnlock = (dir) => {
         already[RightbtnId] = 0;
         touchLock = false;
         console.log("swipe right:" + String(RightbtnId))
-    } else if (dir == 'upright' && show_upright) {
-        button_upright.click();
-        already[UpRightbtnId] = 0;
-        touchLock = false;
-        console.log("swipe upright:" + String(UpRightbtnId))
-    } else if (dir == 'downright' && show_downright) {
-        button_downright.click();
-        already[DownRightbtnId] = 0;
-        touchLock = false;
-        console.log("swipe downright:" + String(DownRightbtnId))
-    } else if (dir == 'downleft' && show_downleft) {
-        button_downleft.click();
-        already[DownLeftbtnId] = 0;
-        touchLock = false;
-        console.log("swipe downleft:" + String(DownLeftbtnId))
-
-    } else if (dir == 'upleft' && show_upleft) {
-        button_upleft.click();;
-        already[UpLeftbtnId] = 0;
-        touchLock = false;
-        console.log("swipe upleft:" + String(UpLeftbtnId))
     }
 }
