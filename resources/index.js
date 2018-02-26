@@ -84,6 +84,11 @@ $(document).on('click', 'button', (function(e) {
     }, 500);
 }));
 
+socket.on('start_mobile', () => {
+    console.log('START_MOBILE');
+    trial_num = DEFAULT_TRIAL_NUM;
+    showTarget();
+});
 
 socket.on('eyemove', (x, y) => {
     changePos(x * 1.11, y * 1.11);
