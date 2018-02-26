@@ -9,16 +9,24 @@ namespace Interaction_Streams_101
 {
     public class Program
     {
-        static int insert_index = 9;
+        static public int insert_index = 5;
+        static public int WightIndex = 5;
+        static public int varIndex = 5;
         static int kk=0;
         static int count = 0;
         static double XData = 0.0;
         static double YData = 0.0;
         static double XXData = 0.0;
         static double YYData = 0.0;
+        static double XvarData = 0.0;
+        static double YvarData = 0.0;
+
         static double aveX, aveY, aveYY, aveXX;
         static double[] Xarray = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
         static double[] Yarray = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+        static double[] XWeight = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+        static double[] YWeight = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+        
         static bool isRecording = false;
         static List<string> buffer = new List<string>();
         static string log_file_name = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\New_eye_tracking_log.txt";
@@ -74,11 +82,14 @@ namespace Interaction_Streams_101
         {
             if (Program.isRecording)
             {
+                insert_index = (insert_index + 1) % 10;
+                //Console.WriteLine("insert_index:{0}", insert_index);
                 Xarray[insert_index] = x;
                 Yarray[insert_index] = y;
                 kk = 0;
 
-                insert_index = (insert_index + 1) % 10;
+
+                
                 while (kk <= 9)
                 {
                     XData += Xarray[kk];
@@ -90,7 +101,52 @@ namespace Interaction_Streams_101
                 kk = 0;
                 aveX = XData / 10;
                 aveY = YData / 10;
+                //compute mean
+               varIndex = 0;
+                while (varIndex < 10)
+                {
+                    XvarData+= (Xarray[varIndex]- aveX)*(Xarray[varIndex] - aveX);
+                    YvarData += (Yarray[varIndex]- aveY)*(Yarray[varIndex] - aveY);
+                    varIndex++;
+                }
+               
+                double Xvar = XvarData / 10;
+                double Yvar = YvarData / 10;
+                //Compute var
 
+                double FinalX = 0.0;
+                double FinalY = 0.0;
+                double AllWeightX = 0.0;
+                double AllWeightY = 0.0;
+
+                WightIndex = insert_index;
+                //Console.WriteLine(" WightIndex:{0}", WightIndex);
+                int Index = 1;
+                
+                while (Index<10)
+                {
+                    int i =  Index;
+                    XWeight[WightIndex] = Math.Exp(-(i - 1) * (i - 1) / (2 * Xvar));
+                    YWeight[WightIndex] = Math.Exp(-(i - 1) * (i - 1) / (2 * Yvar));
+                    FinalX += XWeight[WightIndex] * Xarray[WightIndex];
+                    FinalY += YWeight[WightIndex] * Yarray[WightIndex];
+                    AllWeightX += XWeight[WightIndex];
+                    AllWeightY += YWeight[WightIndex];
+                    
+                    if(WightIndex - 1 < 0) { WightIndex = 9; }
+                    WightIndex = (WightIndex -1) % 10;
+                    Index++;
+                }
+                
+                Index = 1;
+
+                double OutputX = FinalX / AllWeightX;
+                double OutputY = FinalY / AllWeightY;
+                Console.WriteLine(" X: {0} Y:{1}  MyX:{2} MyY:{3}", x, y,OutputX,OutputY);
+                socket.Emit("eyemove",OutputX,OutputY);
+
+
+                
                 while (count<3)
                 {
                     XXData +=aveX;
@@ -106,9 +162,10 @@ namespace Interaction_Streams_101
                     YYData = 0.0;
                     socket.Emit("eyemove", aveXX, aveYY);
                 }
-
+               
                 XData = 0.0;
                 YData = 0.0;
+                
             }
         }
 
@@ -116,7 +173,7 @@ namespace Interaction_Streams_101
         {
             if (Program.isRecording)
             {
-                Console.WriteLine("Timestamp: {0}\t X: {1} Y:{2}", ts, x, y);
+                //Console.WriteLine("Timestamp: {0}\t X: {1} Y:{2}", ts, x, y);
                 buffer.Add(string.Format("Timestamp: {0} X: {1} Y:{2}", ts, x, y));
             }
         }
