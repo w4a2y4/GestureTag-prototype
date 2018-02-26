@@ -38,6 +38,11 @@ var UpbtnId = 0;
 var UpLeftbtnId = 0;
 var touchLock;
 
+var TrialTimeStart = new Date().getTime();
+var TrialTimeEnd = new Date().getTime();
+var TrialCompletionTime;
+var ErrorCount=0;
+
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
 const swipeImages = {
@@ -78,7 +83,10 @@ $(document).mousemove((e) => {
 $(document).on('click', 'button', (function(e) {
     console.log("click!!");
     $(this).addClass('clicked');
+    TrialTimeEnd = Date.now()
+    TrialCompletionTime= TrialTimeEnd- TrialTimeStart
     clicked_btn = $(this).parent().attr('id');
+    if (!$(this).hasClass('target')) {ErrorCount++}
     log();
     if ($(this).hasClass('target')) {
         $(this).removeClass('target');
@@ -145,7 +153,7 @@ socket.on('device', (device) => {
 function log() {
     cnt = DEFAULT_TRIAL_NUM - trial_num;
     console.log(gesture + ' ' + clicked_btn + ' ' + target_btn);
-    socket.emit('log', cnt, gesture, clicked_btn, target_btn);
+    socket.emit('log', cnt, gesture, clicked_btn, target_btn,TrialCompletionTime,ErrorCount);
 }
 
 function isUp(btn) {
@@ -391,6 +399,8 @@ function showTarget() {
         if (!$(buttons[rand]).hasClass('clicked')) break;
     }
     $(buttons[rand]).addClass('target');
+    TrialTimeStart = Date.now();
+    ErrorCount=0;
     target_btn = $(buttons[rand]).parent().attr('id');
     trial_num -= 1;
 }
