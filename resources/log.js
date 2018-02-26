@@ -1,5 +1,9 @@
 const socket = io();
 
+var emitMobileStart = () => {
+    socket.emit('start');
+};
+
 var emitSwipeGesture = (gesture) => {
     socket.emit('swipe', gesture);
 };
