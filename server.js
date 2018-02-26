@@ -52,10 +52,6 @@ app.get('/gmail', (req, res) => {
     res.render('gmail', loadImages());
 });
 
-app.get('/youtube', (req, res) => {
-    res.render('youtube', loadImages());
-});
-
 app.get('/swipe', (req, res) => {
     res.sendFile(path.join(__dirname, 'swipe.html'));
 });
@@ -127,6 +123,7 @@ io.on('connection', function(socket) {
     // start a trial
     socket.on('start', function() {
         writeLog('trial start (' + type + ')');
+        if (device === 'mobile') io.emit('start_mobile');
     });
 
     // end of a trial
@@ -143,8 +140,6 @@ io.on('connection', function(socket) {
         msg += '\tclick:' + clicked_btn;
         writeLog(msg);
     });
-
-
 });
 
 http.listen(3000, function() {
