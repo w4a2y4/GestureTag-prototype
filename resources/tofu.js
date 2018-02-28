@@ -76,12 +76,14 @@ $(document).on('click', 'button', (function(e) {
     clicked_btn = $(this).parent().attr('id');
     log();
     if ($(this).hasClass('target')) {
-        $(this).removeClass('target');
-        showTarget();
+        setTimeout(() => {
+            $(this).removeClass('target');
+            showTarget();
+        }, 100);
     }
     setTimeout(() => {
         $(this).removeClass('clicked');
-    }, 500);
+    }, 100);
 }));
 
 socket.on('start_mobile', () => {
@@ -304,6 +306,8 @@ function showTarget() {
         return;
     }
 
+    $(":button").hide();
+
     // select target
     var tar;
     while (true) {
@@ -314,15 +318,15 @@ function showTarget() {
     }
 
     // render target and its neighbor
-    // $(buttons[tar]).addClass('target');
+    $(buttons[tar]).addClass('target');
     $(buttons[tar]).show();
     target_btn = $(buttons[tar]).parent().attr('id');
 
     // render neighbor
-    $(buttons[tar + 1]).addClass('neighbor');
-    $(buttons[tar - 1]).addClass('neighbor');
-    $(buttons[tar + RAW_NUM]).addClass('neighbor');
-    $(buttons[tar - RAW_NUM]).addClass('neighbor');
+    // $(buttons[tar + 1]).addClass('neighbor');
+    // $(buttons[tar - 1]).addClass('neighbor');
+    // $(buttons[tar + RAW_NUM]).addClass('neighbor');
+    // $(buttons[tar - RAW_NUM]).addClass('neighbor');
 
     // select distractors
     // var toHide = RAW_NUM * COL_NUM - DISTRACT;

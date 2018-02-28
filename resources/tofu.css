@@ -76,7 +76,8 @@ button {
 }
 
 .target {
-	background: #b0e7c6;
+	/*background: #b0e7c6;*/
+	background: red;
 }
 
 .clicked {
