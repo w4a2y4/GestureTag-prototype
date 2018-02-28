@@ -247,8 +247,12 @@ function changePos(eyeX, eyeY) {
                 }
             }
         }
+    } else if (type === 'dwell') {
+        if (outNum >= btn_num) {
+            pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
+            outNum = 0;
+        }
     }
-
     for (var i = 0; i < btn_num; i++) {
         var btn = buttons[i];
 
@@ -271,11 +275,11 @@ function changePos(eyeX, eyeY) {
                 }
                 // Showing image 
                 $(btn).find('img').show();
-
+                outNum = 0;
             } else {
                 $(btn).find('img').hide();
                 already[i] = 0;
-
+                outNum += 1;
             }
         } else {
             if (isIn(i, candidate, 4)) {
