@@ -24,7 +24,6 @@ body {
 #MobileContainer {
 	height: 100%;
 	width: 100%;
-	
 	position: absolute;
 }
 
@@ -35,13 +34,13 @@ body {
 
 #eye_tracker.gesturetag{
 	display: block;
-    width: 300px;
-    height: 300px;
-    margin-top: -150px;
-    margin-left: -150px;
-    border-radius: 150px;
+    width: 312px;
+    height: 312px;
+    margin-top: -156px;
+    margin-left: -156px;
+    border-radius: 156px;
     background: rgba(10, 112, 215, 0.4);
-    -webkit-filter: blur(25px);
+    -webkit-filter: blur(10px);
 }
 
 #eye_tracker.dwell{
@@ -76,7 +75,6 @@ button {
 }
 
 .target {
-	/*background: #b0e7c6;*/
 	background: red;
 }
 
