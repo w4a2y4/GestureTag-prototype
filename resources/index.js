@@ -609,6 +609,8 @@ function Eyespacingerror(x,y){
 	if(ErrorTimeEnd-ErrorTimeStart>330){
 		console.log("Dwell Selection!!")
 		DwellSelectionCount++;
+		ErrorTimeStart=Date.now()
+		ErrorTimeEnd=Date.now()
 		
 	}
 
