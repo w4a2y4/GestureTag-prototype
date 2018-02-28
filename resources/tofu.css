@@ -63,13 +63,14 @@ body {
 }
 
 button {
+	display: none;
 	position: absolute;
-	height: calc( 64px / 0.6 );
-	width: calc( 64px / 0.6 );
+	height: calc( 32px / 0.6 );
+	width: calc( 32px / 0.6 );
 	top: 50%;
 	left: 50%;
-	margin-top: calc( -32px / 0.6 );
-	margin-left: calc( -32px / 0.6 );
+	margin-top: calc( -16px / 0.6 );
+	margin-left: calc( -16px / 0.6 );
 	background-color: #e7e7e7;
 }
 
