@@ -2,8 +2,13 @@ var socket = io.connect();
 var show_path = false;
 var show_mouse = false;
 
-var button_left, button_right, button_up, button_down, button_upright, button_downright, button_downleft, button_upleft;
-var show_left, show_right, show_up, show_down, show_upright, show_downright, show_downleft, show_upleft;
+const UP = 0,
+    DOWN = 1,
+    LEFT = 2,
+    RIGHT = 3;
+
+var currBtn = new Array(4).fill(null);
+var isShown = new Array(4).fill(false);
 
 var tester;
 var type;
@@ -28,14 +33,8 @@ var client_width, client_height;
 
 var LockerTimeEnd = new Array(buttons.length).fill(0.0);
 var LockerTimeStart = new Array(buttons.length).fill(0.0);
-var DownRightbtnId = 0;
-var RightbtnId = 0;
-var DownbtnId = 0;
-var UpRightbtnId = 0;
-var DownLeftbtnId = 0;
-var LeftbtnId = 0;
-var UpbtnId = 0;
-var UpLeftbtnId = 0;
+
+var postBtnId = new Array(4).fill(0);
 var touchLock;
 
 var imgSet;
@@ -44,11 +43,7 @@ const swipeImages = {
     up: img_prefix + 'arrow_up.png',
     down: img_prefix + 'arrow_down.png',
     left: img_prefix + 'arrow_left.png',
-    right: img_prefix + 'arrow_right.png',
-    upright: img_prefix + 'arrow_upright.png',
-    downright: img_prefix + 'arrow_downright.png',
-    downleft: img_prefix + 'arrow_downleft.png',
-    upleft: img_prefix + 'arrow_upleft.png'
+    right: img_prefix + 'arrow_right.png'
 };
 const tapImages = {
     up: img_prefix + 'tap_topright.png',
@@ -89,27 +84,37 @@ $(document).on('click', 'button', (function(e) {
     }, 500);
 }));
 
+socket.on('start_mobile', () => {
+    console.log('START_MOBILE');
+    trial_num = DEFAULT_TRIAL_NUM;
+    showTarget();
+});
 
 socket.on('eyemove', (x, y) => {
     changePos(x * 1.11, y * 1.11);
 });
 
-socket.on('swipe', (dir) => {
+socket.on('swipe', (dirStr) => {
     gesture = dir;
+    var dir;
+    if (dirStr == 'up') dir = UP;
+    else if (dirStr == 'down') dir = DOWN;
+    else if (dirStr == 'left') dir = LEFT;
+    else if (dirStr == 'right') dir = RIGHT;
     enableClick(dir);
-    swipeAndUnlock(gesture);
+    swipeAndUnlock(dir);
 });
 
 socket.on('tap', (pos) => {
     gesture = pos;
-    if (pos === 'topright' && show_up) button_up.click();
-    if (pos === 'bottomleft' && show_down) button_down.click();
-    if (pos === 'topleft' && show_left) button_left.click();
-    if (pos === 'bottomright' && show_right) button_right.click();
+    if (pos === 'topright' && isShown[0]) currBtn[0].click();
+    if (pos === 'bottomleft' && isShown[1]) currBtn[1].click();
+    if (pos === 'topleft' && isShown[2]) currBtn[2].click();
+    if (pos === 'bottomright' && isShown[3]) currBtn[3].click();
 });
 
 socket.on('touch', (touch) => {
-    touchLock=true
+    touchLock = true
     if (show_path) {
         changePath(touch.x, touch.y);
         clearTimeout(touch_timer);
@@ -127,7 +132,6 @@ socket.on('init', (method) => {
 socket.on('client_init', (width, height) => {
     client_width = width;
     client_height = height;
-    console.log(server_height + ' ' + server_width + ' ' + client_height + ' ' + client_width);
 });
 
 socket.on('user', (user) => {
@@ -138,7 +142,7 @@ socket.on('user', (user) => {
 socket.on('device', (device) => {
     platform = device;
     console.log(platform);
-    enableSwipe();
+    if (platform === 'mobile') enableSwipe();
 });
 
 
@@ -148,36 +152,12 @@ function log() {
     socket.emit('log', cnt, gesture, clicked_btn, target_btn);
 }
 
-function isUp(btn) {
-    return imgSet["up"] == btn.children[0].src;
-}
-
-function isDown(btn) {
-    return imgSet["down"] == btn.children[0].src;
-}
-
-function isLeft(btn) {
-    return imgSet["left"] == btn.children[0].src;
-}
-
-function isRight(btn) {
-    return imgSet["right"] == btn.children[0].src;
-}
-
-function isUpRight(btn) {
-    return imgSet["upright"] == btn.children[0].src;
-}
-
-function isDownRight(btn) {
-    return imgSet["downright"] == btn.children[0].src;
-}
-
-function isDownLeft(btn) {
-    return imgSet["downleft"] == btn.children[0].src;
-}
-
-function isUpLeft(btn) {
-    return imgSet["upleft"] == btn.children[0].src;
+function getBtnType(btn) {
+    if (imgSet["up"] == btn.children[0].src) return UP;
+    else if (imgSet["down"] == btn.children[0].src) return DOWN;
+    else if (imgSet["left"] == btn.children[0].src) return LEFT;
+    else if (imgSet["right"] == btn.children[0].src) return RIGHT;
+    return -1;
 }
 
 function overlap(element, X, Y) {
@@ -206,20 +186,20 @@ function overlap(element, X, Y) {
     return false;
 }
 
-function distance (element, X, Y) {
+function distance(element, X, Y) {
     // use jQuery to get ABSOLUTE position
     var midX = $(element).offset().left + 0.5 * element.offsetWidth;
-    var midY = $(element).offset().top  + 0.5 * element.offsetHeight;
+    var midY = $(element).offset().top + 0.5 * element.offsetHeight;
     return (Math.pow((X - midX), 2) + Math.pow((Y - midY), 2));
 }
 
 function swap(x, y) {
-    return [y,x];
+    return [y, x];
 }
 
 function isIn(x, arr, len) {
     for (var i = 0; i < len; i++)
-        if ( x == arr[i] ) return true;
+        if (x == arr[i]) return true;
     return false;
 }
 
@@ -235,14 +215,7 @@ function changePos(eyeX, eyeY) {
         "top": eyeY - 500
     });
 
-    show_up = false;
-    show_down = false;
-    show_left = false;
-    show_right = false;
-    show_upright = false;
-    show_downright = false;
-    show_downleft = false;
-    show_upleft = false;
+    isShown.fill(false);
 
     // the candidates are the nearest [up, down, left, right]
     var btn_num = buttons.length;
@@ -250,41 +223,25 @@ function changePos(eyeX, eyeY) {
     var dist = new Array(4).fill(5000000);
 
     // for each type of gesture, put the nearest's index in candidate[]
-    for (var i = 0; i < btn_num; i++) {
-        var btn = buttons[i];
-        if (overlap(btn, eyeX, eyeY)) {
-
-            var curr_dist = distance(btn, eyeX, eyeY);
-
-            if (isUp(btn)) {
-                if (curr_dist < dist[0]) {
-                    candidate[0] = i;
-                    dist[0] = curr_dist;
-                }
-            } else if (isDown(btn)) {
-                if (curr_dist < dist[1]) {
-                    candidate[1] = i;
-                    dist[1] = curr_dist;
-                }
-            } else if (isLeft(btn)) {
-                if (curr_dist < dist[2]) {
-                    candidate[2] = i;
-                    dist[2] = curr_dist;
-                }
-            } else if (isRight(btn)) {
-                if (curr_dist < dist[3]) {
-                    candidate[3] = i;
-                    dist[3] = curr_dist;
+    if (type === 'swipe') {
+        for (var i = 0; i < btn_num; i++) {
+            var btn = buttons[i];
+            if (overlap(btn, eyeX, eyeY)) {
+                var curr_dist = distance(btn, eyeX, eyeY);
+                for (var j = 0; j < 4; j++) {
+                    if (getBtnType(btn) == j && curr_dist < dist[j]) {
+                        candidate[j] = i;
+                        dist[j] = curr_dist;
+                    }
                 }
             }
         }
     }
-
     for (var i = 0; i < btn_num; i++) {
         var btn = buttons[i];
 
         if (type === 'dwell') {
-            if ( overlap(btn, eyeX, eyeY) ) {
+            if (overlap(btn, eyeX, eyeY)) {
                 if (already[i]) { // Have already looked at the target
                     TimeEnd = Date.now(); // Record time then
                 } else {
@@ -306,7 +263,7 @@ function changePos(eyeX, eyeY) {
                 already[i] = 0;
             }
         } else {
-            if ( isIn(i, candidate, 4) ) {
+            if (isIn(i, candidate, 4)) {
                 if (already[i]) { // Have already looked at the target
                     LockerTimeEnd[i] = Date.now(); // Record time then
                 } else {
@@ -316,60 +273,20 @@ function changePos(eyeX, eyeY) {
                 var theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
                 $(btn).find('img').show();
                 if (theTimeInterval > 150.0 && touchLock == false) {
-                        // $(btn).find('img').show();
-                        if (isUp(btn)& LockerTimeEnd[UpbtnId] < LockerTimeEnd[i]) {
-                            UpbtnId = i;
-                            button_up = btn;
-                            show_up = true;
-                        } else if (isDown(btn)& LockerTimeEnd[DownbtnId] < LockerTimeEnd[i]) {
-                            DownbtnId = i;
-                            button_down = btn;
-                            show_down = true;
-                        } else if (isLeft(btn)& LockerTimeEnd[LeftbtnId] < LockerTimeEnd[i]) {
-                            LeftbtnId = i;
-                            button_left = btn;
-                            show_left = true;
-                        } else if (isRight(btn)& LockerTimeEnd[ RightbtnId] < LockerTimeEnd[i]) {
-                            RightbtnId = i;
-                            button_right = btn;
-                            show_right = true;
-                        } else if (isUpRight(btn)& LockerTimeEnd[ UpRightbtnId] < LockerTimeEnd[i]) {
-                            UpRightbtnId = i;
-                            button_upright = btn;
-                            show_upright = true;
-                        } else if (isDownRight(btn)& LockerTimeEnd[DownRightbtnId] < LockerTimeEnd[i]) {
-                            DownRightbtnId = i;
-                            button_downright = btn;
-                            show_downright = true;
-                        } else if (isDownLeft(btn)& LockerTimeEnd[DownLeftbtnId] < LockerTimeEnd[i]) {
-                            DownLeftbtnId = i;
-                            button_downleft = btn;
-                            show_downleft = true;
-                        } else if (isUpLeft(btn)& LockerTimeEnd[ UpLeftbtnId] < LockerTimeEnd[i]) {
-                            UpLeftbtnId = i;
-                            button_upleft = btn;
-                            show_upleft = true;
+                    for (var j = 0; j < 4; j++) {
+                        if (getBtnType(btn) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
+                            postBtnId[j] = i;
+                            currBtn[j] = btn;
+                            isShown[j] = true;
                         }
                     }
+                }
             } else {
                 $(btn).find('img').hide();
-                show_up = true;
-                show_down = true;
-                show_left = true;
-                show_right = true;
-                show_upright = true;
-                show_downright = true;
-                show_downleft = true;
-                show_upleft = true;
-                button_upleft = buttons[UpLeftbtnId];
-                button_upright = buttons[UpRightbtnId];
-                button_downleft = buttons[DownLeftbtnId];
-                button_downright = buttons[DownRightbtnId];
-                button_up = buttons[UpbtnId];
-                button_left = buttons[LeftbtnId];
-                button_down = buttons[DownbtnId];
-                button_right = buttons[RightbtnId];
-                if (i != DownLeftbtnId && i != UpLeftbtnId && i != DownRightbtnId && i != UpRightbtnId && i != LeftbtnId && i != RightbtnId && i != UpbtnId && i != DownbtnId) {
+                isShown.fill(true);
+                for (var j = 0; j < 4; j++)
+                    currBtn[j] = buttons[postBtnId[j]];
+                if (!isIn(i, postBtnId, 4)) {
                     LockerTimeEnd[i] = 0.0; // Record time then
                     LockerTimeStart[i] = 0.0; // Record time then
                     already[i] = 0;
@@ -416,133 +333,52 @@ function clearCanvas() {
 }
 
 var getSwipeDirectionFromAngle = (angle, direction) => {
-    let dir = '';
-    if (tester === 'motor') {
-        console.log('motor tester');
-        if (direction === Hammer.DIRECTION_RIGHT) {
-            dir = 'right';
-        } else if (direction === Hammer.DIRECTION_UP) {
-            dir = 'up';
-        } else if (direction === Hammer.DIRECTION_LEFT) {
-            dir = 'left';
-        } else if (direction === Hammer.DIRECTION_DOWN) {
-            dir = 'down';
-        }
-    } else {
-        if (angle < 22.5 && angle >= -22.5) {
-            dir = 'right';
-        } else if (angle < -22.5 && angle >= -67.5) {
-            dir = 'upright';
-        } else if (angle < -67.5 && angle >= -112.5) {
-            dir = 'up';
-        } else if (angle < -112.5 && angle >= -157.5) {
-            dir = 'upleft';
-        } else if (angle < -157.5 || angle > 157.5) {
-            dir = 'left';
-        } else if (angle > 112.5 && angle <= 157.5) {
-            dir = 'downleft';
-        } else if (angle > 67.5 && angle <= 112.5) {
-            dir = 'down';
-        } else {
-            dir = 'downright';
-        }
-    }
-    return dir;
+    if (direction === Hammer.DIRECTION_UP) return UP;
+    else if (direction === Hammer.DIRECTION_DOWN) return DOWN;
+    else if (direction === Hammer.DIRECTION_LEFT) return LEFT;
+    else if (direction === Hammer.DIRECTION_RIGHT) return RIGHT;
+    return -1;
 };
 
 function enableSwipe() {
-    if (platform === 'mobile') {
-        var container = document.getElementById("MobileContainer");
-        const manager = new Hammer.Manager(container);
-        const swipe = new Hammer.Swipe();
-        manager.add(swipe);
+    var container = document.getElementById("MobileContainer");
+    const manager = new Hammer.Manager(container);
+    const swipe = new Hammer.Swipe();
+    manager.add(swipe);
 
-        manager.on('swipe', (e) => {
-            var direction = e.offsetDirection;
-            var angle = e.angle;
-            const dirStr = getSwipeDirectionFromAngle(angle, direction);
-            enableClick(dirStr);
-            swipeAndUnlock(dirStr);
-        });
+    manager.on('swipe', (e) => {
+        var direction = e.offsetDirection;
+        var angle = e.angle;
+        var dir = getSwipeDirectionFromAngle(angle, direction);
+        enableClick(dir);
+        swipeAndUnlock(dir);
+    });
 
-        manager.on('hammer.input', (ev) => {
-            console.log(ev);
-            // If one can only do multi-touch swipe
-            if (ev.maxPointers > 1) {
-                if (ev.isFinal === true) {
-                    let multidir = ev.direction;
-                    if (multidir === Hammer.DIRECTION_RIGHT) {
-                        dir = 'right';
-                    } else if (multidir === Hammer.DIRECTION_UP) {
-                        dir = 'up';
-                    } else if (multidir === Hammer.DIRECTION_LEFT) {
-                        dir = 'left';
-                    } else if (multidir === Hammer.DIRECTION_DOWN) {
-                        dir = 'down';
-                    }
-                    enableClick(dir);
-                    console.log("M: " + dir);
-                }
+    manager.on('hammer.input', (ev) => {
+        console.log(ev);
+        // If one can only do multi-touch swipe
+        if (ev.maxPointers > 1) {
+            if (ev.isFinal === true) {
+                let multidir = ev.direction;
+                if (multidir === Hammer.DIRECTION_UP) enableClick(UP);
+                else if (multidir === Hammer.DIRECTION_DOWN) enableClick(DOWN);
+                else if (multidir === Hammer.DIRECTION_LEFT) enableClick(LEFT);
+                else if (multidir === Hammer.DIRECTION_RIGHT) enableClick(RIGHT);
             }
-        });
-
-    }
+        }
+    });
 };
 
-function enableClick(dirStr) {
-    console.log(DownRightbtnId+' '+RightbtnId+' '+DownbtnId+' '+UpRightbtnId+' '+DownLeftbtnId+' '+LeftbtnId+' '+UpbtnId+' '+UpLeftbtnId)
-    if (dirStr == 'up' && show_up) buttons[UpbtnId].click();
-    if (dirStr == 'down' && show_down) buttons[DownbtnId].click();
-    if (dirStr == 'left' && show_left) buttons[LeftbtnId].click();
-    if (dirStr == 'right' && show_right) buttons[RightbtnId].click();
-    if (dirStr == 'upright' && show_upright) buttons[UpRightbtnId].click();
-    if (dirStr == 'downright' && show_downright) buttons[DownRightbtnId].click();
-    if (dirStr == 'downleft' && show_downleft) buttons[DownLeftbtnId].click();
-    if (dirStr == 'upleft' && show_upleft) buttons[UpLeftbtnId].click();
+function enableClick(dir) {
+    if (isShown[dir])
+        buttons[postBtnId[dir]].click();
 }
 
-
 var swipeAndUnlock = (dir) => {
-    if (dir == 'up' && show_up) {
-        button_up.click();
-        already[UpbtnId] = 0;
+    if (isShown[dir]) {
+        currBtn[dir].click();
+        already[postBtnId[dir]] = 0;
         touchLock = false;
-        console.log("swipe up:" + String(UpbtnId))
-    } else if (dir == 'down' && show_down) {
-        button_down.click();
-        already[DownbtnId] = 0;
-        touchLock = false;
-        console.log("swipe down:" + String(DownbtnId))
-    } else if (dir == 'left' && show_left) {
-        button_left.click();
-        already[LeftbtnId] = 0;
-        touchLock = false;
-        console.log("swipe left:" + String(LeftbtnId))
-    } else if (dir == 'right' && show_right) {
-        button_right.click();
-        already[RightbtnId] = 0;
-        touchLock = false;
-        console.log("swipe right:" + String(RightbtnId))
-    } else if (dir == 'upright' && show_upright) {
-        button_upright.click();
-        already[UpRightbtnId] = 0;
-        touchLock = false;
-        console.log("swipe upright:" + String(UpRightbtnId))
-    } else if (dir == 'downright' && show_downright) {
-        button_downright.click();
-        already[DownRightbtnId] = 0;
-        touchLock = false;
-        console.log("swipe downright:" + String(DownRightbtnId))
-    } else if (dir == 'downleft' && show_downleft) {
-        button_downleft.click();
-        already[DownLeftbtnId] = 0;
-        touchLock = false;
-        console.log("swipe downleft:" + String(DownLeftbtnId))
-
-    } else if (dir == 'upleft' && show_upleft) {
-        button_upleft.click();;
-        already[UpLeftbtnId] = 0;
-        touchLock = false;
-        console.log("swipe upleft:" + String(UpLeftbtnId))
+        console.log("swipe " + dir + ":" + String(postBtnId[dir]));
     }
 }

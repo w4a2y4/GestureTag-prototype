@@ -20,10 +20,6 @@ const swipeOptions = {
     OPTION_2: `${resources}/arrow_down.png`,
     OPTION_3: `${resources}/arrow_left.png`,
     OPTION_4: `${resources}/arrow_right.png`,
-    OPTION_5: `${resources}/arrow_upright.png`,
-    OPTION_6: `${resources}/arrow_downright.png`,
-    OPTION_7: `${resources}/arrow_downleft.png`,
-    OPTION_8: `${resources}/arrow_upleft.png`,
     EYETRACKER: `gesturetag`
 };
 const tapOptions = {
@@ -42,10 +38,6 @@ const dwellOptions = {
     OPTION_2: `//:0`,
     OPTION_3: `//:0`,
     OPTION_4: `//:0`,
-    OPTION_5: `//:0`,
-    OPTION_6: `//:0`,
-    OPTION_7: `//:0`,
-    OPTION_8: `//:0`,
     EYETRACKER: `dwell`
 };
 
@@ -58,10 +50,6 @@ app.get('/', (req, res) => {
 
 app.get('/gmail', (req, res) => {
     res.render('gmail', loadImages());
-});
-
-app.get('/youtube', (req, res) => {
-    res.render('youtube', loadImages());
 });
 
 app.get('/swipe', (req, res) => {
@@ -135,6 +123,7 @@ io.on('connection', function(socket) {
     // start a trial
     socket.on('start', function() {
         writeLog('trial start (' + type + ')');
+        if (device === 'mobile') io.emit('start_mobile');
     });
 
     // end of a trial
@@ -151,8 +140,6 @@ io.on('connection', function(socket) {
         msg += '\tclick:' + clicked_btn;
         writeLog(msg);
     });
-
-
 });
 
 http.listen(3000, function() {

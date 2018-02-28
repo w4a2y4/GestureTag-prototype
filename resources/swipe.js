@@ -4,6 +4,7 @@ const swipe = new Hammer.Swipe();
 
 var tester;
 manager.add(swipe);
+manager.add(new Hammer.Press({ event: 'superpress', time: 500 }));
 
 socket.on('user', function(user) {
     tester = user;
@@ -17,6 +18,11 @@ socket.on('init', function(method) {
     socket.emit('client_init', width, height);
 });
 
+manager.on('superpress', (ev) => {
+    console.log('LONG PRESS');
+    emitMobileStart();
+});
+
 /* send touch raw data */
 manager.on('hammer.input', (ev) => {
     const touch = {
@@ -27,9 +33,9 @@ manager.on('hammer.input', (ev) => {
         }
     };
     emitTouchData(touch);
-    console.log(touch.pos)
+    // console.log(touch.pos)
+    // console.log(ev);
 
-    console.log(ev);
     // If one can only do multi-touch swipe
     if (ev.maxPointers > 1) {
         if (ev.isFinal === true) {
@@ -59,9 +65,6 @@ manager.on('swipe', (e) => {
     emitSwipeGesture(dirStr);
     e.target.innerText = `${dirStr}`;
 });
-
-
-
 
 
 /* right : 0, up: -90, left: 180, down: 90 */
