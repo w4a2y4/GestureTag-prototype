@@ -52,6 +52,17 @@ const tapImages = {
     right: img_prefix + 'tap_bottomright.png'
 };
 
+var pgBar = $('#circle');
+pgBar.circleProgress({
+    startAngle: -Math.PI / 4 * 2,
+    value: 0.0,
+    size: 50,
+    lineCap: 'round',
+    fill: { gradient: ['#0681c4', '#4ac5f8'] },
+});
+const timeTd = 330;
+var outNum = 0;
+
 
 $(document).keyup((e) => {
     // key "enter"
@@ -237,6 +248,7 @@ function changePos(eyeX, eyeY) {
             }
         }
     }
+
     for (var i = 0; i < btn_num; i++) {
         var btn = buttons[i];
 
@@ -247,13 +259,15 @@ function changePos(eyeX, eyeY) {
                 } else {
                     already[i] = 1; //First time to look at the target
                     TimeStart = Date.now(); // Record time then
+                    pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd + 20 } });
                 }
 
-                if (already[i] == 1 && TimeEnd - TimeStart > 330.0) {
+                if (already[i] == 1 && TimeEnd - TimeStart > timeTd) {
                     clickablebtn = btn;
                     clickablebtn.click();
                     console.log("Selection Success!!");
                     already[i] = 0; // reinitialize
+                    pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
                 }
                 // Showing image 
                 $(btn).find('img').show();
@@ -261,6 +275,7 @@ function changePos(eyeX, eyeY) {
             } else {
                 $(btn).find('img').hide();
                 already[i] = 0;
+
             }
         } else {
             if (isIn(i, candidate, 4)) {
