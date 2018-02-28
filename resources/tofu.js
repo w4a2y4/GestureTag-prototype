@@ -161,6 +161,7 @@ function getBtnType(btn) {
 }
 
 function overlap(element, X, Y) {
+    if ($(element).is(':hidden')) return;
     var top = $(element).offset().top;
     var left = $(element).offset().left;
     var right = Number($(element).offset().left) + Number($(element).width());
@@ -324,18 +325,22 @@ function showTarget() {
     $(buttons[tar - RAW_NUM]).addClass('neighbor');
 
     // select distractors
-    console.log(DISTRACT);
-    for ( var cnt = 0; cnt < DISTRACT - 5; ) {
+    // var toHide = RAW_NUM * COL_NUM - DISTRACT;
+    for ( var cnt = 0; cnt < DISTRACT; ) {
         var rand = Math.floor(Math.random() * RAW_NUM * COL_NUM);
         // console.log(cnt);
         if ( $(buttons[rand]).is(':hidden')) {
             // render as a distractor
+            var x = 16 * ( Math.floor(Math.random() * 3) + 1 ) / 0.6 ;
+            $(buttons[rand]).height(x);
+            $(buttons[rand]).width(x);
+            $(buttons[rand]).css( 'margin-top', -x/2 );
+            $(buttons[rand]).css( 'margin-left', -x/2 );
             $(buttons[rand]).show();
             cnt++;
         }
     }
 
-    // select each distractor's size
     trial_num -= 1;
 }
 
