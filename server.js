@@ -52,6 +52,10 @@ app.get('/gmail', (req, res) => {
     res.render('gmail', loadImages());
 });
 
+app.get('/youtube', (req, res) => {
+    res.render('youtube', loadImages());
+});
+
 app.get('/swipe', (req, res) => {
     res.sendFile(path.join(__dirname, 'swipe.html'));
 });
