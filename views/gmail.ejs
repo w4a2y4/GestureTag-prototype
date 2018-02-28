@@ -3,6 +3,7 @@
 <head>
     <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-circle-progress/1.2.2/circle-progress.js"></script>
     <link rel="stylesheet" type="text/css" href="resources/gmail.css">
     <script type="text/javascript">
         const RADIUS = 100;
@@ -157,7 +158,9 @@
             </button>
         </div>
         <div class="mail" id="mail07">
-            <img src="<%=OPTION_2%>">
+            <button>
+                <img src="<%=OPTION_2%>">
+            </button>
         </div>
         <div class="mail" id="mail08">
             <button><img src="<%=OPTION_1%>"></button>
@@ -210,7 +213,11 @@
                 <canvas id="canvas" width="1400" height="1000"></canvas>
             </div>
 
-            <div id="eye_tracker" class="<%=EYETRACKER%>"></div>
+            <div id="eye_tracker" class="<%=EYETRACKER%>">
+                <% if(process.argv[2] === 'dwell'){ %>
+                    <div id="circle"></div>
+                    <% } %>
+            </div>
 
             <script src="/socket.io/socket.io.js"></script>
             <script src="resources/index.js"></script>
