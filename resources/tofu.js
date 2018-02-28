@@ -299,6 +299,14 @@ function changePos(eyeX, eyeY) {
     }
 }
 
+function setBtnSize( element, size ) {
+    $(element).height(size);
+    $(element).width(size);
+    $(element).css( 'margin-top', -size/2 );
+    $(element).css( 'margin-left', -size/2 );
+    $(element).show();
+}
+
 function showTarget() {
 
     if (trial_num == 0) {
@@ -312,35 +320,36 @@ function showTarget() {
     var tar;
     while (true) {
         var btn_num = buttons.length - 2 * ( RAW_NUM + COL_NUM ) - 4;
-        tar = Math.floor(Math.random() * btn_num) + RAW_NUM + 1;
+        tar = Math.floor(Math.random() * btn_num ) + RAW_NUM + 1;
         console.log(trial_num + ' ' + tar);
         if (!$(buttons[tar]).hasClass('clicked')) break;
     }
 
     // render target and its neighbor
     $(buttons[tar]).addClass('target');
-    $(buttons[tar]).show();
+    setBtnSize( buttons[tar], BTN_SIZE );
     target_btn = $(buttons[tar]).parent().attr('id');
 
     // render neighbor
-    // $(buttons[tar + 1]).addClass('neighbor');
-    // $(buttons[tar - 1]).addClass('neighbor');
-    // $(buttons[tar + RAW_NUM]).addClass('neighbor');
-    // $(buttons[tar - RAW_NUM]).addClass('neighbor');
+    // right
+    setBtnSize( buttons[tar + 1], BTN_SIZE );
+    $(buttons[tar + 1]).css( 'margin-left', ( BTN_SIZE * ( SPACING + 0.5 ) - 120 ) );
+    // left
+    setBtnSize( buttons[tar - 1], BTN_SIZE );
+    $(buttons[tar - 1]).css( 'margin-left', ( 120 - BTN_SIZE * ( SPACING + 1.5 ) ) );
+    // down
+    setBtnSize( buttons[tar + COL_NUM], BTN_SIZE );
+    $(buttons[tar + COL_NUM]).css( 'margin-top', ( BTN_SIZE * ( SPACING + 0.5 ) - 120 ) );
+    // up
+    setBtnSize( buttons[tar - COL_NUM], BTN_SIZE );
+    $(buttons[tar - COL_NUM]).css( 'margin-top', ( 120 - BTN_SIZE * ( SPACING + 1.5 ) ) );
 
     // select distractors
-    // var toHide = RAW_NUM * COL_NUM - DISTRACT;
-    for ( var cnt = 0; cnt < DISTRACT; ) {
+    for ( var cnt = 0; cnt < DISTRACT - 5; ) {
         var rand = Math.floor(Math.random() * RAW_NUM * COL_NUM);
-        // console.log(cnt);
         if ( $(buttons[rand]).is(':hidden')) {
-            // render as a distractor
             var x = 16 * ( Math.floor(Math.random() * 3) + 1 ) / 0.6 ;
-            $(buttons[rand]).height(x);
-            $(buttons[rand]).width(x);
-            $(buttons[rand]).css( 'margin-top', -x/2 );
-            $(buttons[rand]).css( 'margin-left', -x/2 );
-            $(buttons[rand]).show();
+            setBtnSize( buttons[rand], x );
             cnt++;
         }
     }
