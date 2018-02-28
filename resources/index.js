@@ -40,10 +40,10 @@ var touchLock;
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
 const swipeImages = {
-    up: img_prefix + 'arrow_up.png',
-    down: img_prefix + 'arrow_down.png',
-    left: img_prefix + 'arrow_left.png',
-    right: img_prefix + 'arrow_right.png'
+    up: img_prefix + 'arrow_0.png',
+    down: img_prefix + 'arrow_1.png',
+    left: img_prefix + 'arrow_2.png',
+    right: img_prefix + 'arrow_3.png'
 };
 const tapImages = {
     up: img_prefix + 'tap_topright.png',

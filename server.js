@@ -48,6 +48,10 @@ app.get('/', (req, res) => {
     res.render('index', loadImages());
 });
 
+app.get('/tofu', (req, res) => {
+    res.render('tofu', loadImages());
+});
+
 app.get('/gmail', (req, res) => {
     res.render('gmail', loadImages());
 });

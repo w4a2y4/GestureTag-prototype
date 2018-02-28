@@ -1,0 +1,89 @@
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+html {
+	height: 100%;
+}
+
+body {
+	min-height: 100%;
+	margin: 0;
+	overflow: hidden;
+}
+
+#canvas_container {
+	height: 100%;
+	width: 100%;
+	pointer-events: none;
+	position: absolute;
+}
+
+#MobileContainer {
+	height: 100%;
+	width: 100%;
+	
+	position: absolute;
+}
+
+#eye_tracker {
+	pointer-events: none;
+    position: absolute;
+}
+
+#eye_tracker.gesturetag{
+	display: block;
+    width: 300px;
+    height: 300px;
+    margin-top: -150px;
+    margin-left: -150px;
+    border-radius: 150px;
+    background: rgba(10, 112, 215, 0.4);
+    -webkit-filter: blur(25px);
+}
+
+#eye_tracker.dwell{
+	display: block;
+    width: 16px;
+    height: 16px;
+    margin-top: -8px;
+    margin-left: -8px;
+    border-radius: 8px;
+    background: red;
+    -webkit-filter: blur(5px);
+}
+
+.block {
+	position: relative;
+	float: left;
+	height: calc( 1/15 * 100% );
+	width: calc( 1/24 * 100% );
+}
+
+button {
+	position: absolute;
+	height: calc( 64px / 0.6 );
+	width: calc( 64px / 0.6 );
+	top: 50%;
+	left: 50%;
+	margin-top: calc( -32px / 0.6 );
+	margin-left: calc( -32px / 0.6 );
+	background-color: #e7e7e7;
+}
+
+.target {
+	background: #b0e7c6;
+}
+
+.clicked {
+	background: pink;
+}
+
+button img {
+	display: none;
+	height: 100%;
+	width: auto;
+	position: relative;
+}
