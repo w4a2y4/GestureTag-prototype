@@ -43,6 +43,16 @@ var TrialTimeEnd = new Date().getTime();
 var TrialCompletionTime;
 var ErrorCount=0;
 
+var clickedbutton;
+
+var EyeErrorX = new Array(10).fill(0.0);
+var EyeErrorY = new Array(10).fill(0.0);
+var ErrorTimeStart = new Date().getTime();
+var ErrorTimeEnd = new Date().getTime();
+var ErrorIndex=0;
+var DwellSelectionCount=0;
+
+
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
 const swipeImages = {
@@ -83,6 +93,7 @@ $(document).mousemove((e) => {
 $(document).on('click', 'button', (function(e) {
     console.log("click!!");
     $(this).addClass('clicked');
+    
     TrialTimeEnd = Date.now()
     TrialCompletionTime= TrialTimeEnd- TrialTimeStart
     clicked_btn = $(this).parent().attr('id');
@@ -90,7 +101,8 @@ $(document).on('click', 'button', (function(e) {
     log();
     if ($(this).hasClass('target')) {
         $(this).removeClass('target');
-        showTarget();
+
+        showTarget()
     }
     setTimeout(() => {
         $(this).removeClass('clicked');
@@ -100,6 +112,7 @@ $(document).on('click', 'button', (function(e) {
 
 socket.on('eyemove', (x, y) => {
     changePos(x * 1.11, y * 1.11);
+    Eyespacingerror(x,y);
 });
 
 socket.on('swipe', (dir) => {
@@ -153,7 +166,7 @@ socket.on('device', (device) => {
 function log() {
     cnt = DEFAULT_TRIAL_NUM - trial_num;
     console.log(gesture + ' ' + clicked_btn + ' ' + target_btn);
-    socket.emit('log', cnt, gesture, clicked_btn, target_btn,TrialCompletionTime,ErrorCount);
+    socket.emit('log', cnt, gesture, clicked_btn, target_btn,TrialCompletionTime,ErrorCount,DwellSelectionCount);
 }
 
 function isUp(btn) {
@@ -401,6 +414,7 @@ function showTarget() {
     $(buttons[rand]).addClass('target');
     TrialTimeStart = Date.now();
     ErrorCount=0;
+     DwellSelectionCount=0;
     target_btn = $(buttons[rand]).parent().attr('id');
     trial_num -= 1;
 }
@@ -555,4 +569,57 @@ var swipeAndUnlock = (dir) => {
         touchLock = false;
         console.log("swipe upleft:" + String(UpLeftbtnId))
     }
+}
+
+
+function Eyespacingerror(x,y){
+	ErrorIndex=(ErrorIndex+1)%10;
+	//EyeXave=Math.mean(EyeErrorX);
+	//EyeYave=Math.mean(EyeErrorY);
+	var XData=0.0;
+	var YData=0.0;
+	var kk = 0;
+ 	while (kk <= 9)
+                {
+                    XData += EyeErrorX[kk];
+                    YData += EyeErrorY[kk];
+                    kk++;
+                }
+
+                //Console.WriteLine(aveX);
+               
+                var EyeXave = XData / 10;
+                var EyeYave= YData / 10;
+
+
+
+	EyeErrorX[ErrorIndex]=x;
+	EyeErrorY[ErrorIndex]=y;
+	for (var i = 0; i < 10; i++) {
+		if((EyeXave-EyeErrorX[i])*(EyeXave-EyeErrorX[i])+(EyeYave-EyeErrorY[i])*(EyeYave-EyeErrorY[i])>10000)	
+			{
+				ErrorTimeStart=Date.now()
+				ErrorTimeEnd=Date.now()
+				
+			}	
+	}
+
+	ErrorTimeEnd=Date.now()
+	//console.log(ErrorTimeEnd-ErrorTimeStart)
+	if(ErrorTimeEnd-ErrorTimeStart>330){
+		console.log("Dwell Selection!!")
+		DwellSelectionCount++;
+		
+	}
+
+	
+
+
+
+
+
+
+
+
+
 }
