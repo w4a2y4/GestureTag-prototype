@@ -281,7 +281,7 @@ function changePos(eyeX, eyeY) {
                 already[i] = 0;
                 outNum += 1;
             }
-        } else {
+        } else if (type === 'swipe') {
             if (isIn(i, candidate, 4)) {
                 if (already[i]) { // Have already looked at the target
                     LockerTimeEnd[i] = Date.now(); // Record time then
