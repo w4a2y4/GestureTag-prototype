@@ -67,7 +67,9 @@ body {
 button {
     height: 100%;
     width: 100%;
-    visibility: hidden;
+    background: transparent;
+    border: none;
+    /* visibility: hidden; */
 }
 
 .target {
