@@ -67,7 +67,9 @@ body {
 button {
     height: 100%;
     width: 100%;
-    visibility: hidden;
+    background: transparent;
+    border: none;
+    /* visibility: hidden; */
 }
 
 .target {
@@ -85,7 +87,7 @@ button {
 img {
     position: relative;
     visibility: visible;
-    /*display: none;*/
+    display: none;
     height: 100%;
     float: right;
 }
