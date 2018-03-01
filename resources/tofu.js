@@ -37,6 +37,12 @@ var LockerTimeStart = new Array(buttons.length).fill(0.0);
 var postBtnId = new Array(4).fill(0);
 var touchLock;
 
+var JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0);
+var CandidateButtonArray=new Array(buttons.length).fill(0);
+var CurrentTarX=0.0;
+var CurrentTarY=0.0;
+var oldbuttons=buttons;
+
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
 const swipeImages = {
@@ -58,6 +64,8 @@ $(document).keyup((e) => {
     if (e.which === 32) {
         socket.emit('start');
         trial_num = DEFAULT_TRIAL_NUM;
+        JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0); //have to set to zero
+        AssignTargetAlgo();
         showTarget();
     } else if (e.which === 69) // key "e"
         show_mouse = !show_mouse;
@@ -67,6 +75,7 @@ $(document).keyup((e) => {
 
 $(document).mousemove((e) => {
     if (show_mouse)
+         
         changePos(e.pageX, e.pageY);
 });
 
@@ -208,6 +217,7 @@ function isIn(x, arr, len) {
 
 function changePos(eyeX, eyeY) {
 
+   
     $('#eye_tracker').css({
         "left": eyeX,
         "top": eyeY
@@ -309,26 +319,39 @@ function setBtnSize( element, size ) {
 
 function showTarget() {
 
+    var tar;
     if (trial_num == 0) {
         socket.emit('end');
+        JumpDistance = new Array(10).fill(0);
         return;
     }
+    if (trial_num == 12) {
+        tar=0;
+       
+    }
 
-    $(":button").hide();
-
+    
     // select target
-    var tar;
+    
     while (true) {
         var btn_num = buttons.length - 2 * ( RAW_NUM + COL_NUM ) - 4;
-        tar = Math.floor(Math.random() * btn_num ) + RAW_NUM + 1;
-        console.log(trial_num + ' ' + tar);
-        if (!$(buttons[tar]).hasClass('clicked')) break;
+        //Method1: random
+        
+        //var temptar = Math.floor(Math.random() * btn_num ) + RAW_NUM + 1;
+        
+        //Method2: total Distance Equalization
+
+        var temptar=ButtonCandidate(CurrentTarX,CurrentTarY,trial_num,btn_num)
+       
+        console.log('assign :'+trial_num + ' ' + temptar);
+        if (!$(buttons[temptar]).hasClass('clicked')) {tar=temptar; break;}
     }
 
     // render target and its neighbor
     $(buttons[tar]).addClass('target');
     setBtnSize( buttons[tar], BTN_SIZE );
     target_btn = $(buttons[tar]).parent().attr('id');
+    $(":button").hide();
 
     // render neighbor
     // right
@@ -355,6 +378,9 @@ function showTarget() {
         }
     }
 
+    oldbuttons=buttons;
+    CurrentTarX=$(buttons[tar]).offset().left + 0.5 *buttons[tar].offsetWidth;
+    CurrentTarY=$(buttons[tar]).offset().top + 0.5 * buttons[tar].offsetHeight;
     trial_num -= 1;
 }
 
@@ -427,4 +453,79 @@ var swipeAndUnlock = (dir) => {
         touchLock = false;
         console.log("swipe " + dir + ":" + String(postBtnId[dir]));
     }
+}
+
+function AssignTargetAlgo() {
+   var Res = 300
+   
+   while (Res > 0) {
+       for (var i = 0; i < DEFAULT_TRIAL_NUM; i++) {
+           while (true) {
+               if (JumpDistance[i] < 50 && Res > 0) {
+                   var randnum = Math.ceil(Math.random() * Res)
+                   JumpDistance[i] = JumpDistance[i] + randnum
+                   if (JumpDistance[i] <= 50) {
+                       Res = Res - randnum;
+                       break;
+                   }
+                   else {
+                       JumpDistance[i] = JumpDistance[i] - randnum
+                   }
+               }
+               else { break; }
+           }
+
+       }
+   }
+   var j, x, i;
+   for (i = JumpDistance.length - 1; i > 0; i--) {
+       j = Math.floor(Math.random() * (i + 1));
+       x = JumpDistance[i];
+       JumpDistance[i] = JumpDistance[j];
+       JumpDistance[j] = x;
+   }
+
+   console.log(JumpDistance);
+
+   
+   
+
+
+}
+
+
+function ButtonCandidate(midX,midY, trialNum,btn_num) {
+    CandidateButtonArray=new Array(buttons.length).fill(0);
+    var CandidateBtnX=0.0;
+
+    var CandidateBtnY=0.0;
+    var CandidateNum=0
+    var esilon =10000.0;
+   var dis = JumpDistance[trialNum-1];
+    console.log(dis)
+   // use jQuery to get ABSOLUTE position
+   //var midX = $(element).offset().left + 0.5 * element.offsetWidth;
+   //var midY = $(element).offset().top + 0.5 * element.offsetHeight;
+   //THIS TRIAL POSITION
+   for (var i = 0; i < btn_num; i++){
+        //console.log(buttons[i].)
+        
+       CandidateBtnX=$(buttons[i]).offset().left + 0.5 * buttons[i].offsetWidth;
+       CandidateBtnY = $(buttons[i]).offset().top + 0.5 * buttons[i].offsetHeight;
+       var thisbtndistance=Math.pow((CandidateBtnX - midX), 2) + Math.pow((CandidateBtnY - midY), 2)
+ console.log('Others'+i+' X:'+CandidateBtnY+'Y:'+CandidateBtnY+'dis:'+thisbtndistance)
+
+       if (thisbtndistance< dis*dis+ esilon && thisbtndistance > dis*dis - esilon) {
+            
+           CandidateButtonArray[CandidateNum] = i;
+            CandidateNum++;
+       }
+   }
+
+   var NextTargetIndex = Math.ceil(Math.random() * CandidateNum)
+
+   console.log(CandidateButtonArray[NextTargetIndex]+'form'+CandidateButtonArray)
+   //return button index
+
+   return CandidateButtonArray[NextTargetIndex];  
 }
