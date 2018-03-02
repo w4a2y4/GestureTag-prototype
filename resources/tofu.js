@@ -199,13 +199,13 @@ socket.on('device', (device) => {
     platform = device;
     console.log(platform);
     if (platform === 'mobile') {
-        enableSwipe();
         socket.on('start_mobile', () => {
             console.log('START_MOBILE');
             trial_num = DEFAULT_TRIAL_NUM;
             AssignTargetAlgo();
             showTarget();
         });
+        if (type === 'swipe') enableSwipe();
     }
 });
 
