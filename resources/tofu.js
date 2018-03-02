@@ -141,7 +141,7 @@ socket.on('start_mobile', () => {
 });
 
 socket.on('eyemove', (x, y) => {
-    changePos(x * 1.11, y * 1.11);
+    changePos(x, y);
     Eyespacingerror(x,y);
 });
 
