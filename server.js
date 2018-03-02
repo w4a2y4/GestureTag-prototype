@@ -137,7 +137,7 @@ io.on('connection', function(socket) {
     });
 
     // log data
-    socket.on('log', function(cnt, gesture, clicked_btn, target,TrialCompletionTime,ErrorCount,DwellSelectionCount) {
+    socket.on('log', function(cnt, gesture, clicked_btn, target,TrialCompletionTime,ErrorCount,DwellSelectionCount,MouseClickCount) {
         var msg = '#' + cnt;
         msg += '\tevent:' + gesture;
         msg += '\ttarget:' + target;
@@ -145,6 +145,7 @@ io.on('connection', function(socket) {
         msg += '\tCompletionTime: ' + TrialCompletionTime;
         msg += '\tErrorCount: ' + ErrorCount;
         msg += '\tDwellSelectionCount: ' +DwellSelectionCount;
+         msg += '\tMouseClickCount: '+MouseClickCount;
         writeLog(msg);
     });
 });

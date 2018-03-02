@@ -58,6 +58,7 @@ var ErrorTimeStart = new Date().getTime();
 var ErrorTimeEnd = new Date().getTime();
 var ErrorIndex=0;
 var DwellSelectionCount=0;
+var MouseClickCount=0;
 
 
 
@@ -100,6 +101,11 @@ $(document).mousemove((e) => {
     if (show_mouse)
          
         changePos(e.pageX, e.pageY);
+});
+$(document).mousedown((e) => {
+   
+       MouseClickCount++;
+       //console.log(MouseClickCount)
 });
 
 $(document).on('click', 'button', (function(e) {
@@ -191,7 +197,7 @@ socket.on('device', (device) => {
 function log() {
     cnt = DEFAULT_TRIAL_NUM - trial_num;
     console.log(gesture + ' ' + clicked_btn + ' ' + target_btn);
-    socket.emit('log', cnt, gesture, clicked_btn, target_btn,TrialCompletionTime,ErrorCount,DwellSelectionCount);
+    socket.emit('log', cnt, gesture, clicked_btn, target_btn,TrialCompletionTime,ErrorCount,DwellSelectionCount,MouseClickCount);
 }
 
 function getBtnType(btn) {
@@ -391,9 +397,12 @@ function showTarget() {
     setBtnSize(buttons[tar], BTN_SIZE );
     target_btn = $(buttons[tar]).parent().attr('id');
    
-     TrialTimeStart = Date.now();
+    //reset preformance data
+    TrialTimeStart = Date.now();
     ErrorCount=0;
-     DwellSelectionCount=0;
+    DwellSelectionCount=0;
+    MouseClickCount=0;
+    //reset preformance data
 
     // render neighbor
     // right
@@ -630,4 +639,10 @@ function Eyespacingerror(x,y){
         ErrorTimeStart=Date.now()
         ErrorTimeEnd=Date.now()
     }
+}
+
+
+function MouseClickEvent(){
+    document.getElementById("MouseBox").style="width:1400px;height:600px;";
+    console.log("mouse go")
 }
