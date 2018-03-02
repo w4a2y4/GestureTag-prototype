@@ -2,6 +2,13 @@ var socket = io.connect();
 var show_path = false;
 var show_mouse = false;
 
+const RADIUS = 113;
+const RAW_NUM = 15;
+const COL_NUM = 24;
+var BTN_SIZE;
+var SPACING;
+const DISTRACT = 300;
+
 const UP = 0,
     DOWN = 1,
     LEFT = 2,
@@ -71,6 +78,7 @@ var ErrorTimeEnd = new Date().getTime();
 var ErrorIndex = 0;
 var DwellSelectionCount = 0;
 var MouseClickCount = 0;
+
 
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
@@ -199,6 +207,13 @@ socket.on('device', (device) => {
     if (platform === 'mobile') enableSwipe();
 });
 
+socket.on('target_size', function(target_size) {
+    BTN_SIZE = Number(target_size) / 0.6;
+});
+
+socket.on('spacing', function(spacing) {
+    SPACING = Number(spacing);
+});
 
 function log() {
     cnt = DEFAULT_TRIAL_NUM - trial_num;
