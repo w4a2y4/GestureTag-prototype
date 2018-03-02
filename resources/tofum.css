@@ -68,8 +68,8 @@ body {
 .block {
     position: relative;
     float: left;
-    height: calc( 1/17 * 100%);
-    width: calc( 1/22 * 100%);
+    height: calc( 1/10 * 100%);
+    width: calc( 1/16 * 100%);
 }
 
 button {

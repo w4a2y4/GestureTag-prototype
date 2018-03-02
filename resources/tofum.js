@@ -3,11 +3,11 @@ var show_path = false;
 var show_mouse = false;
 
 const RADIUS = 113;
-const RAW_NUM = 17;
-const COL_NUM = 22;
+const RAW_NUM = 10;
+const COL_NUM = 16;
 var BTN_SIZE;
 var SPACING;
-const DISTRACT = 300;
+const DISTRACT = 100;
 
 const UP = 0,
     DOWN = 1,
