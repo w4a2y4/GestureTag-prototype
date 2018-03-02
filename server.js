@@ -15,6 +15,12 @@ const user = process.argv[3];
 // mobile or desktop
 const device = process.argv[4];
 
+// 16, 32, 48
+const target_size = process.argv[5];
+
+// 0, 0.5, 1
+const spacing = process.argv[6];
+
 const swipeOptions = {
     OPTION_1: `${resources}/arrow_up.png`,
     OPTION_2: `${resources}/arrow_down.png`,
@@ -94,6 +100,8 @@ io.on('connection', function(socket) {
     io.emit('init', type);
     io.emit('user', user);
     io.emit('device', device);
+    io.emit('target_size', target_size);
+    io.emit('spacing', spacing);
 
     // set client's window size
     socket.on('client_init', function(width, height) {
@@ -141,15 +149,15 @@ io.on('connection', function(socket) {
     });
 
     // log data
-    socket.on('log', function(cnt, gesture, clicked_btn, target,TrialCompletionTime,ErrorCount,DwellSelectionCount,MouseClickCount) {
+    socket.on('log', function(cnt, gesture, clicked_btn, target, TrialCompletionTime, ErrorCount, DwellSelectionCount, MouseClickCount) {
         var msg = '#' + cnt;
         msg += '\tevent:' + gesture;
         msg += '\ttarget:' + target;
         msg += '\tclick:' + clicked_btn;
         msg += '\tCompletionTime: ' + TrialCompletionTime;
         msg += '\tErrorCount: ' + ErrorCount;
-        msg += '\tDwellSelectionCount: ' +DwellSelectionCount;
-         msg += '\tMouseClickCount: '+MouseClickCount;
+        msg += '\tDwellSelectionCount: ' + DwellSelectionCount;
+        msg += '\tMouseClickCount: ' + MouseClickCount;
         writeLog(msg);
     });
 });
