@@ -6,6 +6,11 @@ const path = require('path');
 const resources = '/resources';
 const logfile = 'log/' + moment().format('MMDD-HHmm') + '.log';
 
+if ((process.argv).length !== 7) {
+    console.log("Wrong arg num!!! Pleas enter npm run [method] [user_category] [device] [target_btn_size] [spacing]");
+    process.exit();
+}
+
 // Tap or Swipe
 const type = process.argv[2];
 
