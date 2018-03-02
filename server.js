@@ -63,6 +63,10 @@ app.get('/tofu', (req, res) => {
     res.render('tofu', loadImages());
 });
 
+app.get('/tofum', (req, res) => {
+    res.render('tofum', loadImages());
+});
+
 app.get('/gmail', (req, res) => {
     res.render('gmail', loadImages());
 });
