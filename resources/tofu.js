@@ -98,7 +98,7 @@ const tapImages = {
 
 $(document).keyup((e) => {
     // key "enter"
-    if (e.which === 32 && platform != 'mobile') {
+    if (e.which === 32 && platform !== 'mobile') {
         socket.emit('start');
         trial_num = DEFAULT_TRIAL_NUM;
         JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0); //have to set to zero
@@ -326,66 +326,67 @@ function changePos(eyeX, eyeY) {
             outNum = 0;
         }
     }
+    if (type !== tap) {
+        for (var k = 0; k < 9; k++) {
 
-    for (var k = 0; k < 9; k++) {
+            var i = neighborhood[k];
+            if (i < 0 || i >= btn_num) continue;
+            console.log(btn_num)
+            var btn = buttons[i];
 
-        var i = neighborhood[k];
-        if (i < 0 || i >= btn_num) continue;
-        console.log(btn_num)
-        var btn = buttons[i];
+            if (type === 'dwell') {
+                if (overlap(btn, eyeX, eyeY)) {
+                    if (already[i]) { // Have already looked at the target
+                        TimeEnd = Date.now(); // Record time then
+                    } else {
+                        already[i] = 1; //First time to look at the target
+                        TimeStart = Date.now(); // Record time then
+                        pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd + 20 } });
+                    }
 
-        if (type === 'dwell') {
-            if (overlap(btn, eyeX, eyeY)) {
-                if (already[i]) { // Have already looked at the target
-                    TimeEnd = Date.now(); // Record time then
+                    if (already[i] == 1 && TimeEnd - TimeStart > 330.0) {
+                        clickablebtn = btn;
+                        clickablebtn.click();
+                        console.log("Selection Success!!");
+                        already[i] = 0; // reinitialize
+                        pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
+                    }
+                    // Showing image 
+                    $(btn).find('img').show();
+                    outNum = 0;
                 } else {
-                    already[i] = 1; //First time to look at the target
-                    TimeStart = Date.now(); // Record time then
-                    pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd + 20 } });
+                    $(btn).find('img').hide();
+                    already[i] = 0;
+                    outNum += 1;
                 }
-
-                if (already[i] == 1 && TimeEnd - TimeStart > 330.0) {
-                    clickablebtn = btn;
-                    clickablebtn.click();
-                    console.log("Selection Success!!");
-                    already[i] = 0; // reinitialize
-                    pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
-                }
-                // Showing image 
-                $(btn).find('img').show();
-                outNum = 0;
-            } else {
-                $(btn).find('img').hide();
-                already[i] = 0;
-                outNum += 1;
-            }
-        } else {
-            if (isIn(i, candidate, 4)) {
-                if (already[i]) { // Have already looked at the target
-                    LockerTimeEnd[i] = Date.now(); // Record time then
-                } else {
-                    already[i] = 1; //First time to look at the target
-                    LockerTimeStart[i] = Date.now(); // Record time then
-                }
-                var theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
-                $(btn).find('img').show();
-                if (theTimeInterval > 150.0 && touchLock == false) {
-                    for (var j = 0; j < 4; j++) {
-                        if (getBtnType(btn) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
-                            postBtnId[j] = i;
-                            currBtn[j] = btn;
-                            isShown[j] = true;
+            } else if (type === 'swipe') {
+                if (isIn(i, candidate, 4)) {
+                    if (already[i]) { // Have already looked at the target
+                        LockerTimeEnd[i] = Date.now(); // Record time then
+                    } else {
+                        already[i] = 1; //First time to look at the target
+                        LockerTimeStart[i] = Date.now(); // Record time then
+                    }
+                    var theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
+                    $(btn).find('img').show();
+                    if (theTimeInterval > 150.0 && touchLock == false) {
+                        for (var j = 0; j < 4; j++) {
+                            if (getBtnType(btn) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
+                                postBtnId[j] = i;
+                                currBtn[j] = btn;
+                                isShown[j] = true;
+                            }
                         }
                     }
-                }
-            } else {
-                isShown.fill(true);
-                for (var j = 0; j < 4; j++)
-                    currBtn[j] = buttons[postBtnId[j]];
-                if (!isIn(i, postBtnId, 4)) {
-                    LockerTimeEnd[i] = 0.0; // Record time then
-                    LockerTimeStart[i] = 0.0; // Record time then
-                    already[i] = 0;
+                } else {
+                    isShown.fill(true);
+                    for (var j = 0; j < 4; j++)
+                        currBtn[j] = buttons[postBtnId[j]];
+                    if (!isIn(i, postBtnId, 4)) {
+                        LockerTimeEnd[i] = 0.0; // Record time then
+                        LockerTimeStart[i] = 0.0; // Record time then
+                        already[i] = 0;
+                    }
                 }
             }
         }
@@ -402,18 +403,13 @@ function setBtnSize(element, size) {
 
 function showTarget() {
 
-
     if (trial_num == 0) {
         socket.emit('end');
         JumpDistance = new Array(10).fill(0);
         return;
     }
 
-
-
-
     // select target
-
     while (true) {
         var btn_num = buttons.length - 2 * (RAW_NUM + COL_NUM) - 4;
         //Method1: random
@@ -595,13 +591,7 @@ function AssignTargetAlgo() {
 
         JumpDistance[i] = JumpDistance[i] + 200
     }
-
-
     console.log(JumpDistance);
-
-
-
-
 
 }
 
