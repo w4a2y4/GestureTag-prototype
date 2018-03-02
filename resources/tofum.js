@@ -2,7 +2,7 @@ var socket = io.connect();
 var show_path = false;
 var show_mouse = false;
 
-const RADIUS = 113;
+const RADIUS = 168.66;
 const RAW_NUM = 10;
 const COL_NUM = 16;
 var BTN_SIZE;
