@@ -64,6 +64,10 @@ $(document).keyup((e) => {
     if (e.which === 32) {
         socket.emit('start');
         trial_num = DEFAULT_TRIAL_NUM;
+        tar=0;
+        CurrentTarX=0.0
+
+        CurrentTar=Y=0.0
         JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0); //have to set to zero
         AssignTargetAlgo();
         showTarget();
@@ -216,8 +220,7 @@ function isIn(x, arr, len) {
 }
 
 function changePos(eyeX, eyeY) {
-
-   
+    
     $('#eye_tracker').css({
         "left": eyeX,
         "top": eyeY
@@ -251,6 +254,7 @@ function changePos(eyeX, eyeY) {
         }
     }
     for (var i = 0; i < btn_num; i++) {
+        console.log( btn_num)
         var btn = buttons[i];
 
         if (type === 'dwell') {
@@ -325,10 +329,7 @@ function showTarget() {
         JumpDistance = new Array(10).fill(0);
         return;
     }
-    if (trial_num == 12) {
-        tar=0;
-       
-    }
+    
 
     
     // select target
@@ -341,17 +342,24 @@ function showTarget() {
         
         //Method2: total Distance Equalization
 
-        var temptar=ButtonCandidate(CurrentTarX,CurrentTarY,trial_num,btn_num)
+        if (trial_num == 12) {
+        var temptar = Math.floor(Math.random() * btn_num ) + RAW_NUM + 1;
        
-        console.log('assign :'+trial_num + ' ' + temptar);
-        if (!$(buttons[temptar]).hasClass('clicked')) {tar=temptar; break;}
+    }
+    else{
+        var temptar=ButtonCandidate(CurrentTarX,CurrentTarY,trial_num,btn_num)
+       }
+        //console.log('assign :'+trial_num + ' ' + temptar);
+        if (!$(buttons[temptar]).hasClass('clicked')) {tar=temptar; console.log('assign :'+trial_num + ' ' + temptar);break;}
     }
 
     // render target and its neighbor
+    console.log("tar:"+tar)
+     $(":button").hide();
     $(buttons[tar]).addClass('target');
-    setBtnSize( buttons[tar], BTN_SIZE );
+    setBtnSize(buttons[tar], BTN_SIZE );
     target_btn = $(buttons[tar]).parent().attr('id');
-    $(":button").hide();
+   
 
     // render neighbor
     // right
@@ -378,7 +386,7 @@ function showTarget() {
         }
     }
 
-    oldbuttons=buttons;
+    
     CurrentTarX=$(buttons[tar]).offset().left + 0.5 *buttons[tar].offsetWidth;
     CurrentTarY=$(buttons[tar]).offset().top + 0.5 * buttons[tar].offsetHeight;
     trial_num -= 1;
@@ -456,15 +464,15 @@ var swipeAndUnlock = (dir) => {
 }
 
 function AssignTargetAlgo() {
-   var Res = 300
+   var Res = 1800
    
    while (Res > 0) {
        for (var i = 0; i < DEFAULT_TRIAL_NUM; i++) {
            while (true) {
-               if (JumpDistance[i] < 50 && Res > 0) {
+               if (JumpDistance[i] < 300 && Res > 0) {
                    var randnum = Math.ceil(Math.random() * Res)
                    JumpDistance[i] = JumpDistance[i] + randnum
-                   if (JumpDistance[i] <= 50) {
+                   if (JumpDistance[i] <= 300) {
                        Res = Res - randnum;
                        break;
                    }
@@ -484,6 +492,7 @@ function AssignTargetAlgo() {
        JumpDistance[i] = JumpDistance[j];
        JumpDistance[j] = x;
    }
+    
 
    console.log(JumpDistance);
 
@@ -496,33 +505,44 @@ function AssignTargetAlgo() {
 
 function ButtonCandidate(midX,midY, trialNum,btn_num) {
     CandidateButtonArray=new Array(buttons.length).fill(0);
+    CandidateButtonDistance=new Array(buttons.length).fill(0.0);
     var CandidateBtnX=0.0;
 
     var CandidateBtnY=0.0;
-    var CandidateNum=0
-    var esilon =10000.0;
+    var CandidateNum=0;
+    var esilon =100.0;
+    var NextTargetIndex 
    var dis = JumpDistance[trialNum-1];
-    console.log(dis)
+    console.log("pre tar X:"+midX+"tar y"+midY)
+    
    // use jQuery to get ABSOLUTE position
    //var midX = $(element).offset().left + 0.5 * element.offsetWidth;
    //var midY = $(element).offset().top + 0.5 * element.offsetHeight;
    //THIS TRIAL POSITION
+   while(CandidateNum==0||CandidateButtonArray[NextTargetIndex]==0){
+    CandidateButtonArray=new Array(buttons.length).fill(0);
+    CandidateNum=0;
+    esilon=esilon+100.0
    for (var i = 0; i < btn_num; i++){
         //console.log(buttons[i].)
         
        CandidateBtnX=$(buttons[i]).offset().left + 0.5 * buttons[i].offsetWidth;
        CandidateBtnY = $(buttons[i]).offset().top + 0.5 * buttons[i].offsetHeight;
        var thisbtndistance=Math.pow((CandidateBtnX - midX), 2) + Math.pow((CandidateBtnY - midY), 2)
- console.log('Others'+i+' X:'+CandidateBtnY+'Y:'+CandidateBtnY+'dis:'+thisbtndistance)
-
-       if (thisbtndistance< dis*dis+ esilon && thisbtndistance > dis*dis - esilon) {
-            
+ //console.log('Others'+i+' X:'+CandidateBtnY+'Y:'+CandidateBtnY+'dis:'+thisbtndistance)
+        var upbound= dis*dis+ esilon;
+        var lowbound=dis*dis- esilon;
+       if (thisbtndistance<upbound && thisbtndistance > lowbound) {
+            CandidateButtonDistance[CandidateNum]=thisbtndistance
            CandidateButtonArray[CandidateNum] = i;
+           console.log('Others'+i+' X:'+CandidateBtnY+'Y:'+CandidateBtnY+'dis:'+thisbtndistance+"in"+lowbound+"~"+upbound)
             CandidateNum++;
        }
    }
-
-   var NextTargetIndex = Math.ceil(Math.random() * CandidateNum)
+    NextTargetIndex = Math.ceil(Math.random() * CandidateNum)
+}
+ //console.log("checkdis"+dis+"from"+CandidateButtonDistance)
+   
 
    console.log(CandidateButtonArray[NextTargetIndex]+'form'+CandidateButtonArray)
    //return button index
