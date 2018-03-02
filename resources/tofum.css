@@ -40,11 +40,11 @@ body {
 
 #eye_tracker.gesturetag {
     display: block;
-    width: 60mm;
-    height: 60mm;
-    margin-top: -30mm;
-    margin-left: -30mm;
-    border-radius: 30mm;
+    width: calc(60mm / 0.67);
+    height: calc(60mm / 0.67);
+    margin-top: calc(-30mm / 0.67);
+    margin-left: calc(-30mm / 0.67);
+    border-radius: calc(30mm / 0.67);
     background: rgba(10, 112, 215, 0.4);
     -webkit-filter: blur(10px);
 }

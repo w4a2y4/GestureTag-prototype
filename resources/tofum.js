@@ -456,16 +456,16 @@ function showTarget() {
     // render neighbor
     // right
     setBtnSize(buttons[tar + 1], BTN_SIZE);
-    $(buttons[tar + 1]).css('margin-left', (BTN_SIZE * (SPACING + 0.5) - 80));
+    $(buttons[tar + 1]).css('margin-left', (BTN_SIZE * (SPACING + 0.5) - 164));
     // left
     setBtnSize(buttons[tar - 1], BTN_SIZE);
-    $(buttons[tar - 1]).css('margin-left', (80 - BTN_SIZE * (SPACING + 1.5)));
+    $(buttons[tar - 1]).css('margin-left', (164 - BTN_SIZE * (SPACING + 1.5)));
     // down
     setBtnSize(buttons[tar + COL_NUM], BTN_SIZE);
-    $(buttons[tar + COL_NUM]).css('margin-top', (BTN_SIZE * (SPACING + 0.5) - 80));
+    $(buttons[tar + COL_NUM]).css('margin-top', (BTN_SIZE * (SPACING + 0.5) - 164));
     // up
     setBtnSize(buttons[tar - COL_NUM], BTN_SIZE);
-    $(buttons[tar - COL_NUM]).css('margin-top', (80 - BTN_SIZE * (SPACING + 1.5)));
+    $(buttons[tar - COL_NUM]).css('margin-top', (164 - BTN_SIZE * (SPACING + 1.5)));
 
     var skip = [tar + 2, tar - 2, tar + 2 * COL_NUM, tar - 2 * COL_NUM,
         tar - COL_NUM - 1, tar - COL_NUM + 1, tar + COL_NUM - 1, tar + COL_NUM + 1
