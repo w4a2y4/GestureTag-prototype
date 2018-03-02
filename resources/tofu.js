@@ -141,8 +141,8 @@ socket.on('start_mobile', () => {
 });
 
 socket.on('eyemove', (x, y) => {
-    changePos(x, y);
-    Eyespacingerror(x,y);
+    changePos(x*0.8, y*0.8);
+    Eyespacingerror(x*0.8,y*0.8);
 });
 
 socket.on('swipe', (dirStr) => {
@@ -392,7 +392,7 @@ function showTarget() {
         //Method2: total Distance Equalization
 
         
-        if (trial_num == 12) {
+        if (trial_num == 10) {
         var temptar = Math.floor(Math.random() * btn_num ) + RAW_NUM + 1;
        
     }
@@ -528,15 +528,15 @@ var swipeAndUnlock = (dir) => {
 }
 
 function AssignTargetAlgo() {
-   var Res = 1800
+   var Res = 3000
    
    while (Res > 0) {
        for (var i = 0; i < DEFAULT_TRIAL_NUM; i++) {
            while (true) {
-               if (JumpDistance[i] < 300 && Res > 0) {
+               if (JumpDistance[i] < 600 && Res > 0) {
                    var randnum = Math.ceil(Math.random() * Res)
                    JumpDistance[i] = JumpDistance[i] + randnum
-                   if (JumpDistance[i] <= 300) {
+                   if (JumpDistance[i] <= 600) {
                        Res = Res - randnum;
                        break;
                    }
@@ -555,6 +555,12 @@ function AssignTargetAlgo() {
        x = JumpDistance[i];
        JumpDistance[i] = JumpDistance[j];
        JumpDistance[j] = x;
+   }
+
+    var i;
+   for (i =0; i<JumpDistance.length ;i++) {
+
+        JumpDistance[i] = JumpDistance[i]+200
    }
     
 
@@ -576,8 +582,8 @@ function ButtonCandidate(midX,midY, trialNum,btn_num) {
     var CandidateNum=0;
     var esilon =100.0;
     var NextTargetIndex 
-   var dis = JumpDistance[trialNum-1];
-    console.log("pre tar X:"+midX+"tar y"+midY)
+    var dis = JumpDistance[trialNum-1];
+    //console.log("pre tar X:"+midX+"tar y"+midY)
     
    // use jQuery to get ABSOLUTE position
    //var midX = $(element).offset().left + 0.5 * element.offsetWidth;
@@ -589,26 +595,26 @@ function ButtonCandidate(midX,midY, trialNum,btn_num) {
     esilon=esilon+100.0
    for (var i = 0; i < btn_num; i++){
        // console.log(buttons[i])
-        
-       CandidateBtnX=$(buttons[i]).offset().left + 0.5 * buttons[i].offsetWidth;
+       //console.log("pre tar X:"+midX+"tar y"+midY)
+        CandidateBtnX=$(buttons[i]).offset().left + 0.5 * buttons[i].offsetWidth;
        CandidateBtnY = $(buttons[i]).offset().top + 0.5 * buttons[i].offsetHeight;
        var thisbtndistance=Math.pow((CandidateBtnX - midX), 2) + Math.pow((CandidateBtnY - midY), 2)
  //console.log('Others'+i+' X:'+CandidateBtnY+'Y:'+CandidateBtnY+'dis:'+thisbtndistance)
         var upbound= dis*dis+ esilon;
         var lowbound=dis*dis- esilon;
        if (thisbtndistance<upbound && thisbtndistance > lowbound) {
-            CandidateButtonDistance[CandidateNum]=thisbtndistance
+            //CandidateButtonDistance[CandidateNum]=thisbtndistance
            CandidateButtonArray[CandidateNum] = i;
-           console.log('Others'+i+' X:'+CandidateBtnY+'Y:'+CandidateBtnY+'dis:'+thisbtndistance+"in"+lowbound+"~"+upbound)
+           //console.log('Others'+i+' X:'+CandidateBtnY+'Y:'+CandidateBtnY+'THISBTNdis:'+thisbtndistance+"in"+lowbound+"~"+upbound)
             CandidateNum++;
        }
    }
-    NextTargetIndex = Math.ceil(Math.random() * CandidateNum)
+    NextTargetIndex = Math.ceil(Math.random()*CandidateNum)
 }
  //console.log("checkdis"+dis+"from"+CandidateButtonDistance)
    
 
-   console.log(CandidateButtonArray[NextTargetIndex]+'form'+CandidateButtonArray)
+   //console.log(CandidateButtonArray[NextTargetIndex]+'form'+CandidateButtonArray)
    //return button index
 
    return CandidateButtonArray[NextTargetIndex];  

@@ -23,6 +23,8 @@ namespace Interaction_Streams_101
         static List<string> buffer = new List<string>();
         static string log_file_name = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\New_eye_tracking_log.txt";
         static Socket socket;
+
+        
         public static void Main(string[] args)
         {
             // Everything starts with initializing Host, which manages connection to the 
@@ -70,6 +72,40 @@ namespace Interaction_Streams_101
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="ts"></param>
+        /// 
+
+        public static void SendData(double x, double y, double ts)
+        {
+            if (Program.isRecording)
+            {
+                Xarray[insert_index] = x;
+                Yarray[insert_index] = y;
+                kk = 0;
+
+                insert_index = (insert_index + 1) % 10;
+                while (kk <= 9)
+                {
+                    XData += Xarray[kk];
+                    YData += Yarray[kk];
+                    kk++;
+                }
+
+                //Console.WriteLine(aveX);
+                kk = 0;
+                aveX = XData / 10;
+                aveY = YData / 10;
+                socket.Emit("eyemove", aveX, aveY);
+                
+
+                XData = 0.0;
+                YData = 0.0;
+            }
+        }
+
+        /*
+         * 
+         * 
+      
         public  static void SendData(double x,double y,double ts)
         {
             if (Program.isRecording)
@@ -111,7 +147,7 @@ namespace Interaction_Streams_101
                 YData = 0.0;
             }
         }
-
+        */
         public static void Write(double x, double y, double ts)
         {
             if (Program.isRecording)
