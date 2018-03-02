@@ -69,7 +69,7 @@ var io = require('socket.io')(http);
 
 var writeLog = (msg) => {
     var time = moment().format('MM/DD HH:mm:ss:SSS');
-    msg = time + '\t' + msg + '\n';
+    msg = time + '\t' + msg + '\r\n';
     console.log(msg);
     fs.appendFile(logfile, msg, function(err) {
         if (err) console.error(err);
@@ -137,11 +137,14 @@ io.on('connection', function(socket) {
     });
 
     // log data
-    socket.on('log', function(cnt, gesture, clicked_btn, target) {
+    socket.on('log', function(cnt, gesture, clicked_btn, target,TrialCompletionTime,ErrorCount,DwellSelectionCount) {
         var msg = '#' + cnt;
         msg += '\tevent:' + gesture;
         msg += '\ttarget:' + target;
         msg += '\tclick:' + clicked_btn;
+        msg += '\tCompletionTime: ' + TrialCompletionTime;
+        msg += '\tErrorCount: ' + ErrorCount;
+        msg += '\tDwellSelectionCount: ' +DwellSelectionCount;
         writeLog(msg);
     });
 });

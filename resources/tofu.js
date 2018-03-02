@@ -44,6 +44,27 @@ var CurrentTarY=0.0;
 var oldbuttons=buttons;
 var tar
 
+var TrialTimeStart = new Date().getTime();
+var TrialTimeEnd = new Date().getTime();
+var TrialCompletionTime;
+var ErrorCount=0;
+var clickedbutton;
+
+
+
+var EyeErrorX = new Array(10).fill(0.0);
+var EyeErrorY = new Array(10).fill(0.0);
+var ErrorTimeStart = new Date().getTime();
+var ErrorTimeEnd = new Date().getTime();
+var ErrorIndex=0;
+var DwellSelectionCount=0;
+
+
+
+
+
+
+
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
 const swipeImages = {
@@ -84,14 +105,20 @@ $(document).mousemove((e) => {
 $(document).on('click', 'button', (function(e) {
     console.log("click!!");
     $(this).addClass('clicked');
+     TrialTimeEnd = Date.now()
+
+    TrialCompletionTime= TrialTimeEnd- TrialTimeStart
     clicked_btn = $(this).parent().attr('id');
+    if (!$(this).hasClass('target')) {ErrorCount++}
+
+
     log();
     if ($(this).hasClass('target')) {
         setTimeout(() => {
             $(this).removeClass('target');
             showTarget();
             console.log("go good")
-        }, 300);
+        }, 100);
     }
     setTimeout(() => {
         $(this).removeClass('clicked');
@@ -101,11 +128,12 @@ $(document).on('click', 'button', (function(e) {
 socket.on('start_mobile', () => {
     console.log('START_MOBILE');
     trial_num = DEFAULT_TRIAL_NUM;
-    //showTarget();
+    showTarget();
 });
 
 socket.on('eyemove', (x, y) => {
     changePos(x * 1.11, y * 1.11);
+    Eyespacingerror(x,y);
 });
 
 socket.on('swipe', (dirStr) => {
@@ -163,7 +191,7 @@ socket.on('device', (device) => {
 function log() {
     cnt = DEFAULT_TRIAL_NUM - trial_num;
     console.log(gesture + ' ' + clicked_btn + ' ' + target_btn);
-    socket.emit('log', cnt, gesture, clicked_btn, target_btn);
+    socket.emit('log', cnt, gesture, clicked_btn, target_btn,TrialCompletionTime,ErrorCount,DwellSelectionCount);
 }
 
 function getBtnType(btn) {
@@ -219,7 +247,7 @@ function isIn(x, arr, len) {
 }
 
 function changePos(eyeX, eyeY) {
-    
+   
     $('#eye_tracker').css({
         "left": eyeX,
         "top": eyeY
@@ -333,7 +361,7 @@ function showTarget() {
 
     
     // select target
-     $(":button").hide();
+    
     while (true) {
         var btn_num = buttons.length - 2 * ( RAW_NUM + COL_NUM ) - 4;
         //Method1: random
@@ -356,12 +384,16 @@ function showTarget() {
     }
 
     // render target and its neighbor
+     $(":button").hide();
     console.log("tar:"+tar)
     
     $(buttons[tar]).addClass('target');
     setBtnSize(buttons[tar], BTN_SIZE );
     target_btn = $(buttons[tar]).parent().attr('id');
    
+     TrialTimeStart = Date.now();
+    ErrorCount=0;
+     DwellSelectionCount=0;
 
     // render neighbor
     // right
@@ -531,7 +563,7 @@ function ButtonCandidate(midX,midY, trialNum,btn_num) {
     CandidateNum=0;
     esilon=esilon+100.0
    for (var i = 0; i < btn_num; i++){
-        //console.log(buttons[i].)
+       // console.log(buttons[i])
         
        CandidateBtnX=$(buttons[i]).offset().left + 0.5 * buttons[i].offsetWidth;
        CandidateBtnY = $(buttons[i]).offset().top + 0.5 * buttons[i].offsetHeight;
@@ -555,4 +587,47 @@ function ButtonCandidate(midX,midY, trialNum,btn_num) {
    //return button index
 
    return CandidateButtonArray[NextTargetIndex];  
+}
+
+
+function Eyespacingerror(x,y){
+
+    ErrorIndex=(ErrorIndex+1)%10;
+    //EyeXave=Math.mean(EyeErrorX);
+
+    //EyeYave=Math.mean(EyeErrorY);
+    var XData=0.0;
+    var YData=0.0;
+    var kk = 0;
+    while (kk <= 9)
+                {
+                    XData += EyeErrorX[kk];
+                    YData += EyeErrorY[kk];
+                    kk++;
+                }
+                //Console.WriteLine(aveX);
+                var EyeXave = XData / 10;
+
+                var EyeYave= YData / 10;
+    EyeErrorX[ErrorIndex]=x;
+    EyeErrorY[ErrorIndex]=y;
+    for (var i = 0; i < 10; i++) {
+
+        if((EyeXave-EyeErrorX[i])*(EyeXave-EyeErrorX[i])+(EyeYave-EyeErrorY[i])*(EyeYave-EyeErrorY[i])>10000)   
+            {
+                ErrorTimeStart=Date.now()
+                ErrorTimeEnd=Date.now()
+            }   
+
+    }
+    ErrorTimeEnd=Date.now()
+
+    //console.log(ErrorTimeEnd-ErrorTimeStart)
+
+    if(ErrorTimeEnd-ErrorTimeStart>330){
+        console.log("Dwell Selection!!")
+        DwellSelectionCount++;
+        ErrorTimeStart=Date.now()
+        ErrorTimeEnd=Date.now()
+    }
 }
