@@ -326,7 +326,7 @@ function changePos(eyeX, eyeY) {
             outNum = 0;
         }
     }
-    if (type !== tap) {
+    if (type !== 'tap') {
         for (var k = 0; k < 9; k++) {
 
             var i = neighborhood[k];
