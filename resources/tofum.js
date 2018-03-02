@@ -210,7 +210,7 @@ socket.on('device', (device) => {
 });
 
 socket.on('target_size', function(target_size) {
-    BTN_SIZE = Number(target_size) / 0.6;
+    BTN_SIZE = Number(target_size) / ( 0.6 * 0.67 );
 });
 
 socket.on('spacing', function(spacing) {
