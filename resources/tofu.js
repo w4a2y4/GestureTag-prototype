@@ -434,11 +434,12 @@ function showTarget() {
     setBtnSize( buttons[tar - COL_NUM], BTN_SIZE );
     $(buttons[tar - COL_NUM]).css( 'margin-top', ( 80 - BTN_SIZE * ( SPACING + 1.5 ) ) );
 
-    var skip = [ tar + 2, tar - 2, tar + 2 * COL_NUM, tar - 2 * COL_NUM ];
+    var skip = [ tar + 2, tar - 2, tar + 2 * COL_NUM, tar - 2 * COL_NUM,
+                 tar - COL_NUM - 1, tar - COL_NUM + 1, tar + COL_NUM - 1, tar + COL_NUM + 1];
     // select distractors
     for ( var cnt = 0; cnt < DISTRACT - 5; ) {
         var rand = Math.floor(Math.random() * RAW_NUM * COL_NUM);
-        if ( $(buttons[rand]).is(':hidden') && !isIn(rand, skip, 4) ) {
+        if ( $(buttons[rand]).is(':hidden') && !isIn(rand, skip, 8) ) {
             var x = 16 * ( Math.floor(Math.random() * 3) + 1 ) / 0.6 ;
             setBtnSize( buttons[rand], x );
             cnt++;
