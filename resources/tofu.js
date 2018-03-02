@@ -31,6 +31,9 @@ var server_width = document.documentElement.clientWidth;
 var server_height = document.documentElement.clientHeight;
 var client_width, client_height;
 
+const TOFU_WIDTH = server_width / COL_NUM;
+const TOFU_HEIGHT = server_height / RAW_NUM;
+
 var LockerTimeEnd = new Array(buttons.length).fill(0.0);
 var LockerTimeStart = new Array(buttons.length).fill(0.0);
 
@@ -209,7 +212,7 @@ function getBtnType(btn) {
 }
 
 function overlap(element, X, Y) {
-    if ($(element).is(':hidden')) return;
+    if ( $(element).is(':hidden') ) return;
     var top = $(element).offset().top;
     var left = $(element).offset().left;
     var right = Number($(element).offset().left) + Number($(element).width());
@@ -265,6 +268,14 @@ function changePos(eyeX, eyeY) {
     });
 
     isShown.fill(false);
+    $('img').hide();
+
+    // determine the index of gaze point
+    var tofuX = Math.floor(eyeX / TOFU_WIDTH) , tofuY = Math.floor(eyeY / TOFU_HEIGHT);
+    var me = tofuX + tofuY * COL_NUM;
+    var neighborhood = [me, me - 1, me + 1,
+                        me - COL_NUM, me - COL_NUM - 1, me - COL_NUM + 1,
+                        me + COL_NUM, me + COL_NUM - 1, me + COL_NUM + 1];
 
     // the candidates are the nearest [up, down, left, right]
     var btn_num = buttons.length;
@@ -273,7 +284,9 @@ function changePos(eyeX, eyeY) {
 
     // for each type of gesture, put the nearest's index in candidate[]
     if (type === 'swipe') {
-        for (var i = 0; i < btn_num; i++) {
+        for (var k = 0; k < 9; k++) {
+            var i = neighborhood[k];
+            if ( i < 0 || i >= btn_num ) continue;
             var btn = buttons[i];
             if (overlap(btn, eyeX, eyeY)) {
                 var curr_dist = distance(btn, eyeX, eyeY);
@@ -286,8 +299,11 @@ function changePos(eyeX, eyeY) {
             }
         }
     }
-    for (var i = 0; i < btn_num; i++) {
-        console.log( btn_num)
+    for (var k = 0; k < 9; k++) {
+
+        var i = neighborhood[k];
+        if ( i < 0 || i >= btn_num ) continue;
+        console.log(btn_num)
         var btn = buttons[i];
 
         if (type === 'dwell') {
