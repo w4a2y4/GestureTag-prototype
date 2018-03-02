@@ -42,6 +42,7 @@ var CandidateButtonArray=new Array(buttons.length).fill(0);
 var CurrentTarX=0.0;
 var CurrentTarY=0.0;
 var oldbuttons=buttons;
+var tar
 
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
@@ -64,13 +65,10 @@ $(document).keyup((e) => {
     if (e.which === 32) {
         socket.emit('start');
         trial_num = DEFAULT_TRIAL_NUM;
-        tar=0;
-        CurrentTarX=0.0
-
-        CurrentTar=Y=0.0
         JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0); //have to set to zero
         AssignTargetAlgo();
         showTarget();
+        console.log("go go ")
     } else if (e.which === 69) // key "e"
         show_mouse = !show_mouse;
     else if (e.which === 80) // key "p"
@@ -92,7 +90,8 @@ $(document).on('click', 'button', (function(e) {
         setTimeout(() => {
             $(this).removeClass('target');
             showTarget();
-        }, 100);
+            console.log("go good")
+        }, 300);
     }
     setTimeout(() => {
         $(this).removeClass('clicked');
@@ -102,7 +101,7 @@ $(document).on('click', 'button', (function(e) {
 socket.on('start_mobile', () => {
     console.log('START_MOBILE');
     trial_num = DEFAULT_TRIAL_NUM;
-    showTarget();
+    //showTarget();
 });
 
 socket.on('eyemove', (x, y) => {
@@ -323,7 +322,7 @@ function setBtnSize( element, size ) {
 
 function showTarget() {
 
-    var tar;
+    
     if (trial_num == 0) {
         socket.emit('end');
         JumpDistance = new Array(10).fill(0);
@@ -331,9 +330,10 @@ function showTarget() {
     }
     
 
+
     
     // select target
-    
+     $(":button").hide();
     while (true) {
         var btn_num = buttons.length - 2 * ( RAW_NUM + COL_NUM ) - 4;
         //Method1: random
@@ -342,6 +342,7 @@ function showTarget() {
         
         //Method2: total Distance Equalization
 
+        
         if (trial_num == 12) {
         var temptar = Math.floor(Math.random() * btn_num ) + RAW_NUM + 1;
        
@@ -349,13 +350,14 @@ function showTarget() {
     else{
         var temptar=ButtonCandidate(CurrentTarX,CurrentTarY,trial_num,btn_num)
        }
+       
         //console.log('assign :'+trial_num + ' ' + temptar);
         if (!$(buttons[temptar]).hasClass('clicked')) {tar=temptar; console.log('assign :'+trial_num + ' ' + temptar);break;}
     }
 
     // render target and its neighbor
     console.log("tar:"+tar)
-     $(":button").hide();
+    
     $(buttons[tar]).addClass('target');
     setBtnSize(buttons[tar], BTN_SIZE );
     target_btn = $(buttons[tar]).parent().attr('id');
@@ -389,6 +391,7 @@ function showTarget() {
     
     CurrentTarX=$(buttons[tar]).offset().left + 0.5 *buttons[tar].offsetWidth;
     CurrentTarY=$(buttons[tar]).offset().top + 0.5 * buttons[tar].offsetHeight;
+    
     trial_num -= 1;
 }
 
@@ -449,13 +452,17 @@ function enableSwipe() {
     });
 };
 
+ //enableClick(dir);
+   // swipeAndUnlock(dir);
 function enableClick(dir) {
-    if (isShown[dir])
-        buttons[postBtnId[dir]].click();
+    if (isShown[dir]){}
+        //buttons[postBtnId[dir]].click();
+    
 }
 
 var swipeAndUnlock = (dir) => {
     if (isShown[dir]) {
+        console.log("swipe currbtn " +currBtn);
         currBtn[dir].click();
         already[postBtnId[dir]] = 0;
         touchLock = false;
