@@ -6,18 +6,18 @@
     <link rel="stylesheet" type="text/css" href="resources/tofu.css">
     <script type="text/javascript">
         const RADIUS = 113;
-        const RAW_NUM = 12;
-        const COL_NUM = 15;
-        const BTN_SIZE =30 / 0.6;
+        const RAW_NUM = 15;
+        const COL_NUM = 24;
+        const BTN_SIZE = 16 / 0.6;
         const SPACING = 0.5;
-        const DISTRACT = 176;
+        const DISTRACT = 300;
     </script>
 </head>
 
 <body>
 
     <% for(var i=0; i<15; i++) { %>
-        <% for(var j=0; j<12; j++) { %>
+        <% for(var j=0; j<24; j++) { %>
 
             <div class="block" id="blk_<%=i%>_<%=j%>">
                 <button value="">
@@ -26,28 +26,28 @@
                 </button>
             </div>
 
-        <% } %>
-    <% } %>
+            <% } %>
+                <% } %>
 
-    <% if(process.argv[4] === 'mobile'){ %>
-  
-        <div id="MobileContainer"></div>
-    <% } %>
-    
-      <!--  <div id="MouseEventsContainer">
+                    <% if(process.argv[4] === 'mobile'){ %>
+
+                        <div id="MobileContainer"></div>
+                        <% } %>
+
+                            <!--  <div id="MouseEventsContainer">
             <div onmousedown=" MouseClickEvent()" id="MouseBox" style="width:1400px;height:600px;">
 
             </div>
       </div> -->
-     
-    <div id="canvas_container">
-        <canvas id="canvas" width="1400" height="1000"></canvas>
-    </div>
 
-    <div id="eye_tracker" class="<%=EYETRACKER%>"></div>
+                            <div id="canvas_container">
+                                <canvas id="canvas" width="1400" height="1000"></canvas>
+                            </div>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="resources/tofu.js"></script>
+                            <div id="eye_tracker" class="<%=EYETRACKER%>"></div>
+
+                            <script src="/socket.io/socket.io.js"></script>
+                            <script src="resources/tofu.js"></script>
 
 </body>
 
