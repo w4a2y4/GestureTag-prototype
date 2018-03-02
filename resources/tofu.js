@@ -395,7 +395,7 @@ function showTarget() {
         //Method2: total Distance Equalization
 
 
-        if (trial_num == 12) {
+        if (trial_num == 10) {
             var temptar = Math.floor(Math.random() * btn_num) + RAW_NUM + 1;
 
         } else {
@@ -403,8 +403,11 @@ function showTarget() {
         }
 
         //console.log('assign :'+trial_num + ' ' + temptar);
-        if (!$(buttons[temptar]).hasClass('clicked')) { tar = temptar;
-            console.log('assign :' + trial_num + ' ' + temptar); break; }
+        if (!$(buttons[temptar]).hasClass('clicked')) {
+            tar = temptar;
+            console.log('assign :' + trial_num + ' ' + temptar);
+            break;
+        }
     }
 
     // render target and its neighbor
