@@ -98,7 +98,7 @@ const tapImages = {
 
 $(document).keyup((e) => {
     // key "enter"
-    if (e.which === 32) {
+    if (e.which === 32 && platform != 'mobile') {
         socket.emit('start');
         trial_num = DEFAULT_TRIAL_NUM;
         JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0); //have to set to zero
@@ -146,8 +146,8 @@ $(document).on('click', 'button', (function(e) {
 }));
 
 socket.on('eyemove', (x, y) => {
-    changePos(x, y);
-    Eyespacingerror(x, y);
+    changePos(x * 0.8, y * 0.8);
+    Eyespacingerror(x * 0.8, y * 0.8);
 });
 
 socket.on('swipe', (dirStr) => {
@@ -203,6 +203,7 @@ socket.on('device', (device) => {
         socket.on('start_mobile', () => {
             console.log('START_MOBILE');
             trial_num = DEFAULT_TRIAL_NUM;
+            AssignTargetAlgo();
             showTarget();
         });
     }
@@ -378,7 +379,6 @@ function changePos(eyeX, eyeY) {
                     }
                 }
             } else {
-                // $(btn).find('img').hide();
                 isShown.fill(true);
                 for (var j = 0; j < 4; j++)
                     currBtn[j] = buttons[postBtnId[j]];
@@ -427,7 +427,7 @@ function showTarget() {
             var temptar = Math.floor(Math.random() * btn_num) + RAW_NUM + 1;
 
         } else {
-            var temptar = ButtonCandidate(CurrentTarX, CurrentTarY, trial_num, btn_num)
+            var temptar = ButtonCandidate(CurrentTarX, CurrentTarY, trial_num, btn_num);
         }
 
         //console.log('assign :'+trial_num + ' ' + temptar);
@@ -467,11 +467,13 @@ function showTarget() {
     setBtnSize(buttons[tar - COL_NUM], BTN_SIZE);
     $(buttons[tar - COL_NUM]).css('margin-top', (80 - BTN_SIZE * (SPACING + 1.5)));
 
-    var skip = [tar + 2, tar - 2, tar + 2 * COL_NUM, tar - 2 * COL_NUM];
+    var skip = [tar + 2, tar - 2, tar + 2 * COL_NUM, tar - 2 * COL_NUM,
+        tar - COL_NUM - 1, tar - COL_NUM + 1, tar + COL_NUM - 1, tar + COL_NUM + 1
+    ];
     // select distractors
     for (var cnt = 0; cnt < DISTRACT - 5;) {
         var rand = Math.floor(Math.random() * RAW_NUM * COL_NUM);
-        if ($(buttons[rand]).is(':hidden') && !isIn(rand, skip, 4)) {
+        if ($(buttons[rand]).is(':hidden') && !isIn(rand, skip, 8)) {
             var x = 16 * (Math.floor(Math.random() * 3) + 2) / 0.6;
             setBtnSize(buttons[rand], x);
             cnt++;
@@ -561,15 +563,15 @@ var swipeAndUnlock = (dir) => {
 }
 
 function AssignTargetAlgo() {
-    var Res = 1800
+    var Res = 3000;
 
     while (Res > 0) {
         for (var i = 0; i < DEFAULT_TRIAL_NUM; i++) {
             while (true) {
-                if (JumpDistance[i] < 300 && Res > 0) {
+                if (JumpDistance[i] < 600 && Res > 0) {
                     var randnum = Math.ceil(Math.random() * Res)
                     JumpDistance[i] = JumpDistance[i] + randnum
-                    if (JumpDistance[i] <= 300) {
+                    if (JumpDistance[i] <= 600) {
                         Res = Res - randnum;
                         break;
                     } else {
@@ -586,6 +588,12 @@ function AssignTargetAlgo() {
         x = JumpDistance[i];
         JumpDistance[i] = JumpDistance[j];
         JumpDistance[j] = x;
+    }
+
+    var i;
+    for (i = 0; i < JumpDistance.length; i++) {
+
+        JumpDistance[i] = JumpDistance[i] + 200
     }
 
 
@@ -608,7 +616,7 @@ function ButtonCandidate(midX, midY, trialNum, btn_num) {
     var esilon = 100.0;
     var NextTargetIndex
     var dis = JumpDistance[trialNum - 1];
-    console.log("pre tar X:" + midX + "tar y" + midY)
+    //console.log("pre tar X:"+midX+"tar y"+midY)
 
     // use jQuery to get ABSOLUTE position
     //var midX = $(element).offset().left + 0.5 * element.offsetWidth;
@@ -620,7 +628,6 @@ function ButtonCandidate(midX, midY, trialNum, btn_num) {
         esilon = esilon + 100.0
         for (var i = 0; i < btn_num; i++) {
             // console.log(buttons[i])
-
             CandidateBtnX = $(buttons[i]).offset().left + 0.5 * buttons[i].offsetWidth;
             CandidateBtnY = $(buttons[i]).offset().top + 0.5 * buttons[i].offsetHeight;
             var thisbtndistance = Math.pow((CandidateBtnX - midX), 2) + Math.pow((CandidateBtnY - midY), 2)
@@ -628,9 +635,9 @@ function ButtonCandidate(midX, midY, trialNum, btn_num) {
             var upbound = dis * dis + esilon;
             var lowbound = dis * dis - esilon;
             if (thisbtndistance < upbound && thisbtndistance > lowbound) {
-                CandidateButtonDistance[CandidateNum] = thisbtndistance
+                //CandidateButtonDistance[CandidateNum]=thisbtndistance
                 CandidateButtonArray[CandidateNum] = i;
-                console.log('Others' + i + ' X:' + CandidateBtnY + 'Y:' + CandidateBtnY + 'dis:' + thisbtndistance + "in" + lowbound + "~" + upbound)
+                //console.log('Others'+i+' X:'+CandidateBtnY+'Y:'+CandidateBtnY+'THISBTNdis:'+thisbtndistance+"in"+lowbound+"~"+upbound)
                 CandidateNum++;
             }
         }
@@ -639,8 +646,8 @@ function ButtonCandidate(midX, midY, trialNum, btn_num) {
     //console.log("checkdis"+dis+"from"+CandidateButtonDistance)
 
 
-    console.log(CandidateButtonArray[NextTargetIndex] + 'form' + CandidateButtonArray)
-        //return button index
+    //console.log(CandidateButtonArray[NextTargetIndex]+'form'+CandidateButtonArray)
+    //return button index
 
     return CandidateButtonArray[NextTargetIndex];
 }
