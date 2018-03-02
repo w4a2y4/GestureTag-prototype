@@ -3,51 +3,52 @@
 <head>
     <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-circle-progress/1.2.2/circle-progress.js"></script>
     <link rel="stylesheet" type="text/css" href="resources/tofu.css">
-    <script type="text/javascript">
-        const RADIUS = 113;
-        const RAW_NUM = 12;
-        const COL_NUM = 15;
-        const BTN_SIZE =30 / 0.6;
-        const SPACING = 0.5;
-        const DISTRACT = 150;
-    </script>
 </head>
 
 <body>
 
     <% for(var i=0; i<15; i++) { %>
-        <% for(var j=0; j<12; j++) { %>
+        <% for(var j=0; j<24; j++) { %>
 
             <div class="block" id="blk_<%=i%>_<%=j%>">
                 <button value="">
+                <% if(process.argv[2] === 'swipe'){ %>
                     <% var op = 2 * ( i % 2 ) + ( j % 2 ); %>
                     <img src="../resources/arrow_<%=op%>.png">
+                <% } %>
                 </button>
             </div>
 
-        <% } %>
-    <% } %>
+            <% } %>
+                <% } %>
 
-    <% if(process.argv[4] === 'mobile'){ %>
-  
-        <div id="MobileContainer"></div>
-    <% } %>
-    
-      <!--  <div id="MouseEventsContainer">
+                    <% if(process.argv[4] === 'mobile'){ %>
+
+                        <div id="MobileContainer"></div>
+                        <% } %>
+
+                            <!--  <div id="MouseEventsContainer">
             <div onmousedown=" MouseClickEvent()" id="MouseBox" style="width:1400px;height:600px;">
 
             </div>
       </div> -->
-     
-    <div id="canvas_container">
-        <canvas id="canvas" width="1400" height="1000"></canvas>
-    </div>
 
-    <div id="eye_tracker" class="<%=EYETRACKER%>"></div>
+                            <div id="canvas_container">
+                                <canvas id="canvas" width="1400" height="1000"></canvas>
+                            </div>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="resources/tofu.js"></script>
+                            <% if(process.argv[2] !== 'tap'){ %>
+                                <div id="eye_tracker" class="<%=EYETRACKER%>">
+                                    <% if(process.argv[2] === 'dwell'){ %>
+                                        <div id="circle"></div>
+                                        <% } %>
+                                </div>
+                                <% } %>
+
+                                    <script src="/socket.io/socket.io.js"></script>
+                                    <script src="resources/tofu.js"></script>
 
 </body>
 

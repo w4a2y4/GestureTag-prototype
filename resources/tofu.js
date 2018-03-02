@@ -2,6 +2,13 @@ var socket = io.connect();
 var show_path = false;
 var show_mouse = false;
 
+const RADIUS = 113;
+const RAW_NUM = 15;
+const COL_NUM = 24;
+var BTN_SIZE;
+var SPACING;
+const DISTRACT = 300;
+
 const UP = 0,
     DOWN = 1,
     LEFT = 2,
@@ -14,7 +21,7 @@ var tester;
 var type;
 var platform;
 
-const DEFAULT_TRIAL_NUM = 12;
+const DEFAULT_TRIAL_NUM = 10;
 var trial_num = DEFAULT_TRIAL_NUM;
 
 var clicked_button, target_btn, gesture;
@@ -53,7 +60,16 @@ var TrialCompletionTime;
 var ErrorCount = 0;
 var clickedbutton;
 
-
+var pgBar = $('#circle');
+pgBar.circleProgress({
+    startAngle: -Math.PI / 4 * 2,
+    value: 0.0,
+    size: 50,
+    lineCap: 'round',
+    fill: { gradient: ['#0681c4', '#4ac5f8'] },
+});
+const timeTd = 330;
+var outNum = 0;
 
 var EyeErrorX = new Array(10).fill(0.0);
 var EyeErrorY = new Array(10).fill(0.0);
@@ -62,11 +78,6 @@ var ErrorTimeEnd = new Date().getTime();
 var ErrorIndex = 0;
 var DwellSelectionCount = 0;
 var MouseClickCount = 0;
-
-
-
-
-
 
 
 var imgSet;
@@ -198,6 +209,13 @@ socket.on('device', (device) => {
     }
 });
 
+socket.on('target_size', function(target_size) {
+    BTN_SIZE = Number(target_size) / 0.6;
+});
+
+socket.on('spacing', function(spacing) {
+    SPACING = Number(spacing);
+});
 
 function log() {
     cnt = DEFAULT_TRIAL_NUM - trial_num;
@@ -302,7 +320,13 @@ function changePos(eyeX, eyeY) {
                 }
             }
         }
+    } else if (type === 'dwell') {
+        if (outNum >= btn_num) {
+            pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
+            outNum = 0;
+        }
     }
+
     for (var k = 0; k < 9; k++) {
 
         var i = neighborhood[k];
@@ -317,6 +341,7 @@ function changePos(eyeX, eyeY) {
                 } else {
                     already[i] = 1; //First time to look at the target
                     TimeStart = Date.now(); // Record time then
+                    pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd + 20 } });
                 }
 
                 if (already[i] == 1 && TimeEnd - TimeStart > 330.0) {
@@ -324,13 +349,15 @@ function changePos(eyeX, eyeY) {
                     clickablebtn.click();
                     console.log("Selection Success!!");
                     already[i] = 0; // reinitialize
+                    pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
                 }
                 // Showing image 
                 $(btn).find('img').show();
-
+                outNum = 0;
             } else {
                 $(btn).find('img').hide();
                 already[i] = 0;
+                outNum += 1;
             }
         } else {
             if (isIn(i, candidate, 4)) {
@@ -536,7 +563,7 @@ var swipeAndUnlock = (dir) => {
 }
 
 function AssignTargetAlgo() {
-    var Res = 3000
+    var Res = 3000;
 
     while (Res > 0) {
         for (var i = 0; i < DEFAULT_TRIAL_NUM; i++) {
@@ -601,7 +628,6 @@ function ButtonCandidate(midX, midY, trialNum, btn_num) {
         esilon = esilon + 100.0
         for (var i = 0; i < btn_num; i++) {
             // console.log(buttons[i])
-            //console.log("pre tar X:"+midX+"tar y"+midY)
             CandidateBtnX = $(buttons[i]).offset().left + 0.5 * buttons[i].offsetWidth;
             CandidateBtnY = $(buttons[i]).offset().top + 0.5 * buttons[i].offsetHeight;
             var thisbtndistance = Math.pow((CandidateBtnX - midX), 2) + Math.pow((CandidateBtnY - midY), 2)
