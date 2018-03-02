@@ -31,11 +31,43 @@ var server_width = document.documentElement.clientWidth;
 var server_height = document.documentElement.clientHeight;
 var client_width, client_height;
 
+const TOFU_WIDTH = server_width / COL_NUM;
+const TOFU_HEIGHT = server_height / RAW_NUM;
+
 var LockerTimeEnd = new Array(buttons.length).fill(0.0);
 var LockerTimeStart = new Array(buttons.length).fill(0.0);
 
 var postBtnId = new Array(4).fill(0);
 var touchLock;
+
+var JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0);
+var CandidateButtonArray=new Array(buttons.length).fill(0);
+var CurrentTarX=0.0;
+var CurrentTarY=0.0;
+var oldbuttons=buttons;
+var tar
+
+var TrialTimeStart = new Date().getTime();
+var TrialTimeEnd = new Date().getTime();
+var TrialCompletionTime;
+var ErrorCount=0;
+var clickedbutton;
+
+
+
+var EyeErrorX = new Array(10).fill(0.0);
+var EyeErrorY = new Array(10).fill(0.0);
+var ErrorTimeStart = new Date().getTime();
+var ErrorTimeEnd = new Date().getTime();
+var ErrorIndex=0;
+var DwellSelectionCount=0;
+var MouseClickCount=0;
+
+
+
+
+
+
 
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
@@ -52,24 +84,16 @@ const tapImages = {
     right: img_prefix + 'tap_bottomright.png'
 };
 
-var pgBar = $('#circle');
-pgBar.circleProgress({
-    startAngle: -Math.PI / 4 * 2,
-    value: 0.0,
-    size: 50,
-    lineCap: 'round',
-    fill: { gradient: ['#0681c4', '#4ac5f8'] },
-});
-const timeTd = 330;
-var outNum = 0;
-
 
 $(document).keyup((e) => {
     // key "enter"
     if (e.which === 32) {
         socket.emit('start');
         trial_num = DEFAULT_TRIAL_NUM;
+        JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0); //have to set to zero
+        AssignTargetAlgo();
         showTarget();
+        console.log("go go ")
     } else if (e.which === 69) // key "e"
         show_mouse = !show_mouse;
     else if (e.which === 80) // key "p"
@@ -78,21 +102,36 @@ $(document).keyup((e) => {
 
 $(document).mousemove((e) => {
     if (show_mouse)
+         
         changePos(e.pageX, e.pageY);
+});
+$(document).mousedown((e) => {
+   
+       MouseClickCount++;
+       //console.log(MouseClickCount)
 });
 
 $(document).on('click', 'button', (function(e) {
     console.log("click!!");
     $(this).addClass('clicked');
+     TrialTimeEnd = Date.now()
+
+    TrialCompletionTime= TrialTimeEnd- TrialTimeStart
     clicked_btn = $(this).parent().attr('id');
+    if (!$(this).hasClass('target')) {ErrorCount++}
+
+
     log();
     if ($(this).hasClass('target')) {
-        $(this).removeClass('target');
-        showTarget();
+        setTimeout(() => {
+            $(this).removeClass('target');
+            showTarget();
+            console.log("go good")
+        }, 100);
     }
     setTimeout(() => {
         $(this).removeClass('clicked');
-    }, 500);
+    }, 100);
 }));
 
 socket.on('start_mobile', () => {
@@ -103,6 +142,7 @@ socket.on('start_mobile', () => {
 
 socket.on('eyemove', (x, y) => {
     changePos(x * 1.11, y * 1.11);
+    Eyespacingerror(x,y);
 });
 
 socket.on('swipe', (dirStr) => {
@@ -160,7 +200,7 @@ socket.on('device', (device) => {
 function log() {
     cnt = DEFAULT_TRIAL_NUM - trial_num;
     console.log(gesture + ' ' + clicked_btn + ' ' + target_btn);
-    socket.emit('log', cnt, gesture, clicked_btn, target_btn);
+    socket.emit('log', cnt, gesture, clicked_btn, target_btn,TrialCompletionTime,ErrorCount,DwellSelectionCount,MouseClickCount);
 }
 
 function getBtnType(btn) {
@@ -172,6 +212,7 @@ function getBtnType(btn) {
 }
 
 function overlap(element, X, Y) {
+    if ( $(element).is(':hidden') ) return;
     var top = $(element).offset().top;
     var left = $(element).offset().left;
     var right = Number($(element).offset().left) + Number($(element).width());
@@ -215,7 +256,7 @@ function isIn(x, arr, len) {
 }
 
 function changePos(eyeX, eyeY) {
-
+   
     $('#eye_tracker').css({
         "left": eyeX,
         "top": eyeY
@@ -227,6 +268,14 @@ function changePos(eyeX, eyeY) {
     });
 
     isShown.fill(false);
+    $('img').hide();
+
+    // determine the index of gaze point
+    var tofuX = Math.floor(eyeX / TOFU_WIDTH) , tofuY = Math.floor(eyeY / TOFU_HEIGHT);
+    var me = tofuX + tofuY * COL_NUM;
+    var neighborhood = [me, me - 1, me + 1,
+                        me - COL_NUM, me - COL_NUM - 1, me - COL_NUM + 1,
+                        me + COL_NUM, me + COL_NUM - 1, me + COL_NUM + 1];
 
     // the candidates are the nearest [up, down, left, right]
     var btn_num = buttons.length;
@@ -235,7 +284,9 @@ function changePos(eyeX, eyeY) {
 
     // for each type of gesture, put the nearest's index in candidate[]
     if (type === 'swipe') {
-        for (var i = 0; i < btn_num; i++) {
+        for (var k = 0; k < 9; k++) {
+            var i = neighborhood[k];
+            if ( i < 0 || i >= btn_num ) continue;
             var btn = buttons[i];
             if (overlap(btn, eyeX, eyeY)) {
                 var curr_dist = distance(btn, eyeX, eyeY);
@@ -247,13 +298,12 @@ function changePos(eyeX, eyeY) {
                 }
             }
         }
-    } else if (type === 'dwell') {
-        if (outNum >= btn_num) {
-            pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
-            outNum = 0;
-        }
     }
-    for (var i = 0; i < btn_num; i++) {
+    for (var k = 0; k < 9; k++) {
+
+        var i = neighborhood[k];
+        if ( i < 0 || i >= btn_num ) continue;
+        console.log(btn_num)
         var btn = buttons[i];
 
         if (type === 'dwell') {
@@ -263,25 +313,22 @@ function changePos(eyeX, eyeY) {
                 } else {
                     already[i] = 1; //First time to look at the target
                     TimeStart = Date.now(); // Record time then
-                    pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd + 20 } });
                 }
 
-                if (already[i] == 1 && TimeEnd - TimeStart > timeTd) {
+                if (already[i] == 1 && TimeEnd - TimeStart > 330.0) {
                     clickablebtn = btn;
                     clickablebtn.click();
                     console.log("Selection Success!!");
                     already[i] = 0; // reinitialize
-                    pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
                 }
                 // Showing image 
                 $(btn).find('img').show();
-                outNum = 0;
+
             } else {
                 $(btn).find('img').hide();
                 already[i] = 0;
-                outNum += 1;
             }
-        } else if (type === 'swipe') {
+        } else {
             if (isIn(i, candidate, 4)) {
                 if (already[i]) { // Have already looked at the target
                     LockerTimeEnd[i] = Date.now(); // Record time then
@@ -315,19 +362,93 @@ function changePos(eyeX, eyeY) {
     }
 }
 
+function setBtnSize( element, size ) {
+    $(element).height(size);
+    $(element).width(size);
+    $(element).css( 'margin-top', -size/2 );
+    $(element).css( 'margin-left', -size/2 );
+    $(element).show();
+}
+
 function showTarget() {
+
+    
     if (trial_num == 0) {
         socket.emit('end');
+        JumpDistance = new Array(10).fill(0);
         return;
     }
+    
+
+
+    
+    // select target
+    
     while (true) {
-        var btn_num = buttons.length;
-        var rand = Math.floor(Math.random() * btn_num);
-        console.log(trial_num + ' ' + rand);
-        if (!$(buttons[rand]).hasClass('clicked')) break;
+        var btn_num = buttons.length - 2 * ( RAW_NUM + COL_NUM ) - 4;
+        //Method1: random
+        
+        //var temptar = Math.floor(Math.random() * btn_num ) + RAW_NUM + 1;
+        
+        //Method2: total Distance Equalization
+
+        
+        if (trial_num == 12) {
+        var temptar = Math.floor(Math.random() * btn_num ) + RAW_NUM + 1;
+       
     }
-    $(buttons[rand]).addClass('target');
-    target_btn = $(buttons[rand]).parent().attr('id');
+    else{
+        var temptar=ButtonCandidate(CurrentTarX,CurrentTarY,trial_num,btn_num)
+       }
+       
+        //console.log('assign :'+trial_num + ' ' + temptar);
+        if (!$(buttons[temptar]).hasClass('clicked')) {tar=temptar; console.log('assign :'+trial_num + ' ' + temptar);break;}
+    }
+
+    // render target and its neighbor
+     $(":button").hide();
+    console.log("tar:"+tar)
+    
+    $(buttons[tar]).addClass('target');
+    setBtnSize(buttons[tar], BTN_SIZE );
+    target_btn = $(buttons[tar]).parent().attr('id');
+   
+    //reset preformance data
+    TrialTimeStart = Date.now();
+    ErrorCount=0;
+    DwellSelectionCount=0;
+    MouseClickCount=0;
+    //reset preformance data
+
+    // render neighbor
+    // right
+    setBtnSize( buttons[tar + 1], BTN_SIZE );
+    $(buttons[tar + 1]).css( 'margin-left', ( BTN_SIZE * ( SPACING + 0.5 ) - 80 ) );
+    // left
+    setBtnSize( buttons[tar - 1], BTN_SIZE );
+    $(buttons[tar - 1]).css( 'margin-left', ( 80 - BTN_SIZE * ( SPACING + 1.5 ) ) );
+    // down
+    setBtnSize( buttons[tar + COL_NUM], BTN_SIZE );
+    $(buttons[tar + COL_NUM]).css( 'margin-top', ( BTN_SIZE * ( SPACING + 0.5 ) - 80 ) );
+    // up
+    setBtnSize( buttons[tar - COL_NUM], BTN_SIZE );
+    $(buttons[tar - COL_NUM]).css( 'margin-top', ( 80 - BTN_SIZE * ( SPACING + 1.5 ) ) );
+
+    var skip = [ tar + 2, tar - 2, tar + 2 * COL_NUM, tar - 2 * COL_NUM ];
+    // select distractors
+    for ( var cnt = 0; cnt < DISTRACT - 5; ) {
+        var rand = Math.floor(Math.random() * RAW_NUM * COL_NUM);
+        if ( $(buttons[rand]).is(':hidden') && !isIn(rand, skip, 4) ) {
+            var x = 16 * ( Math.floor(Math.random() * 3) + 1 ) / 0.6 ;
+            setBtnSize( buttons[rand], x );
+            cnt++;
+        }
+    }
+
+    
+    CurrentTarX=$(buttons[tar]).offset().left + 0.5 *buttons[tar].offsetWidth;
+    CurrentTarY=$(buttons[tar]).offset().top + 0.5 * buttons[tar].offsetHeight;
+    
     trial_num -= 1;
 }
 
@@ -388,16 +509,156 @@ function enableSwipe() {
     });
 };
 
+ //enableClick(dir);
+   // swipeAndUnlock(dir);
 function enableClick(dir) {
-    if (isShown[dir])
-        buttons[postBtnId[dir]].click();
+    if (isShown[dir]){}
+        //buttons[postBtnId[dir]].click();
+    
 }
 
 var swipeAndUnlock = (dir) => {
     if (isShown[dir]) {
+        console.log("swipe currbtn " +currBtn);
         currBtn[dir].click();
         already[postBtnId[dir]] = 0;
         touchLock = false;
         console.log("swipe " + dir + ":" + String(postBtnId[dir]));
     }
+}
+
+function AssignTargetAlgo() {
+   var Res = 1800
+   
+   while (Res > 0) {
+       for (var i = 0; i < DEFAULT_TRIAL_NUM; i++) {
+           while (true) {
+               if (JumpDistance[i] < 300 && Res > 0) {
+                   var randnum = Math.ceil(Math.random() * Res)
+                   JumpDistance[i] = JumpDistance[i] + randnum
+                   if (JumpDistance[i] <= 300) {
+                       Res = Res - randnum;
+                       break;
+                   }
+                   else {
+                       JumpDistance[i] = JumpDistance[i] - randnum
+                   }
+               }
+               else { break; }
+           }
+
+       }
+   }
+   var j, x, i;
+   for (i = JumpDistance.length - 1; i > 0; i--) {
+       j = Math.floor(Math.random() * (i + 1));
+       x = JumpDistance[i];
+       JumpDistance[i] = JumpDistance[j];
+       JumpDistance[j] = x;
+   }
+    
+
+   console.log(JumpDistance);
+
+   
+   
+
+
+}
+
+
+function ButtonCandidate(midX,midY, trialNum,btn_num) {
+    CandidateButtonArray=new Array(buttons.length).fill(0);
+    CandidateButtonDistance=new Array(buttons.length).fill(0.0);
+    var CandidateBtnX=0.0;
+
+    var CandidateBtnY=0.0;
+    var CandidateNum=0;
+    var esilon =100.0;
+    var NextTargetIndex 
+   var dis = JumpDistance[trialNum-1];
+    console.log("pre tar X:"+midX+"tar y"+midY)
+    
+   // use jQuery to get ABSOLUTE position
+   //var midX = $(element).offset().left + 0.5 * element.offsetWidth;
+   //var midY = $(element).offset().top + 0.5 * element.offsetHeight;
+   //THIS TRIAL POSITION
+   while(CandidateNum==0||CandidateButtonArray[NextTargetIndex]==0){
+    CandidateButtonArray=new Array(buttons.length).fill(0);
+    CandidateNum=0;
+    esilon=esilon+100.0
+   for (var i = 0; i < btn_num; i++){
+       // console.log(buttons[i])
+        
+       CandidateBtnX=$(buttons[i]).offset().left + 0.5 * buttons[i].offsetWidth;
+       CandidateBtnY = $(buttons[i]).offset().top + 0.5 * buttons[i].offsetHeight;
+       var thisbtndistance=Math.pow((CandidateBtnX - midX), 2) + Math.pow((CandidateBtnY - midY), 2)
+ //console.log('Others'+i+' X:'+CandidateBtnY+'Y:'+CandidateBtnY+'dis:'+thisbtndistance)
+        var upbound= dis*dis+ esilon;
+        var lowbound=dis*dis- esilon;
+       if (thisbtndistance<upbound && thisbtndistance > lowbound) {
+            CandidateButtonDistance[CandidateNum]=thisbtndistance
+           CandidateButtonArray[CandidateNum] = i;
+           console.log('Others'+i+' X:'+CandidateBtnY+'Y:'+CandidateBtnY+'dis:'+thisbtndistance+"in"+lowbound+"~"+upbound)
+            CandidateNum++;
+       }
+   }
+    NextTargetIndex = Math.ceil(Math.random() * CandidateNum)
+}
+ //console.log("checkdis"+dis+"from"+CandidateButtonDistance)
+   
+
+   console.log(CandidateButtonArray[NextTargetIndex]+'form'+CandidateButtonArray)
+   //return button index
+
+   return CandidateButtonArray[NextTargetIndex];  
+}
+
+
+function Eyespacingerror(x,y){
+
+    ErrorIndex=(ErrorIndex+1)%10;
+    //EyeXave=Math.mean(EyeErrorX);
+
+    //EyeYave=Math.mean(EyeErrorY);
+    var XData=0.0;
+    var YData=0.0;
+    var kk = 0;
+    while (kk <= 9)
+                {
+                    XData += EyeErrorX[kk];
+                    YData += EyeErrorY[kk];
+                    kk++;
+                }
+                //Console.WriteLine(aveX);
+                var EyeXave = XData / 10;
+
+                var EyeYave= YData / 10;
+    EyeErrorX[ErrorIndex]=x;
+    EyeErrorY[ErrorIndex]=y;
+    for (var i = 0; i < 10; i++) {
+
+        if((EyeXave-EyeErrorX[i])*(EyeXave-EyeErrorX[i])+(EyeYave-EyeErrorY[i])*(EyeYave-EyeErrorY[i])>10000)   
+            {
+                ErrorTimeStart=Date.now()
+                ErrorTimeEnd=Date.now()
+            }   
+
+    }
+    ErrorTimeEnd=Date.now()
+
+    //console.log(ErrorTimeEnd-ErrorTimeStart)
+
+    if(ErrorTimeEnd-ErrorTimeStart>330){
+        console.log("Dwell Selection!!")
+        DwellSelectionCount++;
+        ErrorTimeStart=Date.now()
+        ErrorTimeEnd=Date.now()
+    }
+}
+
+
+function MouseClickEvent(){
+    document.getElementById("MouseBox").style="width:1400px;height:600px;";
+    console.log("mouse go")
 }
