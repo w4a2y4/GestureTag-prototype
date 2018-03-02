@@ -145,12 +145,6 @@ $(document).on('click', 'button', (function(e) {
     }, 100);
 }));
 
-socket.on('start_mobile', () => {
-    console.log('START_MOBILE');
-    trial_num = DEFAULT_TRIAL_NUM;
-    showTarget();
-});
-
 socket.on('eyemove', (x, y) => {
     changePos(x, y);
     Eyespacingerror(x, y);
@@ -204,7 +198,14 @@ socket.on('user', (user) => {
 socket.on('device', (device) => {
     platform = device;
     console.log(platform);
-    if (platform === 'mobile') enableSwipe();
+    if (platform === 'mobile') {
+        enableSwipe();
+        socket.on('start_mobile', () => {
+            console.log('START_MOBILE');
+            trial_num = DEFAULT_TRIAL_NUM;
+            showTarget();
+        });
+    }
 });
 
 socket.on('target_size', function(target_size) {
