@@ -53,7 +53,16 @@ var TrialCompletionTime;
 var ErrorCount = 0;
 var clickedbutton;
 
-
+var pgBar = $('#circle');
+pgBar.circleProgress({
+    startAngle: -Math.PI / 4 * 2,
+    value: 0.0,
+    size: 50,
+    lineCap: 'round',
+    fill: { gradient: ['#0681c4', '#4ac5f8'] },
+});
+const timeTd = 330;
+var outNum = 0;
 
 var EyeErrorX = new Array(10).fill(0.0);
 var EyeErrorY = new Array(10).fill(0.0);
@@ -62,12 +71,6 @@ var ErrorTimeEnd = new Date().getTime();
 var ErrorIndex = 0;
 var DwellSelectionCount = 0;
 var MouseClickCount = 0;
-
-
-
-
-
-
 
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
@@ -300,7 +303,13 @@ function changePos(eyeX, eyeY) {
                 }
             }
         }
+    } else if (type === 'dwell') {
+        if (outNum >= btn_num) {
+            pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
+            outNum = 0;
+        }
     }
+
     for (var k = 0; k < 9; k++) {
 
         var i = neighborhood[k];
@@ -315,6 +324,7 @@ function changePos(eyeX, eyeY) {
                 } else {
                     already[i] = 1; //First time to look at the target
                     TimeStart = Date.now(); // Record time then
+                    pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd + 20 } });
                 }
 
                 if (already[i] == 1 && TimeEnd - TimeStart > 330.0) {
@@ -322,13 +332,15 @@ function changePos(eyeX, eyeY) {
                     clickablebtn.click();
                     console.log("Selection Success!!");
                     already[i] = 0; // reinitialize
+                    pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
                 }
                 // Showing image 
                 $(btn).find('img').show();
-
+                outNum = 0;
             } else {
                 $(btn).find('img').hide();
                 already[i] = 0;
+                outNum += 1;
             }
         } else {
             if (isIn(i, candidate, 4)) {
@@ -350,7 +362,7 @@ function changePos(eyeX, eyeY) {
                     }
                 }
             } else {
-                $(btn).find('img').hide();
+                // $(btn).find('img').hide();
                 isShown.fill(true);
                 for (var j = 0; j < 4; j++)
                     currBtn[j] = buttons[postBtnId[j]];
