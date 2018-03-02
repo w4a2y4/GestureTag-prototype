@@ -474,7 +474,7 @@ function showTarget() {
     for (var cnt = 0; cnt < DISTRACT - 5;) {
         var rand = Math.floor(Math.random() * RAW_NUM * COL_NUM);
         if ($(buttons[rand]).is(':hidden') && !isIn(rand, skip, 8)) {
-            var x = 16 * (Math.floor(Math.random() * 3) + 2) / 0.6;
+            var x = 16 * (Math.floor(Math.random() * 3) + 2) / ( 0.6 * 0.67 );
             setBtnSize(buttons[rand], x);
             cnt++;
         }
