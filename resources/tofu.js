@@ -348,7 +348,6 @@ function changePos(eyeX, eyeY) {
                     }
                 }
             } else {
-                $(btn).find('img').hide();
                 isShown.fill(true);
                 for (var j = 0; j < 4; j++)
                     currBtn[j] = buttons[postBtnId[j]];
@@ -398,7 +397,7 @@ function showTarget() {
        
     }
     else{
-        var temptar=ButtonCandidate(CurrentTarX,CurrentTarY,trial_num,btn_num)
+        var temptar=ButtonCandidate(CurrentTarX,CurrentTarY,trial_num,btn_num);
        }
        
         //console.log('assign :'+trial_num + ' ' + temptar);

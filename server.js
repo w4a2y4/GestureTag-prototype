@@ -16,10 +16,10 @@ const user = process.argv[3];
 const device = process.argv[4];
 
 const swipeOptions = {
-    OPTION_1: `${resources}/arrow_up.png`,
-    OPTION_2: `${resources}/arrow_down.png`,
-    OPTION_3: `${resources}/arrow_left.png`,
-    OPTION_4: `${resources}/arrow_right.png`,
+    OPTION_1: `${resources}/arrow_0.png`,
+    OPTION_2: `${resources}/arrow_1.png`,
+    OPTION_3: `${resources}/arrow_2.png`,
+    OPTION_4: `${resources}/arrow_3.png`,
     EYETRACKER: `gesturetag`
 };
 const tapOptions = {
