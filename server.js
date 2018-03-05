@@ -6,8 +6,8 @@ const path = require('path');
 const resources = '/resources';
 const logfile = 'log/' + moment().format('MMDD-HHmm') + '.log';
 
-if ((process.argv).length !== 7) {
-    console.log("Wrong arg num!!! Pleas enter npm run [method] [user_category] [device] [target_btn_size] [spacing]");
+if ((process.argv).length !== 6) {
+    console.log("Wrong arg num!!! Pleas enter npm run [method] [user_category] [device] [user_id]");
     process.exit();
 }
 
@@ -21,10 +21,10 @@ const user = process.argv[3];
 const device = process.argv[4];
 
 // 16, 32, 48
-const target_size = process.argv[5];
+// let target_size = process.argv[5];
 
 // 0, 0.5, 1
-const spacing = process.argv[6];
+// const spacing = process.argv[6];
 
 const swipeOptions = {
     OPTION_1: `${resources}/arrow_0.png`,
@@ -50,6 +50,22 @@ const dwellOptions = {
     OPTION_3: `//:0`,
     OPTION_4: `//:0`,
     EYETRACKER: `dwell`
+};
+
+const user_id = process.argv[5];
+let rawdata = fs.readFileSync(`./condition/${user_id}.json`);
+let conditionOrders = JSON.parse(rawdata)[type];
+let [target_size,  spacing] = conditionOrders.shift();
+
+var updateCondition = () => {
+    if(conditionOrders.length === 0){
+        io.emit('done', 'done');
+        return;
+    }
+    [target_size,  spacing] = conditionOrders.shift();
+    console.log(`update condition: ${target_size}, ${spacing}`);
+    io.emit('target_size', target_size);
+    io.emit('spacing', spacing);
 };
 
 app.use(resources, express.static('resources'));
@@ -147,7 +163,9 @@ io.on('connection', function(socket) {
 
     // start a trial
     socket.on('start', function() {
-        writeLog('trial start (' + type + ')');
+        // write the condition, too
+        // writeLog('trial start (' + type + ')');
+        writeLog(`trials start ( ${type} ), size: ${target_size}, spacing: ${spacing}`);
         if (device === 'mobile') io.emit('start_mobile');
     });
 
@@ -155,6 +173,7 @@ io.on('connection', function(socket) {
     socket.on('end', function() {
         writeLog('trial end');
         io.emit('end');
+        updateCondition();
     });
 
     // log data

@@ -161,6 +161,11 @@ socket.on('swipe', (dirStr) => {
     swipeAndUnlock(dir);
 });
 
+socket.on('done', (str) => {
+    alert("You already finished one input method! Take a break.");
+    $(document).off('keyup');
+});
+
 socket.on('tap', (pos) => {
     gesture = pos;
     if (pos === 'topright' && isShown[0]) currBtn[0].click();
@@ -351,7 +356,7 @@ function changePos(eyeX, eyeY) {
                         already[i] = 0; // reinitialize
                         pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
                     }
-                    // Showing image 
+                    // Showing image
                     $(btn).find('img').show();
                     outNum = 0;
                 } else {
@@ -405,6 +410,7 @@ function showTarget() {
 
     if (trial_num == 0) {
         socket.emit('end');
+        alert(`You finished 10 trials. Please press space when you are ready for the next round.`);
         JumpDistance = new Array(10).fill(0);
         return;
     }
