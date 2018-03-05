@@ -57,6 +57,7 @@ var tar
 var TrialTimeStart = new Date().getTime();
 var TrialTimeEnd = new Date().getTime();
 var TrialCompletionTime;
+var trialTimer;
 var ErrorCount = 0;
 var clickedbutton;
 
@@ -130,7 +131,6 @@ $(document).on('click', 'button', (function(e) {
     TrialCompletionTime = TrialTimeEnd - TrialTimeStart
     clicked_btn = $(this).parent().attr('id');
     if (!$(this).hasClass('target')) { ErrorCount++ }
-
 
     log();
     if ($(this).hasClass('target')) {
@@ -414,6 +414,18 @@ function showTarget() {
         JumpDistance = new Array(10).fill(0);
         return;
     }
+
+    clearTimeout(trialTimer);
+    trialTimer = setTimeout(() => {
+        console.log('timeout QQ');
+        $('.target').removeClass('target');
+        ErrorCount++;
+        TrialCompletionTime = -1;
+        clicked_btn = null;
+        gesture = 'timeout';
+        log();
+        showTarget();
+    }, 20000);
 
     // select target
     while (true) {
