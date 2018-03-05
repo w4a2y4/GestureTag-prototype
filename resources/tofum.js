@@ -57,6 +57,7 @@ var tar
 var TrialTimeStart = new Date().getTime();
 var TrialTimeEnd = new Date().getTime();
 var TrialCompletionTime;
+var trialTimer;
 var ErrorCount = 0;
 var clickedbutton;
 
@@ -410,8 +411,17 @@ function showTarget() {
         return;
     }
 
-
-
+    clearTimeout(trialTimer);
+    trialTimer = setTimeout(() => {
+        console.log('timeout QQ');
+        $('.target').removeClass('target');
+        ErrorCount++;
+        TrialCompletionTime = -1;
+        clicked_btn = null;
+        gesture = 'timeout';
+        log();
+        showTarget();
+    }, 20000);
 
     // select target
 
