@@ -36,6 +36,7 @@ var LockerTimeStart = new Array(buttons.length).fill(0.0);
 
 var postBtnId = new Array(4).fill(0);
 var touchLock;
+var trialTimer;
 
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
@@ -328,6 +329,17 @@ function showTarget() {
         socket.emit('end');
         return;
     }
+
+    clearTimeout(trialTimer);
+    trialTimer = setTimeout(() => {
+        console.log('timeout QQ');
+        $('.target').removeClass('target');
+        clicked_btn = null;
+        gesture = 'timeout';
+        log();
+        showTarget();
+    }, 20000);
+
     while (true) {
         var btn_num = buttons.length;
         var rand = Math.floor(Math.random() * btn_num);
