@@ -79,6 +79,8 @@ var ErrorIndex = 0;
 var DwellSelectionCount = 0;
 var MouseClickCount = 0;
 
+var dwellcandidateID=0;
+var mostneardistance=10000000000000000;
 
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
@@ -304,6 +306,8 @@ function changePos(eyeX, eyeY) {
         me + COL_NUM, me + COL_NUM - 1, me + COL_NUM + 1
     ];
 
+    var mostneardistance =100000000000000000;
+    var dwellcandidateID =0;
     // the candidates are the nearest [up, down, left, right]
     var btn_num = buttons.length;
     var candidate = new Array(4).fill(-1);
@@ -338,23 +342,37 @@ function changePos(eyeX, eyeY) {
             if (i < 0 || i >= btn_num) continue;
             console.log(btn_num)
             var btn = buttons[i];
-
+           
             if (type === 'dwell') {
                 if (overlap(btn, eyeX, eyeY)) {
+                    
+
+
                     if (already[i]) { // Have already looked at the target
                         TimeEnd = Date.now(); // Record time then
                     } else {
                         already[i] = 1; //First time to look at the target
                         TimeStart = Date.now(); // Record time then
-                        pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd + 20 } });
+                         TimeEnd = Date.now(); 
+                        pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd + 20 }});
                     }
 
                     if (already[i] == 1 && TimeEnd - TimeStart > 330.0) {
-                        clickablebtn = btn;
-                        clickablebtn.click();
-                        console.log("Selection Success!!");
-                        already[i] = 0; // reinitialize
-                        pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
+
+                        if(mostneardistance>distance(btn,eyeX,eyeY)){
+                            dwellcandidateID=i;
+                            mostneardistance=distance(btn,eyeX,eyeY);
+                            }
+                        console.log("most near:"+dwellcandidateID)
+                         
+                        if(i==dwellcandidateID){
+                            clickablebtn = btn;
+                            clickablebtn.click();
+                            console.log("Selection Success!!");
+                            //already[i] = 0; // reinitialize
+                            already = new Array(buttons.length).fill(0);
+                            pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
+                        }
                     }
                     // Showing image
                     $(btn).find('img').show();

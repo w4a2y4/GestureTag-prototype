@@ -73,7 +73,7 @@ namespace Interaction_Streams_101
         /// <param name="y"></param>
         /// <param name="ts"></param>
         /// 
-
+        /*
         public static void SendData(double x, double y, double ts)
         {
             if (Program.isRecording)
@@ -101,10 +101,8 @@ namespace Interaction_Streams_101
                 YData = 0.0;
             }
         }
-
-        /*
-         * 
-         * 
+        */
+        
       
         public  static void SendData(double x,double y,double ts)
         {
@@ -147,7 +145,7 @@ namespace Interaction_Streams_101
                 YData = 0.0;
             }
         }
-        */
+        
         public static void Write(double x, double y, double ts)
         {
             if (Program.isRecording)

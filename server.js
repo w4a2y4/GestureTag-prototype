@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const resources = '/resources';
-const logfile = 'log/' + moment().format('MMDD-HHmm') + '.log';
+
 
 if ((process.argv).length !== 6) {
     console.log("Wrong arg num!!! Pleas enter npm run [method] [user_category] [device] [user_id]");
@@ -53,6 +53,9 @@ const dwellOptions = {
 };
 
 const user_id = process.argv[5];
+
+const logfile = 'log/' + moment().format('MMDD-HHmm') +'_'+ user_id+'.log';
+
 let rawdata = fs.readFileSync(`./condition/${user_id}.json`);
 let conditionOrders = JSON.parse(rawdata)[type];
 let [target_size,  spacing] = conditionOrders.shift();

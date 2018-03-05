@@ -345,6 +345,7 @@ function changePos(eyeX, eyeY) {
                     }
 
                     if (already[i] == 1 && TimeEnd - TimeStart > 330.0) {
+
                         clickablebtn = btn;
                         clickablebtn.click();
                         console.log("Selection Success!!");
