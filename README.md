@@ -21,6 +21,7 @@ npm run-script tap (config the server for tap tasks)
 npm run-script swipe [tester] [device] (tester: motor (4-dir) /others (8-dir); device: mobile/desktop)
 npm run-script dwell (config the server for dwell tasks)
 
+npm run [method] [user_category] [device] [user_id]      (ex: npm run swipe motor desktop tw_3)
 ```
 
 ### open the browser
