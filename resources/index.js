@@ -186,7 +186,7 @@ function overlap(element, X, Y) {
     var bottom = Number($(element).offset().top) + Number($(element).height());
     var threshold;
 
-    if (type === 'dwell') threshold = 10;
+    if (type === 'dwell') threshold = 0;
     else threshold = RADIUS;
     // in the element
     if (X >= left && X <= right && Y >= top && Y <= bottom) return true;
