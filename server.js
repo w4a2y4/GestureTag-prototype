@@ -54,7 +54,7 @@ const dwellOptions = {
 
 const user_id = process.argv[5];
 
-const logfile = 'log/' + moment().format('MMDD-HHmm') +'_'+ user_id+'.log';
+const logfile = 'log/' + moment().format('MMDD-HHmm') +'_'+ user_id+'_'+user+'.log';
 
 let rawdata = fs.readFileSync(`./condition/${user_id}.json`);
 let conditionOrders = JSON.parse(rawdata)[type];
@@ -119,6 +119,8 @@ var loadImages = () => {
         return swipeOptions;
     else if (type === 'tap')
         return tapOptions;
+    else if (type === 'EyeGesture')
+        return swipeOptions;
     else
         return dwellOptions;
 }

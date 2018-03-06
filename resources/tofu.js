@@ -82,6 +82,13 @@ var MouseClickCount = 0;
 var dwellcandidateID=0;
 var mostneardistance=10000000000000000;
 
+var EyeGestureX  = new Array(10).fill(0.0);
+var EyeGestureY  = new Array(10).fill(0.0);
+var EyeGestureOriX
+var EyeGestureOriY
+var GoEyeGesture = false;
+var  EyeGestureIndex =0;
+
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
 const swipeImages = {
@@ -284,6 +291,22 @@ function isIn(x, arr, len) {
 
 function changePos(eyeX, eyeY) {
 
+    if(GoEyeGesture){
+        var eyedir=EyeGesture(eyeX, eyeY,EyeGestureOriX,EyeGestureOriY)
+        if(eyedir!=null){
+            var dir;
+            if (eyedir == 'up') dir = UP;
+            else if (eyedir == 'down') dir = DOWN;
+            else if (eyedir == 'left') dir = LEFT;
+            else if (eyedir == 'right') dir = RIGHT;
+            enableClick(dir);
+            swipeAndUnlock(dir);
+            GoEyeGesture=false;
+            EyeGestureOriX=eyeX
+            EyeGestureOriY=eyeY
+        }
+    }
+
     $('#eye_tracker').css({
         "left": eyeX,
         "top": eyeY
@@ -345,9 +368,6 @@ function changePos(eyeX, eyeY) {
            
             if (type === 'dwell') {
                 if (overlap(btn, eyeX, eyeY)) {
-                    
-
-
                     if (already[i]) { // Have already looked at the target
                         TimeEnd = Date.now(); // Record time then
                     } else {
@@ -384,6 +404,48 @@ function changePos(eyeX, eyeY) {
                 }
             } else if (type === 'swipe') {
                 if (isIn(i, candidate, 4)) {
+
+
+
+                    if (already[i]) { // Have already looked at the target
+                        LockerTimeEnd[i] = Date.now(); // Record time then
+                    } else {
+                        already[i] = 1; //First time to look at the target
+                        LockerTimeStart[i] = Date.now(); // Record time then
+                    }
+                    var theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
+                    $(btn).find('img').show();
+
+                    if(theTimeInterval>1000.0){
+                            EyeGestureOriX=eyeX;
+                            EyeGestureOriY=eyeY;
+                            GoEyeGesture = true;
+                            console.log("StartX:"+eyeX+"StartY:"+eyeY)
+                        }
+
+                    if (theTimeInterval > 150.0 && touchLock == false) {
+                         
+                       
+                        for (var j = 0; j < 4; j++) {
+                            if (getBtnType(btn) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
+                                postBtnId[j] = i;
+                                currBtn[j] = btn;
+                                isShown[j] = true;
+                            }
+                        }
+                    }
+                } else {
+                    isShown.fill(true);
+                    for (var j = 0; j < 4; j++)
+                        currBtn[j] = buttons[postBtnId[j]];
+                    if (!isIn(i, postBtnId, 4)) {
+                        LockerTimeEnd[i] = 0.0; // Record time then
+                        LockerTimeStart[i] = 0.0; // Record time then
+                        already[i] = 0;
+                    }
+                }
+            }else if (type ==='EyeGesture'){
+                if (isIn(i, candidate, 4)) {
                     if (already[i]) { // Have already looked at the target
                         LockerTimeEnd[i] = Date.now(); // Record time then
                     } else {
@@ -393,6 +455,17 @@ function changePos(eyeX, eyeY) {
                     var theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
                     $(btn).find('img').show();
                     if (theTimeInterval > 150.0 && touchLock == false) {
+                       
+                        
+
+                        if(theTimeInterval>300.0){
+                            EyeGestureOriX=eyeX;
+                            EyeGestureOriY=eyeY;
+                            GoEyeGesture = true;
+                        }
+                       
+
+
                         for (var j = 0; j < 4; j++) {
                             if (getBtnType(btn) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
                                 postBtnId[j] = i;
@@ -683,17 +756,14 @@ function Eyespacingerror(x, y) {
     }
     //Console.WriteLine(aveX);
     var EyeXave = XData / 10;
-
     var EyeYave = YData / 10;
     EyeErrorX[ErrorIndex] = x;
     EyeErrorY[ErrorIndex] = y;
-    for (var i = 0; i < 10; i++) {
-
-        if ((EyeXave - EyeErrorX[i]) * (EyeXave - EyeErrorX[i]) + (EyeYave - EyeErrorY[i]) * (EyeYave - EyeErrorY[i]) > 10000) {
+    for (var i = 0; i < 10; i++){
+        if ((EyeXave - EyeErrorX[i]) * (EyeXave - EyeErrorX[i]) + (EyeYave - EyeErrorY[i]) * (EyeYave - EyeErrorY[i]) >BTN_SIZE*BTN_SIZE ) {
             ErrorTimeStart = Date.now()
             ErrorTimeEnd = Date.now()
         }
-
     }
     ErrorTimeEnd = Date.now()
 
@@ -712,3 +782,75 @@ function MouseClickEvent() {
     document.getElementById("MouseBox").style = "width:1400px;height:600px;";
     console.log("mouse go")
 }
+
+
+
+function EyeGesture(x, y,OriX,OriY) {
+    
+    /*
+    EyeGestureIndex = (EyeGestureIndex + 1) % 10;
+    EyeGestureX[EyeGestureIndex]=x;
+    EyeGestureY[EyeGestureIndex]=y;
+
+    var XData = 0.0;
+    var YData = 0.0;
+    var kk = 0;
+    while (kk <= 9) {
+        XData += EyeGestureX[kk];
+        YData += EyeGestureY[kk];
+        kk++;
+    }
+    //Console.WriteLine(aveX);
+    var EyeXave = XData / 10;
+    var EyeYave = YData / 10;
+*/
+     var EyeXave=x;
+     var EyeYave=y;
+    var vectorX=EyeXave-OriX;
+    var vectorY=-(EyeYave-OriY);
+    var VectorLength=Math.pow(vectorX*vectorX+vectorY*vectorY,0.5)
+    if(VectorLength>100){
+        var CosTheta=vectorX/VectorLength
+        var SinTheta=vectorY/VectorLength
+        var CTheta=Math.acos(CosTheta)*180/3.1415926
+        var STheta=Math.asin(SinTheta)*180/3.1415926
+        if(vectorX>0&&vectorY>0)
+            {
+            //1 quagent
+            var Theta=CTheta
+            }
+        else if (vectorX<0&&vectorY>0)
+            {
+                 //1 quagent
+                var Theta=CTheta
+
+             }
+        else if (vectorX<0&&vectorY<0)
+            {
+                 //1 quagent
+                var Theta=360-CTheta
+
+             }
+
+        else if (vectorX>0&&vectorY<0)
+            {
+                 //1 quagent
+                var Theta=360-CTheta
+
+             }
+
+
+      
+        console.log("OriX: "+OriX+"OriY: "+OriY+"vectorX: "+vectorX+"vectorY: "+vectorY+"Theta: "+Theta)
+
+        if(Theta>45&&Theta<135){ return 'up'}
+        else if(Theta>135&&Theta<225){ return 'left'}
+        else if(Theta>225&&Theta<315){ return 'down'}
+        else{ return 'right'}
+    }
+    return null
+
+
+}
+
+
