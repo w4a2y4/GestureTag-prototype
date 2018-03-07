@@ -121,6 +121,7 @@ $(document).mousedown((e) => {
 
 $(document).on('click', 'button', (function(e) {
 
+    clearTimeout(trialTimer);
     $(this).addClass('clicked');
     TrialTimeEnd = Date.now();
     TrialCompletionTime = TrialTimeEnd - TrialTimeStart;
@@ -155,6 +156,7 @@ socket.on('swipe', (dirStr) => {
 
 socket.on('done', (str) => {
     alert("You already finished one input method! Take a break.");
+    clearTimeout(trialTimer);
     $(document).off('keyup');
 });
 
@@ -400,6 +402,7 @@ function setBtnSize(element, size) {
 
 function showTarget() {
 
+    clearTimeout(trialTimer);
     if (trial_num == 0) {
         socket.emit('end');
         alert(`You finished 10 trials. Please press space when you are ready for the next round.`);
@@ -407,7 +410,6 @@ function showTarget() {
         return;
     }
 
-    clearTimeout(trialTimer);
     trialTimer = setTimeout(() => {
         console.log('timeout QQ');
         $('.target').removeClass('target');
