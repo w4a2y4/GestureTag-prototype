@@ -99,3 +99,78 @@ button img {
     width: auto;
     position: relative;
 }
+
+#Calibration1{
+    height: 100px;
+    width: 100px;
+    pointer-events: none;
+    position:absolute; left:230px; top: 230px;
+ 	background: red;
+ }
+
+
+#Calibration2{
+    height: 100px;
+    width: 100px;
+    pointer-events: none;
+    position:absolute; left:1500px; top: 230px;
+     background: red;
+}
+
+#Calibration3{
+    height: 100px;
+    width: 100px;
+    pointer-events: none;
+    position:absolute; left:2500px; top: 230px;
+     background: red;
+}
+
+
+#Calibration4{
+    height: 100px;
+    width: 100px;
+    pointer-events: none;
+    position:absolute; left:230px; top: 500px;
+     background: red;
+}
+
+#Calibration5{
+    height: 100px;
+    width: 100px;
+    pointer-events: none;
+    position:absolute; left:1500px; top: 500px;
+     background: red;
+}
+
+#Calibration6{
+    height: 100px;
+    width: 100px;
+    pointer-events: none;
+    position:absolute; left:2500px; top: 500px;
+     background: red;
+}
+
+#Calibration7{
+    height: 100px;
+    width: 100px;
+    pointer-events: none;
+    position:absolute; left:230px; top: 1000px;
+     background: red;
+}
+
+#Calibration8{
+    height: 100px;
+    width: 100px;
+    pointer-events: none;
+    position:absolute; left:1500px; top: 1000px;
+     background: red;
+}
+
+#Calibration9{
+    height: 100px;
+    width: 100px;
+    pointer-events: none;
+    position:absolute; left:2500px; top: 1000px;
+     background: red;
+}
+

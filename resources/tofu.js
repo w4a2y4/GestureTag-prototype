@@ -1,3 +1,4 @@
+
 var socket = io.connect();
 var show_path = false;
 var show_mouse = false;
@@ -76,6 +77,12 @@ var ErrorIndex = 0;
 var DwellSelectionCount = 0;
 var MouseClickCount = 0;
 
+var CalibrationLogmsg= ""
+var CalibrationEndTime=new Date().getTime();
+var CalibrationStartTime=new Date().getTime();
+var CalibrationState=false;
+
+
 
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
@@ -99,6 +106,7 @@ $(document).keyup((e) => {
         socket.emit('start');
         trial_num = DEFAULT_TRIAL_NUM;
         JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0); //have to set to zero
+        
         AssignTargetAlgo();
         showTarget();
         console.log("go go ")
@@ -106,6 +114,9 @@ $(document).keyup((e) => {
         show_mouse = !show_mouse;
     else if (e.which === 80) // key "p"
         show_path = !show_path;
+    else if (e.which === 67){
+        CalibrationStartTime=Date.now()
+        CalibrationState = true;}
 })
 
 $(document).mousemove((e) => {
@@ -140,6 +151,7 @@ $(document).on('click', 'button', (function(e) {
 socket.on('eyemove', (x, y) => {
     changePos(x * 0.8, y * 0.8);
     Eyespacingerror(x * 0.8, y * 0.8);
+    
 });
 
 socket.on('swipe', (dirStr) => {
@@ -220,6 +232,10 @@ function log() {
     socket.emit('log', cnt, gesture, clicked_btn, target_btn, TrialCompletionTime, ErrorCount, DwellSelectionCount, MouseClickCount);
 }
 
+function Calibrationlog(x,y,CalibrateID,CalibrateBtnX,CalibrateBtnY) {
+    socket.emit('Calibrationlog', x, y,CalibrateID,CalibrateBtnX,CalibrateBtnY);
+}
+
 function getBtnType(btn) {
     if (imgSet["up"] == btn.children[0].src) return UP;
     else if (imgSet["down"] == btn.children[0].src) return DOWN;
@@ -273,7 +289,23 @@ function isIn(x, arr, len) {
 }
 
 function changePos(eyeX, eyeY) {
+if(CalibrationState){
+    Calibration(eyeX, eyeY)
+   
+     $('#eye_tracker').css({
+        "left": eyeX,
+        "top": eyeY
+    });
 
+    $('#canvas_container').css({
+        "left": eyeX - 700,
+        "top": eyeY - 500
+    });
+
+
+}
+  
+  else{
     $('#eye_tracker').css({
         "left": eyeX,
         "top": eyeY
@@ -330,7 +362,6 @@ function changePos(eyeX, eyeY) {
             if (i < 0 || i >= btn_num) continue;
             console.log(btn_num)
             var btn = buttons[i];
-
             if (type === 'dwell') {
                 if (overlap(btn, eyeX, eyeY)) {
                     if (already[i]) { // Have already looked at the target
@@ -387,6 +418,7 @@ function changePos(eyeX, eyeY) {
                 }
             }
         }
+    }
     }
 }
 
@@ -679,7 +711,6 @@ function Eyespacingerror(x, y) {
             ErrorTimeStart = Date.now()
             ErrorTimeEnd = Date.now()
         }
-
     }
     ErrorTimeEnd = Date.now()
 
@@ -697,4 +728,148 @@ function Eyespacingerror(x, y) {
 function MouseClickEvent() {
     document.getElementById("MouseBox").style = "width:1400px;height:600px;";
     console.log("mouse go")
+}
+
+function Calibration(eyeX,eyeY){
+    CalibrationEndTime=Date.now();
+    var CalibrateID
+    var CalibrateBtnX
+    var CalibrateBtnY
+    if( CalibrationEndTime-CalibrationStartTime<3000){
+
+        var CalibrateID=1
+        var calibrateID = "Calibration1"
+        var c = document.getElementById(calibrateID);
+        console.log(c)
+        $(c).css('background','gray')
+        CalibrateBtnX = $(c).offset().left + 0.5 * c.offsetWidth;
+        CalibrateBtnY = $(c).offset().top + 0.5 * c.offsetHeight;
+        //$(c).hide()
+
+    }
+
+     else if( CalibrationEndTime-CalibrationStartTime<6000 && CalibrationEndTime-CalibrationStartTime>=3000){
+
+        var CalibrateID=2
+      
+        var calibrateID = "Calibration2"
+        var c = document.getElementById(calibrateID);
+        CalibrateBtnX = $(c).offset().left + 0.5 * c.offsetWidth;
+         CalibrateBtnY = $(c).offset().top + 0.5 * c.offsetHeight;
+        console.log(c)
+        $(c).css('background','gray')
+        //$(c).hide()
+        $(document.getElementById("Calibration1")).hide()
+    }
+
+     else if( CalibrationEndTime-CalibrationStartTime<9000 && CalibrationEndTime-CalibrationStartTime>=6000){
+
+        var CalibrateID=3
+        
+        var calibrateID = "Calibration3"
+        var c = document.getElementById(calibrateID);
+        CalibrateBtnX = $(c).offset().left + 0.5 * c.offsetWidth;
+         CalibrateBtnY = $(c).offset().top + 0.5 * c.offsetHeight;
+        console.log(c)
+        $(c).css('background','gray')
+          $(document.getElementById("Calibration2")).hide()
+        //$(c).hide()
+
+    }
+         else if( CalibrationEndTime-CalibrationStartTime<12000 && CalibrationEndTime-CalibrationStartTime>=9000){
+
+        var CalibrateID=4
+        
+        var calibrateID = "Calibration4"
+        var c = document.getElementById(calibrateID);
+        CalibrateBtnX = $(c).offset().left + 0.5 * c.offsetWidth;
+         CalibrateBtnY = $(c).offset().top + 0.5 * c.offsetHeight;
+        console.log(c)
+        $(c).css('background','gray')
+          $(document.getElementById("Calibration3")).hide()
+        //$(c).hide()
+
+    }
+         else if( CalibrationEndTime-CalibrationStartTime<15000 && CalibrationEndTime-CalibrationStartTime>=12000){
+
+        var CalibrateID=5
+        
+        var calibrateID = "Calibration5"
+        var c = document.getElementById(calibrateID);
+        CalibrateBtnX = $(c).offset().left + 0.5 * c.offsetWidth;
+         CalibrateBtnY = $(c).offset().top + 0.5 * c.offsetHeight;
+        console.log(c)
+        $(c).css('background','gray')
+          $(document.getElementById("Calibration4")).hide()
+        //$(c).hide()
+
+    }
+
+         else if( CalibrationEndTime-CalibrationStartTime<18000 && CalibrationEndTime-CalibrationStartTime>=15000){
+
+        var CalibrateID=6
+        
+        var calibrateID = "Calibration6"
+        var c = document.getElementById(calibrateID);
+        CalibrateBtnX = $(c).offset().left + 0.5 * c.offsetWidth;
+         CalibrateBtnY = $(c).offset().top + 0.5 * c.offsetHeight;
+        console.log(c)
+        $(c).css('background','gray')
+          $(document.getElementById("Calibration5")).hide()
+        //$(c).hide()
+
+    }
+
+         else if( CalibrationEndTime-CalibrationStartTime<21000 && CalibrationEndTime-CalibrationStartTime>=18000){
+
+        var CalibrateID=7
+        
+        var calibrateID = "Calibration7"
+        var c = document.getElementById(calibrateID);
+        CalibrateBtnX = $(c).offset().left + 0.5 * c.offsetWidth;
+         CalibrateBtnY = $(c).offset().top + 0.5 * c.offsetHeight;
+        console.log(c)
+        $(c).css('background','gray')
+          $(document.getElementById("Calibration6")).hide()
+        //$(c).hide()
+
+    }
+
+         else if( CalibrationEndTime-CalibrationStartTime<24000 && CalibrationEndTime-CalibrationStartTime>=21000){
+
+        var CalibrateID=8
+        
+        var calibrateID = "Calibration8"
+        var c = document.getElementById(calibrateID);
+        CalibrateBtnX = $(c).offset().left + 0.5 * c.offsetWidth;
+         CalibrateBtnY = $(c).offset().top + 0.5 * c.offsetHeight;
+        console.log(c)
+        $(c).css('background','gray')
+          $(document.getElementById("Calibration7")).hide()
+        //$(c).hide()
+
+    }
+
+         else if( CalibrationEndTime-CalibrationStartTime<27000 && CalibrationEndTime-CalibrationStartTime>=24000){
+
+        var CalibrateID=9
+        
+        var calibrateID = "Calibration9"
+        var c = document.getElementById(calibrateID);
+        CalibrateBtnX = $(c).offset().left + 0.5 * c.offsetWidth;
+         CalibrateBtnY = $(c).offset().top + 0.5 * c.offsetHeight;
+        console.log(c)
+        $(c).css('background','gray')
+          $(document.getElementById("Calibration8")).hide()
+        //$(c).hide()
+
+    }
+
+    else{
+         $(document.getElementById("Calibration9")).hide()
+        CalibrationState = false
+    }
+    console.log("CalibrateID"+CalibrateID)
+   
+    Calibrationlog(eyeX,eyeY,CalibrateID,CalibrateBtnX,CalibrateBtnY)
 }
