@@ -137,16 +137,16 @@ $(document).on('click', 'button', (function(e) {
     TrialTimeEnd = Date.now()
 
     TrialCompletionTime = TrialTimeEnd - TrialTimeStart
+    EyeGestureOriX=null
+    EyeGestureOriY=null //reset eyegesture origin
     clicked_btn = $(this).parent().attr('id');
     if (!$(this).hasClass('target')) { ErrorCount++ }
-
-
     log();
     if ($(this).hasClass('target')) {
         setTimeout(() => {
             $(this).removeClass('target');
             showTarget();
-            console.log("go good")
+            
         }, 100);
     }
     setTimeout(() => {
@@ -301,7 +301,7 @@ function changePos(eyeX, eyeY) {
             else if (eyedir == 'down') dir = DOWN;
             else if (eyedir == 'left') dir = LEFT;
             else if (eyedir == 'right') dir = RIGHT;
-            enableClick(dir);
+            //enableClick(dir);
             swipeAndUnlock(dir);
             GoEyeGesture=false;
             EyeGestureOriX=eyeX
@@ -475,12 +475,7 @@ function changePos(eyeX, eyeY) {
                             console.log("StartX:"+eyeX+"StartY:"+eyeY)
                         }
                     if (theTimeInterval > 150.0 && touchLock == false) {
-                        if(theTimeInterval>300.0){
-                            EyeGestureOriX=eyeX;
-                            EyeGestureOriY=eyeY;
-                            GoEyeGesture = true;
-                        }
-                       
+                        
                         for (var j = 0; j < 4; j++) {
                             if (getBtnType(btn) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
                                 postBtnId[j] = i;
@@ -587,11 +582,8 @@ function showTarget() {
             cnt++;
         }
     }
-
-
     CurrentTarX = $(buttons[tar]).offset().left + 0.5 * buttons[tar].offsetWidth;
     CurrentTarY = $(buttons[tar]).offset().top + 0.5 * buttons[tar].offsetHeight;
-
     trial_num -= 1;
 }
 
@@ -616,6 +608,7 @@ function clearCanvas() {
 }
 
 var getSwipeDirectionFromAngle = (angle, direction) => {
+  
     if (direction === Hammer.DIRECTION_UP) return UP;
     else if (direction === Hammer.DIRECTION_DOWN) return DOWN;
     else if (direction === Hammer.DIRECTION_LEFT) return LEFT;
@@ -802,7 +795,7 @@ function MouseClickEvent() {
 
 function EyeGesture(x, y,OriX,OriY) {
     
- 
+    if(OriX!=null &&OriY!=null){
      var EyeXave=x;
      var EyeYave=y;
     var vectorX=EyeXave-OriX;
@@ -839,6 +832,7 @@ function EyeGesture(x, y,OriX,OriY) {
         else if(Theta>135&&Theta<225){ return 'left'}
         else if(Theta>225&&Theta<315){ return 'down'}
         else{ return 'right'}
+        }
     }
     return null
 }
