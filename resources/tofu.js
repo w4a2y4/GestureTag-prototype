@@ -2,12 +2,8 @@ var socket = io.connect();
 var show_path = false;
 var show_mouse = false;
 
-const RADIUS = 113;
-const RAW_NUM = 15;
-const COL_NUM = 24;
 var BTN_SIZE;
 var SPACING;
-const DISTRACT = 300;
 
 const UP = 0,
     DOWN = 1,
@@ -215,7 +211,7 @@ socket.on('device', (device) => {
 });
 
 socket.on('target_size', function(target_size) {
-    BTN_SIZE = Number(target_size) / 0.6;
+    BTN_SIZE = Number(target_size) / DP_RATIO;
 });
 
 socket.on('spacing', function(spacing) {
@@ -470,16 +466,16 @@ function showTarget() {
     // render neighbor
     // right
     setBtnSize(buttons[tar + 1], BTN_SIZE);
-    $(buttons[tar + 1]).css('margin-left', (BTN_SIZE * (SPACING + 0.5) - 80));
+    $(buttons[tar + 1]).css('margin-left', (BTN_SIZE * (SPACING + 0.5) - BIGGEST_BTN));
     // left
     setBtnSize(buttons[tar - 1], BTN_SIZE);
-    $(buttons[tar - 1]).css('margin-left', (80 - BTN_SIZE * (SPACING + 1.5)));
+    $(buttons[tar - 1]).css('margin-left', (BIGGEST_BTN - BTN_SIZE * (SPACING + 1.5)));
     // down
     setBtnSize(buttons[tar + COL_NUM], BTN_SIZE);
-    $(buttons[tar + COL_NUM]).css('margin-top', (BTN_SIZE * (SPACING + 0.5) - 80));
+    $(buttons[tar + COL_NUM]).css('margin-top', (BTN_SIZE * (SPACING + 0.5) - BIGGEST_BTN));
     // up
     setBtnSize(buttons[tar - COL_NUM], BTN_SIZE);
-    $(buttons[tar - COL_NUM]).css('margin-top', (80 - BTN_SIZE * (SPACING + 1.5)));
+    $(buttons[tar - COL_NUM]).css('margin-top', (BIGGEST_BTN - BTN_SIZE * (SPACING + 1.5)));
 
     var skip = [tar + 2, tar - 2, tar + 2 * COL_NUM, tar - 2 * COL_NUM,
         tar - COL_NUM - 1, tar - COL_NUM + 1, tar + COL_NUM - 1, tar + COL_NUM + 1
@@ -488,7 +484,7 @@ function showTarget() {
     for (var cnt = 0; cnt < DISTRACT - 5;) {
         var rand = Math.floor(Math.random() * RAW_NUM * COL_NUM);
         if ($(buttons[rand]).is(':hidden') && !isIn(rand, skip, 8)) {
-            var x = 16 * (Math.floor(Math.random() * 3) + 1) / 0.6;
+            var x = 16 * (Math.floor(Math.random() * 3) + BASE_BTN) / DP_RATIO;
             setBtnSize(buttons[rand], x);
             cnt++;
         }
