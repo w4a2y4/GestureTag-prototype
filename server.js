@@ -6,8 +6,8 @@ const path = require('path');
 const resources = '/resources';
 const logfile = 'log/' + moment().format('MMDD-HHmm') + '.log';
 
-if ((process.argv).length !== 6) {
-    console.log("Wrong arg num!!! Pleas enter npm run [method] [user_category] [device] [user_id]");
+if ((process.argv).length !== 7) {
+    console.log("Wrong arg num!!! Pleas enter npm run [method] [user_category] [device] [user_id] [static/dynamic]");
     process.exit();
 }
 
@@ -19,6 +19,9 @@ const user = process.argv[3];
 
 // mobile or desktop
 const device = process.argv[4];
+
+// static or dynamic
+const assign = process.argv[6];
 
 // 16, 32, 48
 // let target_size = process.argv[5];
@@ -125,6 +128,7 @@ io.on('connection', function(socket) {
     io.emit('init', type);
     io.emit('user', user);
     io.emit('device', device);
+    io.emit('assign', assign);
     io.emit('target_size', target_size);
     io.emit('spacing', spacing);
 

@@ -16,6 +16,7 @@ var isShown = new Array(4).fill(false);
 var tester;
 var type;
 var platform;
+var dynamic = false;
 
 const DEFAULT_TRIAL_NUM = 10;
 var trial_num = DEFAULT_TRIAL_NUM;
@@ -76,7 +77,6 @@ var ErrorIndex = 0;
 var DwellSelectionCount = 0;
 var MouseClickCount = 0;
 
-
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
 const swipeImages = {
@@ -91,7 +91,6 @@ const tapImages = {
     left: img_prefix + 'tap_topleft.png',
     right: img_prefix + 'tap_bottomright.png'
 };
-
 
 $(document).keyup((e) => {
     // key "enter"
@@ -210,6 +209,10 @@ socket.on('device', (device) => {
     }
 });
 
+socket.on('assign', (assign) => {
+    if (assign === 'dynamic') dynamic = true;
+});
+
 socket.on('target_size', function(target_size) {
     BTN_SIZE = Number(target_size) / DP_RATIO;
 });
@@ -224,12 +227,27 @@ function log() {
     socket.emit('log', cnt, gesture, clicked_btn, target_btn, TrialCompletionTime, ErrorCount, DwellSelectionCount, MouseClickCount);
 }
 
-function getBtnType(btn) {
-    if (imgSet["up"] == btn.children[0].src) return UP;
-    else if (imgSet["down"] == btn.children[0].src) return DOWN;
-    else if (imgSet["left"] == btn.children[0].src) return LEFT;
-    else if (imgSet["right"] == btn.children[0].src) return RIGHT;
-    return -1;
+function getBtnType(btn, x, y) {
+
+    if ( !dynamic ) {
+        if (imgSet["up"] == btn.children[0].src) return UP;
+        else if (imgSet["down"] == btn.children[0].src) return DOWN;
+        else if (imgSet["left"] == btn.children[0].src) return LEFT;
+        else if (imgSet["right"] == btn.children[0].src) return RIGHT;
+        return -1;
+    }
+
+    var midX = $(btn).offset().left + 0.5 * btn.offsetWidth;
+    var midY = $(btn).offset().top + 0.5 * btn.offsetHeight;
+    var diffX = midX - x;
+    var diffY = midY - y;
+    var slope = diffY / diffX;
+
+    if ( diffX > 0 && slope < 1 && slope > -1 ) return RIGHT;
+    else if ( diffX < 0 && slope < 1 && slope > -1 ) return LEFT;
+    else if ( diffY > 0 && ( slope > 1 || slope < -1 ) ) return DOWN;
+    return UP;
+
 }
 
 function overlap(element, X, Y) {
@@ -276,21 +294,6 @@ function isIn(x, arr, len) {
     return false;
 }
 
-function getQuadrant(element, x, y) {
-
-    var midX = $(element).offset().left + 0.5 * element.offsetWidth;
-    var midY = $(element).offset().top + 0.5 * element.offsetHeight;
-    var diffX = midX - x;
-    var diffY = midY - y;
-    var slope = diffY / diffX;
-
-    if ( diffX > 0 && slope < 1 && slope > -1 ) return RIGHT;
-    else if ( diffX < 0 && slope < 1 && slope > -1 ) return LEFT;
-    else if ( diffY > 0 && ( slope > 1 || slope < -1 ) ) return DOWN;
-    else return UP;
-
-}
-
 function changePos(eyeX, eyeY) {
 
     $('#eye_tracker').css({
@@ -327,130 +330,13 @@ function changePos(eyeX, eyeY) {
             if (i < 0 || i >= btn_num) continue;
             var btn = buttons[i];
             if (overlap(btn, eyeX, eyeY)) {
-                var quadrant = getQuadrant(btn, eyeX, eyeY);
+                var j = getBtnType(btn, eyeX, eyeY);
                 var curr_dist = distance(btn, eyeX, eyeY);
-                if (curr_dist < dist[quadrant]) {
-                    candidate[quadrant] = i;
-                    dist[quadrant] = curr_dist;
-                    $(btn).find('img').attr('src', img_prefix + 'arrow_' + quadrant + '.png');
-                }
-            }
-        }
-    } else if (type === 'dwell') {
-        if (outNum >= btn_num) {
-            pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
-            outNum = 0;
-        }
-    }
-
-    if (type !== 'tap') {
-        for (var k = 0; k < 9; k++) {
-
-            var i = neighborhood[k];
-            if (i < 0 || i >= btn_num) continue;
-            console.log(btn_num)
-            var btn = buttons[i];
-
-            if (type === 'dwell') {
-                if (overlap(btn, eyeX, eyeY)) {
-                    if (already[i]) { // Have already looked at the target
-                        TimeEnd = Date.now(); // Record time then
-                    } else {
-                        already[i] = 1; //First time to look at the target
-                        TimeStart = Date.now(); // Record time then
-                        pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd + 20 } });
-                    }
-
-                    if (already[i] == 1 && TimeEnd - TimeStart > 330.0) {
-                        clickablebtn = btn;
-                        clickablebtn.click();
-                        console.log("Selection Success!!");
-                        already[i] = 0; // reinitialize
-                        pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
-                    }
-                    // Showing image
-                    $(btn).find('img').show();
-                    outNum = 0;
-                } else {
-                    $(btn).find('img').hide();
-                    already[i] = 0;
-                    outNum += 1;
-                }
-            } else if (type === 'swipe') {
-                if (isIn(i, candidate, 4)) {
-                    if (already[i]) { // Have already looked at the target
-                        LockerTimeEnd[i] = Date.now(); // Record time then
-                    } else {
-                        already[i] = 1; //First time to look at the target
-                        LockerTimeStart[i] = Date.now(); // Record time then
-                    }
-                    var theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
-                    $(btn).find('img').show();
-                    if (theTimeInterval > 150.0 && touchLock == false) {
-                        for (var j = 0; j < 4; j++) {
-                            if (getBtnType(btn) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
-                                postBtnId[j] = i;
-                                currBtn[j] = btn;
-                                isShown[j] = true;
-                            }
-                        }
-                    }
-                } else {
-                    isShown.fill(true);
-                    for (var j = 0; j < 4; j++)
-                        currBtn[j] = buttons[postBtnId[j]];
-                    if (!isIn(i, postBtnId, 4)) {
-                        LockerTimeEnd[i] = 0.0; // Record time then
-                        LockerTimeStart[i] = 0.0; // Record time then
-                        already[i] = 0;
-                    }
-                }
-            }
-        }
-    }
-}
-
-function changePosStatic(eyeX, eyeY) {
-
-    $('#eye_tracker').css({
-        "left": eyeX,
-        "top": eyeY
-    });
-
-    $('#canvas_container').css({
-        "left": eyeX - 700,
-        "top": eyeY - 500
-    });
-
-    isShown.fill(false);
-    $('img').hide();
-
-    // determine the index of gaze point
-    var tofuX = Math.floor(eyeX / TOFU_WIDTH),
-        tofuY = Math.floor(eyeY / TOFU_HEIGHT);
-    var me = tofuX + tofuY * COL_NUM;
-    var neighborhood = [me, me - 1, me + 1,
-        me - COL_NUM, me - COL_NUM - 1, me - COL_NUM + 1,
-        me + COL_NUM, me + COL_NUM - 1, me + COL_NUM + 1
-    ];
-
-    // the candidates are the nearest [up, down, left, right]
-    var btn_num = buttons.length;
-    var candidate = new Array(4).fill(-1);
-    var dist = new Array(4).fill(5000000);
-
-    // for each type of gesture, put the nearest's index in candidate[]
-    if (type === 'swipe') {
-        for (var k = 0; k < 9; k++) {
-            var i = neighborhood[k];
-            if (i < 0 || i >= btn_num) continue;
-            var btn = buttons[i];
-            if (overlap(btn, eyeX, eyeY)) {
-                var curr_dist = distance(btn, eyeX, eyeY);
-                for (var j = 0; j < 4; j++) {
-                    if (getBtnType(btn) == j && curr_dist < dist[j]) {
-                        candidate[j] = i;
-                        dist[j] = curr_dist;
+                if (curr_dist < dist[j]) {
+                    candidate[j] = i;
+                    dist[j] = curr_dist;
+                    if( dynamic ) {
+                        $(btn).find('img').attr('src', img_prefix + 'arrow_' + j + '.png');
                     }
                 }
             }
@@ -467,7 +353,6 @@ function changePosStatic(eyeX, eyeY) {
 
             var i = neighborhood[k];
             if (i < 0 || i >= btn_num) continue;
-            console.log(btn_num)
             var btn = buttons[i];
 
             if (type === 'dwell') {
