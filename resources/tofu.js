@@ -196,6 +196,7 @@ socket.on('init', (method) => {
     type = method;
     console.log(type);
     if (type === 'swipe') imgSet = swipeImages;
+    else if (type === 'EyeGesture') {imgSet = swipeImages;console.log("goooood")}
     else if (type === 'tap') imgSet = tapImages;
 });
 
@@ -238,6 +239,7 @@ function log() {
 }
 
 function getBtnType(btn) {
+    console.log(btn.children[0])
     if (imgSet["up"] == btn.children[0].src) return UP;
     else if (imgSet["down"] == btn.children[0].src) return DOWN;
     else if (imgSet["left"] == btn.children[0].src) return LEFT;
@@ -352,7 +354,26 @@ function changePos(eyeX, eyeY) {
                 }
             }
         }
-    } else if (type === 'dwell') {
+
+    }else if(type === 'EyeGesture') {
+        for (var k = 0; k < 9; k++) {
+            var i = neighborhood[k];
+            if (i < 0 || i >= btn_num) continue;
+            var btn = buttons[i];
+            console.log(btn)
+            if (overlap(btn, eyeX, eyeY)) {
+                var curr_dist = distance(btn, eyeX, eyeY);
+                for (var j = 0; j < 4; j++) {
+                    if (getBtnType(btn) == j && curr_dist < dist[j]) {
+                        candidate[j] = i;
+                        dist[j] = curr_dist;
+                    }
+                }
+            }
+        }
+
+    } 
+    else if (type === 'dwell') {
         if (outNum >= btn_num) {
             pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
             outNum = 0;
@@ -404,9 +425,6 @@ function changePos(eyeX, eyeY) {
                 }
             } else if (type === 'swipe') {
                 if (isIn(i, candidate, 4)) {
-
-
-
                     if (already[i]) { // Have already looked at the target
                         LockerTimeEnd[i] = Date.now(); // Record time then
                     } else {
@@ -416,16 +434,10 @@ function changePos(eyeX, eyeY) {
                     var theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
                     $(btn).find('img').show();
 
-                    if(theTimeInterval>1000.0){
-                            EyeGestureOriX=eyeX;
-                            EyeGestureOriY=eyeY;
-                            GoEyeGesture = true;
-                            console.log("StartX:"+eyeX+"StartY:"+eyeY)
-                        }
+                  
 
                     if (theTimeInterval > 150.0 && touchLock == false) {
-                         
-                       
+                        
                         for (var j = 0; j < 4; j++) {
                             if (getBtnType(btn) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
                                 postBtnId[j] = i;
@@ -445,6 +457,7 @@ function changePos(eyeX, eyeY) {
                     }
                 }
             }else if (type ==='EyeGesture'){
+              
                 if (isIn(i, candidate, 4)) {
                     if (already[i]) { // Have already looked at the target
                         LockerTimeEnd[i] = Date.now(); // Record time then
@@ -454,18 +467,20 @@ function changePos(eyeX, eyeY) {
                     }
                     var theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
                     $(btn).find('img').show();
+                    
+                    if(theTimeInterval>1000.0){
+                            EyeGestureOriX=eyeX;
+                            EyeGestureOriY=eyeY;
+                            GoEyeGesture = true;
+                            console.log("StartX:"+eyeX+"StartY:"+eyeY)
+                        }
                     if (theTimeInterval > 150.0 && touchLock == false) {
-                       
-                        
-
                         if(theTimeInterval>300.0){
                             EyeGestureOriX=eyeX;
                             EyeGestureOriY=eyeY;
                             GoEyeGesture = true;
                         }
                        
-
-
                         for (var j = 0; j < 4; j++) {
                             if (getBtnType(btn) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
                                 postBtnId[j] = i;
@@ -787,29 +802,13 @@ function MouseClickEvent() {
 
 function EyeGesture(x, y,OriX,OriY) {
     
-    /*
-    EyeGestureIndex = (EyeGestureIndex + 1) % 10;
-    EyeGestureX[EyeGestureIndex]=x;
-    EyeGestureY[EyeGestureIndex]=y;
-
-    var XData = 0.0;
-    var YData = 0.0;
-    var kk = 0;
-    while (kk <= 9) {
-        XData += EyeGestureX[kk];
-        YData += EyeGestureY[kk];
-        kk++;
-    }
-    //Console.WriteLine(aveX);
-    var EyeXave = XData / 10;
-    var EyeYave = YData / 10;
-*/
+ 
      var EyeXave=x;
      var EyeYave=y;
     var vectorX=EyeXave-OriX;
     var vectorY=-(EyeYave-OriY);
     var VectorLength=Math.pow(vectorX*vectorX+vectorY*vectorY,0.5)
-    if(VectorLength>100){
+    if(VectorLength>100||OntheEdge(x,y)){
         var CosTheta=vectorX/VectorLength
         var SinTheta=vectorY/VectorLength
         var CTheta=Math.acos(CosTheta)*180/3.1415926
@@ -821,36 +820,37 @@ function EyeGesture(x, y,OriX,OriY) {
             }
         else if (vectorX<0&&vectorY>0)
             {
-                 //1 quagent
+                 //2 quagent
                 var Theta=CTheta
-
              }
         else if (vectorX<0&&vectorY<0)
             {
-                 //1 quagent
+                 //3 quagent
                 var Theta=360-CTheta
-
              }
 
         else if (vectorX>0&&vectorY<0)
             {
-                 //1 quagent
+                 //4 quagent
                 var Theta=360-CTheta
-
              }
-
-
-      
         console.log("OriX: "+OriX+"OriY: "+OriY+"vectorX: "+vectorX+"vectorY: "+vectorY+"Theta: "+Theta)
-
         if(Theta>45&&Theta<135){ return 'up'}
         else if(Theta>135&&Theta<225){ return 'left'}
         else if(Theta>225&&Theta<315){ return 'down'}
         else{ return 'right'}
     }
     return null
+}
+function OntheEdge(x,y){
+    var width = document.body.clientWidth
+    var height = document.body.clientHeight;
+    if(x<10){return true}
+    else if (x>width-10){return true}
+    else if (y<10){return true}
+    else if (y>height-10){return true}
 
+    return false
 
 }
-
 
