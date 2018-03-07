@@ -120,25 +120,21 @@ $(document).mousedown((e) => {
 });
 
 $(document).on('click', 'button', (function(e) {
-    console.log("click!!");
+
     $(this).addClass('clicked');
-    TrialTimeEnd = Date.now()
+    TrialTimeEnd = Date.now();
+    TrialCompletionTime = TrialTimeEnd - TrialTimeStart;
 
-    TrialCompletionTime = TrialTimeEnd - TrialTimeStart
     clicked_btn = $(this).parent().attr('id');
-    if (!$(this).hasClass('target')) { ErrorCount++ }
-
+    if (!$(this).hasClass('target')) ErrorCount++;
     log();
-    if ($(this).hasClass('target')) {
-        setTimeout(() => {
-            $(this).removeClass('target');
-            showTarget();
-            console.log("go good")
-        }, 100);
-    }
+
     setTimeout(() => {
+        $('.target').removeClass('target');
         $(this).removeClass('clicked');
+        showTarget();
     }, 100);
+
 }));
 
 socket.on('eyemove', (x, y) => {
