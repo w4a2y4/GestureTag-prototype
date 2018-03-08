@@ -100,76 +100,63 @@ button img {
     position: relative;
 }
 
-#Calibration1{
+.calibration {
     height: 100px;
     width: 100px;
     pointer-events: none;
-    position:absolute; left:100px; top: 100px;
- 	
- }
-
-
-#Calibration2{
-    height: 100px;
-    width: 100px;
-    pointer-events: none;
-    position:absolute; left:1300px; top: 100px;
-    
+    position: absolute;
 }
 
-#Calibration3{
-    height: 100px;
-    width: 100px;
-    pointer-events: none;
-    position:absolute; left:2500px; top: 100px;
-    }
-
-
-#Calibration4{
-    height: 100px;
-    width: 100px;
-    pointer-events: none;
-    position:absolute; left:100px; top: 850px;
-    
+#Calibration1 {
+    left: 5%;
+    top: 3%;
+    /* left:100px; top: 100px; */
 }
 
-#Calibration5{
-    height: 100px;
-    width: 100px;
-    pointer-events: none;
-    position:absolute; left:1300px; top: 850px;
-    
+#Calibration2 {
+    left: 45%;
+    top: 3%;
+    /* left:1300px; top: 100px; */
 }
 
-#Calibration6{
-    height: 100px;
-    width: 100px;
-    pointer-events: none;
-    position:absolute; left:2500px; top: 850px;
-    
+#Calibration3 {
+    left: 85%;
+    top: 3%;
+    /* left:2500px; top: 100px; */
 }
 
-#Calibration7{
-    height: 100px;
-    width: 100px;
-    pointer-events: none;
-    position:absolute; left:100px; top: 1600px;
-    
+#Calibration4 {
+    left: 5%;
+    top: 40%;
+    /* left:100px; top: 850px; */
 }
 
-#Calibration8{
-    height: 100px;
-    width: 100px;
-    pointer-events: none;
-    position:absolute; left:1300px; top: 1600px;
-    
+#Calibration5 {
+    left: 45%;
+    top: 40%;
+    /* left:1300px; top: 850px; */
 }
 
-#Calibration9{
-    height: 100px;
-    width: 100px;
-    pointer-events: none;
-    position:absolute; left:2500px; top: 1600px;
-    
+#Calibration6 {
+    left: 85%;
+    top: 40%;
+    /* position:absolute; left:2500px; top: 850px; */
 }
 
+#Calibration7 {
+    left: 5%;
+    top: 77%;
+    /* position:absolute; left:100px; top: 1600px;s */
+}
+
+#Calibration8 {
+    left: 45%;
+    top: 77%;
+    /* left:1300px; top: 1600px; */
+}
+
+#Calibration9 {
+    left: 85%;
+    top: 77%;
+    /* left:2500px; top: 1600px; */
+}
