@@ -138,7 +138,7 @@ namespace Interaction_Streams_101
                     count = 0;
                     XXData = 0.0;
                     YYData = 0.0;
-                    socket.Emit("eyemove", aveXX, aveYY);
+                    socket.Emit("eyemove", aveXX, aveYY,ts);
                 }
 
                 XData = 0.0;
