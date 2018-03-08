@@ -30,10 +30,26 @@ const assign = process.argv[6];
 // const spacing = process.argv[6];
 
 const swipeOptions = {
-    OPTION_1: `${resources}/arrow_0.png`,
-    OPTION_2: `${resources}/arrow_1.png`,
-    OPTION_3: `${resources}/arrow_2.png`,
-    OPTION_4: `${resources}/arrow_3.png`,
+    // OPTION_1: `${resources}/arrow_0.png`,
+    // OPTION_2: `${resources}/arrow_1.png`,
+    // OPTION_3: `${resources}/arrow_2.png`,
+    // OPTION_4: `${resources}/arrow_3.png`,
+    OPTION_1: `${resources}/icon1_up.png`,
+    OPTION_2: `${resources}/icon1_down.png`,
+    OPTION_3: `${resources}/icon1_left.png`,
+    OPTION_4: `${resources}/icon1_right.png`,
+    // OPTION_1: `${resources}/icon2_up.png`,
+    // OPTION_2: `${resources}/icon2_down.png`,
+    // OPTION_3: `${resources}/icon2_left.png`,
+    // OPTION_4: `${resources}/icon2_right.png`,
+    // OPTION_1: `${resources}/icon3_up.png`,
+    // OPTION_2: `${resources}/icon3_down.png`,
+    // OPTION_3: `${resources}/icon3_left.png`,
+    // OPTION_4: `${resources}/icon3_right.png`,
+    // OPTION_1: `${resources}/icon4_up.png`,
+    // OPTION_2: `${resources}/icon4_down.png`,
+    // OPTION_3: `${resources}/icon4_left.png`,
+    // OPTION_4: `${resources}/icon4_right.png`,
     EYETRACKER: `gesturetag`
 };
 const tapOptions = {
@@ -58,14 +74,14 @@ const dwellOptions = {
 const user_id = process.argv[5];
 let rawdata = fs.readFileSync(`./condition/${user_id}.json`);
 let conditionOrders = JSON.parse(rawdata)[type];
-let [target_size,  spacing] = conditionOrders.shift();
+let [target_size, spacing] = conditionOrders.shift();
 
 var updateCondition = () => {
-    if(conditionOrders.length === 0){
+    if (conditionOrders.length === 0) {
         io.emit('done', 'done');
         return;
     }
-    [target_size,  spacing] = conditionOrders.shift();
+    [target_size, spacing] = conditionOrders.shift();
     console.log(`update condition: ${target_size}, ${spacing}`);
     io.emit('target_size', target_size);
     io.emit('spacing', spacing);
