@@ -219,7 +219,7 @@ var writeLogCalibration = (CalibrationLogmsg) => {
     console.log(CalibrationLogmsg)
     CalibrationTimeEnd=Date.now();
    // if(CalibrationTimeEnd-CalibrationTimeStart>1000){
-            fs.appendFile("DwellLog", CalibrationLogmsg , function(err) {
+            fs.appendFile('log/'+"CalibrationLog_"+user_id+"_"+moment().format('MMDD-HHmm'), CalibrationLogmsg , function(err) {
                 if (err) console.error(err);
             }
 

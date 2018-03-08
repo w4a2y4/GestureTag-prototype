@@ -735,140 +735,30 @@ function Calibration(eyeX,eyeY){
     var CalibrateID
     var CalibrateBtnX
     var CalibrateBtnY
-    if( CalibrationEndTime-CalibrationStartTime<3000){
 
-        var CalibrateID=1
-        var calibrateID = "Calibration1"
-        var c = document.getElementById(calibrateID);
-        console.log(c)
-        $(c).css('background','gray')
+
+    var i = Math.ceil((CalibrationEndTime-CalibrationStartTime)/3000)
+    console.log(i)
+    if(i<10){
+     var CalibrateID=i
+      var calibrateID = "Calibration"+i.toString()
+      
+       var c = document.getElementById(calibrateID);
+       $(c).show()
+      console.log(c)
+      
         CalibrateBtnX = $(c).offset().left + 0.5 * c.offsetWidth;
         CalibrateBtnY = $(c).offset().top + 0.5 * c.offsetHeight;
+          for (var index = 0; index < 10; index++) {
+                if(index!=i){ $(document.getElementById("Calibration"+index.toString())).hide();}
+            }
         //$(c).hide()
-
     }
-
-     else if( CalibrationEndTime-CalibrationStartTime<6000 && CalibrationEndTime-CalibrationStartTime>=3000){
-
-        var CalibrateID=2
-      
-        var calibrateID = "Calibration2"
-        var c = document.getElementById(calibrateID);
-        CalibrateBtnX = $(c).offset().left + 0.5 * c.offsetWidth;
-         CalibrateBtnY = $(c).offset().top + 0.5 * c.offsetHeight;
-        console.log(c)
-        $(c).css('background','gray')
-        //$(c).hide()
-        $(document.getElementById("Calibration1")).hide()
-    }
-
-     else if( CalibrationEndTime-CalibrationStartTime<9000 && CalibrationEndTime-CalibrationStartTime>=6000){
-
-        var CalibrateID=3
-        
-        var calibrateID = "Calibration3"
-        var c = document.getElementById(calibrateID);
-        CalibrateBtnX = $(c).offset().left + 0.5 * c.offsetWidth;
-         CalibrateBtnY = $(c).offset().top + 0.5 * c.offsetHeight;
-        console.log(c)
-        $(c).css('background','gray')
-          $(document.getElementById("Calibration2")).hide()
-        //$(c).hide()
-
-    }
-         else if( CalibrationEndTime-CalibrationStartTime<12000 && CalibrationEndTime-CalibrationStartTime>=9000){
-
-        var CalibrateID=4
-        
-        var calibrateID = "Calibration4"
-        var c = document.getElementById(calibrateID);
-        CalibrateBtnX = $(c).offset().left + 0.5 * c.offsetWidth;
-         CalibrateBtnY = $(c).offset().top + 0.5 * c.offsetHeight;
-        console.log(c)
-        $(c).css('background','gray')
-          $(document.getElementById("Calibration3")).hide()
-        //$(c).hide()
-
-    }
-         else if( CalibrationEndTime-CalibrationStartTime<15000 && CalibrationEndTime-CalibrationStartTime>=12000){
-
-        var CalibrateID=5
-        
-        var calibrateID = "Calibration5"
-        var c = document.getElementById(calibrateID);
-        CalibrateBtnX = $(c).offset().left + 0.5 * c.offsetWidth;
-         CalibrateBtnY = $(c).offset().top + 0.5 * c.offsetHeight;
-        console.log(c)
-        $(c).css('background','gray')
-          $(document.getElementById("Calibration4")).hide()
-        //$(c).hide()
-
-    }
-
-         else if( CalibrationEndTime-CalibrationStartTime<18000 && CalibrationEndTime-CalibrationStartTime>=15000){
-
-        var CalibrateID=6
-        
-        var calibrateID = "Calibration6"
-        var c = document.getElementById(calibrateID);
-        CalibrateBtnX = $(c).offset().left + 0.5 * c.offsetWidth;
-         CalibrateBtnY = $(c).offset().top + 0.5 * c.offsetHeight;
-        console.log(c)
-        $(c).css('background','gray')
-          $(document.getElementById("Calibration5")).hide()
-        //$(c).hide()
-
-    }
-
-         else if( CalibrationEndTime-CalibrationStartTime<21000 && CalibrationEndTime-CalibrationStartTime>=18000){
-
-        var CalibrateID=7
-        
-        var calibrateID = "Calibration7"
-        var c = document.getElementById(calibrateID);
-        CalibrateBtnX = $(c).offset().left + 0.5 * c.offsetWidth;
-         CalibrateBtnY = $(c).offset().top + 0.5 * c.offsetHeight;
-        console.log(c)
-        $(c).css('background','gray')
-          $(document.getElementById("Calibration6")).hide()
-        //$(c).hide()
-
-    }
-
-         else if( CalibrationEndTime-CalibrationStartTime<24000 && CalibrationEndTime-CalibrationStartTime>=21000){
-
-        var CalibrateID=8
-        
-        var calibrateID = "Calibration8"
-        var c = document.getElementById(calibrateID);
-        CalibrateBtnX = $(c).offset().left + 0.5 * c.offsetWidth;
-         CalibrateBtnY = $(c).offset().top + 0.5 * c.offsetHeight;
-        console.log(c)
-        $(c).css('background','gray')
-          $(document.getElementById("Calibration7")).hide()
-        //$(c).hide()
-
-    }
-
-         else if( CalibrationEndTime-CalibrationStartTime<27000 && CalibrationEndTime-CalibrationStartTime>=24000){
-
-        var CalibrateID=9
-        
-        var calibrateID = "Calibration9"
-        var c = document.getElementById(calibrateID);
-        CalibrateBtnX = $(c).offset().left + 0.5 * c.offsetWidth;
-         CalibrateBtnY = $(c).offset().top + 0.5 * c.offsetHeight;
-        console.log(c)
-        $(c).css('background','gray')
-          $(document.getElementById("Calibration8")).hide()
-        //$(c).hide()
-
-    }
-
     else{
-         $(document.getElementById("Calibration9")).hide()
+        $(document.getElementById("Calibration9")).hide()
         CalibrationState = false
     }
+    
     console.log("CalibrateID"+CalibrateID)
    
     Calibrationlog(eyeX,eyeY,CalibrateID,CalibrateBtnX,CalibrateBtnY)
