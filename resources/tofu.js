@@ -16,6 +16,7 @@ var isShown = new Array(4).fill(false);
 var tester;
 var type;
 var platform;
+var dynamic = false;
 
 const DEFAULT_TRIAL_NUM = 10;
 var trial_num = DEFAULT_TRIAL_NUM;
@@ -76,7 +77,6 @@ var ErrorIndex = 0;
 var DwellSelectionCount = 0;
 var MouseClickCount = 0;
 
-
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
 const swipeImages = {
@@ -91,7 +91,6 @@ const tapImages = {
     left: img_prefix + 'tap_topleft.png',
     right: img_prefix + 'tap_bottomright.png'
 };
-
 
 $(document).keyup((e) => {
     // key "enter"
@@ -110,13 +109,11 @@ $(document).keyup((e) => {
 
 $(document).mousemove((e) => {
     if (show_mouse)
-
         changePos(e.pageX, e.pageY);
 });
-$(document).mousedown((e) => {
 
+$(document).mousedown((e) => {
     MouseClickCount++;
-    //console.log(MouseClickCount)
 });
 
 $(document).on('click', 'button', (function(e) {
@@ -208,6 +205,10 @@ socket.on('device', (device) => {
     }
 });
 
+socket.on('assign', (assign) => {
+    if (assign === 'dynamic') dynamic = true;
+});
+
 socket.on('target_size', function(target_size) {
     BTN_SIZE = Number(target_size) / DP_RATIO;
 });
@@ -222,12 +223,27 @@ function log() {
     socket.emit('log', cnt, gesture, clicked_btn, target_btn, TrialCompletionTime, ErrorCount, DwellSelectionCount, MouseClickCount);
 }
 
-function getBtnType(btn) {
-    if (imgSet["up"] == btn.children[0].src) return UP;
-    else if (imgSet["down"] == btn.children[0].src) return DOWN;
-    else if (imgSet["left"] == btn.children[0].src) return LEFT;
-    else if (imgSet["right"] == btn.children[0].src) return RIGHT;
-    return -1;
+function getBtnType(btn, x, y) {
+
+    if ( !dynamic ) {
+        if (imgSet["up"] == btn.children[0].src) return UP;
+        else if (imgSet["down"] == btn.children[0].src) return DOWN;
+        else if (imgSet["left"] == btn.children[0].src) return LEFT;
+        else if (imgSet["right"] == btn.children[0].src) return RIGHT;
+        return -1;
+    }
+
+    var midX = $(btn).offset().left + 0.5 * btn.offsetWidth;
+    var midY = $(btn).offset().top + 0.5 * btn.offsetHeight;
+    var diffX = midX - x;
+    var diffY = midY - y;
+    var slope = diffY / diffX;
+
+    if ( diffX > 0 && slope < 1 && slope > -1 ) return RIGHT;
+    else if ( diffX < 0 && slope < 1 && slope > -1 ) return LEFT;
+    else if ( diffY > 0 && ( slope > 1 || slope < -1 ) ) return DOWN;
+    return UP;
+
 }
 
 function overlap(element, X, Y) {
@@ -310,11 +326,13 @@ function changePos(eyeX, eyeY) {
             if (i < 0 || i >= btn_num) continue;
             var btn = buttons[i];
             if (overlap(btn, eyeX, eyeY)) {
+                var j = getBtnType(btn, eyeX, eyeY);
                 var curr_dist = distance(btn, eyeX, eyeY);
-                for (var j = 0; j < 4; j++) {
-                    if (getBtnType(btn) == j && curr_dist < dist[j]) {
-                        candidate[j] = i;
-                        dist[j] = curr_dist;
+                if (curr_dist < dist[j]) {
+                    candidate[j] = i;
+                    dist[j] = curr_dist;
+                    if( dynamic ) {
+                        $(btn).find('img').attr('src', img_prefix + 'arrow_' + j + '.png');
                     }
                 }
             }
@@ -325,12 +343,12 @@ function changePos(eyeX, eyeY) {
             outNum = 0;
         }
     }
+
     if (type !== 'tap') {
         for (var k = 0; k < 9; k++) {
 
             var i = neighborhood[k];
             if (i < 0 || i >= btn_num) continue;
-            console.log(btn_num)
             var btn = buttons[i];
 
             if (type === 'dwell') {
@@ -369,12 +387,11 @@ function changePos(eyeX, eyeY) {
                     var theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
                     $(btn).find('img').show();
                     if (theTimeInterval > 150.0 && touchLock == false) {
-                        for (var j = 0; j < 4; j++) {
-                            if (getBtnType(btn) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
-                                postBtnId[j] = i;
-                                currBtn[j] = btn;
-                                isShown[j] = true;
-                            }
+                        var j = getBtnType(btn, eyeX, eyeY);
+                        if (LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
+                            postBtnId[j] = i;
+                            currBtn[j] = btn;
+                            isShown[j] = true;
                         }
                     }
                 } else {
@@ -424,21 +441,13 @@ function showTarget() {
     // select target
     while (true) {
         var btn_num = buttons.length - 2 * (RAW_NUM + COL_NUM) - 4;
-        //Method1: random
+        var temptar;
 
-        //var temptar = Math.floor(Math.random() * btn_num ) + RAW_NUM + 1;
+        if (trial_num == DEFAULT_TRIAL_NUM)
+            temptar = Math.floor(Math.random() * btn_num) + RAW_NUM + 1;
+        else
+            temptar = ButtonCandidate(CurrentTarX, CurrentTarY, trial_num, btn_num);
 
-        //Method2: total Distance Equalization
-
-
-        if (trial_num == 10) {
-            var temptar = Math.floor(Math.random() * btn_num) + RAW_NUM + 1;
-
-        } else {
-            var temptar = ButtonCandidate(CurrentTarX, CurrentTarY, trial_num, btn_num);
-        }
-
-        //console.log('assign :'+trial_num + ' ' + temptar);
         if (!$(buttons[temptar]).hasClass('clicked')) {
             tar = temptar;
             console.log('assign :' + trial_num + ' ' + temptar);
@@ -448,7 +457,7 @@ function showTarget() {
 
     // render target and its neighbor
     $(":button").hide();
-    console.log("tar:" + tar)
+    console.log("tar:" + tar);
 
     $(buttons[tar]).addClass('target');
     setBtnSize(buttons[tar], BTN_SIZE);
@@ -459,7 +468,6 @@ function showTarget() {
     ErrorCount = 0;
     DwellSelectionCount = 0;
     MouseClickCount = 0;
-    //reset preformance data
 
     // render neighbor
     // right
@@ -478,6 +486,7 @@ function showTarget() {
     var skip = [tar + 2, tar - 2, tar + 2 * COL_NUM, tar - 2 * COL_NUM,
         tar - COL_NUM - 1, tar - COL_NUM + 1, tar + COL_NUM - 1, tar + COL_NUM + 1
     ];
+
     // select distractors
     for (var cnt = 0; cnt < DISTRACT - 5;) {
         var rand = Math.floor(Math.random() * RAW_NUM * COL_NUM);
@@ -487,7 +496,6 @@ function showTarget() {
             cnt++;
         }
     }
-
 
     CurrentTarX = $(buttons[tar]).offset().left + 0.5 * buttons[tar].offsetWidth;
     CurrentTarY = $(buttons[tar]).offset().top + 0.5 * buttons[tar].offsetHeight;
@@ -552,8 +560,6 @@ function enableSwipe() {
     });
 };
 
-//enableClick(dir);
-// swipeAndUnlock(dir);
 function enableClick(dir) {
     if (isShown[dir]) {}
     //buttons[postBtnId[dir]].click();
@@ -585,28 +591,24 @@ function AssignTargetAlgo() {
                     } else {
                         JumpDistance[i] = JumpDistance[i] - randnum
                     }
-                } else { break; }
+                } else break;
             }
 
         }
     }
-    var j, x, i;
-    for (i = JumpDistance.length - 1; i > 0; i--) {
-        j = Math.floor(Math.random() * (i + 1));
-        x = JumpDistance[i];
+
+    for (var i = JumpDistance.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var x = JumpDistance[i];
         JumpDistance[i] = JumpDistance[j];
         JumpDistance[j] = x;
     }
 
-    var i;
-    for (i = 0; i < JumpDistance.length; i++) {
-
-        JumpDistance[i] = JumpDistance[i] + 200
+    for (var i = 0; i < JumpDistance.length; i++) {
+        JumpDistance[i] = JumpDistance[i] + 200;
     }
     console.log(JumpDistance);
-
 }
-
 
 function ButtonCandidate(midX, midY, trialNum, btn_num) {
     CandidateButtonArray = new Array(buttons.length).fill(0);
@@ -618,38 +620,25 @@ function ButtonCandidate(midX, midY, trialNum, btn_num) {
     var esilon = 100.0;
     var NextTargetIndex
     var dis = JumpDistance[trialNum - 1];
-    //console.log("pre tar X:"+midX+"tar y"+midY)
 
-    // use jQuery to get ABSOLUTE position
-    //var midX = $(element).offset().left + 0.5 * element.offsetWidth;
-    //var midY = $(element).offset().top + 0.5 * element.offsetHeight;
     //THIS TRIAL POSITION
     while (CandidateNum == 0 || CandidateButtonArray[NextTargetIndex] == 0) {
         CandidateButtonArray = new Array(buttons.length).fill(0);
         CandidateNum = 0;
         esilon = esilon + 100.0
         for (var i = 0; i < btn_num; i++) {
-            // console.log(buttons[i])
             CandidateBtnX = $(buttons[i]).offset().left + 0.5 * buttons[i].offsetWidth;
             CandidateBtnY = $(buttons[i]).offset().top + 0.5 * buttons[i].offsetHeight;
             var thisbtndistance = Math.pow((CandidateBtnX - midX), 2) + Math.pow((CandidateBtnY - midY), 2)
-                //console.log('Others'+i+' X:'+CandidateBtnY+'Y:'+CandidateBtnY+'dis:'+thisbtndistance)
             var upbound = dis * dis + esilon;
             var lowbound = dis * dis - esilon;
             if (thisbtndistance < upbound && thisbtndistance > lowbound) {
-                //CandidateButtonDistance[CandidateNum]=thisbtndistance
                 CandidateButtonArray[CandidateNum] = i;
-                //console.log('Others'+i+' X:'+CandidateBtnY+'Y:'+CandidateBtnY+'THISBTNdis:'+thisbtndistance+"in"+lowbound+"~"+upbound)
                 CandidateNum++;
             }
         }
         NextTargetIndex = Math.ceil(Math.random() * CandidateNum)
     }
-    //console.log("checkdis"+dis+"from"+CandidateButtonDistance)
-
-
-    //console.log(CandidateButtonArray[NextTargetIndex]+'form'+CandidateButtonArray)
-    //return button index
 
     return CandidateButtonArray[NextTargetIndex];
 }
@@ -658,9 +647,6 @@ function ButtonCandidate(midX, midY, trialNum, btn_num) {
 function Eyespacingerror(x, y) {
 
     ErrorIndex = (ErrorIndex + 1) % 10;
-    //EyeXave=Math.mean(EyeErrorX);
-
-    //EyeYave=Math.mean(EyeErrorY);
     var XData = 0.0;
     var YData = 0.0;
     var kk = 0;
@@ -669,23 +655,18 @@ function Eyespacingerror(x, y) {
         YData += EyeErrorY[kk];
         kk++;
     }
-    //Console.WriteLine(aveX);
-    var EyeXave = XData / 10;
 
+    var EyeXave = XData / 10;
     var EyeYave = YData / 10;
     EyeErrorX[ErrorIndex] = x;
     EyeErrorY[ErrorIndex] = y;
     for (var i = 0; i < 10; i++) {
-
         if ((EyeXave - EyeErrorX[i]) * (EyeXave - EyeErrorX[i]) + (EyeYave - EyeErrorY[i]) * (EyeYave - EyeErrorY[i]) > 10000) {
             ErrorTimeStart = Date.now()
             ErrorTimeEnd = Date.now()
         }
-
     }
     ErrorTimeEnd = Date.now()
-
-    //console.log(ErrorTimeEnd-ErrorTimeStart)
 
     if (ErrorTimeEnd - ErrorTimeStart > 330) {
         console.log("Dwell Selection!!")
