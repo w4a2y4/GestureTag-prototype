@@ -88,9 +88,20 @@ var EyeGestureOriX
 var EyeGestureOriY
 var GoEyeGesture = false;
 var  EyeGestureIndex =0;
+var EyeGestureTimeStart = new Array(buttons.length).fill(0.0);
+var EyeGestureTimeEnd = new Array(buttons.length).fill(0.0);
+var StayIndex=0;
+var EyeStayTimeEnd=new Date().getTime();
+var EyeStayTimeStart=new Date().getTime();
+var EyeStayX = new Array(10).fill(0.0);
+var EyeStayY = new Array(10).fill(0.0);
+
 
 var UserAlready=false;
 var preTimeStamp=0.0 
+
+
+
 
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
@@ -137,23 +148,28 @@ $(document).mousedown((e) => {
 $(document).on('click', 'button', (function(e) {
     console.log("click!!");
     $(this).addClass('clicked');
+     GoEyeGesture=false
     TrialTimeEnd = Date.now()
 
     TrialCompletionTime = TrialTimeEnd - TrialTimeStart
-    //EyeGestureOriX=null
-    //EyeGestureOriY=null //reset eyegesture origin
+    
+    LockerTimeEnd= Array(buttons.length).fill(0.0);
+    LockerTimeStart= Array(buttons.length).fill(0.0);
+    EyeGestureOriX=null
+    EyeGestureOriY=null   //reset eyegesture origin
     clicked_btn = $(this).parent().attr('id');
-    if (!$(this).hasClass('target')) { ErrorCount++ }
+    if (!$(this).hasClass('target')) { ErrorCount++ ;  setTimeout(() => {$(this).removeClass('clicked')},100);}
     log();
-  if ($(this).hasClass('target')) {
+   //if ($(this).hasClass('target')) {
+     
      setTimeout(() => {
-            //$(this).removeClass('target');
-            $('.target').removeClass('target');
-            
-            $(this).removeClass('clicked');
+           // $(this).removeClass('target');
+           $('.target').removeClass('target');
+             $(this).removeClass('clicked');
             showTarget();
-        },100);
-    }
+        },200);
+   // }
+  
     /*
     if ($(this).hasClass('target')) {
         setTimeout(() => {
@@ -310,24 +326,7 @@ function isIn(x, arr, len) {
 
 function changePos(eyeX, eyeY) {
 
-    if(!UserAlready){ GoEyeGesture=false; EyeGestureOriX=null ;EyeGestureOriY=null;}
-    if(GoEyeGesture){
-        var eyedir=EyeGesture(eyeX, eyeY,EyeGestureOriX,EyeGestureOriY)
-        console.log(eyedir)
-        if(eyedir!=null){
-            var dir;
-            if (eyedir == 'up') dir = UP;
-            else if (eyedir == 'down') dir = DOWN;
-            else if (eyedir == 'left') dir = LEFT;
-            else if (eyedir == 'right') dir = RIGHT;
-            enableClick(dir);
-            swipeAndUnlock(dir);
-            GoEyeGesture=false;
-            EyeGestureOriX=eyeX
-            EyeGestureOriY=eyeY
-        }
-    }
-
+   
     $('#eye_tracker').css({
         "left": eyeX,
         "top": eyeY
@@ -477,20 +476,24 @@ function changePos(eyeX, eyeY) {
                 if (isIn(i, candidate, 4)) {
                     if (already[i]) { // Have already looked at the target
                         LockerTimeEnd[i] = Date.now(); // Record time then
+                        EyeGestureTimeEnd[i]=Date.now();
                     } else {
                         already[i] = 1; //First time to look at the target
                         LockerTimeStart[i] = Date.now(); // Record time then
+                        EyeGestureTimeStart[i]=Date.now();
                     }
                     var theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
-                    console.log(theTimeInterval)
+                    //console.log(theTimeInterval)
                     $(btn).find('img').show();
                  
                     if (theTimeInterval > 600.0) {
                        
-                    if(theTimeInterval>1000.0){
+                    if(!GoEyeGesture &&EyeStay(eyeX,eyeY)){
                             EyeGestureOriX=eyeX;
                             EyeGestureOriY=eyeY;
                             GoEyeGesture = true;
+                             EyeGestureTimeStart = new Array(buttons.length).fill(0.0);
+                              EyeGestureTimeEnd = new Array(buttons.length).fill(0.0);
                             console.log("StartX:"+eyeX+"StartY:"+eyeY)
                         }
 
@@ -516,6 +519,27 @@ function changePos(eyeX, eyeY) {
             }
         }
     }
+
+
+ //if(!UserAlready){ GoEyeGesture=false; EyeGestureOriX=null ;EyeGestureOriY=null;}
+    if(GoEyeGesture){
+        var eyedir=EyeGesture(eyeX, eyeY,EyeGestureOriX,EyeGestureOriY)
+        console.log(eyedir)
+        if(eyedir!=null){
+            var dir;
+            if (eyedir == 'up') dir = UP;
+            else if (eyedir == 'down') dir = DOWN;
+            else if (eyedir == 'left') dir = LEFT;
+            else if (eyedir == 'right') dir = RIGHT;
+            enableClick(dir);
+            swipeAndUnlock(dir);
+            GoEyeGesture=false;
+            EyeGestureOriX=null
+            EyeGestureOriY=null
+        }
+    }
+
+
 }
 
 function setBtnSize(element, size) {
@@ -528,6 +552,9 @@ function setBtnSize(element, size) {
 
 function showTarget() {
 
+    GoEyeGesture=false;
+     EyeGestureOriX=null
+    EyeGestureOriY=null
     if (trial_num == 0) {
         socket.emit('end');
         alert(`You finished 10 trials. Please press space when you are ready for the next round.`);
@@ -820,7 +847,7 @@ function EyeGesture(x, y,OriX,OriY) {
     var vectorX=EyeXave-OriX;
     var vectorY=-(EyeYave-OriY);
     var VectorLength=Math.pow(vectorX*vectorX+vectorY*vectorY,0.5)
-    if(VectorLength>100||OntheEdge(x,y)){
+    if(VectorLength>200||OntheEdge(x,y)){
         var CosTheta=vectorX/VectorLength
         var SinTheta=vectorY/VectorLength
         var CTheta=Math.acos(CosTheta)*180/3.1415926
@@ -872,4 +899,42 @@ function UserState(ts){
     //console.log("interval: "+timestampinterval)
     if(ts-preTimeStamp>1000){preTimeStamp = ts; UserAlready=false;console.log("close eyes")}
     else{UserAlready=true}
+}
+
+function EyeStay(x, y) {
+
+   StayIndex = (StayIndex + 1) % 10;
+    //EyeXave=Math.mean(EyeErrorX);
+
+    //EyeYave=Math.mean(EyeErrorY);
+    var XData = 0.0;
+    var YData = 0.0;
+    var kk = 0;
+    while (kk <= 9) {
+        XData += EyeStayX[kk];
+        YData += EyeStayY[kk];
+        kk++;
+    }
+    //Console.WriteLine(aveX);
+    var EyeXave = XData / 10;
+    var EyeYave = YData / 10;
+    EyeStayX[StayIndex ] = x;
+    EyeStayY[StayIndex ] = y;
+    for (var i = 0; i < 10; i++){
+        if ((EyeXave - EyeStayX[i]) * (EyeXave - EyeStayX[i]) + (EyeYave - EyeStayY[i]) * (EyeYave -EyeStayY[i]) >BTN_SIZE*BTN_SIZE ) {
+            EyeStayTimeStart = Date.now()
+            EyeStayTimeEnd = Date.now()
+        }
+    }
+    EyeStayTimeEnd = Date.now()
+
+    //console.log(ErrorTimeEnd-ErrorTimeStart)
+
+    if (EyeStayTimeEnd - EyeStayTimeStart > 1000) {
+        console.log("Dwell Stay!!")
+        return true
+        EyeStayTimeEnd = Date.now()
+    }
+
+    return false
 }
