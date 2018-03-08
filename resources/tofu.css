@@ -78,6 +78,7 @@ button {
     position: absolute;
     height: calc( 12px / 0.6);
     width: calc( 12px / 0.6);
+    border-radius: 50%;
     top: 50%;
     left: 50%;
     margin-top: calc( -16px / 0.6);
