@@ -136,8 +136,11 @@ $(document).on('click', 'button', (function(e) {
 }));
 
 socket.on('eyemove', (x, y) => {
-    changePos(x * 0.8, y * 0.8);
-    Eyespacingerror(x * 0.8, y * 0.8);
+    // please add some comments about where the magic number is
+    // and the reason.
+    let magicScale = 1; //surface pro should be 0.8
+    changePos(x * magicScale, y * magicScale);
+    Eyespacingerror(x * magicScale, y * magicScale);
 });
 
 socket.on('swipe', (dirStr) => {
