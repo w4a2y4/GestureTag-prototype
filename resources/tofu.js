@@ -1,4 +1,3 @@
-
 var socket = io.connect();
 var show_path = false;
 var show_mouse = false;
@@ -77,10 +76,10 @@ var ErrorIndex = 0;
 var DwellSelectionCount = 0;
 var MouseClickCount = 0;
 
-var CalibrationLogmsg= ""
-var CalibrationEndTime=new Date().getTime();
-var CalibrationStartTime=new Date().getTime();
-var CalibrationState=false;
+var CalibrationLogmsg = ""
+var CalibrationEndTime = new Date().getTime();
+var CalibrationStartTime = new Date().getTime();
+var CalibrationState = false;
 
 
 
@@ -106,7 +105,7 @@ $(document).keyup((e) => {
         socket.emit('start');
         trial_num = DEFAULT_TRIAL_NUM;
         JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0); //have to set to zero
-        
+
         AssignTargetAlgo();
         showTarget();
         console.log("go go ")
@@ -114,9 +113,10 @@ $(document).keyup((e) => {
         show_mouse = !show_mouse;
     else if (e.which === 80) // key "p"
         show_path = !show_path;
-    else if (e.which === 67){
-        CalibrationStartTime=Date.now()
-        CalibrationState = true;}
+    else if (e.which === 67) {
+        CalibrationStartTime = Date.now()
+        CalibrationState = true;
+    }
 })
 
 $(document).mousemove((e) => {
@@ -151,7 +151,7 @@ $(document).on('click', 'button', (function(e) {
 socket.on('eyemove', (x, y) => {
     changePos(x * 0.8, y * 0.8);
     Eyespacingerror(x * 0.8, y * 0.8);
-    
+
 });
 
 socket.on('swipe', (dirStr) => {
@@ -232,8 +232,8 @@ function log() {
     socket.emit('log', cnt, gesture, clicked_btn, target_btn, TrialCompletionTime, ErrorCount, DwellSelectionCount, MouseClickCount);
 }
 
-function Calibrationlog(x,y,CalibrateID,CalibrateBtnX,CalibrateBtnY) {
-    socket.emit('Calibrationlog', x, y,CalibrateID,CalibrateBtnX,CalibrateBtnY);
+function Calibrationlog(x, y, CalibrateID, CalibrateBtnX, CalibrateBtnY) {
+    socket.emit('Calibrationlog', x, y, CalibrateID, CalibrateBtnX, CalibrateBtnY);
 }
 
 function getBtnType(btn) {
@@ -289,136 +289,134 @@ function isIn(x, arr, len) {
 }
 
 function changePos(eyeX, eyeY) {
-if(CalibrationState){
-    Calibration(eyeX, eyeY)
-   
-     $('#eye_tracker').css({
-        "left": eyeX,
-        "top": eyeY
-    });
+    if (CalibrationState) {
+        Calibration(eyeX, eyeY)
 
-    $('#canvas_container').css({
-        "left": eyeX - 700,
-        "top": eyeY - 500
-    });
+        $('#eye_tracker').css({
+            "left": eyeX,
+            "top": eyeY
+        });
+
+        $('#canvas_container').css({
+            "left": eyeX - 700,
+            "top": eyeY - 500
+        });
 
 
-}
-  
-  else{
-    $('#eye_tracker').css({
-        "left": eyeX,
-        "top": eyeY
-    });
+    } else {
+        $('#eye_tracker').css({
+            "left": eyeX,
+            "top": eyeY
+        });
 
-    $('#canvas_container').css({
-        "left": eyeX - 700,
-        "top": eyeY - 500
-    });
+        $('#canvas_container').css({
+            "left": eyeX - 700,
+            "top": eyeY - 500
+        });
 
-    isShown.fill(false);
-    $('img').hide();
+        isShown.fill(false);
+        $('img').hide();
 
-    // determine the index of gaze point
-    var tofuX = Math.floor(eyeX / TOFU_WIDTH),
-        tofuY = Math.floor(eyeY / TOFU_HEIGHT);
-    var me = tofuX + tofuY * COL_NUM;
-    var neighborhood = [me, me - 1, me + 1,
-        me - COL_NUM, me - COL_NUM - 1, me - COL_NUM + 1,
-        me + COL_NUM, me + COL_NUM - 1, me + COL_NUM + 1
-    ];
+        // determine the index of gaze point
+        var tofuX = Math.floor(eyeX / TOFU_WIDTH),
+            tofuY = Math.floor(eyeY / TOFU_HEIGHT);
+        var me = tofuX + tofuY * COL_NUM;
+        var neighborhood = [me, me - 1, me + 1,
+            me - COL_NUM, me - COL_NUM - 1, me - COL_NUM + 1,
+            me + COL_NUM, me + COL_NUM - 1, me + COL_NUM + 1
+        ];
 
-    // the candidates are the nearest [up, down, left, right]
-    var btn_num = buttons.length;
-    var candidate = new Array(4).fill(-1);
-    var dist = new Array(4).fill(5000000);
+        // the candidates are the nearest [up, down, left, right]
+        var btn_num = buttons.length;
+        var candidate = new Array(4).fill(-1);
+        var dist = new Array(4).fill(5000000);
 
-    // for each type of gesture, put the nearest's index in candidate[]
-    if (type === 'swipe') {
-        for (var k = 0; k < 9; k++) {
-            var i = neighborhood[k];
-            if (i < 0 || i >= btn_num) continue;
-            var btn = buttons[i];
-            if (overlap(btn, eyeX, eyeY)) {
-                var curr_dist = distance(btn, eyeX, eyeY);
-                for (var j = 0; j < 4; j++) {
-                    if (getBtnType(btn) == j && curr_dist < dist[j]) {
-                        candidate[j] = i;
-                        dist[j] = curr_dist;
-                    }
-                }
-            }
-        }
-    } else if (type === 'dwell') {
-        if (outNum >= btn_num) {
-            pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
-            outNum = 0;
-        }
-    }
-    if (type !== 'tap') {
-        for (var k = 0; k < 9; k++) {
-
-            var i = neighborhood[k];
-            if (i < 0 || i >= btn_num) continue;
-            console.log(btn_num)
-            var btn = buttons[i];
-            if (type === 'dwell') {
+        // for each type of gesture, put the nearest's index in candidate[]
+        if (type === 'swipe') {
+            for (var k = 0; k < 9; k++) {
+                var i = neighborhood[k];
+                if (i < 0 || i >= btn_num) continue;
+                var btn = buttons[i];
                 if (overlap(btn, eyeX, eyeY)) {
-                    if (already[i]) { // Have already looked at the target
-                        TimeEnd = Date.now(); // Record time then
-                    } else {
-                        already[i] = 1; //First time to look at the target
-                        TimeStart = Date.now(); // Record time then
-                        pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd + 20 } });
-                    }
-
-                    if (already[i] == 1 && TimeEnd - TimeStart > 330.0) {
-                        clickablebtn = btn;
-                        clickablebtn.click();
-                        console.log("Selection Success!!");
-                        already[i] = 0; // reinitialize
-                        pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
-                    }
-                    // Showing image
-                    $(btn).find('img').show();
-                    outNum = 0;
-                } else {
-                    $(btn).find('img').hide();
-                    already[i] = 0;
-                    outNum += 1;
-                }
-            } else if (type === 'swipe') {
-                if (isIn(i, candidate, 4)) {
-                    if (already[i]) { // Have already looked at the target
-                        LockerTimeEnd[i] = Date.now(); // Record time then
-                    } else {
-                        already[i] = 1; //First time to look at the target
-                        LockerTimeStart[i] = Date.now(); // Record time then
-                    }
-                    var theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
-                    $(btn).find('img').show();
-                    if (theTimeInterval > 150.0 && touchLock == false) {
-                        for (var j = 0; j < 4; j++) {
-                            if (getBtnType(btn) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
-                                postBtnId[j] = i;
-                                currBtn[j] = btn;
-                                isShown[j] = true;
-                            }
+                    var curr_dist = distance(btn, eyeX, eyeY);
+                    for (var j = 0; j < 4; j++) {
+                        if (getBtnType(btn) == j && curr_dist < dist[j]) {
+                            candidate[j] = i;
+                            dist[j] = curr_dist;
                         }
                     }
-                } else {
-                    isShown.fill(true);
-                    for (var j = 0; j < 4; j++)
-                        currBtn[j] = buttons[postBtnId[j]];
-                    if (!isIn(i, postBtnId, 4)) {
-                        LockerTimeEnd[i] = 0.0; // Record time then
-                        LockerTimeStart[i] = 0.0; // Record time then
+                }
+            }
+        } else if (type === 'dwell') {
+            if (outNum >= btn_num) {
+                pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
+                outNum = 0;
+            }
+        }
+        if (type !== 'tap') {
+            for (var k = 0; k < 9; k++) {
+
+                var i = neighborhood[k];
+                if (i < 0 || i >= btn_num) continue;
+                console.log(btn_num)
+                var btn = buttons[i];
+                if (type === 'dwell') {
+                    if (overlap(btn, eyeX, eyeY)) {
+                        if (already[i]) { // Have already looked at the target
+                            TimeEnd = Date.now(); // Record time then
+                        } else {
+                            already[i] = 1; //First time to look at the target
+                            TimeStart = Date.now(); // Record time then
+                            pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd + 20 } });
+                        }
+
+                        if (already[i] == 1 && TimeEnd - TimeStart > 330.0) {
+                            clickablebtn = btn;
+                            clickablebtn.click();
+                            console.log("Selection Success!!");
+                            already[i] = 0; // reinitialize
+                            pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
+                        }
+                        // Showing image
+                        $(btn).find('img').show();
+                        outNum = 0;
+                    } else {
+                        $(btn).find('img').hide();
                         already[i] = 0;
+                        outNum += 1;
+                    }
+                } else if (type === 'swipe') {
+                    if (isIn(i, candidate, 4)) {
+                        if (already[i]) { // Have already looked at the target
+                            LockerTimeEnd[i] = Date.now(); // Record time then
+                        } else {
+                            already[i] = 1; //First time to look at the target
+                            LockerTimeStart[i] = Date.now(); // Record time then
+                        }
+                        var theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
+                        $(btn).find('img').show();
+                        if (theTimeInterval > 150.0 && touchLock == false) {
+                            for (var j = 0; j < 4; j++) {
+                                if (getBtnType(btn) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
+                                    postBtnId[j] = i;
+                                    currBtn[j] = btn;
+                                    isShown[j] = true;
+                                }
+                            }
+                        }
+                    } else {
+                        isShown.fill(true);
+                        for (var j = 0; j < 4; j++)
+                            currBtn[j] = buttons[postBtnId[j]];
+                        if (!isIn(i, postBtnId, 4)) {
+                            LockerTimeEnd[i] = 0.0; // Record time then
+                            LockerTimeStart[i] = 0.0; // Record time then
+                            already[i] = 0;
+                        }
                     }
                 }
             }
         }
-    }
     }
 }
 
@@ -730,36 +728,35 @@ function MouseClickEvent() {
     console.log("mouse go")
 }
 
-function Calibration(eyeX,eyeY){
-    CalibrationEndTime=Date.now();
+function Calibration(eyeX, eyeY) {
+    CalibrationEndTime = Date.now();
     var CalibrateID
     var CalibrateBtnX
     var CalibrateBtnY
 
 
-    var i = Math.ceil((CalibrationEndTime-CalibrationStartTime)/3000)
+    var i = Math.ceil((CalibrationEndTime - CalibrationStartTime) / 3000)
     console.log(i)
-    if(i<10){
-     var CalibrateID=i
-      var calibrateID = "Calibration"+i.toString()
-      
-       var c = document.getElementById(calibrateID);
-       $(c).show()
-      console.log(c)
-      
+    if (i < 10) {
+        var CalibrateID = i
+        var calibrateID = "Calibration" + i.toString()
+
+        var c = document.getElementById(calibrateID);
+        $(c).show()
+        console.log(c)
+
         CalibrateBtnX = $(c).offset().left + 0.5 * c.offsetWidth;
         CalibrateBtnY = $(c).offset().top + 0.5 * c.offsetHeight;
-          for (var index = 0; index < 10; index++) {
-                if(index!=i){ $(document.getElementById("Calibration"+index.toString())).hide();}
-            }
+        for (var index = 0; index < 10; index++) {
+            if (index != i) { $(document.getElementById("Calibration" + index.toString())).hide(); }
+        }
         //$(c).hide()
-    }
-    else{
+    } else {
         $(document.getElementById("Calibration9")).hide()
         CalibrationState = false
     }
-    
-    console.log("CalibrateID"+CalibrateID)
-   
-    Calibrationlog(eyeX,eyeY,CalibrateID,CalibrateBtnX,CalibrateBtnY)
+
+    console.log("CalibrateID" + CalibrateID)
+
+    Calibrationlog(eyeX, eyeY, CalibrateID, CalibrateBtnX, CalibrateBtnY)
 }
