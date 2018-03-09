@@ -81,6 +81,29 @@ var CalibrationLogmsg = ""
 var CalibrationEndTime = new Date().getTime();
 var CalibrationStartTime = new Date().getTime();
 var CalibrationState = false;
+var dwellcandidateID = 0;
+var mostneardistance = 10000000000000000;
+
+var EyeGestureX = new Array(10).fill(0.0);
+var EyeGestureY = new Array(10).fill(0.0);
+var EyeGestureOriX
+var EyeGestureOriY
+var GoEyeGesture = false;
+var EyeGestureIndex = 0;
+var EyeGestureTimeStart = new Array(buttons.length).fill(0.0);
+var EyeGestureTimeEnd = new Array(buttons.length).fill(0.0);
+var StayIndex = 0;
+var EyeStayTimeEnd = new Date().getTime();
+var EyeStayTimeStart = new Date().getTime();
+var EyeStayX = new Array(10).fill(0.0);
+var EyeStayY = new Array(10).fill(0.0);
+
+
+var UserAlready = false;
+var preTimeStamp = 0.0
+
+
+
 
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
@@ -131,24 +154,53 @@ $(document).on('click', 'button', (function(e) {
 
     clearTimeout(trialTimer);
     $(this).addClass('clicked');
-    TrialTimeEnd = Date.now();
-    TrialCompletionTime = TrialTimeEnd - TrialTimeStart;
+    GoEyeGesture = false
+    TrialTimeEnd = Date.now()
 
+    TrialCompletionTime = TrialTimeEnd - TrialTimeStart
+
+    LockerTimeEnd = Array(buttons.length).fill(0.0);
+    LockerTimeStart = Array(buttons.length).fill(0.0);
+    EyeGestureOriX = null
+    EyeGestureOriY = null //reset eyegesture origin
     clicked_btn = $(this).parent().attr('id');
-    if (!$(this).hasClass('target')) ErrorCount++;
+    if (!$(this).hasClass('target')) {
+        ErrorCount++;
+        // setTimeout(() => { $(this).removeClass('clicked') }, 100);
+    }
     log();
+    //if ($(this).hasClass('target')) {
 
+    setTimeout(() => {
+        // $(this).removeClass('target');
+        $('.target').removeClass('target');
+        $(this).removeClass('clicked');
+        showTarget();
+    }, 200);
+    // }
+
+    /*
+    if ($(this).hasClass('target')) {
+        setTimeout(() => {
+            $(this).removeClass('target');
+            showTarget();
+        }, 100);
+    }
     setTimeout(() => {
         $('.target').removeClass('target');
         $(this).removeClass('clicked');
         showTarget();
     }, 100);
 
+    */
+
+
 }));
 
-socket.on('eyemove', (x, y) => {
-    // please add some comments about where the magic number is
-    // and the reason.
+socket.on('eyemove', (x, y, ts) => {
+    UserState(ts)
+        // please add some comments about where the magic number is
+        // and the reason.
     let magicScale = 1; //surface pro should be 0.8
     changePos(x * magicScale, y * magicScale);
     Eyespacingerror(x * magicScale, y * magicScale);
@@ -192,7 +244,7 @@ socket.on('init', (method) => {
     type = method;
     console.log(type);
     if (type === 'swipe') imgSet = swipeImages;
-    else if (type === 'tap') imgSet = tapImages;
+    else if (type === 'EyeGesture') { imgSet = swipeImages; } else if (type === 'tap') imgSet = tapImages;
 });
 
 socket.on('client_init', (width, height) => {
@@ -338,6 +390,9 @@ function changePos(eyeX, eyeY) {
         var candidate = new Array(4).fill(-1);
         var dist = new Array(4).fill(5000000);
 
+        var mostneardistance = 100000000000000000;
+        var dwellcandidateID = 0;
+
         // determine the index of gaze point
         var tofuX = Math.floor(eyeX / TOFU_WIDTH),
             tofuY = Math.floor(eyeY / TOFU_HEIGHT);
@@ -355,7 +410,7 @@ function changePos(eyeX, eyeY) {
         var dist = new Array(4).fill(5000000);
 
         // for each type of gesture, put the nearest's index in candidate[]
-        if (type === 'swipe') {
+        if (type === 'swipe' || type === 'EyeGesture') {
             for (var k = 0; k < 9; k++) {
                 var i = neighborhood[k];
                 if (i < 0 || i >= btn_num) continue;
@@ -402,6 +457,21 @@ function changePos(eyeX, eyeY) {
                             console.log("Selection Success!!");
                             already[i] = 0; // reinitialize
                             pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
+
+                            // if (mostneardistance > distance(btn, eyeX, eyeY)) {
+                            //     dwellcandidateID = i;
+                            //     mostneardistance = distance(btn, eyeX, eyeY);
+                            // }
+                            // console.log("most near:" + dwellcandidateID)
+
+                            // if (i == dwellcandidateID) {
+                            //     clickablebtn = btn;
+                            //     clickablebtn.click();
+                            //     console.log("Selection Success!!");
+                            //     //already[i] = 0; // reinitialize
+                            //     already = new Array(buttons.length).fill(0);
+                            //     pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
+                            // }
                         }
                         // Showing image
                         $(btn).find('img').show();
@@ -440,9 +510,73 @@ function changePos(eyeX, eyeY) {
                             already[i] = 0;
                         }
                     }
+                } else if (type === 'EyeGesture') {
+
+                    if (isIn(i, candidate, 4)) {
+                        if (already[i]) { // Have already looked at the target
+                            LockerTimeEnd[i] = Date.now(); // Record time then
+                            EyeGestureTimeEnd[i] = Date.now();
+                        } else {
+                            already[i] = 1; //First time to look at the target
+                            LockerTimeStart[i] = Date.now(); // Record time then
+                            EyeGestureTimeStart[i] = Date.now();
+                        }
+                        var theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
+                        //console.log(theTimeInterval)
+                        $(btn).find('img').show();
+
+                        if (theTimeInterval > 600.0) {
+
+                            if (!GoEyeGesture && EyeStay(eyeX, eyeY)) {
+                                EyeGestureOriX = eyeX;
+                                EyeGestureOriY = eyeY;
+                                GoEyeGesture = true;
+                                EyeGestureTimeStart = new Array(buttons.length).fill(0.0);
+                                EyeGestureTimeEnd = new Array(buttons.length).fill(0.0);
+                                console.log("StartX:" + eyeX + "StartY:" + eyeY)
+                            }
+
+
+                            for (var j = 0; j < 4; j++) {
+                                if (getBtnType(btn) == j && LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
+                                    postBtnId[j] = i;
+                                    currBtn[j] = btn;
+                                    isShown[j] = true;
+                                }
+                            }
+                        }
+                    } else {
+                        isShown.fill(true);
+                        for (var j = 0; j < 4; j++) { currBtn[j] = buttons[postBtnId[j]]; }
+                        if (!isIn(i, postBtnId, 4)) {
+                            LockerTimeEnd[i] = Date.now(); // Record time then
+                            LockerTimeStart[i] = Date.now(); // Record time then
+                            already[i] = 0;
+                        }
+                    }
                 }
             }
         }
+
+
+        //if(!UserAlready){ GoEyeGesture=false; EyeGestureOriX=null ;EyeGestureOriY=null;}
+        if (GoEyeGesture) {
+            var eyedir = EyeGesture(eyeX, eyeY, EyeGestureOriX, EyeGestureOriY)
+            console.log(eyedir)
+            if (eyedir != null) {
+                var dir;
+                if (eyedir == 'up') dir = UP;
+                else if (eyedir == 'down') dir = DOWN;
+                else if (eyedir == 'left') dir = LEFT;
+                else if (eyedir == 'right') dir = RIGHT;
+                enableClick(dir);
+                swipeAndUnlock(dir);
+                GoEyeGesture = false;
+                EyeGestureOriX = null
+                EyeGestureOriY = null
+            }
+        }
+
     }
 }
 
@@ -457,6 +591,9 @@ function setBtnSize(element, size) {
 function showTarget() {
 
     clearTimeout(trialTimer);
+    GoEyeGesture = false;
+    EyeGestureOriX = null
+    EyeGestureOriY = null
     if (trial_num == 0) {
         socket.emit('end');
         alert(`You finished 10 trials. Please press space when you are ready for the next round.`);
@@ -533,10 +670,8 @@ function showTarget() {
             cnt++;
         }
     }
-
     CurrentTarX = $(buttons[tar]).offset().left + 0.5 * buttons[tar].offsetWidth;
     CurrentTarY = $(buttons[tar]).offset().top + 0.5 * buttons[tar].offsetHeight;
-
     trial_num -= 1;
 }
 
@@ -561,6 +696,7 @@ function clearCanvas() {
 }
 
 var getSwipeDirectionFromAngle = (angle, direction) => {
+
     if (direction === Hammer.DIRECTION_UP) return UP;
     else if (direction === Hammer.DIRECTION_DOWN) return DOWN;
     else if (direction === Hammer.DIRECTION_LEFT) return LEFT;
@@ -578,7 +714,7 @@ function enableSwipe() {
         var direction = e.offsetDirection;
         var angle = e.angle;
         var dir = getSwipeDirectionFromAngle(angle, direction);
-        enableClick(dir);
+        //enableClick(dir);
         swipeAndUnlock(dir);
     });
 
@@ -692,13 +828,13 @@ function Eyespacingerror(x, y) {
         YData += EyeErrorY[kk];
         kk++;
     }
-
+    //Console.WriteLine(aveX);
     var EyeXave = XData / 10;
     var EyeYave = YData / 10;
     EyeErrorX[ErrorIndex] = x;
     EyeErrorY[ErrorIndex] = y;
     for (var i = 0; i < 10; i++) {
-        if ((EyeXave - EyeErrorX[i]) * (EyeXave - EyeErrorX[i]) + (EyeYave - EyeErrorY[i]) * (EyeYave - EyeErrorY[i]) > 10000) {
+        if ((EyeXave - EyeErrorX[i]) * (EyeXave - EyeErrorX[i]) + (EyeYave - EyeErrorY[i]) * (EyeYave - EyeErrorY[i]) > BTN_SIZE * BTN_SIZE) {
             ErrorTimeStart = Date.now()
             ErrorTimeEnd = Date.now()
         }
@@ -706,7 +842,7 @@ function Eyespacingerror(x, y) {
     ErrorTimeEnd = Date.now()
 
     if (ErrorTimeEnd - ErrorTimeStart > 330) {
-        console.log("Dwell Selection!!")
+        //console.log("Dwell Selection!!")
         DwellSelectionCount++;
         ErrorTimeStart = Date.now()
         ErrorTimeEnd = Date.now()
@@ -716,7 +852,61 @@ function Eyespacingerror(x, y) {
 
 function MouseClickEvent() {
     document.getElementById("MouseBox").style = "width:1400px;height:600px;";
-    console.log("mouse go")
+    //  console.log("mouse go")
+}
+
+
+
+function EyeGesture(x, y, OriX, OriY) {
+
+    if (OriX != null && OriY != null) {
+        var EyeXave = x;
+        var EyeYave = y;
+        var vectorX = EyeXave - OriX;
+        var vectorY = -(EyeYave - OriY);
+        var VectorLength = Math.pow(vectorX * vectorX + vectorY * vectorY, 0.5)
+        if (VectorLength > 200 || OntheEdge(x, y)) {
+            var CosTheta = vectorX / VectorLength
+            var SinTheta = vectorY / VectorLength
+            var CTheta = Math.acos(CosTheta) * 180 / 3.1415926
+            var STheta = Math.asin(SinTheta) * 180 / 3.1415926
+            if (vectorX > 0 && vectorY > 0) {
+                //1 quagent
+                var Theta = CTheta
+            } else if (vectorX < 0 && vectorY > 0) {
+                //2 quagent
+                var Theta = CTheta
+            } else if (vectorX < 0 && vectorY < 0) {
+                //3 quagent
+                var Theta = 360 - CTheta
+            } else if (vectorX > 0 && vectorY < 0) {
+                //4 quagent
+                var Theta = 360 - CTheta
+            }
+            //console.log("OriX: "+OriX+"OriY: "+OriY+"vectorX: "+vectorX+"vectorY: "+vectorY+"Theta: "+Theta)
+            if (Theta > 45 && Theta < 135) { return 'up' } else if (Theta > 135 && Theta < 225) { return 'left' } else if (Theta > 225 && Theta < 315) { return 'down' } else { return 'right' }
+        }
+    }
+    return null
+}
+
+function OntheEdge(x, y) {
+    var width = document.body.clientWidth
+    var height = document.body.clientHeight;
+    if (x < 10) { return true } else if (x > width - 10) { return true } else if (y < 10) { return true } else if (y > height - 10) { return true }
+
+    return false
+
+}
+
+function UserState(ts) {
+    var timestampinterval = ts - preTimeStamp
+        //console.log("interval: "+timestampinterval)
+    if (ts - preTimeStamp > 1000) {
+        preTimeStamp = ts;
+        UserAlready = false;
+        console.log("close eyes")
+    } else { UserAlready = true }
 }
 
 function Calibration(eyeX, eyeY) {
@@ -750,4 +940,42 @@ function Calibration(eyeX, eyeY) {
     console.log("CalibrateID" + CalibrateID)
 
     Calibrationlog(eyeX, eyeY, CalibrateID, CalibrateBtnX, CalibrateBtnY)
+}
+
+function EyeStay(x, y) {
+
+    StayIndex = (StayIndex + 1) % 10;
+    //EyeXave=Math.mean(EyeErrorX);
+
+    //EyeYave=Math.mean(EyeErrorY);
+    var XData = 0.0;
+    var YData = 0.0;
+    var kk = 0;
+    while (kk <= 9) {
+        XData += EyeStayX[kk];
+        YData += EyeStayY[kk];
+        kk++;
+    }
+    //Console.WriteLine(aveX);
+    var EyeXave = XData / 10;
+    var EyeYave = YData / 10;
+    EyeStayX[StayIndex] = x;
+    EyeStayY[StayIndex] = y;
+    for (var i = 0; i < 10; i++) {
+        if ((EyeXave - EyeStayX[i]) * (EyeXave - EyeStayX[i]) + (EyeYave - EyeStayY[i]) * (EyeYave - EyeStayY[i]) > BTN_SIZE * BTN_SIZE) {
+            EyeStayTimeStart = Date.now()
+            EyeStayTimeEnd = Date.now()
+        }
+    }
+    EyeStayTimeEnd = Date.now()
+
+    //console.log(ErrorTimeEnd-ErrorTimeStart)
+
+    if (EyeStayTimeEnd - EyeStayTimeStart > 1000) {
+        console.log("Dwell Stay!!")
+        return true
+        EyeStayTimeEnd = Date.now()
+    }
+
+    return false
 }

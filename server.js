@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const resources = '/resources';
-const logfile = 'log/' + moment().format('MMDD-HHmm') + '.log';
+
 
 if ((process.argv).length !== 7) {
     console.log("Wrong arg num!!! Pleas enter npm run [method] [user_category] [device] [user_id] [static/dynamic]");
@@ -61,6 +61,9 @@ const dwellOptions = {
 };
 
 const user_id = process.argv[5];
+
+const logfile = 'log/' + moment().format('MMDD-HHmm') + '_' + user_id + '_' + user + '.log';
+
 let rawdata = fs.readFileSync(`./condition/${user_id}.json`);
 let conditionOrders = JSON.parse(rawdata)[type];
 let [target_size, spacing] = conditionOrders.shift();
@@ -124,6 +127,8 @@ var loadImages = () => {
         return swipeOptions;
     else if (type === 'tap')
         return tapOptions;
+    else if (type === 'EyeGesture')
+        return swipeOptions;
     else
         return dwellOptions;
 }
@@ -144,8 +149,8 @@ io.on('connection', function(socket) {
     })
 
     // recieve eye-tracker position
-    socket.on('eyemove', function(x, y) {
-        io.emit('eyemove', x, y);
+    socket.on('eyemove', function(x, y, ts) {
+        io.emit('eyemove', x, y, ts);
     });
 
     // recieve swiping event

@@ -113,7 +113,7 @@ namespace Interaction_Streams_101
                 //    kk++;
                 //}
 
-                ////console.writeline(avex);
+                //console.writeline(avex);
                 //kk = 0;
                 //aveX = XData / 10;
                 //aveY = YData / 10;
@@ -164,6 +164,7 @@ namespace Interaction_Streams_101
         /*
          * 
          * 
+        
       
         public  static void SendData(double x,double y,double ts)
         {
@@ -199,7 +200,7 @@ namespace Interaction_Streams_101
                     count = 0;
                     XXData = 0.0;
                     YYData = 0.0;
-                    socket.Emit("eyemove", aveXX, aveYY);
+                    socket.Emit("eyemove", aveXX, aveYY,ts);
                 }
 
                 XData = 0.0;

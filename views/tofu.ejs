@@ -33,7 +33,7 @@
 
                     <div class="block" id="blk_<%=i%>_<%=j%>">
                         <button value="">
-                <% if(process.argv[2] === 'swipe'){ %>
+                <% if(process.argv[2] === 'swipe'||process.argv[2] === 'EyeGesture'){ %>
                     <% var op = 2 * ( i % 2 ) + ( j % 2 ); %>
                     <img src="../resources/arrow_<%=op%>.png">
                 <% } %>

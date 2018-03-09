@@ -7,6 +7,7 @@
         "tap": "node server.js tap",
         "swipe": "node server.js swipe",
         "dwell": "node server.js dwell",
+        "EyeGesture": "node server.js EyeGesture",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
