@@ -58,14 +58,14 @@ const dwellOptions = {
 const user_id = process.argv[5];
 let rawdata = fs.readFileSync(`./condition/${user_id}.json`);
 let conditionOrders = JSON.parse(rawdata)[type];
-let [target_size,  spacing] = conditionOrders.shift();
+let [target_size, spacing] = conditionOrders.shift();
 
 var updateCondition = () => {
-    if(conditionOrders.length === 0){
+    if (conditionOrders.length === 0) {
         io.emit('done', 'done');
         return;
     }
-    [target_size,  spacing] = conditionOrders.shift();
+    [target_size, spacing] = conditionOrders.shift();
     console.log(`update condition: ${target_size}, ${spacing}`);
     io.emit('target_size', target_size);
     io.emit('spacing', spacing);
