@@ -11,6 +11,11 @@ if ((process.argv).length !== 7) {
     process.exit();
 }
 
+var CalibrationLogmsg = ""
+var CalibrationTimeStart = new Date().getTime();
+CalibrationTimeEnd = Date.now()
+var CalibrationTimeEnd = new Date().getTime();
+
 // Tap or Swipe
 const type = process.argv[2];
 
@@ -192,8 +197,38 @@ io.on('connection', function(socket) {
         msg += '\tMouseClickCount: ' + MouseClickCount;
         writeLog(msg);
     });
+
+    socket.on('Calibrationlog', function(EyeX, EyeY, BtnID, BtnX, BtnY) {
+        var msg = 'BtnID: ' + BtnID;
+        msg += '\tBtnX: ' + BtnX;
+        msg += '\tBtnY: ' + BtnY;
+        msg += '\tEyeX: ' + EyeX;
+        msg += '\tEyeY: ' + EyeY;
+
+        writeLogCalibration(msg);
+    });
+
 });
 
 http.listen(3000, function() {
     console.log('listening on *:3000');
 });
+
+
+var writeLogCalibration = (CalibrationLogmsg) => {
+    var time = moment().format('MM/DD HH:mm:ss:SSS');
+    CalibrationLogmsg = time + '\t' + CalibrationLogmsg + '\r\n';
+
+    console.log(CalibrationLogmsg)
+    CalibrationTimeEnd = Date.now();
+    // if(CalibrationTimeEnd-CalibrationTimeStart>1000){
+    fs.appendFile('log/' + "CalibrationLog_" + user_id + "_" + moment().format('MMDD-HHmm'), CalibrationLogmsg, function(err) {
+            if (err) console.error(err);
+        }
+
+    );
+    CalibrationTimeEnd = Date.now()
+    CalibrationTimeStart = Date.now()
+        //CalibrationLogmsg = ""
+        //}
+};

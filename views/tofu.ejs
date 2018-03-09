@@ -17,47 +17,57 @@
 </head>
 
 <body>
+    <% if(process.argv[2] !== 'tap'){ %>
+        <p><b class="calibration" id="Calibration1" style="font-size:100px;">+</b></p>
+        <p><b class="calibration" id="Calibration2" style="font-size:100px;">+</b></p>
+        <p><b class="calibration" id="Calibration3" style="font-size:100px;">+</b></p>
+        <p><b class="calibration" id="Calibration4" style="font-size:100px;">+</b></p>
+        <p><b class="calibration" id="Calibration5" style="font-size:100px;">+</b></p>
+        <p><b class="calibration" id="Calibration6" style="font-size:100px;">+</b></p>
+        <p><b class="calibration" id="Calibration7" style="font-size:100px;">+</b></p>
+        <p><b class="calibration" id="Calibration8" style="font-size:100px;">+</b></p>
+        <p><b class="calibration" id="Calibration9" style="font-size:100px;">+</b></p>
+        <% } %>
+            <% for(var i=0; i<15; i++) { %>
+                <% for(var j=0; j<24; j++) { %>
 
-    <% for(var i=0; i<15; i++) { %>
-        <% for(var j=0; j<24; j++) { %>
-
-            <div class="block" id="blk_<%=i%>_<%=j%>">
-                <button value="">
+                    <div class="block" id="blk_<%=i%>_<%=j%>">
+                        <button value="">
                 <% if(process.argv[2] === 'swipe'){ %>
                     <% var op = 2 * ( i % 2 ) + ( j % 2 ); %>
                     <img src="../resources/arrow_<%=op%>.png">
                 <% } %>
                 </button>
-            </div>
+                    </div>
 
-            <% } %>
-                <% } %>
-
-                    <% if(process.argv[4] === 'mobile' && process.argv[2] === 'swipe'){ %>
-
-                        <div id="MobileContainer"></div>
+                    <% } %>
                         <% } %>
 
-                            <!--  <div id="MouseEventsContainer">
+                            <% if(process.argv[4] === 'mobile' && process.argv[2] === 'swipe'){ %>
+
+                                <div id="MobileContainer"></div>
+                                <% } %>
+
+                                    <!--  <div id="MouseEventsContainer">
             <div onmousedown=" MouseClickEvent()" id="MouseBox" style="width:1400px;height:600px;">
 
             </div>
       </div> -->
 
-                            <div id="canvas_container">
-                                <canvas id="canvas" width="1400" height="1000"></canvas>
-                            </div>
+                                    <div id="canvas_container">
+                                        <canvas id="canvas" width="1400" height="1000"></canvas>
+                                    </div>
 
-                            <% if(process.argv[2] !== 'tap'){ %>
-                                <div id="eye_tracker" class="<%=EYETRACKER%>">
-                                    <% if(process.argv[2] === 'dwell'){ %>
-                                        <div id="circle"></div>
+                                    <% if(process.argv[2] !== 'tap'){ %>
+                                        <div id="eye_tracker" class="<%=EYETRACKER%>">
+                                            <% if(process.argv[2] === 'dwell'){ %>
+                                                <div id="circle"></div>
+                                                <% } %>
+                                        </div>
                                         <% } %>
-                                </div>
-                                <% } %>
 
-                                    <script src="/socket.io/socket.io.js"></script>
-                                    <script src="resources/tofu.js"></script>
+                                            <script src="/socket.io/socket.io.js"></script>
+                                            <script src="resources/tofu.js"></script>
 
 </body>
 
