@@ -23,10 +23,12 @@ namespace Interaction_Streams_101
         static List<string> buffer = new List<string>();
         static string log_file_name = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\New_eye_tracking_log.txt";
         static Socket socket;
-        static double mincutoff = 0.05;
+        static double mincutoff = 0.1;
         static double beta = 0.005;
         static OneEuroFilter oneEuroFilterX = new OneEuroFilter(mincutoff, beta);
         static OneEuroFilter oneEuroFilterY = new OneEuroFilter(mincutoff, beta);
+
+        static Boolean isGaze = false;
         
         public static void Main(string[] args)
         {
@@ -35,13 +37,31 @@ namespace Interaction_Streams_101
             // NOTE: Make sure that Tobii.EyeX.exe is running
             var host = new Host();
             Console.WriteLine("Save into {0}", log_file_name);
-
-            // 2. Create stream. 
-            var gazePointDataStream = host.Streams.CreateGazePointDataStream();
             socket = IO.Socket("http://localhost:3000/");
+            // 2. Create stream. 
+            if (isGaze)
+            {
+                var gazePointDataStream = host.Streams.CreateGazePointDataStream();
+                gazePointDataStream.GazePoint((x, y, ts) => Write(x, y, ts));
+                gazePointDataStream.GazePoint((x, y, ts) => SendGazeData(x, y, ts));
+
+            }
+            else
+            {
+                var fixationDataStream = host.Streams.CreateFixationDataStream(Tobii.Interaction.Framework.FixationDataMode.Sensitive);
+                fixationDataStream.Begin((x, y, ts) => changePos(x, y, ts));
+                fixationDataStream.Data((x, y, ts) => SendFilteredValue(x, y));
+                fixationDataStream.End((x, y, ts) => changePos(x, y, ts));
+            }
+            //var gazePointDataStream = host.Streams.CreateGazePointDataStream();
+            
+            
             // 3. Get the gaze data!
-            gazePointDataStream.GazePoint((x, y, ts) => Write(x, y, ts));
-            gazePointDataStream.GazePoint((x, y, ts) => SendData(x, y, ts));
+           
+            //gazePointDataStream.Begin((x, y, timestamp) => changePos(x, y, timestamp, "begin"));
+            //gazePointDataStream.Data((x, y, timestamp) => SendData(x, y, timestamp));
+            //gazePointDataStream.End((x, y, timestamp) => changePos(x, y, timestamp, "end"));
+
 
             while (true)
             {
@@ -77,7 +97,7 @@ namespace Interaction_Streams_101
         /// <param name="ts"></param>
         /// 
 
-        public static void SendData(double x, double y, double ts)
+        public static void SendGazeData(double x, double y, double ts)
         {
             if (Program.isRecording)
             {
@@ -106,9 +126,34 @@ namespace Interaction_Streams_101
                 aveX = oneEuroFilterX.Filter(x, 60);
                 aveY = oneEuroFilterY.Filter(y, 60);
                 socket.Emit("eyemove", aveX, aveY);
+
             }
         }
 
+        private static void changePos(double x, double y, double timestamp)
+        {
+            //XData = x;
+            //YData = y;
+            //socket.Emit("eyemove", XData, YData);
+            if (!Program.isRecording)
+                return;
+            XData = x;
+            YData = y;
+            //Console.WriteLine("RAW Timestamp: {0}\t X: {1} Y:{2}", timestamp, XData, YData);
+            //SendFilteredValue(x, y);
+            Console.WriteLine("Timestamp: {0}\t X: {1} Y:{2}", timestamp, XData, YData);
+        }
+
+        private static void SendFilteredValue(double x, double y)
+        {
+            //XData = x;
+            //YData = y;
+            if (XData == double.NaN || YData == double.NaN)
+                return;
+            //XData = oneEuroFilterX.Filter(x, 10);
+            //YData = oneEuroFilterY.Filter(y, 10);
+            socket.Emit("eyemove", XData, YData);
+        }
         //private static float void movingAverage()
         //{
 
@@ -171,91 +216,5 @@ namespace Interaction_Streams_101
             }
         }
 
-    }
-
-    public class OneEuroFilter
-    {
-        public OneEuroFilter(double minCutoff, double beta)
-        {
-            firstTime = true;
-            this.minCutoff = minCutoff;
-            this.beta = beta;
-
-            xFilt = new LowpassFilter();
-            dxFilt = new LowpassFilter();
-            dcutoff = 1;
-        }
-
-        protected bool firstTime;
-        protected double minCutoff;
-        protected double beta;
-        protected LowpassFilter xFilt;
-        protected LowpassFilter dxFilt;
-        protected double dcutoff;
-
-        public double MinCutoff
-        {
-            get { return minCutoff; }
-            set { minCutoff = value; }
-        }
-
-        public double Beta
-        {
-            get { return beta; }
-            set { beta = value; }
-        }
-
-        public double Filter(double x, double rate)
-        {
-            double dx = firstTime ? 0 : (x - xFilt.Last()) * rate;
-            if (firstTime)
-            {
-                firstTime = false;
-            }
-
-            var edx = dxFilt.Filter(dx, Alpha(rate, dcutoff));
-            var cutoff = minCutoff + beta * Math.Abs(edx);
-
-            return xFilt.Filter(x, Alpha(rate, cutoff));
-        }
-
-        protected double Alpha(double rate, double cutoff)
-        {
-            var tau = 1.0 / (2 * Math.PI * cutoff);
-            var te = 1.0 / rate;
-            return 1.0 / (1.0 + tau / te);
-        }
-    }
-
-    public class LowpassFilter
-    {
-        public LowpassFilter()
-        {
-            firstTime = true;
-        }
-
-        protected bool firstTime;
-        protected double hatXPrev;
-
-        public double Last()
-        {
-            return hatXPrev;
-        }
-
-        public double Filter(double x, double alpha)
-        {
-            double hatX = 0;
-            if (firstTime)
-            {
-                firstTime = false;
-                hatX = x;
-            }
-            else
-                hatX = alpha * x + (1 - alpha) * hatXPrev;
-
-            hatXPrev = hatX;
-
-            return hatX;
-        }
     }
 }
