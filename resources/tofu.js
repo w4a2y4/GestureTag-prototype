@@ -57,6 +57,7 @@ var TrialCompletionTime;
 var trialTimer;
 var ErrorCount = 0;
 var clickedbutton;
+var ready = true;
 
 var pgBar = $('#circle');
 pgBar.circleProgress({
@@ -360,30 +361,21 @@ function isIn(x, arr, len) {
 }
 
 function changePos(eyeX, eyeY) {
-    if (CalibrationState) {
-        Calibration(eyeX, eyeY)
 
-        $('#eye_tracker').css({
-            "left": eyeX,
-            "top": eyeY
-        });
+    $('#eye_tracker').css({
+        "left": eyeX,
+        "top": eyeY
+    });
 
-        $('#canvas_container').css({
-            "left": eyeX - 700,
-            "top": eyeY - 500
-        });
+    $('#canvas_container').css({
+        "left": eyeX - 700,
+        "top": eyeY - 500
+    });
 
+    if( !ready ) return;
 
-    } else {
-        $('#eye_tracker').css({
-            "left": eyeX,
-            "top": eyeY
-        });
-
-        $('#canvas_container').css({
-            "left": eyeX - 700,
-            "top": eyeY - 500
-        });
+    if (CalibrationState) Calibration(eyeX, eyeY);
+    else {
 
         // the candidates are the nearest [up, down, left, right]
         var btn_num = buttons.length;
@@ -590,6 +582,7 @@ function setBtnSize(element, size) {
 
 function showTarget() {
 
+    ready = false;
     clearTimeout(trialTimer);
     GoEyeGesture = false;
     EyeGestureOriX = null
@@ -670,9 +663,13 @@ function showTarget() {
             cnt++;
         }
     }
+
     CurrentTarX = $(buttons[tar]).offset().left + 0.5 * buttons[tar].offsetWidth;
     CurrentTarY = $(buttons[tar]).offset().top + 0.5 * buttons[tar].offsetHeight;
     trial_num -= 1;
+    setTimeout(() => {
+        ready = true;
+    }, 200);
 }
 
 function changePath(pathX, pathY) {
