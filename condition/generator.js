@@ -1,4 +1,3 @@
-const conditionNum = 9;
 const fs = require('fs');
 let savedSequences = [];
 
@@ -54,7 +53,8 @@ var saveFile = (location, id, data) => {
         id: `${location}_${id+1}`,
         mouse: data[0],
         swipe: data[1],
-        dwell: data[2]
+        dwell: data[2],
+        EyeGesture: data[3],
     };
     fs.writeFile(`./${userConditions.id}.json`, JSON.stringify(userConditions, null, 4), (err) => {
         if (err) {
