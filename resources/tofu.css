@@ -98,7 +98,12 @@ button img {
     display: none;
     height: 100%;
     width: auto;
-    position: relative;
+}
+
+.gif{
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .calibration {

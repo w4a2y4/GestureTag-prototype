@@ -128,7 +128,6 @@ $(document).keyup((e) => {
 
         AssignTargetAlgo();
         showTarget();
-        console.log("go go ")
     } else if (e.which === 69) // key "e"
         show_mouse = !show_mouse;
     else if (e.which === 80) // key "p"
@@ -152,8 +151,8 @@ $(document).on('click', 'button', (function(e) {
 
     clearTimeout(trialTimer);
     $(this).addClass('clicked');
-    GoEyeGesture = false
-    TrialTimeEnd = Date.now()
+    GoEyeGesture = false;
+    TrialTimeEnd = Date.now();
 
     TrialCompletionTime = TrialTimeEnd - TrialTimeStart
 
@@ -519,7 +518,6 @@ function changePos(eyeX, eyeY) {
         //if(!UserAlready){ GoEyeGesture=false; EyeGestureOriX=null ;EyeGestureOriY=null;}
         if (GoEyeGesture) {
             var eyedir = EyeGesture(eyeX, eyeY, EyeGestureOriX, EyeGestureOriY)
-            console.log(eyedir)
             if (eyedir != null) {
                 var dir;
                 if (eyedir == 'up') dir = UP;
@@ -560,7 +558,6 @@ function showTarget() {
     }
 
     trialTimer = setTimeout(() => {
-        console.log('timeout QQ');
         $('.target').removeClass('target');
         ErrorCount++;
         TrialCompletionTime = -1;
@@ -582,14 +579,12 @@ function showTarget() {
 
         if (!$(buttons[temptar]).hasClass('clicked')) {
             tar = temptar;
-            console.log('assign :' + trial_num + ' ' + temptar);
             break;
         }
     }
 
     // render target and its neighbor
     $(":button").hide();
-    console.log("tar:" + tar);
 
     $(buttons[tar]).addClass('target');
     setBtnSize(buttons[tar], BTN_SIZE);
@@ -703,7 +698,6 @@ function enableClick(dir) {
 
 var swipeAndUnlock = (dir) => {
     if (isShown[dir]) {
-        console.log("swipe currbtn " + currBtn);
         currBtn[dir].click();
         already[postBtnId[dir]] = 0;
         touchLock = false;
@@ -926,6 +920,12 @@ function EyeStay(x, y) {
 
     if (EyeStayTimeEnd - EyeStayTimeStart > 1000) {
         console.log("Dwell Stay!!");
+        for ( var j = 0; j < 4; j++ ) {
+            $(currBtn[j]).append(
+                '<img class="gif" src="'
+                + img_prefix + 'arrow_' + j + '.gif"/>'
+            );
+        }
         return true;
         EyeStayTimeEnd = Date.now();
     }
