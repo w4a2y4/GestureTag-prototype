@@ -151,7 +151,6 @@ $(document).on('click', 'button', (function(e) {
 
     clearTimeout(trialTimer);
     $(this).addClass('clicked');
-    GoEyeGesture = false;
     $('.gif').remove();
     TrialTimeEnd = Date.now();
 
@@ -342,6 +341,23 @@ function isIn(x, arr, len) {
 
 function changePos(eyeX, eyeY) {
 
+    if (GoEyeGesture) {
+        var eyedir = EyeGesture(eyeX, eyeY, EyeGestureOriX, EyeGestureOriY)
+        if (eyedir != null) {
+            var dir;
+            if (eyedir == 'up') dir = UP;
+            else if (eyedir == 'down') dir = DOWN;
+            else if (eyedir == 'left') dir = LEFT;
+            else if (eyedir == 'right') dir = RIGHT;
+            enableClick(dir);
+            swipeAndUnlock(dir);
+            $('.gif').remove();
+            EyeGestureOriX = null;
+            EyeGestureOriY = null;
+        }
+        return;
+    }
+
     $('#eye_tracker').css({
         "left": eyeX,
         "top": eyeY
@@ -512,25 +528,6 @@ function changePos(eyeX, eyeY) {
                         }
                     }
                 }
-            }
-        }
-
-
-        //if(!UserAlready){ GoEyeGesture=false; EyeGestureOriX=null ;EyeGestureOriY=null;}
-        if (GoEyeGesture) {
-            var eyedir = EyeGesture(eyeX, eyeY, EyeGestureOriX, EyeGestureOriY)
-            if (eyedir != null) {
-                var dir;
-                if (eyedir == 'up') dir = UP;
-                else if (eyedir == 'down') dir = DOWN;
-                else if (eyedir == 'left') dir = LEFT;
-                else if (eyedir == 'right') dir = RIGHT;
-                enableClick(dir);
-                swipeAndUnlock(dir);
-                GoEyeGesture = false;
-                $('.gif').remove();
-                EyeGestureOriX = null
-                EyeGestureOriY = null
             }
         }
 
