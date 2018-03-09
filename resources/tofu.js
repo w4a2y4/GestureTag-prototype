@@ -152,6 +152,7 @@ $(document).on('click', 'button', (function(e) {
     clearTimeout(trialTimer);
     $(this).addClass('clicked');
     GoEyeGesture = false;
+    $('.gif').remove();
     TrialTimeEnd = Date.now();
 
     TrialCompletionTime = TrialTimeEnd - TrialTimeStart
@@ -527,6 +528,7 @@ function changePos(eyeX, eyeY) {
                 enableClick(dir);
                 swipeAndUnlock(dir);
                 GoEyeGesture = false;
+                $('.gif').remove();
                 EyeGestureOriX = null
                 EyeGestureOriY = null
             }
@@ -548,6 +550,7 @@ function showTarget() {
     ready = false;
     clearTimeout(trialTimer);
     GoEyeGesture = false;
+    $('.gif').remove();
     EyeGestureOriX = null
     EyeGestureOriY = null
     if (trial_num == 0) {
