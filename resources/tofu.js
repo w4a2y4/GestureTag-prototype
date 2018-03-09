@@ -100,6 +100,7 @@ const tapImages = {
 $(document).keyup((e) => {
     // key "enter"
     if (e.which === 32 && platform !== 'mobile') {
+        e.preventDefault();
         socket.emit('start');
         trial_num = DEFAULT_TRIAL_NUM;
         JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0); //have to set to zero
