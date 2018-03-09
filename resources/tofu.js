@@ -352,7 +352,7 @@ function changePos(eyeX, eyeY) {
         "top": eyeY - 500
     });
 
-    if( !ready ) return;
+    if (!ready) return;
 
     if (CalibrationState) Calibration(eyeX, eyeY);
     else {
@@ -862,7 +862,7 @@ function OntheEdge(x, y) {
 
 function UserState(ts) {
     var timestampinterval = ts - preTimeStamp;
-        //console.log("interval: "+timestampinterval)
+    //console.log("interval: "+timestampinterval)
     if (ts - preTimeStamp > 1000) {
         preTimeStamp = ts;
         UserAlready = false;
@@ -877,7 +877,7 @@ function Calibration(eyeX, eyeY) {
     var CalibrateBtnY;
 
     var i = Math.ceil((CalibrationEndTime - CalibrationStartTime) / 3000);
-    console.log(i)l
+    console.log(i);
     if (i < 10) {
         var CalibrateID = i;
         var calibrateID = "Calibration" + i.toString();
