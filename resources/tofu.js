@@ -171,10 +171,10 @@ $(document).on('click', 'button', (function(e) {
 }));
 
 socket.on('eyemove', (x, y, ts) => {
-        // please add some comments about where the magic number is
-        // and the reason.
+    // please add some comments about where the magic number is
+    // and the reason.
     let magicScale = 1; //surface pro should be 0.8
-    if(GoEyeGesture) UserState(ts);
+    if (GoEyeGesture) UserState(ts);
     changePos(x * magicScale, y * magicScale);
     Eyespacingerror(x * magicScale, y * magicScale);
 });
@@ -361,27 +361,26 @@ function changePos(eyeX, eyeY) {
         tofuY = Math.floor(eyeY / TOFU_HEIGHT);
     var me = tofuX + tofuY * COL_NUM;
 
-    if ( type === 'dwell' ) {
+    if (type === 'dwell') {
 
-        if ( !overlap(buttons[me], eyeX, eyeY) ) return;
+        if (!overlap(buttons[me], eyeX, eyeY)) return;
         if (outNum >= btn_num) {
             pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
             outNum = 0;
         }
 
-        if ( dwelling === me ) {
+        if (dwelling === me) {
             // Have already looked at the target
             TimeEnd = Date.now();
             // check if dwell time is long enough
             if (TimeEnd - TimeStart > 330.0) {
                 buttons[me].click();
-                console.log('from ' +TimeStart%100000+ ' to ' +TimeEnd%100000);
+                console.log('from ' + TimeStart % 100000 + ' to ' + TimeEnd % 100000);
                 console.log("Dwell Selection Success!!" + dwelling);
                 dwelling = null; // reinitialize
                 pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
             }
-        }
-        else {  // First time to look at the target
+        } else { // First time to look at the target
             dwelling = me;
             TimeStart = Date.now();
             pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd + 20 } });
@@ -673,8 +672,8 @@ function AssignTargetAlgo() {
     var Res = TOTAL_DISTANCE - 200 * DEFAULT_TRIAL_NUM;
     while (Res > 0) {
         for (var i = 0; i < DEFAULT_TRIAL_NUM; i++) {
-            if ( JumpDistance[i] < 600 ) {
-                var randnum = Math.ceil(Math.random() * Math.min(Res, TOTAL_DISTANCE/3));
+            if (JumpDistance[i] < 600) {
+                var randnum = Math.ceil(Math.random() * Math.min(Res, TOTAL_DISTANCE / 3));
                 JumpDistance[i] += randnum;
                 Res -= randnum;
             }
@@ -730,9 +729,10 @@ function ButtonCandidate(midX, midY, trialNum, btn_num) {
 function Eyespacingerror(x, y) {
 
     ErrorIndex = (ErrorIndex + 1) % 10;
-    var XData = 0.0, YData = 0.0;
+    var XData = 0.0,
+        YData = 0.0;
 
-    for ( var i = 0; i < 10; i++ ) {
+    for (var i = 0; i < 10; i++) {
         XData += EyeErrorX[i];
         YData += EyeErrorY[i];
     }
@@ -766,8 +766,8 @@ function EyeGesture(x, y, OriX, OriY) {
         if (VectorLength > 200 || OntheEdge(x, y)) {
 
             var Theta;
-            var CTheta = Math.acos( vectorX / VectorLength ) * 180 / 3.1415926;
-            var STheta = Math.asin( vectorY / VectorLength ) * 180 / 3.1415926;
+            var CTheta = Math.acos(vectorX / VectorLength) * 180 / 3.1415926;
+            var STheta = Math.asin(vectorY / VectorLength) * 180 / 3.1415926;
 
             if (vectorY > 0) Theta = CTheta; //1 quagent
             else Theta = 360 - CTheta; //3 quagent
@@ -807,7 +807,7 @@ function Calibration(eyeX, eyeY) {
     var CalibrateBtnX, CalibrateBtnY;
 
     if (CalibrateID < 10) {
-        var c = document.getElementById( "Calibration" + CalibrateID );
+        var c = document.getElementById("Calibration" + CalibrateID);
         $(c).show();
 
         CalibrateBtnX = $(c).offset().left + 0.5 * c.offsetWidth;
@@ -826,9 +826,10 @@ function Calibration(eyeX, eyeY) {
 function EyeStay(x, y) {
 
     StayIndex = (StayIndex + 1) % 10;
-    var XData = 0.0, YData = 0.0;
+    var XData = 0.0,
+        YData = 0.0;
 
-    for ( var i = 0; i < 10; i++ ) {
+    for (var i = 0; i < 10; i++) {
         XData += EyeStayX[i];
         YData += EyeStayY[i];
     }
@@ -847,10 +848,10 @@ function EyeStay(x, y) {
 
     if (EyeStayTimeEnd - EyeStayTimeStart > 1000) {
         console.log("Dwell Stay!!");
-        for ( var j = 0; j < 4; j++ ) {
+        for (var j = 0; j < 4; j++) {
             $(currBtn[j]).append(
-                '<img class="gif" src="'
-                + img_prefix + 'arrow_' + j + '.gif"/>'
+                '<img class="gif" src="' +
+                img_prefix + 'arrow_' + j + '.gif"/>'
             );
         }
         return true;
