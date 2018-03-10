@@ -193,7 +193,6 @@ socket.on('swipe', (dirStr) => {
     else if (dirStr == 'down') dir = DOWN;
     else if (dirStr == 'left') dir = LEFT;
     else if (dirStr == 'right') dir = RIGHT;
-    enableClick(dir);
     swipeAndUnlock(dir);
 });
 
@@ -349,7 +348,6 @@ function changePos(eyeX, eyeY) {
             else if (eyedir == 'down') dir = DOWN;
             else if (eyedir == 'left') dir = LEFT;
             else if (eyedir == 'right') dir = RIGHT;
-            enableClick(dir);
             swipeAndUnlock(dir);
             $('.gif').remove();
             EyeGestureOriX = null;
@@ -671,7 +669,6 @@ function enableSwipe() {
         var direction = e.offsetDirection;
         var angle = e.angle;
         var dir = getSwipeDirectionFromAngle(angle, direction);
-        //enableClick(dir);
         swipeAndUnlock(dir);
     });
 
@@ -681,20 +678,14 @@ function enableSwipe() {
         if (ev.maxPointers > 1) {
             if (ev.isFinal === true) {
                 let multidir = ev.direction;
-                if (multidir === Hammer.DIRECTION_UP) enableClick(UP);
-                else if (multidir === Hammer.DIRECTION_DOWN) enableClick(DOWN);
-                else if (multidir === Hammer.DIRECTION_LEFT) enableClick(LEFT);
-                else if (multidir === Hammer.DIRECTION_RIGHT) enableClick(RIGHT);
+                if (multidir === Hammer.DIRECTION_UP) swipeAndUnlock(UP);
+                else if (multidir === Hammer.DIRECTION_DOWN) swipeAndUnlock(DOWN);
+                else if (multidir === Hammer.DIRECTION_LEFT) swipeAndUnlock(LEFT);
+                else if (multidir === Hammer.DIRECTION_RIGHT) swipeAndUnlock(RIGHT);
             }
         }
     });
 };
-
-function enableClick(dir) {
-    if (isShown[dir]) {}
-    //buttons[postBtnId[dir]].click();
-
-}
 
 var swipeAndUnlock = (dir) => {
     if (isShown[dir]) {
