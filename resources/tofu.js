@@ -487,7 +487,6 @@ function changePos(eyeX, eyeY) {
                     EyeGestureTimeStart[i] = Date.now();
                 }
                 var theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
-                //console.log(theTimeInterval)
                 $(btn).find('img').show();
 
                 if (theTimeInterval > 600.0) {
@@ -498,9 +497,7 @@ function changePos(eyeX, eyeY) {
                         GoEyeGesture = true;
                         EyeGestureTimeStart = new Array(buttons.length).fill(0.0);
                         EyeGestureTimeEnd = new Array(buttons.length).fill(0.0);
-                        console.log("StartX:" + eyeX + "StartY:" + eyeY)
                     }
-
 
                     for (var j = 0; j < 4; j++) {
                         if (getBtnType(btn) == j && LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
@@ -768,7 +765,6 @@ function Eyespacingerror(x, y) {
         YData += EyeErrorY[kk];
         kk++;
     }
-    //Console.WriteLine(aveX);
     var EyeXave = XData / 10;
     var EyeYave = YData / 10;
     EyeErrorX[ErrorIndex] = x;
@@ -782,7 +778,6 @@ function Eyespacingerror(x, y) {
     ErrorTimeEnd = Date.now();
 
     if (ErrorTimeEnd - ErrorTimeStart > 330) {
-        //console.log("Dwell Selection!!")
         DwellSelectionCount++;
         ErrorTimeStart = Date.now();
         ErrorTimeEnd = Date.now();
@@ -832,7 +827,6 @@ function OntheEdge(x, y) {
 
 function UserState(ts) {
     var timestampinterval = ts - preTimeStamp;
-    //console.log("interval: "+timestampinterval)
     if (ts - preTimeStamp > 1000) {
         preTimeStamp = ts;
         UserAlready = false;
@@ -847,7 +841,6 @@ function Calibration(eyeX, eyeY) {
     var CalibrateBtnY;
 
     var i = Math.ceil((CalibrationEndTime - CalibrationStartTime) / 3000);
-    console.log(i);
     if (i < 10) {
         var CalibrateID = i;
         var calibrateID = "Calibration" + i.toString();
@@ -881,7 +874,6 @@ function EyeStay(x, y) {
         YData += EyeStayY[kk];
         kk++;
     }
-    //Console.WriteLine(aveX);
     var EyeXave = XData / 10;
     var EyeYave = YData / 10;
     EyeStayX[StayIndex] = x;
