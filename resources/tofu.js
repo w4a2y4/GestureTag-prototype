@@ -17,6 +17,7 @@ var type;
 var platform;
 var dynamic = false;
 
+const TOTAL_DISTANCE = 5000;
 const DEFAULT_TRIAL_NUM = 10;
 var trial_num = DEFAULT_TRIAL_NUM;
 
@@ -520,7 +521,7 @@ function showTarget() {
     if (trial_num == 0) {
         socket.emit('end');
         alert(`You finished ` + DEFAULT_TRIAL_NUM + ` trials. Please press space when you are ready for the next round.`);
-        JumpDistance = new Array(10).fill(0);
+        JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0);
         return;
     }
 
@@ -668,36 +669,27 @@ var swipeAndUnlock = (dir) => {
 }
 
 function AssignTargetAlgo() {
-    var Res = 3000;
 
+    var Res = TOTAL_DISTANCE - 200 * DEFAULT_TRIAL_NUM;
     while (Res > 0) {
         for (var i = 0; i < DEFAULT_TRIAL_NUM; i++) {
-            while (true) {
-                if (JumpDistance[i] < 600 && Res > 0) {
-                    var randnum = Math.ceil(Math.random() * Res)
-                    JumpDistance[i] = JumpDistance[i] + randnum
-                    if (JumpDistance[i] <= 600) {
-                        Res = Res - randnum;
-                        break;
-                    } else {
-                        JumpDistance[i] = JumpDistance[i] - randnum
-                    }
-                } else break;
+            if ( JumpDistance[i] < 600 ) {
+                var randnum = Math.ceil(Math.random() * Math.min(Res, TOTAL_DISTANCE/3));
+                JumpDistance[i] += randnum;
+                Res -= randnum;
             }
+        }
 
+        // random permutation
+        for (var i = DEFAULT_TRIAL_NUM - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            swap(JumpDistance[i], JumpDistance[j]);
         }
     }
 
-    for (var i = JumpDistance.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var x = JumpDistance[i];
-        JumpDistance[i] = JumpDistance[j];
-        JumpDistance[j] = x;
-    }
+    for (var i = 0; i < DEFAULT_TRIAL_NUM; i++)
+        JumpDistance[i] += 200;
 
-    for (var i = 0; i < JumpDistance.length; i++) {
-        JumpDistance[i] = JumpDistance[i] + 200;
-    }
     console.log(JumpDistance);
 }
 
@@ -738,14 +730,13 @@ function ButtonCandidate(midX, midY, trialNum, btn_num) {
 function Eyespacingerror(x, y) {
 
     ErrorIndex = (ErrorIndex + 1) % 10;
-    var XData = 0.0;
-    var YData = 0.0;
-    var kk = 0;
-    while (kk <= 9) {
-        XData += EyeErrorX[kk];
-        YData += EyeErrorY[kk];
-        kk++;
+    var XData = 0.0, YData = 0.0;
+
+    for ( var i = 0; i < 10; i++ ) {
+        XData += EyeErrorX[i];
+        YData += EyeErrorY[i];
     }
+
     var EyeXave = XData / 10;
     var EyeYave = YData / 10;
     EyeErrorX[ErrorIndex] = x;
@@ -835,14 +826,13 @@ function Calibration(eyeX, eyeY) {
 function EyeStay(x, y) {
 
     StayIndex = (StayIndex + 1) % 10;
-    var XData = 0.0;
-    var YData = 0.0;
-    var kk = 0;
-    while (kk <= 9) {
-        XData += EyeStayX[kk];
-        YData += EyeStayY[kk];
-        kk++;
+    var XData = 0.0, YData = 0.0;
+
+    for ( var i = 0; i < 10; i++ ) {
+        XData += EyeStayX[i];
+        YData += EyeStayY[i];
     }
+
     var EyeXave = XData / 10;
     var EyeYave = YData / 10;
     EyeStayX[StayIndex] = x;
