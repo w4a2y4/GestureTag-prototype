@@ -180,8 +180,7 @@ socket.on('eyemove', (x, y, ts) => {
 });
 
 socket.on('swipe', (dirStr) => {
-    gesture = dir;
-    var dir;
+    let dir;
     if (dirStr == 'up') dir = UP;
     else if (dirStr == 'down') dir = DOWN;
     else if (dirStr == 'left') dir = LEFT;
@@ -622,7 +621,7 @@ function clearCanvas() {
     new_path = true;
 }
 
-var getSwipeDirectionFromAngle = (angle, direction) => {
+var getSwipeDirection = (direction) => {
     if (direction === Hammer.DIRECTION_UP) return UP;
     else if (direction === Hammer.DIRECTION_DOWN) return DOWN;
     else if (direction === Hammer.DIRECTION_LEFT) return LEFT;
@@ -631,21 +630,21 @@ var getSwipeDirectionFromAngle = (angle, direction) => {
 };
 
 function enableSwipe() {
-    var container = document.getElementById("MobileContainer");
+    const container = document.getElementById("MobileContainer");
     const manager = new Hammer.Manager(container);
     const swipe = new Hammer.Swipe();
     manager.add(swipe);
 
+    // Single-touch swipe
     manager.on('swipe', (e) => {
-        var direction = e.offsetDirection;
-        var angle = e.angle;
-        var dir = getSwipeDirectionFromAngle(angle, direction);
+        let hammerDir = e.offsetDirection;
+        let dir = getSwipeDirection(hammerDir);
         swipeAndUnlock(dir);
     });
 
+    // Multi-touch swipe
     manager.on('hammer.input', (ev) => {
         console.log(ev);
-        // If one can only do multi-touch swipe
         if (ev.maxPointers > 1) {
             if (ev.isFinal === true) {
                 let multidir = ev.direction;
