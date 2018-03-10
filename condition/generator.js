@@ -28,7 +28,7 @@ var generateSequence = () => {
 var generateConditionFiles = (location, max_id) => {
     for (let i = 0; i < max_id; i++) {
         let userSeqs = [];
-        for (let j = 0; j < 3; j++) {
+        for (let j = 0; j < 4; j++) {
             let seq = generateSequence();
             while (isDuplicated(seq)) {
                 seq = generateSequence();
@@ -51,7 +51,7 @@ var isDuplicated = (currentSeq) => {
 var saveFile = (location, id, data) => {
     const userConditions = {
         id: `${location}_${id+1}`,
-        mouse: data[0],
+        tap: data[0],
         swipe: data[1],
         dwell: data[2],
         EyeGesture: data[3],
