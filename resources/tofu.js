@@ -92,7 +92,6 @@ var EyeStayTimeStart = new Date().getTime();
 var EyeStayX = new Array(10).fill(0.0);
 var EyeStayY = new Array(10).fill(0.0);
 
-var UserAlready = false;
 var preTimeStamp = 0.0;
 
 
@@ -171,10 +170,10 @@ $(document).on('click', 'button', (function(e) {
 }));
 
 socket.on('eyemove', (x, y, ts) => {
-    UserState(ts)
         // please add some comments about where the magic number is
         // and the reason.
     let magicScale = 1; //surface pro should be 0.8
+    if(GoEyeGesture) UserState(ts);
     changePos(x * magicScale, y * magicScale);
     Eyespacingerror(x * magicScale, y * magicScale);
 });
@@ -813,12 +812,13 @@ function OntheEdge(x, y) {
 }
 
 function UserState(ts) {
-    var timestampinterval = ts - preTimeStamp;
     if (ts - preTimeStamp > 1000) {
-        preTimeStamp = ts;
-        UserAlready = false;
+        // cancel eyeGesture
         console.log("close eyes");
-    } else UserAlready = true;
+        GoEyeGesture = false;
+        $('.gif').remove();
+        preTimeStamp = ts;
+    }
 }
 
 function Calibration(eyeX, eyeY) {
