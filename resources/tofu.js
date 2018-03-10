@@ -402,6 +402,8 @@ function changePos(eyeX, eyeY) {
         return;
     }
 
+    // the rest in this function only run when type === 'swipe' or 'EyeGesture'
+
     // the candidates are the nearest [up, down, left, right]
     var candidate = new Array(4).fill(-1);
     var dist = new Array(4).fill(5000000);
@@ -414,20 +416,18 @@ function changePos(eyeX, eyeY) {
     $('img').hide();
 
     // for each type of gesture, put the nearest's index in candidate[]
-    if (type === 'swipe' || type === 'EyeGesture') {
-        for (var k = 0; k < 9; k++) {
-            var i = neighborhood[k];
-            if (i < 0 || i >= btn_num) continue;
-            var btn = buttons[i];
-            if (overlap(btn, eyeX, eyeY)) {
-                var j = getBtnType(btn, eyeX, eyeY);
-                var curr_dist = distance(btn, eyeX, eyeY);
-                if (curr_dist < dist[j]) {
-                    candidate[j] = i;
-                    dist[j] = curr_dist;
-                    if (dynamic) {
-                        $(btn).find('img').attr('src', img_prefix + 'arrow_' + j + '.png');
-                    }
+    for (var k = 0; k < 9; k++) {
+        var i = neighborhood[k];
+        if (i < 0 || i >= btn_num) continue;
+        var btn = buttons[i];
+        if (overlap(btn, eyeX, eyeY)) {
+            var j = getBtnType(btn, eyeX, eyeY);
+            var curr_dist = distance(btn, eyeX, eyeY);
+            if (curr_dist < dist[j]) {
+                candidate[j] = i;
+                dist[j] = curr_dist;
+                if (dynamic) {
+                    $(btn).find('img').attr('src', img_prefix + 'arrow_' + j + '.png');
                 }
             }
         }
