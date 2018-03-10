@@ -796,14 +796,6 @@ function Eyespacingerror(x, y) {
     }
 }
 
-
-function MouseClickEvent() {
-    document.getElementById("MouseBox").style = "width:1400px;height:600px;";
-    //  console.log("mouse go")
-}
-
-
-
 function EyeGesture(x, y, OriX, OriY) {
 
     if (OriX != null && OriY != null) {
