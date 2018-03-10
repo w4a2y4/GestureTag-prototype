@@ -75,8 +75,6 @@ var ErrorIndex = 0;
 var DwellSelectionCount = 0;
 var MouseClickCount = 0;
 
-var CalibrationLogmsg = "";
-var CalibrationEndTime = new Date().getTime();
 var CalibrationStartTime = new Date().getTime();
 var CalibrationState = false;
 
@@ -127,8 +125,8 @@ $(document).keyup((e) => {
         show_mouse = !show_mouse;
     else if (e.which === 80) // key "p"
         show_path = !show_path;
-    else if (e.which === 67) {
-        CalibrationStartTime = Date.now()
+    else if (e.which === 67) { // key "c"
+        CalibrationStartTime = Date.now();
         CalibrationState = true;
     }
 })
@@ -278,10 +276,6 @@ function getBtnType(btn, x, y) {
     else if (diffX < 0 && slope < 1 && slope > -1) return LEFT;
     else if (diffY > 0 && (slope > 1 || slope < -1)) return DOWN;
     return UP;
-}
-
-function Calibrationlog(x, y, CalibrateID, CalibrateBtnX, CalibrateBtnY) {
-    socket.emit('Calibrationlog', x, y, CalibrateID, CalibrateBtnX, CalibrateBtnY);
 }
 
 function overlap(element, X, Y) {
@@ -828,32 +822,25 @@ function UserState(ts) {
 }
 
 function Calibration(eyeX, eyeY) {
-    CalibrationEndTime = Date.now();
-    var CalibrateID;
-    var CalibrateBtnX;
-    var CalibrateBtnY;
 
-    var i = Math.ceil((CalibrationEndTime - CalibrationStartTime) / 3000);
-    if (i < 10) {
-        var CalibrateID = i;
-        var calibrateID = "Calibration" + i.toString();
+    var CalibrateID = Math.ceil((Date.now() - CalibrationStartTime) / 3000);
+    var CalibrateBtnX, CalibrateBtnY;
 
-        var c = document.getElementById(calibrateID);;
+    if (CalibrateID < 10) {
+        var c = document.getElementById( "Calibration" + CalibrateID );
         $(c).show();
-        console.log(c);
 
         CalibrateBtnX = $(c).offset().left + 0.5 * c.offsetWidth;
         CalibrateBtnY = $(c).offset().top + 0.5 * c.offsetHeight;
-        for (var index = 0; index < 10; index++) {
-            if (index != i) $(document.getElementById("Calibration" + index.toString())).hide();
-        }
+        for (var i = 0; i < 10; i++)
+            if (i != CalibrateID) $(document.getElementById("Calibration" + i)).hide();
+
     } else {
         $(document.getElementById("Calibration9")).hide();
         CalibrationState = false;
     }
 
-    console.log("CalibrateID" + CalibrateID);
-    Calibrationlog(eyeX, eyeY, CalibrateID, CalibrateBtnX, CalibrateBtnY);
+    socket.emit('Calibrationlog', eyeX, eyeY, CalibrateID, CalibrateBtnX, CalibrateBtnY);
 }
 
 function EyeStay(x, y) {
