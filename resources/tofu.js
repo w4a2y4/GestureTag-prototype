@@ -24,8 +24,9 @@ var clicked_button, target_btn, gesture;
 var buttons = document.getElementsByTagName('button');
 
 var already = new Array(buttons.length).fill(0);
-var TimeStart = new Date().getTime();
-var TimeEnd = new Date().getTime();
+var TimeStart = 0;
+var TimeEnd = 0;
+var dwelling = null;
 
 var touch_timer, new_path, prevX, prevY;
 var c = document.getElementById("canvas");
@@ -333,11 +334,6 @@ function changePos(eyeX, eyeY) {
 
     if (type === 'tap') return;
 
-    if (CalibrationState) {
-        Calibration(eyeX, eyeY);
-        return;
-    }
-
     if (GoEyeGesture) {
         var eyedir = EyeGesture(eyeX, eyeY, EyeGestureOriX, EyeGestureOriY)
         if (eyedir != null) {
@@ -364,10 +360,16 @@ function changePos(eyeX, eyeY) {
         "top": eyeY - 500
     });
 
+    if (CalibrationState) {
+        Calibration(eyeX, eyeY);
+        return;
+    }
+
     if (!ready) return;
 
-    // the candidates are the nearest [up, down, left, right]
     var btn_num = buttons.length;
+
+    // the candidates are the nearest [up, down, left, right]
     var candidate = new Array(4).fill(-1);
     var dist = new Array(4).fill(5000000);
 
@@ -385,10 +387,35 @@ function changePos(eyeX, eyeY) {
     isShown.fill(false);
     $('img').hide();
 
-    // the candidates are the nearest [up, down, left, right]
-    var btn_num = buttons.length;
-    var candidate = new Array(4).fill(-1);
-    var dist = new Array(4).fill(5000000);
+    if ( type === 'dwell' ) {
+
+        if ( !overlap(buttons[me], eyeX, eyeY) ) return;
+        if (outNum >= btn_num) {
+            pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
+            outNum = 0;
+        }
+
+        if ( dwelling === me ) {
+            // Have already looked at the target
+            TimeEnd = Date.now();
+            // check if dwell time is long enough
+            if (TimeEnd - TimeStart > 330.0) {
+                buttons[me].click();
+                console.log('from ' +TimeStart%100000+ ' to ' +TimeEnd%100000);
+                console.log("Dwell Selection Success!!" + dwelling);
+                dwelling = null; // reinitialize
+                pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
+            }
+        }
+        else {  // First time to look at the target
+            dwelling = me;
+            TimeStart = Date.now();
+            pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd + 20 } });
+        }
+
+        outNum = 0;
+        return;
+    }
 
     // for each type of gesture, put the nearest's index in candidate[]
     if (type === 'swipe' || type === 'EyeGesture') {
@@ -408,11 +435,6 @@ function changePos(eyeX, eyeY) {
                 }
             }
         }
-    } else if (type === 'dwell') {
-        if (outNum >= btn_num) {
-            pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
-            outNum = 0;
-        }
     }
 
     for (var k = 0; k < 9; k++) {
@@ -421,32 +443,7 @@ function changePos(eyeX, eyeY) {
         if (i < 0 || i >= btn_num) continue;
         var btn = buttons[i];
 
-        if (type === 'dwell') {
-            if (overlap(btn, eyeX, eyeY)) {
-                if (already[i]) { // Have already looked at the target
-                    TimeEnd = Date.now(); // Record time then
-                } else {
-                    already[i] = 1; //First time to look at the target
-                    TimeStart = Date.now(); // Record time then
-                    pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd + 20 } });
-                }
-
-                if (already[i] == 1 && TimeEnd - TimeStart > 330.0) {
-                    clickablebtn = btn;
-                    clickablebtn.click();
-                    console.log("Selection Success!!");
-                    already[i] = 0; // reinitialize
-                    pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
-                }
-                // Showing image
-                $(btn).find('img').show();
-                outNum = 0;
-            } else {
-                $(btn).find('img').hide();
-                already[i] = 0;
-                outNum += 1;
-            }
-        } else if (type === 'swipe') {
+        if (type === 'swipe') {
             if (isIn(i, candidate, 4)) {
                 if (already[i]) { // Have already looked at the target
                     LockerTimeEnd[i] = Date.now(); // Record time then
