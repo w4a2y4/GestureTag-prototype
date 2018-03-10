@@ -326,14 +326,9 @@ function changePos(eyeX, eyeY) {
     if (type === 'tap') return;
 
     if (GoEyeGesture) {
-        var eyedir = EyeGesture(eyeX, eyeY, EyeGestureOriX, EyeGestureOriY)
-        if (eyedir != null) {
-            var dir;
-            if (eyedir == 'up') dir = UP;
-            else if (eyedir == 'down') dir = DOWN;
-            else if (eyedir == 'left') dir = LEFT;
-            else if (eyedir == 'right') dir = RIGHT;
-            swipeAndUnlock(dir);
+        var eyedir = EyeGesture(eyeX, eyeY, EyeGestureOriX, EyeGestureOriY);
+        if (eyedir !== -1) {
+            swipeAndUnlock(eyedir);
             $('.gif').remove();
             EyeGestureOriX = null;
             EyeGestureOriY = null;
@@ -773,41 +768,35 @@ function Eyespacingerror(x, y) {
 function EyeGesture(x, y, OriX, OriY) {
 
     if (OriX != null && OriY != null) {
-        var EyeXave = x;
-        var EyeYave = y;
-        var vectorX = EyeXave - OriX;
-        var vectorY = -(EyeYave - OriY);
+        var vectorX = x - OriX;
+        var vectorY = -(y - OriY);
         var VectorLength = Math.pow(vectorX * vectorX + vectorY * vectorY, 0.5);
 
         if (VectorLength > 200 || OntheEdge(x, y)) {
 
             var Theta;
-            var CosTheta = vectorX / VectorLength;
-            var SinTheta = vectorY / VectorLength;
-            var CTheta = Math.acos(CosTheta) * 180 / 3.1415926;
-            var STheta = Math.asin(SinTheta) * 180 / 3.1415926;
-            if (vectorX > 0 && vectorY > 0) Theta = CTheta; //1 quagent
-            else if (vectorX < 0 && vectorY > 0) Theta = CTheta; //2 quagent
-            else if (vectorX < 0 && vectorY < 0) Theta = 360 - CTheta; //3 quagent
-            else if (vectorX > 0 && vectorY < 0) Theta = 360 - CTheta; //4 quagent
+            var CTheta = Math.acos( vectorX / VectorLength ) * 180 / 3.1415926;
+            var STheta = Math.asin( vectorY / VectorLength ) * 180 / 3.1415926;
 
-            if (Theta > 45 && Theta < 135) return 'up';
-            else if (Theta > 135 && Theta < 225) return 'left';
-            else if (Theta > 225 && Theta < 315) return 'down';
-            else return 'right';
+            if (vectorY > 0) Theta = CTheta; //1 quagent
+            else Theta = 360 - CTheta; //3 quagent
+
+            if (Theta > 45 && Theta < 135) return UP;
+            else if (Theta > 135 && Theta < 225) return LEFT;
+            else if (Theta > 225 && Theta < 315) return DOWN;
+            else return RIGHT;
 
         }
     }
-    return null;
+
+    return -1;
 }
 
 function OntheEdge(x, y) {
-    var width = document.body.clientWidth;
-    var height = document.body.clientHeight;
     if (x < 10) return true;
-    else if (x > width - 10) return true;
+    else if (x > server_width - 10) return true;
     else if (y < 10) return true;
-    else if (y > height - 10) return true;
+    else if (y > server_height - 10) return true;
     return false;
 }
 
