@@ -27,12 +27,6 @@ body {
     position: absolute;
 }
 
-#MouseEventsContainer {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-}
-
 #eye_tracker {
     pointer-events: none;
     position: absolute;
