@@ -13,7 +13,6 @@ const UP = 0,
 var currBtn = new Array(4).fill(null);
 var isShown = new Array(4).fill(false);
 
-var tester;
 var type;
 var platform;
 var dynamic = false;
@@ -48,15 +47,12 @@ var JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0);
 var CandidateButtonArray = new Array(buttons.length).fill(0);
 var CurrentTarX = 0.0;
 var CurrentTarY = 0.0;
-var oldbuttons = buttons;
-var tar
 
 var TrialTimeStart = new Date().getTime();
 var TrialTimeEnd = new Date().getTime();
 var TrialCompletionTime;
 var trialTimer;
 var ErrorCount = 0;
-var clickedbutton;
 var ready = true;
 
 var pgBar = $('#circle');
@@ -229,11 +225,6 @@ socket.on('init', (method) => {
 socket.on('client_init', (width, height) => {
     client_width = width;
     client_height = height;
-});
-
-socket.on('user', (user) => {
-    tester = user;
-    console.log(tester);
 });
 
 socket.on('device', (device) => {
@@ -574,6 +565,7 @@ function showTarget() {
     EyeGestureOriY = null;
 
     // select target
+    var tar;
     while (true) {
         var btn_num = buttons.length - 2 * (RAW_NUM + COL_NUM) - 4;
         var temptar;
