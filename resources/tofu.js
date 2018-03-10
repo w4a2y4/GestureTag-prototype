@@ -75,17 +75,15 @@ var ErrorIndex = 0;
 var DwellSelectionCount = 0;
 var MouseClickCount = 0;
 
-var CalibrationLogmsg = ""
+var CalibrationLogmsg = "";
 var CalibrationEndTime = new Date().getTime();
 var CalibrationStartTime = new Date().getTime();
 var CalibrationState = false;
-var dwellcandidateID = 0;
-var mostneardistance = 10000000000000000;
 
 var EyeGestureX = new Array(10).fill(0.0);
 var EyeGestureY = new Array(10).fill(0.0);
-var EyeGestureOriX
-var EyeGestureOriY
+var EyeGestureOriX;
+var EyeGestureOriY;
 var GoEyeGesture = false;
 var EyeGestureIndex = 0;
 var EyeGestureTimeStart = new Array(buttons.length).fill(0.0);
@@ -97,7 +95,7 @@ var EyeStayX = new Array(10).fill(0.0);
 var EyeStayY = new Array(10).fill(0.0);
 
 var UserAlready = false;
-var preTimeStamp = 0.0
+var preTimeStamp = 0.0;
 
 
 var imgSet;
@@ -369,23 +367,10 @@ function changePos(eyeX, eyeY) {
 
     var btn_num = buttons.length;
 
-    // the candidates are the nearest [up, down, left, right]
-    var candidate = new Array(4).fill(-1);
-    var dist = new Array(4).fill(5000000);
-
-    var mostneardistance = 100000000000000000;
-    var dwellcandidateID = 0;
-
     // determine the index of gaze point
     var tofuX = Math.floor(eyeX / TOFU_WIDTH),
         tofuY = Math.floor(eyeY / TOFU_HEIGHT);
     var me = tofuX + tofuY * COL_NUM;
-    var neighborhood = [me, me - 1, me + 1,
-        me - COL_NUM, me - COL_NUM - 1, me - COL_NUM + 1,
-        me + COL_NUM, me + COL_NUM - 1, me + COL_NUM + 1
-    ];
-    isShown.fill(false);
-    $('img').hide();
 
     if ( type === 'dwell' ) {
 
@@ -416,6 +401,17 @@ function changePos(eyeX, eyeY) {
         outNum = 0;
         return;
     }
+
+    // the candidates are the nearest [up, down, left, right]
+    var candidate = new Array(4).fill(-1);
+    var dist = new Array(4).fill(5000000);
+
+    var neighborhood = [me, me - 1, me + 1,
+        me - COL_NUM, me - COL_NUM - 1, me - COL_NUM + 1,
+        me + COL_NUM, me + COL_NUM - 1, me + COL_NUM + 1
+    ];
+    isShown.fill(false);
+    $('img').hide();
 
     // for each type of gesture, put the nearest's index in candidate[]
     if (type === 'swipe' || type === 'EyeGesture') {
