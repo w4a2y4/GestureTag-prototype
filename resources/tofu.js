@@ -540,7 +540,7 @@ function showTarget() {
         gesture = 'timeout';
         log();
         showTarget();
-    }, 20000);
+    }, 200000);
 
     //reset preformance data
     TrialTimeStart = Date.now();
