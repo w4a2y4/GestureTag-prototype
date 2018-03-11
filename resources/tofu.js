@@ -169,6 +169,7 @@ $(document).on('click', 'button', (function(e) {
     EyeGestureOriX = null
     EyeGestureOriY = null //reset eyegesture origin
     clicked_btn = $(this).parent().attr('id');
+    
     if (!$(this).hasClass('target')) {
         ErrorCount++;
         // setTimeout(() => { $(this).removeClass('clicked') }, 100);
@@ -369,8 +370,8 @@ function changePos(eyeX, eyeY) {
         var candidate = new Array(4).fill(-1);
         var dist = new Array(4).fill(5000000);
 
-        var mostneardistance = 100000000000000000;
-        var dwellcandidateID = 0;
+         mostneardistance = 100000000000000000;
+         dwellcandidateID = 0;
 
         // determine the index of gaze point
         var tofuX = Math.floor(eyeX / TOFU_WIDTH),
@@ -420,8 +421,8 @@ function changePos(eyeX, eyeY) {
         }
 
         if (type !== 'tap') {
+            PreventMultiSelection(neighborhood,eyeX,eyeY,btn_num);
             for (var k = 0; k < 9; k++) {
-
                 var i = neighborhood[k];
                 if (i < 0 || i >= btn_num) continue;
                 var btn = buttons[i];
@@ -437,11 +438,22 @@ function changePos(eyeX, eyeY) {
                         }
 
                         if (already[i] == 1 && TimeEnd - TimeStart > 330.0) {
-                            clickablebtn = btn;
-                            clickablebtn.click();
-                            console.log("Selection Success!!");
-                            already[i] = 0; // reinitialize
-                            pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
+
+                            
+                            if(i==dwellcandidateID){
+                                clickablebtn = btn;
+                                clickablebtn.click();
+                                console.log("Selection Success!!");
+                                already[i] = 0; // reinitialize
+                                //already = new Array(buttons.length).fill(0);
+                                pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
+                            }
+
+
+
+
+
+                           
                         }
                         // Showing image
                         $(btn).find('img').show();
@@ -472,7 +484,6 @@ function changePos(eyeX, eyeY) {
                                     currBtn[j] = btn;
                                     isShown[j] = true;
                                     theTimeInterval=0.0
-                                    
                                 }
                             }
                         }
@@ -965,4 +976,21 @@ if(type === 'swipe'||type ==='EyeGesture' ){
         }
     }
 }
+}
+
+
+function PreventMultiSelection(neighborhood,eyeX,eyeY,btn_num){
+
+    for (var k = 0; k < 9; k++) {
+        var i = neighborhood[k];
+        if (i < 0 || i >= btn_num) continue;
+        var btn = buttons[i];
+
+    if(mostneardistance>distance(btn,eyeX,eyeY)){
+        dwellcandidateID=i;
+        mostneardistance=distance(btn,eyeX,eyeY);
+        }
+    console.log("most near:"+dwellcandidateID)
+    }
+
 }
