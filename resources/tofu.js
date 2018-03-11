@@ -119,7 +119,6 @@ $(document).keyup((e) => {
         socket.emit('start');
         trial_num = DEFAULT_TRIAL_NUM;
         JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0); //have to set to zero
-
         AssignTargetAlgo();
         showTarget();
     } else if (e.which === 69) // key "e"
@@ -129,8 +128,7 @@ $(document).keyup((e) => {
     else if (e.which === 67) { // key "c"
         CalibrationStartTime = Date.now();
         CalibrationState = true;
-    }
-    else if (e.which === 65) {
+    } else if (e.which === 65) {
         CalibrationStartTime = Date.now();
         CalibrationState = false;
     }
@@ -402,7 +400,7 @@ function changePos(eyeX, eyeY) {
     var dist = new Array(4).fill(5000000);
 
     //Dwell time locker reset
-    DwellLockerReset(eyeX,eyeY);
+    DwellLockerReset(eyeX, eyeY);
 
     var neighborhood = [me, me - 1, me + 1,
         me - COL_NUM, me - COL_NUM - 1, me - COL_NUM + 1,
@@ -668,7 +666,7 @@ function enableSwipe() {
 
 var swipeAndUnlock = (dir) => {
     if (isShown[dir]) {
-        console.log("swipe currbtn " +  buttons[postBtnId[dir]]);
+        console.log("swipe currbtn " + buttons[postBtnId[dir]]);
         buttons[postBtnId[dir]].click();
         //currBtn[dir].click();
         already[postBtnId[dir]] = 0;
@@ -882,12 +880,12 @@ function EyeStay(x, y) {
     return false;
 }
 
-function DwellLockerReset(eyeX, eyeY){
-    if(type === 'swipe'||type ==='EyeGesture' ){
+function DwellLockerReset(eyeX, eyeY) {
+    if (type === 'swipe' || type === 'EyeGesture') {
         for (var k = 0; k < buttons.length; k++) {
-            if(!(overlap(buttons[k], eyeX, eyeY)||isIn(k, postBtnId, 4))){
+            if (!(overlap(buttons[k], eyeX, eyeY) || isIn(k, postBtnId, 4))) {
                 LockerTimeEnd[k] = Date.now(); // Record time then
-                LockerTimeStart[k] =LockerTimeEnd[k]; // Record time then
+                LockerTimeStart[k] = LockerTimeEnd[k]; // Record time then
                 already[k] = 0;
             }
         }
