@@ -67,8 +67,6 @@ pgBar.circleProgress({
     fill: { gradient: ['#0681c4', '#4ac5f8'] },
 });
 const timeTd = 330;
-var outNum = 0;
-
 var EyeErrorX = new Array(10).fill(0.0);
 var EyeErrorY = new Array(10).fill(0.0);
 var ErrorTimeStart = new Date().getTime();
@@ -367,10 +365,9 @@ function changePos(eyeX, eyeY) {
 
     if (type === 'dwell') {
 
-        if (!overlap(buttons[me], eyeX, eyeY)) return;
-        if (outNum >= btn_num) {
+        if (!overlap(buttons[me], eyeX, eyeY)) {
             pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
-            outNum = 0;
+            return
         }
 
         if (dwelling === me) {
@@ -387,10 +384,10 @@ function changePos(eyeX, eyeY) {
         } else { // First time to look at the target
             dwelling = me;
             TimeStart = Date.now();
-            pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd + 20 } });
+            pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd - 185 } });
+            console.log("START");
         }
 
-        outNum = 0;
         return;
     }
 
@@ -523,6 +520,7 @@ function showTarget() {
     ready = false;
     GoEyeGesture = false;
     $('.gif').remove();
+    pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
 
     if (trial_num == 0) {
         socket.emit('end');
@@ -605,9 +603,10 @@ function showTarget() {
     CurrentTarX = $(buttons[tar]).offset().left + 0.5 * buttons[tar].offsetWidth;
     CurrentTarY = $(buttons[tar]).offset().top + 0.5 * buttons[tar].offsetHeight;
     trial_num -= 1;
+
     setTimeout(() => {
         ready = true;
-    }, 200);
+    }, 500);
 }
 
 function changePath(pathX, pathY) {
