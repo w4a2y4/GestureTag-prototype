@@ -119,6 +119,7 @@ $(document).keyup((e) => {
         socket.emit('start');
         trial_num = DEFAULT_TRIAL_NUM;
         JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0); //have to set to zero
+        $(".block").show();
         AssignTargetAlgo();
         showTarget();
     } else if (e.which === 69) // key "e"
@@ -527,6 +528,7 @@ function showTarget() {
         socket.emit('end');
         alert(`You finished ` + DEFAULT_TRIAL_NUM + ` trials. Please press space when you are ready for the next round.`);
         JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0);
+        $(".block").hide();
         return;
     }
 
