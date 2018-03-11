@@ -27,12 +27,6 @@ body {
     position: absolute;
 }
 
-#MouseEventsContainer {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-}
-
 #eye_tracker {
     pointer-events: none;
     position: absolute;
@@ -98,7 +92,12 @@ button img {
     display: none;
     height: 100%;
     width: auto;
-    position: relative;
+}
+
+.gif{
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .calibration {

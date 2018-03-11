@@ -11,11 +11,6 @@ if ((process.argv).length !== 7) {
     process.exit();
 }
 
-var CalibrationLogmsg = ""
-var CalibrationTimeStart = new Date().getTime();
-CalibrationTimeEnd = Date.now()
-var CalibrationTimeEnd = new Date().getTime();
-
 // Tap or Swipe
 const type = process.argv[2];
 
@@ -220,20 +215,13 @@ http.listen(3000, function() {
 });
 
 
-var writeLogCalibration = (CalibrationLogmsg) => {
+var writeLogCalibration = (msg) => {
     var time = moment().format('MM/DD HH:mm:ss:SSS');
-    CalibrationLogmsg = time + '\t' + CalibrationLogmsg + '\r\n';
+    var CalibrationLogmsg = time + '\t' + msg + '\r\n';
+    var fileName = 'log/CalibrationLog_' + user_id + '_' + moment().format('MMDD-HHmm') + '.log';
 
-    console.log(CalibrationLogmsg)
-    CalibrationTimeEnd = Date.now();
-    // if(CalibrationTimeEnd-CalibrationTimeStart>1000){
-    fs.appendFile('log/' + "CalibrationLog_" + user_id + "_" + moment().format('MMDD-HHmm'), CalibrationLogmsg, function(err) {
-            if (err) console.error(err);
-        }
-
-    );
-    CalibrationTimeEnd = Date.now()
-    CalibrationTimeStart = Date.now()
-        //CalibrationLogmsg = ""
-        //}
+    console.log(CalibrationLogmsg);
+    fs.appendFile(fileName, CalibrationLogmsg, function(err) {
+        if (err) console.error(err);
+    });
 };
