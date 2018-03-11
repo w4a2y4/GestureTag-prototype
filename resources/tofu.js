@@ -40,9 +40,12 @@ const TOFU_HEIGHT = server_height / RAW_NUM;
 
 var LockerTimeEnd = new Array(buttons.length).fill(0.0);
 var LockerTimeStart = new Array(buttons.length).fill(0.0);
+var NewLockerTimeEnd = new Array(buttons.length).fill(0.0);
+var NewLockerTimeStart = new Array(buttons.length).fill(0.0);
+var theTimeInterval=0.0
 
 var postBtnId = new Array(4).fill(0);
-var touchLock;
+var touchLock=false;
 
 var JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0);
 var CandidateButtonArray = new Array(buttons.length).fill(0);
@@ -137,6 +140,10 @@ $(document).keyup((e) => {
         CalibrationStartTime = Date.now()
         CalibrationState = true;
     }
+    else if (e.which === 65) {
+        CalibrationStartTime = Date.now()
+        CalibrationState = false;
+    }
 })
 
 $(document).mousemove((e) => {
@@ -157,8 +164,8 @@ $(document).on('click', 'button', (function(e) {
 
     TrialCompletionTime = TrialTimeEnd - TrialTimeStart
 
-    LockerTimeEnd = Array(buttons.length).fill(0.0);
-    LockerTimeStart = Array(buttons.length).fill(0.0);
+    LockerTimeEnd.fill(0.0);
+    LockerTimeStart.fill(0.0);
     EyeGestureOriX = null
     EyeGestureOriY = null //reset eyegesture origin
     clicked_btn = $(this).parent().attr('id');
@@ -381,6 +388,12 @@ function changePos(eyeX, eyeY) {
         var candidate = new Array(4).fill(-1);
         var dist = new Array(4).fill(5000000);
 
+
+        //Dwell time locker reset
+        DwellLockerReset(eyeX,eyeY)
+       
+
+
         // for each type of gesture, put the nearest's index in candidate[]
         if (type === 'swipe' || type === 'EyeGesture') {
             for (var k = 0; k < 9; k++) {
@@ -439,6 +452,10 @@ function changePos(eyeX, eyeY) {
                         outNum += 1;
                     }
                 } else if (type === 'swipe') {
+                   
+                    if(touchLock==true){
+                        for (var j = 0; j < 4; j++) {$(buttons[postBtnId[j]]).find('img').show();}
+                    }
                     if (isIn(i, candidate, 4)) {
                         if (already[i]) { // Have already looked at the target
                             LockerTimeEnd[i] = Date.now(); // Record time then
@@ -446,24 +463,27 @@ function changePos(eyeX, eyeY) {
                             already[i] = 1; //First time to look at the target
                             LockerTimeStart[i] = Date.now(); // Record time then
                         }
-                        var theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
-                        $(btn).find('img').show();
-                        if (theTimeInterval > 150.0 && touchLock == false) {
+                        theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
+                        if(touchLock==false){$(btn).find('img').show();}
+                        if (theTimeInterval > 1000.0 && touchLock == false) {
                             for (var j = 0; j < 4; j++) {
-                                if (getBtnType(btn) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
+                                if (getBtnType(btn) == j && LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {     
                                     postBtnId[j] = i;
                                     currBtn[j] = btn;
                                     isShown[j] = true;
+                                    theTimeInterval=0.0
+                                    
                                 }
                             }
                         }
+                      
                     } else {
                         isShown.fill(true);
                         for (var j = 0; j < 4; j++)
-                            currBtn[j] = buttons[postBtnId[j]];
+                            {currBtn[j] = buttons[postBtnId[j]];}
                         if (!isIn(i, postBtnId, 4)) {
-                            LockerTimeEnd[i] = 0.0; // Record time then
-                            LockerTimeStart[i] = 0.0; // Record time then
+                            LockerTimeEnd[i] = Date.now(); // Record time then
+                            LockerTimeStart[i] =LockerTimeEnd[i]; // Record time then
                             already[i] = 0;
                         }
                     }
@@ -503,6 +523,7 @@ function changePos(eyeX, eyeY) {
                             }
                         }
                     } else {
+                       
                         isShown.fill(true);
                         for (var j = 0; j < 4; j++) { currBtn[j] = buttons[postBtnId[j]]; }
                         if (!isIn(i, postBtnId, 4)) {
@@ -568,7 +589,7 @@ function showTarget() {
         gesture = 'timeout';
         log();
         showTarget();
-    }, 20000);
+    }, 200000);
 
     // select target
     while (true) {
@@ -703,8 +724,9 @@ function enableClick(dir) {
 
 var swipeAndUnlock = (dir) => {
     if (isShown[dir]) {
-        console.log("swipe currbtn " + currBtn);
-        currBtn[dir].click();
+        console.log("swipe currbtn " +  buttons[postBtnId[dir]]);
+        buttons[postBtnId[dir]].click();
+        //currBtn[dir].click();
         already[postBtnId[dir]] = 0;
         touchLock = false;
         console.log("swipe " + dir + ":" + String(postBtnId[dir]));
@@ -931,4 +953,16 @@ function EyeStay(x, y) {
     }
 
     return false;
+}
+
+function DwellLockerReset(eyeX, eyeY){
+if(type === 'swipe'||type ==='EyeGesture' ){
+    for (var k = 0; k < buttons.length; k++) {
+        if(!(overlap(buttons[k], eyeX, eyeY)||isIn(k, postBtnId, 4))){
+            LockerTimeEnd[k] = Date.now(); // Record time then
+            LockerTimeStart[k] =LockerTimeEnd[k]; // Record time then
+            already[k] = 0;
+        }
+    }
+}
 }
