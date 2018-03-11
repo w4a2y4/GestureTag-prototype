@@ -113,7 +113,7 @@ const tapImages = {
 };
 
 $(document).keyup((e) => {
-    // key "enter"
+    // key "space" for entering trials
     if (e.which === 32 && platform !== 'mobile') {
         e.preventDefault();
         socket.emit('start');
@@ -129,8 +129,8 @@ $(document).keyup((e) => {
     else if (e.which === 67) { // key "c"
         CalibrationStartTime = Date.now();
         CalibrationState = true;
-    } else if (e.which === 65) {
-        CalibrationStartTime = Date.now();
+    } else if (e.which === 83) { // key "s"
+        $(".calibration").hide();
         CalibrationState = false;
     }
 })
