@@ -668,24 +668,35 @@ var swipeAndUnlock = (dir) => {
 
 function AssignTargetAlgo() {
 
-    var Res = TOTAL_DISTANCE - 200 * DEFAULT_TRIAL_NUM;
-    while (Res > 0) {
-        for (var i = 0; i < DEFAULT_TRIAL_NUM; i++) {
+    let Res = TOTAL_DISTANCE - 200 * DEFAULT_TRIAL_NUM;
+
+    for (let i = 0; i < DEFAULT_TRIAL_NUM; i++) {
+        while (JumpDistance[i] < 600 && Res > 0) {
+            let randnum = Math.ceil(Math.random() * Res);
+            JumpDistance[i] += randnum;
+            // Adjustment after adding the randnum on jump_distance
             if (JumpDistance[i] < 600) {
-                var randnum = Math.ceil(Math.random() * Math.min(Res, TOTAL_DISTANCE / 3));
-                JumpDistance[i] += randnum;
                 Res -= randnum;
+                break;
+            } else {
+                JumpDistance[i] -= randnum;
             }
         }
-
-        // random permutation
-        for (var i = DEFAULT_TRIAL_NUM - 1; i > 0; i--) {
-            var j = Math.floor(Math.random() * (i + 1));
-            swap(JumpDistance[i], JumpDistance[j]);
+        // if Res didn't finish partition well, do repartition
+        if (i === DEFAULT_TRIAL_NUM - 1 && Res !== 0) {
+            i = 0;
+            continue;
         }
     }
 
-    for (var i = 0; i < DEFAULT_TRIAL_NUM; i++)
+    // random permutation
+    for (let i = DEFAULT_TRIAL_NUM - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        swap(JumpDistance[i], JumpDistance[j]);
+    }
+
+    // Adding back the base distance
+    for (let i = 0; i < DEFAULT_TRIAL_NUM; i++)
         JumpDistance[i] += 200;
 
     console.log(JumpDistance);
