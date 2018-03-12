@@ -66,7 +66,7 @@ pgBar.circleProgress({
     lineCap: 'round',
     fill: { gradient: ['#0681c4', '#4ac5f8'] },
 });
-const timeTd = 330;
+const timeTd = 330.0;
 var EyeErrorX = new Array(10).fill(0.0);
 var EyeErrorY = new Array(10).fill(0.0);
 var ErrorTimeStart = new Date().getTime();
@@ -366,17 +366,17 @@ function changePos(eyeX, eyeY) {
     if (type === 'dwell') {
 
         if (!overlap(buttons[me], eyeX, eyeY)) {
-        	dwelling = null;
+            dwelling = null;
             pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
             return
         }
 
-        if (dwelling === me&&overlap(buttons[me], eyeX, eyeY)) {
-        	
+        if (dwelling === me && overlap(buttons[me], eyeX, eyeY)) {
+
             // Have already looked at the target
             TimeEnd = Date.now();
             // check if dwell time is long enough
-            if (TimeEnd - TimeStart > 330.0) {
+            if (TimeEnd - TimeStart > timeTd) {
                 buttons[me].click();
                 console.log('from ' + TimeStart % 100000 + ' to ' + TimeEnd % 100000);
                 console.log("Dwell Selection Success!!" + dwelling);
@@ -386,9 +386,9 @@ function changePos(eyeX, eyeY) {
         } else { // First time to look at the target
             dwelling = me;
             TimeStart = Date.now();
-            pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd - 185 } });
+            pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd + 200 } });
             console.log("START");
-             already[i] = 0;
+            already[i] = 0;
         }
 
         return;
@@ -479,7 +479,7 @@ function changePos(eyeX, eyeY) {
 
                 if (theTimeInterval > 600.0) {
 
-                    
+
                     for (var j = 0; j < 4; j++) {
                         if (getBtnType(btn) == j && LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
                             postBtnId[j] = i;
@@ -643,6 +643,7 @@ var getSwipeDirection = (direction) => {
     else if (direction === Hammer.DIRECTION_RIGHT) return RIGHT;
     return -1;
 };
+
 function enableSwipe() {
     const container = document.getElementById("MobileContainer");
     const manager = new Hammer.Manager(container);
