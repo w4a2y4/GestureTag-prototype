@@ -116,7 +116,7 @@ $(document).keyup((e) => {
         e.preventDefault();
         socket.emit('start');
         trial_num = DEFAULT_TRIAL_NUM;
-        JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0); //have to set to zero
+        JumpDistance.fill(0); //have to set to zero
         $(".block").show();
         AssignTargetAlgo();
         showTarget();
@@ -146,7 +146,8 @@ $(document).on('click', 'button', (function(e) {
 
     clearTimeout(trialTimer);
     $(this).addClass('clicked');
-    $('.gif').remove();
+    // $('.gif').remove();
+    $(':button').removeClass('orbit');
     TrialTimeEnd = Date.now();
 
     TrialCompletionTime = TrialTimeEnd - TrialTimeStart
@@ -332,7 +333,8 @@ function changePos(eyeX, eyeY) {
         var eyedir = EyeGesture(eyeX, eyeY, EyeGestureOriX, EyeGestureOriY);
         if (eyedir !== -1) {
             swipeAndUnlock(eyedir);
-            $('.gif').remove();
+            // $('.gif').remove();
+            $(':button').removeClass('orbit');
             EyeGestureOriX = null;
             EyeGestureOriY = null;
         }
@@ -480,33 +482,29 @@ function changePos(eyeX, eyeY) {
                 theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
 
                 // $(btn).find('img').show();
-                $(btn).addClass('orbit');
                 $(btn).find('.dot').show();
+                var jj = getBtnType(btn, eyeX, eyeY);
+                currBtn[jj] = btn;
+                isShown[jj] = true;
 
                 if (theTimeInterval > 600.0) {
-
-                    for (var j = 0; j < 4; j++) {
-                        if (getBtnType(btn) == j && LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
-                            postBtnId[j] = i;
-                            currBtn[j] = btn;
-                            isShown[j] = true;
-                        }
-                    }
-
                     if (!GoEyeGesture && EyeStay(eyeX, eyeY)) {
                         EyeGestureOriX = eyeX;
                         EyeGestureOriY = eyeY;
                         GoEyeGesture = true;
-                        EyeGestureTimeStart = new Array(buttons.length).fill(0.0);
-                        EyeGestureTimeEnd = new Array(buttons.length).fill(0.0);
+                        for (var j = 0; j < 4; j++) {
+                            $(currBtn[j]).addClass('orbit');
+                        }
+                        EyeGestureTimeStart.fill(0.0);
+                        EyeGestureTimeEnd.fill(0.0);
                     }
-
                 }
+
             } else {
                 $(btn).removeClass('orbit');
                 $(btn).find('.dot').hide();
                 isShown.fill(true);
-                for (var j = 0; j < 4; j++) { currBtn[j] = buttons[postBtnId[j]]; }
+                // for (var j = 0; j < 4; j++) { currBtn[j] = buttons[postBtnId[j]]; }
                 if (!isIn(i, postBtnId, 4)) {
                     LockerTimeEnd[i] = Date.now(); // Record time then
                     LockerTimeStart[i] = LockerTimeEnd[i]; // Record time then
@@ -520,7 +518,7 @@ function changePos(eyeX, eyeY) {
     if ( type === 'EyeGesture' ) {
         for (var k = 0; k < buttons.length; k++) {
             var btn = buttons[k];
-            if ( $(btn).is(':visible') && !isIn(k, candidate, 4)) {
+            if ( $(btn).is(':visible') && !isIn(btn, currBtn, 4)) {
                 $(btn).removeClass('orbit');
                 $(btn).find('.dot').hide();
             }
@@ -542,7 +540,7 @@ function showTarget() {
     clearTimeout(trialTimer);
     ready = false;
     GoEyeGesture = false;
-    $('.gif').remove();
+    // $('.gif').remove();
     $(':button').removeClass('orbit');
     $('.dot').hide();
     pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
@@ -550,7 +548,7 @@ function showTarget() {
     if (trial_num == 0) {
         socket.emit('end');
         alert(`You finished ` + DEFAULT_TRIAL_NUM + ` trials. Please press space when you are ready for the next round.`);
-        JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0);
+        JumpDistance.fill(0);
         $(".block").hide();
         return;
     }
@@ -738,8 +736,7 @@ function AssignTargetAlgo() {
 }
 
 function ButtonCandidate(midX, midY, trialNum, btn_num) {
-    CandidateButtonArray = new Array(buttons.length).fill(0);
-    CandidateButtonDistance = new Array(buttons.length).fill(0.0);
+    CandidateButtonArray.fill(0);
     var CandidateBtnX = 0.0;
     var CandidateBtnY = 0.0;
     var CandidateNum = 0;
@@ -749,7 +746,7 @@ function ButtonCandidate(midX, midY, trialNum, btn_num) {
 
     //THIS TRIAL POSITION
     while (CandidateNum == 0 || CandidateButtonArray[NextTargetIndex] == 0) {
-        CandidateButtonArray = new Array(buttons.length).fill(0);
+        CandidateButtonArray.fill(0);
         CandidateNum = 0;
         esilon = esilon + 100.0
         for (var i = 0; i < btn_num; i++) {
@@ -837,6 +834,7 @@ function UserState(ts) {
         console.log("close eyes");
         GoEyeGesture = false;
         $('.gif').remove();
+        $(btn).removeClass('orbit');
         preTimeStamp = ts;
     }
 }
@@ -880,20 +878,12 @@ function EyeStay(x, y) {
     for (var i = 0; i < 10; i++) {
         if ((EyeXave - EyeStayX[i]) * (EyeXave - EyeStayX[i]) + (EyeYave - EyeStayY[i]) * (EyeYave - EyeStayY[i]) > BTN_SIZE * BTN_SIZE) {
             EyeStayTimeStart = Date.now();
-            EyeStayTimeEnd = Date.now();
         }
     }
     EyeStayTimeEnd = Date.now();
     if (EyeStayTimeEnd - EyeStayTimeStart > 1000) {
         console.log("Dwell Stay!!");
-        for (var j = 0; j < 4; j++) {
-            $(currBtn[j]).append(
-                '<img class="gif" src="' +
-                img_prefix + 'arrow_' + j + '.gif"/>'
-            );
-        }
         return true;
-        EyeStayTimeEnd = Date.now();
     }
 
     return false;
