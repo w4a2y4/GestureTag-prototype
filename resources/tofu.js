@@ -95,6 +95,27 @@ var EyeStayY = new Array(10).fill(0.0);
 var preTimeStamp = 0.0;
 
 
+
+////smooth pursuit
+var InitialThreshold = 0.6
+var TotalCorrelationRecord=InitialThreshold
+var d1 = 4;
+var d2 = 100;
+var PursuitY = new Array(d1);
+var PursuitX = new Array(d1);
+for (i = 0 ; i < d1 ; i++) {
+  PursuitY[i] = new Array(d2).fill(0.0);
+  PursuitX[i] = new Array(d2).fill(0.0);
+}
+var PursuitPointCount=0
+var GoSmoothPursuit=false
+var PursuitIndex = 0
+var EyeArrayX=new Array(d2).fill(0.0);
+var EyeArrayY=new Array(d2).fill(0.0);
+////smooth pursuit
+
+
+
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
 const swipeImages = {
@@ -325,6 +346,18 @@ function isIn(x, arr, len) {
 
 function changePos(eyeX, eyeY) {
 
+
+	var X1 = $(document.getElementById("pursuit1")).offset().left + 0.5 * document.getElementById("pursuit1").offsetWidth;
+    var Y1 = $(document.getElementById("pursuit1")).offset().top + 0.5 * document.getElementById("pursuit1").offsetHeight;
+    var X2 = $(document.getElementById("pursuit2")).offset().left + 0.5 * document.getElementById("pursuit2").offsetWidth;
+    var Y2 = $(document.getElementById("pursuit2")).offset().top + 0.5 * document.getElementById("pursuit2").offsetHeight;
+    var X3 = $(document.getElementById("pursuit3")).offset().left + 0.5 * document.getElementById("pursuit3").offsetWidth;
+    var Y3 = $(document.getElementById("pursuit3")).offset().top + 0.5 * document.getElementById("pursuit3").offsetHeight;
+    var X4 = $(document.getElementById("pursuit4")).offset().left + 0.5 * document.getElementById("pursuit4").offsetWidth;
+    var Y4 = $(document.getElementById("pursuit4")).offset().top + 0.5 * document.getElementById("pursuit4").offsetHeight;
+    
+    //console.log("this circle X: "+mmmmmidX+" Y: "+mmmmmidY+" myX: "+eyeX+"myY: "+eyeY)
+
     if (type === 'tap') return;
 
     if (GoEyeGesture) {
@@ -337,6 +370,43 @@ function changePos(eyeX, eyeY) {
         }
         return;
     }
+
+
+    setTimeout(() => {
+ 	 		var pursuitID = SmoothPursuit(eyeX,eyeY,X1,Y1,X2,Y2,X3,Y3,X4,Y4);
+			        if (pursuitID !== null) {
+			        	
+			            //swipeAndUnlock(eyedir);
+			            //ClickBtnByPursuit(pursuitID)
+			            $('.gif').remove();
+			            EyeGestureOriX = null;
+			            EyeGestureOriY = null;
+			        }
+			        
+			        //console.log(pursuitID)
+			        return;
+			        
+			    }, 10);
+
+
+     if (GoSmoothPursuit) {
+     	console.log("ha ha")
+ 		setTimeout(() => {
+ 	 		var pursuitID = SmoothPursuit(eyeX,eyeY,X1,Y1,X2,Y2,X3,Y3,X4,Y4);
+			        if (pursuitID !== null) {
+			        	//console.log(pursuitID)
+			            //swipeAndUnlock(eyedir);
+			            //ClickBtnByPursuit(pursuitID)
+			            $('.gif').remove();
+			            EyeGestureOriX = null;
+			            EyeGestureOriY = null;
+			        }
+			        return;
+			        
+			    }, 200);
+    }
+
+
 
     if (touchLock) return;
     $('#eye_tracker').css({
@@ -495,7 +565,15 @@ function changePos(eyeX, eyeY) {
                         EyeGestureTimeEnd = new Array(buttons.length).fill(0.0);
                     }
 
-
+                    if (!GoSmoothPursuit && EyeStay(eyeX, eyeY)) {
+                    	console.log("go here")
+                    	//PursuitPointCount=0;
+                        EyeGestureOriX = eyeX;
+                        EyeGestureOriY = eyeY;
+                        GoSmoothPursuit = true;
+                        EyeGestureTimeStart = new Array(buttons.length).fill(0.0);
+                        EyeGestureTimeEnd = new Array(buttons.length).fill(0.0);
+                    }
 
                 }
             } else {
@@ -507,6 +585,48 @@ function changePos(eyeX, eyeY) {
                     already[i] = 0;
                 }
             }
+        }
+        else if (type === 'SmoothPursuit'){
+        	 if (isIn(i, candidate, 4)) {
+                if (already[i]) { // Have already looked at the target
+                    LockerTimeEnd[i] = Date.now(); // Record time then
+                    EyeGestureTimeEnd[i] = Date.now();
+                } else {
+                    already[i] = 1; //First time to look at the target
+                    LockerTimeStart[i] = Date.now(); // Record time then
+                    EyeGestureTimeStart[i] = Date.now();
+                }
+                theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
+                $(btn).find('img').show();
+
+                if (theTimeInterval > 600.0) {
+                    for (var j = 0; j < 4; j++) {
+                        if (getBtnType(btn) == j && LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
+                            postBtnId[j] = i;
+                            currBtn[j] = btn;
+                            isShown[j] = true;
+                        }
+                    }
+                    if (!GoSmoothPursuit && EyeStay(eyeX, eyeY)) {
+                    	//PursuitPointCount=0;
+                        EyeGestureOriX = eyeX;
+                        EyeGestureOriY = eyeY;
+                        GoSmoothPursuit = true;
+                        EyeGestureTimeStart = new Array(buttons.length).fill(0.0);
+                        EyeGestureTimeEnd = new Array(buttons.length).fill(0.0);
+                    }
+                }
+            } else {
+                isShown.fill(true);
+                for (var j = 0; j < 4; j++) { currBtn[j] = buttons[postBtnId[j]]; }
+                if (!isIn(i, postBtnId, 4)) {
+                    LockerTimeEnd[i] = Date.now(); // Record time then
+                    LockerTimeStart[i] = LockerTimeEnd[i]; // Record time then
+                    already[i] = 0;
+                }
+            }
+
+
         }
     }
 
@@ -926,7 +1046,46 @@ function getPearsonCorrelation(x, y) {
         sum_x2 += x2[i];
         sum_y2 += y2[i];
     }
-
-
     return (minLen * sum_xy - sum_x * sum_y) / Math.sqrt((minLen * sum_x2 - sum_x * sum_x) * (minLen * sum_y2 - sum_y * sum_y));
+}
+
+
+
+
+function SmoothPursuit(eyeX,eyeY,X1,Y1,X2,Y2,X3,Y3,X4,Y4){
+
+	PursuitIndex = (PursuitIndex + 1) % 100;
+    EyeArrayX[PursuitIndex] = eyeX;
+    EyeArrayY[PursuitIndex] = eyeY;
+    PursuitX[0][PursuitIndex]=X1;
+    PursuitY[0][PursuitIndex]=Y1;
+    PursuitX[1][PursuitIndex]=X2;
+    PursuitY[1][PursuitIndex]=Y2;
+    PursuitX[2][PursuitIndex]=X3;
+    PursuitY[2][PursuitIndex]=Y3;
+    PursuitX[3][PursuitIndex]=X4;
+    PursuitY[3][PursuitIndex]=Y4;
+	pursuitID=null
+	if(PursuitPointCount>100){   //only more than 100 point can go to calculate
+	for(var i=0;i<4;i++){
+		//console.log(PursuitX[i])
+		//eeconsole.log(EyeArrayX)
+			var Xcorrelation=getPearsonCorrelation(PursuitX[i],EyeArrayX)
+			var Ycorrelation=getPearsonCorrelation(PursuitY[i],EyeArrayY)
+			var totalcorrelation=Ycorrelation*Xcorrelation;
+			//console.log("i:"+i+" correlation "+totalcorrelation)
+			if(Xcorrelation>0 &&Ycorrelation>0&&totalcorrelation>TotalCorrelationRecord){
+				TotalCorrelationRecord=totalcorrelation;
+				pursuitID=i;
+				//console.log(totalcorrelation)
+
+			}
+		}
+		if(i!=null)console.log("Orbit ID:"+pursuitID)
+		
+	}
+	
+	PursuitPointCount++;
+	//console.log(PursuitPointCount)
+return pursuitID
 }
