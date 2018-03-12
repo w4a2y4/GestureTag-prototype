@@ -218,7 +218,8 @@ socket.on('init', (method) => {
     type = method;
     console.log(type);
     if (type === 'swipe') imgSet = swipeImages;
-    else if (type === 'EyeGesture') { imgSet = swipeImages; } else if (type === 'tap') imgSet = tapImages;
+    else if (type === 'EyeGesture') imgSet = swipeImages;
+    else if (type === 'tap') imgSet = tapImages;
 });
 
 socket.on('client_init', (width, height) => {
@@ -412,7 +413,7 @@ function changePos(eyeX, eyeY) {
 
     isShown.fill(false);
     $('img').hide();
-    
+
 
     // for each type of gesture, put the nearest's index in candidate[]
     for (var k = 0; k < 9; k++) {
@@ -450,7 +451,7 @@ function changePos(eyeX, eyeY) {
                 $(btn).find('img').show();
                 if (theTimeInterval > 150.0 && touchLock == false) {
                     for (var j = 0; j < 4; j++) {
-                        if (getBtnType(btn) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
+                        if (getBtnType(btn, eyeX, eyeY) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
                             postBtnId[j] = i;
                             currBtn[j] = btn;
                             isShown[j] = true;
@@ -483,6 +484,7 @@ function changePos(eyeX, eyeY) {
 
                 // $(btn).find('img').show();
                 $(btn).find('.dot').show();
+
                 var jj = getBtnType(btn, eyeX, eyeY);
                 currBtn[jj] = btn;
                 isShown[jj] = true;
@@ -494,6 +496,7 @@ function changePos(eyeX, eyeY) {
                         GoEyeGesture = true;
                         for (var j = 0; j < 4; j++) {
                             $(currBtn[j]).addClass('orbit');
+                            console.log(j + ' ' + currBtn);
                         }
                         EyeGestureTimeStart.fill(0.0);
                         EyeGestureTimeEnd.fill(0.0);
@@ -515,10 +518,10 @@ function changePos(eyeX, eyeY) {
         }
     }
 
-    if ( type === 'EyeGesture' ) {
+    if (type === 'EyeGesture') {
         for (var k = 0; k < buttons.length; k++) {
             var btn = buttons[k];
-            if ( $(btn).is(':visible') && !isIn(btn, currBtn, 4)) {
+            if ($(btn).is(':visible') && !isIn(btn, currBtn, 4)) {
                 $(btn).removeClass('orbit');
                 $(btn).find('.dot').hide();
             }
