@@ -445,7 +445,7 @@ function changePos(eyeX, eyeY) {
                 $(btn).find('img').show();
                 if (theTimeInterval > 150.0 && touchLock == false) {
                     for (var j = 0; j < 4; j++) {
-                        if (getBtnType(btn) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
+                        if (getBtnType(btn, eyeX, eyeY) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
                             postBtnId[j] = i;
                             currBtn[j] = btn;
                             isShown[j] = true;
@@ -480,7 +480,7 @@ function changePos(eyeX, eyeY) {
 
 
                     for (var j = 0; j < 4; j++) {
-                        if (getBtnType(btn) == j && LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
+                        if (getBtnType(btn, eyeX, eyeY) == j && LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
                             postBtnId[j] = i;
                             currBtn[j] = btn;
                             isShown[j] = true;
