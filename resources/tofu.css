@@ -94,7 +94,7 @@ button img {
     width: auto;
 }
 
-.gif{
+.gif {
     position: absolute;
     top: 0;
     left: 0;
@@ -161,8 +161,8 @@ button img {
     /* left:2500px; top: 1600px; */
 }
 
-/* ---------- Container for the orbiting circles animation ---------- */
-#circle-orbit-container {
+
+/* #circle-orbit-container {
   position: relative;
   top: 100px;
   left: 100px;
@@ -170,7 +170,7 @@ button img {
   width: 300px;
 }
 
-/* ---------- Inner orbit - This is the circles closest to the central point ---------- */
+
 #inner-orbit {
   position: absolute;
   top: 100px;
@@ -183,7 +183,7 @@ button img {
   animation: spin-right 60s linear infinite;
 }
 
-/* ---------- Repeating styles for the inner orbiting circles ---------- */
+
 .inner-orbit-cirlces {
   position: absolute;
   top: 62px;
@@ -194,7 +194,7 @@ button img {
   background-color: #9F98E6;
 }
 
-/* ---------- Middle orbit - This is the circles second closest to the central point ---------- */
+
 #middle-orbit {
   position: absolute;
   top: 75px;
@@ -207,7 +207,7 @@ button img {
   animation: spin-left 60s linear infinite;
 }
 
-/* ---------- Repeating styles for the inner orbiting circles ---------- */
+
 .middle-orbit-cirlces {
   position: absolute;
   top: 25px;
@@ -218,7 +218,7 @@ button img {
   background-color: #4A437F;
 }
 
-/* ---------- Outer orbit - This is the circles furthest away from the central point ---------- */
+
 #outer-orbit {
   position: absolute;
   top: 30;
@@ -231,7 +231,7 @@ button img {
   animation: spin-right 20s linear infinite;
 }
 
-/* ---------- Repeating styles for the outer orbiting circles ---------- */
+
 .outer-orbit-cirlces {
   position: absolute;
   top: -17px;
@@ -242,7 +242,7 @@ button img {
   background-color: #00FFCA;
 }
 
-/* ---------- Outer orbit - This is the circles furthest away from the central point ---------- */
+
 #Max-outer-orbit {
   position: absolute;
   top: 0;
@@ -255,7 +255,7 @@ button img {
   animation: spin-left 20s linear infinite;
 }
 
-/* ---------- Repeating styles for the outer orbiting circles ---------- */
+
 .Max-outer-orbit-cirlces {
   position: absolute;
   top: -17px;
@@ -266,7 +266,7 @@ button img {
   background-color: #00FFCA;
 }
 
-/* ---------- Animation ---------- */
+
 @-webkit-keyframes spin-right {
   100% {
     -webkit-transform: rotate(360deg);
@@ -285,4 +285,4 @@ button img {
     -o-transform: rotate(-360deg);
     transform: rotate(-360deg);
   }
-}
+} */
