@@ -366,11 +366,13 @@ function changePos(eyeX, eyeY) {
     if (type === 'dwell') {
 
         if (!overlap(buttons[me], eyeX, eyeY)) {
+        	dwelling = null;
             pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
             return
         }
 
-        if (dwelling === me) {
+        if (dwelling === me&&overlap(buttons[me], eyeX, eyeY)) {
+        	
             // Have already looked at the target
             TimeEnd = Date.now();
             // check if dwell time is long enough
@@ -386,6 +388,7 @@ function changePos(eyeX, eyeY) {
             TimeStart = Date.now();
             pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd - 185 } });
             console.log("START");
+             already[i] = 0;
         }
 
         return;
@@ -476,6 +479,15 @@ function changePos(eyeX, eyeY) {
 
                 if (theTimeInterval > 600.0) {
 
+                    
+                    for (var j = 0; j < 4; j++) {
+                        if (getBtnType(btn) == j && LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
+                            postBtnId[j] = i;
+                            currBtn[j] = btn;
+                            isShown[j] = true;
+                        }
+                    }
+
                     if (!GoEyeGesture && EyeStay(eyeX, eyeY)) {
                         EyeGestureOriX = eyeX;
                         EyeGestureOriY = eyeY;
@@ -484,13 +496,8 @@ function changePos(eyeX, eyeY) {
                         EyeGestureTimeEnd = new Array(buttons.length).fill(0.0);
                     }
 
-                    for (var j = 0; j < 4; j++) {
-                        if (getBtnType(btn) == j && LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
-                            postBtnId[j] = i;
-                            currBtn[j] = btn;
-                            isShown[j] = true;
-                        }
-                    }
+
+
                 }
             } else {
                 isShown.fill(true);
@@ -636,7 +643,6 @@ var getSwipeDirection = (direction) => {
     else if (direction === Hammer.DIRECTION_RIGHT) return RIGHT;
     return -1;
 };
-
 function enableSwipe() {
     const container = document.getElementById("MobileContainer");
     const manager = new Hammer.Manager(container);
@@ -716,7 +722,6 @@ function ButtonCandidate(midX, midY, trialNum, btn_num) {
     CandidateButtonArray = new Array(buttons.length).fill(0);
     CandidateButtonDistance = new Array(buttons.length).fill(0.0);
     var CandidateBtnX = 0.0;
-
     var CandidateBtnY = 0.0;
     var CandidateNum = 0;
     var esilon = 100.0;
@@ -741,17 +746,14 @@ function ButtonCandidate(midX, midY, trialNum, btn_num) {
         }
         NextTargetIndex = Math.ceil(Math.random() * CandidateNum);
     }
-
     return CandidateButtonArray[NextTargetIndex];
 }
 
 
 function Eyespacingerror(x, y) {
-
     ErrorIndex = (ErrorIndex + 1) % 10;
     var XData = 0.0,
         YData = 0.0;
-
     for (var i = 0; i < 10; i++) {
         XData += EyeErrorX[i];
         YData += EyeErrorY[i];
@@ -768,7 +770,6 @@ function Eyespacingerror(x, y) {
         }
     }
     ErrorTimeEnd = Date.now();
-
     if (ErrorTimeEnd - ErrorTimeStart > 330) {
         DwellSelectionCount++;
         ErrorTimeStart = Date.now();
@@ -853,7 +854,6 @@ function EyeStay(x, y) {
         XData += EyeStayX[i];
         YData += EyeStayY[i];
     }
-
     var EyeXave = XData / 10;
     var EyeYave = YData / 10;
     EyeStayX[StayIndex] = x;
@@ -865,7 +865,6 @@ function EyeStay(x, y) {
         }
     }
     EyeStayTimeEnd = Date.now();
-
     if (EyeStayTimeEnd - EyeStayTimeStart > 1000) {
         console.log("Dwell Stay!!");
         for (var j = 0; j < 4; j++) {
