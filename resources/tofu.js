@@ -413,8 +413,10 @@ function changePos(eyeX, eyeY) {
         me - COL_NUM, me - COL_NUM - 1, me - COL_NUM + 1,
         me + COL_NUM, me + COL_NUM - 1, me + COL_NUM + 1
     ];
+
     isShown.fill(false);
     $('img').hide();
+    
 
     // for each type of gesture, put the nearest's index in candidate[]
     for (var k = 0; k < 9; k++) {
@@ -469,6 +471,7 @@ function changePos(eyeX, eyeY) {
         } else if (type === 'EyeGesture') {
 
             if (isIn(i, candidate, 4)) {
+
                 if (already[i]) { // Have already looked at the target
                     LockerTimeEnd[i] = Date.now(); // Record time then
                     EyeGestureTimeEnd[i] = Date.now();
@@ -480,8 +483,10 @@ function changePos(eyeX, eyeY) {
                 theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
 
                 // $(btn).find('img').show();
-                if (theTimeInterval > 600.0) {
+                $(btn).addClass('orbit');
+                $(btn).find('.dot').show();
 
+                if (theTimeInterval > 600.0) {
 
                     for (var j = 0; j < 4; j++) {
                         if (getBtnType(btn) == j && LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
@@ -499,10 +504,10 @@ function changePos(eyeX, eyeY) {
                         EyeGestureTimeEnd = new Array(buttons.length).fill(0.0);
                     }
 
-
-
                 }
             } else {
+                $(btn).removeClass('orbit');
+                $(btn).find('.dot').hide();
                 isShown.fill(true);
                 for (var j = 0; j < 4; j++) { currBtn[j] = buttons[postBtnId[j]]; }
                 if (!isIn(i, postBtnId, 4)) {

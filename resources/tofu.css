@@ -72,13 +72,16 @@ button {
     position: absolute;
     height: calc( 12px / 0.6);
     width: calc( 12px / 0.6);
-    border: 2px #4A437F dashed;
     border-radius: 50%;
     top: 50%;
     left: 50%;
     margin-top: calc( -16px / 0.6);
     margin-left: calc( -16px / 0.6);
     background-color: #e7e7e7;
+}
+
+.orbit {
+    border: 2px #4A437F dashed;
     animation: spin-right 10s linear infinite;
 }
 
@@ -112,8 +115,8 @@ button img {
     left: 0;
 }
 
-.orbit {
-    /*display: none;*/
+.dot {
+    display: none;
     position: absolute;
     width: 10px;
     height: 10px;
