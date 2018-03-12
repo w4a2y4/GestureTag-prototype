@@ -41,9 +41,10 @@ const TOFU_HEIGHT = server_height / RAW_NUM;
 
 var LockerTimeEnd = new Array(buttons.length).fill(0.0);
 var LockerTimeStart = new Array(buttons.length).fill(0.0);
+var theTimeInterval = 0.0;
 
 var postBtnId = new Array(4).fill(0);
-var touchLock;
+var touchLock = false;
 
 var JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0);
 var CandidateButtonArray = new Array(buttons.length).fill(0);
@@ -65,9 +66,7 @@ pgBar.circleProgress({
     lineCap: 'round',
     fill: { gradient: ['#0681c4', '#4ac5f8'] },
 });
-const timeTd = 330;
-var outNum = 0;
-
+const timeTd = 330.0;
 var EyeErrorX = new Array(10).fill(0.0);
 var EyeErrorY = new Array(10).fill(0.0);
 var ErrorTimeStart = new Date().getTime();
@@ -112,13 +111,13 @@ const tapImages = {
 };
 
 $(document).keyup((e) => {
-    // key "enter"
+    // key "space" for entering trials
     if (e.which === 32 && platform !== 'mobile') {
         e.preventDefault();
         socket.emit('start');
         trial_num = DEFAULT_TRIAL_NUM;
         JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0); //have to set to zero
-
+        $(".block").show();
         AssignTargetAlgo();
         showTarget();
     } else if (e.which === 69) // key "e"
@@ -128,6 +127,9 @@ $(document).keyup((e) => {
     else if (e.which === 67) { // key "c"
         CalibrationStartTime = Date.now();
         CalibrationState = true;
+    } else if (e.which === 83) { // key "s"
+        $(".calibration").hide();
+        CalibrationState = false;
     }
 })
 
@@ -149,8 +151,8 @@ $(document).on('click', 'button', (function(e) {
 
     TrialCompletionTime = TrialTimeEnd - TrialTimeStart
 
-    LockerTimeEnd = Array(buttons.length).fill(0.0);
-    LockerTimeStart = Array(buttons.length).fill(0.0);
+    LockerTimeEnd.fill(0.0);
+    LockerTimeStart.fill(0.0);
     EyeGestureOriX = null
     EyeGestureOriY = null //reset eyegesture origin
     clicked_btn = $(this).parent().attr('id');
@@ -203,7 +205,7 @@ socket.on('tap', (pos) => {
 });
 
 socket.on('touch', (touch) => {
-    touchLock = true
+    touchLock = true;
     if (show_path) {
         changePath(touch.x, touch.y);
         clearTimeout(touch_timer);
@@ -336,6 +338,7 @@ function changePos(eyeX, eyeY) {
         return;
     }
 
+    if (touchLock) return;
     $('#eye_tracker').css({
         "left": eyeX,
         "top": eyeY
@@ -362,17 +365,18 @@ function changePos(eyeX, eyeY) {
 
     if (type === 'dwell') {
 
-        if (!overlap(buttons[me], eyeX, eyeY)) return;
-        if (outNum >= btn_num) {
+        if (!overlap(buttons[me], eyeX, eyeY)) {
+            dwelling = null;
             pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
-            outNum = 0;
+            return
         }
 
-        if (dwelling === me) {
+        if (dwelling === me && overlap(buttons[me], eyeX, eyeY)) {
+
             // Have already looked at the target
             TimeEnd = Date.now();
             // check if dwell time is long enough
-            if (TimeEnd - TimeStart > 330.0) {
+            if (TimeEnd - TimeStart > timeTd) {
                 buttons[me].click();
                 console.log('from ' + TimeStart % 100000 + ' to ' + TimeEnd % 100000);
                 console.log("Dwell Selection Success!!" + dwelling);
@@ -382,10 +386,10 @@ function changePos(eyeX, eyeY) {
         } else { // First time to look at the target
             dwelling = me;
             TimeStart = Date.now();
-            pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd + 20 } });
+            pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd + 200 } });
+            console.log("START");
         }
 
-        outNum = 0;
         return;
     }
 
@@ -394,6 +398,9 @@ function changePos(eyeX, eyeY) {
     // the candidates are the nearest [up, down, left, right]
     var candidate = new Array(4).fill(-1);
     var dist = new Array(4).fill(5000000);
+
+    //Dwell time locker reset
+    DwellLockerReset(eyeX, eyeY);
 
     var neighborhood = [me, me - 1, me + 1,
         me - COL_NUM, me - COL_NUM - 1, me - COL_NUM + 1,
@@ -434,7 +441,7 @@ function changePos(eyeX, eyeY) {
                     already[i] = 1; //First time to look at the target
                     LockerTimeStart[i] = Date.now(); // Record time then
                 }
-                var theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
+                theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
                 $(btn).find('img').show();
                 if (theTimeInterval > 150.0 && touchLock == false) {
                     for (var j = 0; j < 4; j++) {
@@ -450,8 +457,8 @@ function changePos(eyeX, eyeY) {
                 for (var j = 0; j < 4; j++)
                     currBtn[j] = buttons[postBtnId[j]];
                 if (!isIn(i, postBtnId, 4)) {
-                    LockerTimeEnd[i] = 0.0; // Record time then
-                    LockerTimeStart[i] = 0.0; // Record time then
+                    LockerTimeEnd[i] = Date.now(); // Record time then
+                    LockerTimeStart[i] = LockerTimeEnd[i]; // Record time then
                     already[i] = 0;
                 }
             }
@@ -466,10 +473,19 @@ function changePos(eyeX, eyeY) {
                     LockerTimeStart[i] = Date.now(); // Record time then
                     EyeGestureTimeStart[i] = Date.now();
                 }
-                var theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
+                theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
                 $(btn).find('img').show();
 
                 if (theTimeInterval > 600.0) {
+
+
+                    for (var j = 0; j < 4; j++) {
+                        if (getBtnType(btn) == j && LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
+                            postBtnId[j] = i;
+                            currBtn[j] = btn;
+                            isShown[j] = true;
+                        }
+                    }
 
                     if (!GoEyeGesture && EyeStay(eyeX, eyeY)) {
                         EyeGestureOriX = eyeX;
@@ -479,20 +495,15 @@ function changePos(eyeX, eyeY) {
                         EyeGestureTimeEnd = new Array(buttons.length).fill(0.0);
                     }
 
-                    for (var j = 0; j < 4; j++) {
-                        if (getBtnType(btn) == j && LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
-                            postBtnId[j] = i;
-                            currBtn[j] = btn;
-                            isShown[j] = true;
-                        }
-                    }
+
+
                 }
             } else {
                 isShown.fill(true);
                 for (var j = 0; j < 4; j++) { currBtn[j] = buttons[postBtnId[j]]; }
                 if (!isIn(i, postBtnId, 4)) {
                     LockerTimeEnd[i] = Date.now(); // Record time then
-                    LockerTimeStart[i] = Date.now(); // Record time then
+                    LockerTimeStart[i] = LockerTimeEnd[i]; // Record time then
                     already[i] = 0;
                 }
             }
@@ -515,11 +526,13 @@ function showTarget() {
     ready = false;
     GoEyeGesture = false;
     $('.gif').remove();
+    pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
 
     if (trial_num == 0) {
         socket.emit('end');
         alert(`You finished ` + DEFAULT_TRIAL_NUM + ` trials. Please press space when you are ready for the next round.`);
         JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0);
+        $(".block").hide();
         return;
     }
 
@@ -531,7 +544,7 @@ function showTarget() {
         gesture = 'timeout';
         log();
         showTarget();
-    }, 20000);
+    }, 200000);
 
     //reset preformance data
     TrialTimeStart = Date.now();
@@ -596,9 +609,10 @@ function showTarget() {
     CurrentTarX = $(buttons[tar]).offset().left + 0.5 * buttons[tar].offsetWidth;
     CurrentTarY = $(buttons[tar]).offset().top + 0.5 * buttons[tar].offsetHeight;
     trial_num -= 1;
+
     setTimeout(() => {
         ready = true;
-    }, 200);
+    }, 500);
 }
 
 function changePath(pathX, pathY) {
@@ -659,7 +673,9 @@ function enableSwipe() {
 
 var swipeAndUnlock = (dir) => {
     if (isShown[dir]) {
-        currBtn[dir].click();
+        console.log("swipe currbtn " + buttons[postBtnId[dir]]);
+        buttons[postBtnId[dir]].click();
+        //currBtn[dir].click();
         already[postBtnId[dir]] = 0;
         touchLock = false;
         console.log("swipe " + dir + ":" + String(postBtnId[dir]));
@@ -706,7 +722,6 @@ function ButtonCandidate(midX, midY, trialNum, btn_num) {
     CandidateButtonArray = new Array(buttons.length).fill(0);
     CandidateButtonDistance = new Array(buttons.length).fill(0.0);
     var CandidateBtnX = 0.0;
-
     var CandidateBtnY = 0.0;
     var CandidateNum = 0;
     var esilon = 100.0;
@@ -731,17 +746,14 @@ function ButtonCandidate(midX, midY, trialNum, btn_num) {
         }
         NextTargetIndex = Math.ceil(Math.random() * CandidateNum);
     }
-
     return CandidateButtonArray[NextTargetIndex];
 }
 
 
 function Eyespacingerror(x, y) {
-
     ErrorIndex = (ErrorIndex + 1) % 10;
     var XData = 0.0,
         YData = 0.0;
-
     for (var i = 0; i < 10; i++) {
         XData += EyeErrorX[i];
         YData += EyeErrorY[i];
@@ -758,7 +770,6 @@ function Eyespacingerror(x, y) {
         }
     }
     ErrorTimeEnd = Date.now();
-
     if (ErrorTimeEnd - ErrorTimeStart > 330) {
         DwellSelectionCount++;
         ErrorTimeStart = Date.now();
@@ -843,7 +854,6 @@ function EyeStay(x, y) {
         XData += EyeStayX[i];
         YData += EyeStayY[i];
     }
-
     var EyeXave = XData / 10;
     var EyeYave = YData / 10;
     EyeStayX[StayIndex] = x;
@@ -855,7 +865,6 @@ function EyeStay(x, y) {
         }
     }
     EyeStayTimeEnd = Date.now();
-
     if (EyeStayTimeEnd - EyeStayTimeStart > 1000) {
         console.log("Dwell Stay!!");
         for (var j = 0; j < 4; j++) {
@@ -869,4 +878,16 @@ function EyeStay(x, y) {
     }
 
     return false;
+}
+
+function DwellLockerReset(eyeX, eyeY) {
+    if (type === 'swipe' || type === 'EyeGesture') {
+        for (var k = 0; k < buttons.length; k++) {
+            if (!(overlap(buttons[k], eyeX, eyeY) || isIn(k, postBtnId, 4))) {
+                LockerTimeEnd[k] = Date.now(); // Record time then
+                LockerTimeStart[k] = LockerTimeEnd[k]; // Record time then
+                already[k] = 0;
+            }
+        }
+    }
 }
