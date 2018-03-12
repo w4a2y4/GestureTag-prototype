@@ -273,17 +273,11 @@ function getBtnType(btn, x, y) {
     var diffY = midY - y;
     var slope = diffY / diffX;
 
-    var ans;
-    if (diffX > 0 && slope < 1 && slope > -1) ans = RIGHT;
-    else if (diffX < 0 && slope < 1 && slope > -1) ans = LEFT;
-    else if (diffY > 0 && (slope > 1 || slope < -1)) ans = DOWN;
-    ans = UP;
+    if (diffX > 0 && slope < 1 && slope > -1) return RIGHT;
+    else if (diffX < 0 && slope < 1 && slope > -1) return LEFT;
+    else if (diffY > 0 && (slope > 1 || slope < -1)) return DOWN;
+    return UP;
 
-    if (dynamic) {
-        $(btn).find('img').attr('src', img_prefix + 'arrow_' + ans + '.png');
-    }
-
-    return ans;
 }
 
 function overlap(element, X, Y) {
@@ -429,6 +423,9 @@ function changePos(eyeX, eyeY) {
             if (curr_dist < dist[j]) {
                 candidate[j] = i;
                 dist[j] = curr_dist;
+                if (dynamic) {
+                    $(btn).find('img').attr('src', img_prefix + 'arrow_' + j + '.png');
+                }
             }
         }
     }
@@ -516,6 +513,17 @@ function changePos(eyeX, eyeY) {
                     already[i] = 0;
                 }
             }
+
+        }
+    }
+
+    if ( type === 'EyeGesture' ) {
+        for (var k = 0; k < buttons.length; k++) {
+            var btn = buttons[k];
+            if ( $(btn).is(':visible') && !isIn(k, candidate, 4)) {
+                $(btn).removeClass('orbit');
+                $(btn).find('.dot').hide();
+            }
         }
     }
 
@@ -535,6 +543,8 @@ function showTarget() {
     ready = false;
     GoEyeGesture = false;
     $('.gif').remove();
+    $(':button').removeClass('orbit');
+    $('.dot').hide();
     pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
 
     if (trial_num == 0) {
