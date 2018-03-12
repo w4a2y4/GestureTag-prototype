@@ -94,7 +94,6 @@ var EyeStayY = new Array(10).fill(0.0);
 
 var preTimeStamp = 0.0;
 
-
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
 const swipeImages = {
@@ -109,6 +108,7 @@ const tapImages = {
     left: img_prefix + 'tap_topleft.png',
     right: img_prefix + 'tap_bottomright.png'
 };
+
 
 $(document).keyup((e) => {
     // key "space" for entering trials
@@ -273,10 +273,17 @@ function getBtnType(btn, x, y) {
     var diffY = midY - y;
     var slope = diffY / diffX;
 
-    if (diffX > 0 && slope < 1 && slope > -1) return RIGHT;
-    else if (diffX < 0 && slope < 1 && slope > -1) return LEFT;
-    else if (diffY > 0 && (slope > 1 || slope < -1)) return DOWN;
-    return UP;
+    var ans;
+    if (diffX > 0 && slope < 1 && slope > -1) ans = RIGHT;
+    else if (diffX < 0 && slope < 1 && slope > -1) ans = LEFT;
+    else if (diffY > 0 && (slope > 1 || slope < -1)) ans = DOWN;
+    ans = UP;
+
+    if (dynamic) {
+        $(btn).find('img').attr('src', img_prefix + 'arrow_' + ans + '.png');
+    }
+
+    return ans;
 }
 
 function overlap(element, X, Y) {
@@ -420,9 +427,6 @@ function changePos(eyeX, eyeY) {
             if (curr_dist < dist[j]) {
                 candidate[j] = i;
                 dist[j] = curr_dist;
-                if (dynamic) {
-                    $(btn).find('img').attr('src', img_prefix + 'arrow_' + j + '.png');
-                }
             }
         }
     }
@@ -474,8 +478,8 @@ function changePos(eyeX, eyeY) {
                     EyeGestureTimeStart[i] = Date.now();
                 }
                 theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
-                $(btn).find('img').show();
 
+                // $(btn).find('img').show();
                 if (theTimeInterval > 600.0) {
 
 

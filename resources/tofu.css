@@ -72,12 +72,24 @@ button {
     position: absolute;
     height: calc( 12px / 0.6);
     width: calc( 12px / 0.6);
+    border: 2px #4A437F dashed;
     border-radius: 50%;
     top: 50%;
     left: 50%;
     margin-top: calc( -16px / 0.6);
     margin-left: calc( -16px / 0.6);
     background-color: #e7e7e7;
+    animation: spin-right 10s linear infinite;
+}
+
+@-webkit-keyframes spin-right {
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 
 .target {
@@ -98,6 +110,15 @@ button img {
     position: absolute;
     top: 0;
     left: 0;
+}
+
+.orbit {
+    /*display: none;*/
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: black;
+    border-radius: 50%;
 }
 
 .calibration {
