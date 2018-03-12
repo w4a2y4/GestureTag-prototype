@@ -388,7 +388,6 @@ function changePos(eyeX, eyeY) {
             TimeStart = Date.now();
             pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd + 200 } });
             console.log("START");
-            already[i] = 0;
         }
 
         return;
