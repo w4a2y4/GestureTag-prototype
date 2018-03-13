@@ -105,6 +105,7 @@ for (i = 0; i < 4; i++) {
 }
 var PursuitPointCount = 0;
 var GoSmoothPursuit = false;
+var GetPursuitPosition = false;
 var PursuitIndex = 0;
 var EyeArrayX = new Array(PURSUIT_HISTORY).fill(0.0);
 var EyeArrayY = new Array(PURSUIT_HISTORY).fill(0.0);
@@ -339,9 +340,28 @@ function changePos(eyeX, eyeY) {
     if (type === 'tap') return;
 
     if (GoSmoothPursuit) {
-        SmoothPursuit(eyeX, eyeY);
+
+        var x = [0, 0, 0, 0];
+        var y = [0, 0, 0, 0];
+        for ( var i = 0; i < 4; i++ ) {
+            var dot = document.getElementById('pursuit' + (i+1));
+            x[i] = $(dot).offset().left + 0.5 * dot.offsetWidth;
+            y[i] = $(dot).offset().top + 0.5 * dot.offsetHeight;
+        }
+
+        var pursuitID = DeterminePursuit(eyeX, eyeY, x, y);
+        if (pursuitID !== null) {
+            console.log("Choose orbit:" + pursuitID)
+            buttons[postBtnId[pursuitID]].click();
+            // $('#circle-orbit-container').hide()
+            EyeGestureOriX = null;
+            EyeGestureOriY = null;
+        }
+
         return;
     }
+    
+    $('#circle-orbit-container').hide();
 
     if (touchLock) return;
 
@@ -349,6 +369,12 @@ function changePos(eyeX, eyeY) {
         "left": eyeX,
         "top": eyeY
     });
+
+    $('#circle-orbit-container').css({
+        "left": eyeX,
+        "top": eyeY
+    });
+
 
     $('#canvas_container').css({
         "left": eyeX - 700,
@@ -493,24 +519,15 @@ function changePos(eyeX, eyeY) {
                             isShown[j] = true;
                         }
                     }
-                    /*
-                    if (!GoEyeGesture && EyeStay(eyeX, eyeY)) {
-                        EyeGestureOriX = eyeX;
-                        EyeGestureOriY = eyeY;
-                        GoEyeGesture = true;
-                        EyeGestureTimeStart = new Array(buttons.length).fill(0.0);
-                        EyeGestureTimeEnd = new Array(buttons.length).fill(0.0);
-                    }
-                    */
 
                     if (!GoSmoothPursuit && EyeStay(eyeX, eyeY)) {
-
-
 
                         PursuitPointCount = 0;
                         EyeGestureOriX = eyeX;
                         EyeGestureOriY = eyeY;
-                        console.log("go SmoothPursuit")
+                        console.log("go SmoothPursuit");
+
+                        $('#circle-orbit-container').show();
 
                         GoSmoothPursuit = true;
                         EyeGestureTimeStart = new Array(buttons.length).fill(0.0);
@@ -549,6 +566,7 @@ function showTarget() {
     clearTimeout(trialTimer);
     ready = false;
     GoEyeGesture = false;
+    GoSmoothPursuit = false;
     $('.gif').remove();
     pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
 
@@ -951,35 +969,4 @@ function DeterminePursuit(eyeX, eyeY, x, y) {
 
     PursuitPointCount++;
     return pursuitID;
-}
-
-function SmoothPursuit(eyeX, eyeY) {
-
-    $('#circle-orbit-container').show();
-
-    var x = [0, 0, 0, 0];
-    var y = [0, 0, 0, 0];
-    for ( var i = 0; i < 4; i++ ) {
-        var dot = document.getElementById('pursuit' + (i+1));
-        x[i] = $(dot).offset().left + 0.5 * dot.offsetWidth;
-        y[i] = $(dot).offset().top + 0.5 * dot.offsetHeight;
-    }
-
-    $('#circle-orbit-container').css({
-        "left": EyeGestureOriX,
-        "top": EyeGestureOriY
-    });
-
-    setTimeout(() => {
-        var pursuitID = DeterminePursuit(eyeX, eyeY, x, y);
-        if (pursuitID !== null) {
-            console.log("Choose orbit:" + pursuitID)
-            buttons[postBtnId[pursuitID]].click();
-            $('#circle-orbit-container').hide()
-            EyeGestureOriX = null;
-            EyeGestureOriY = null;
-            GoSmoothPursuit = false;
-        }
-    }, 1);
-
 }
