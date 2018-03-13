@@ -76,6 +76,7 @@ button {
     height: calc( 12px / 0.6);
     width: calc( 12px / 0.6);
     border-radius: 50%;
+    border: solid 5px;
     top: 50%;
     left: 50%;
     margin-top: calc( -16px / 0.6);
@@ -95,12 +96,6 @@ button img {
     display: none;
     height: 100%;
     width: auto;
-}
-
-.gif{
-    position: absolute;
-    top: 0;
-    left: 0;
 }
 
 .calibration {
@@ -201,7 +196,7 @@ button img {
   height: 10px;
   width: 10px;
   border-radius: 100%;
-  background-color: #9F98E6;
+  background-color: yellow;
 }
 
 /* ---------- Middle orbit - This is the circles second closest to the central point ---------- */
@@ -225,7 +220,7 @@ button img {
   height: 20px;
   width: 20px;
   border-radius: 100%;
-  background-color: #4A437F;
+  background-color: green;
 }
 
 /* ---------- Outer orbit - This is the circles furthest away from the central point ---------- */
@@ -249,7 +244,7 @@ button img {
   height: 30px;
   width: 30px;
   border-radius: 100%;
-  background-color: #00FFCA;
+  background-color: blue;
 }
 
 /* ---------- Outer orbit - This is the circles furthest away from the central point ---------- */
@@ -273,7 +268,7 @@ button img {
   height: 50px;
   width: 50px;
   border-radius: 100%;
-  background-color: #00FFCA;
+  background-color: brown;
 }
 
 /* ---------- Animation ---------- */

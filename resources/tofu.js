@@ -10,6 +10,8 @@ const UP = 0,
     LEFT = 2,
     RIGHT = 3;
 
+const color = ["yellow", "green", "blue", "brown"];
+
 var currBtn = new Array(4).fill(null);
 var isShown = new Array(4).fill(false);
 
@@ -161,7 +163,8 @@ $(document).on('click', 'button', (function(e) {
 
     clearTimeout(trialTimer);
     $(this).addClass('clicked');
-    $('.gif').remove();
+    $(':button').css("border-color", "transparent");
+
     TrialTimeEnd = Date.now();
 
     TrialCompletionTime = TrialTimeEnd - TrialTimeStart
@@ -339,7 +342,6 @@ function changePos(eyeX, eyeY) {
         if ( GetPursuitPosition ) {
             GetPursuitPosition = false;
             var pursuitID = DeterminePursuit(eyeX, eyeY);
-            // var pursuitID = DeterminePursuit(eyeX, eyeY, x, y);
             if (pursuitID !== null) {
                 console.log("Choose orbit:" + pursuitID)
                 buttons[postBtnId[pursuitID]].click();
@@ -432,6 +434,8 @@ function changePos(eyeX, eyeY) {
     ];
     isShown.fill(false);
     $('img').hide();
+    $(':button').css("border-color", "transparent");
+
 
     // for each type of gesture, put the nearest's index in candidate[]
     for (var k = 0; k < 9; k++) {
@@ -444,7 +448,7 @@ function changePos(eyeX, eyeY) {
             if (curr_dist < dist[j]) {
                 candidate[j] = i;
                 dist[j] = curr_dist;
-                if (dynamic) {
+                if (dynamic && type==='swipe') {
                     $(btn).find('img').attr('src', img_prefix + 'arrow_' + j + '.png');
                 }
             }
@@ -498,27 +502,24 @@ function changePos(eyeX, eyeY) {
                     EyeGestureTimeStart[i] = Date.now();
                 }
                 theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
-                $(btn).find('img').show();
+                var j = getBtnType(btn, eyeX, eyeY);
+                $(btn).css("border-color", color[j]);
 
                 if (theTimeInterval > 600.0) {
 
-
-                    for (var j = 0; j < 4; j++) {
-                        if (getBtnType(btn, eyeX, eyeY) == j && LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
-                            postBtnId[j] = i;
-                            currBtn[j] = btn;
-                            isShown[j] = true;
-                        }
+                    if ( LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i] ) {
+                        postBtnId[j] = i;
+                        currBtn[j] = btn;
+                        isShown[j] = true;
                     }
 
                     if (!GoSmoothPursuit && EyeStay(eyeX, eyeY)) {
 
                         PursuitPointCount = 0;
                         console.log("go SmoothPursuit");
+                        GoSmoothPursuit = true;
 
                         $('#circle-orbit-container').show();
-
-                        GoSmoothPursuit = true;
                         EyeGestureTimeStart.fill(0.0);
                         EyeGestureTimeEnd.fill(0.0);
                     }
@@ -556,7 +557,7 @@ function showTarget() {
     ready = false;
     GoEyeGesture = false;
     GoSmoothPursuit = false;
-    $('.gif').remove();
+    $(':button').css("border-color", "transparent");
     pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
 
     if (trial_num == 0) {
@@ -748,7 +749,6 @@ function AssignTargetAlgo() {
 
 function ButtonCandidate(midX, midY, trialNum, btn_num) {
     CandidateButtonArray.fill(0);
-    CandidateButtonDistance.fill(0.0);
     var CandidateBtnX = 0.0;
     var CandidateBtnY = 0.0;
     var CandidateNum = 0;
@@ -818,7 +818,7 @@ function UserState(ts) {
         // cancel eyeGesture
         console.log("close eyes");
         GoEyeGesture = false;
-        $('.gif').remove();
+        $(currBtn[i]).css("border-color", "transparent");
         preTimeStamp = ts;
     }
 }
@@ -868,12 +868,6 @@ function EyeStay(x, y) {
     EyeStayTimeEnd = Date.now();
     if (EyeStayTimeEnd - EyeStayTimeStart > 1000) {
         console.log("Dwell Stay!!");
-        for (var j = 0; j < 4; j++) {
-            $(currBtn[j]).append(
-                '<img class="gif" src="' +
-                img_prefix + 'arrow_' + j + '.gif"/>'
-            );
-        }
         return true;
         EyeStayTimeEnd = Date.now();
     }
