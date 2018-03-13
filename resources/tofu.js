@@ -80,8 +80,6 @@ var CalibrationState = false;
 
 var EyeGestureX = new Array(10).fill(0.0);
 var EyeGestureY = new Array(10).fill(0.0);
-var EyeGestureOriX;
-var EyeGestureOriY;
 var GoEyeGesture = false;
 var EyeGestureIndex = 0;
 var EyeGestureTimeStart = new Array(buttons.length).fill(0.0);
@@ -170,8 +168,6 @@ $(document).on('click', 'button', (function(e) {
 
     LockerTimeEnd.fill(0.0);
     LockerTimeStart.fill(0.0);
-    EyeGestureOriX = null;
-    EyeGestureOriY = null ;//reset eyegesture origin
     clicked_btn = $(this).parent().attr('id');
     if (!$(this).hasClass('target')) ErrorCount++;
     log();
@@ -348,8 +344,6 @@ function changePos(eyeX, eyeY) {
                 console.log("Choose orbit:" + pursuitID)
                 buttons[postBtnId[pursuitID]].click();
                 $('#circle-orbit-container').hide()
-                EyeGestureOriX = null;
-                EyeGestureOriY = null;
             }
             setTimeout(() => {
                 GetPursuitPosition = true;
@@ -475,7 +469,7 @@ function changePos(eyeX, eyeY) {
                 $(btn).find('img').show();
                 if (theTimeInterval > 150.0 && touchLock == false) {
                     for (var j = 0; j < 4; j++) {
-                        if (getBtnType(btn) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
+                        if (getBtnType(btn, eyeX, eyeY) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
                             postBtnId[j] = i;
                             currBtn[j] = btn;
                             isShown[j] = true;
@@ -510,7 +504,7 @@ function changePos(eyeX, eyeY) {
 
 
                     for (var j = 0; j < 4; j++) {
-                        if (getBtnType(btn) == j && LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
+                        if (getBtnType(btn, eyeX, eyeY) == j && LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
                             postBtnId[j] = i;
                             currBtn[j] = btn;
                             isShown[j] = true;
@@ -520,8 +514,6 @@ function changePos(eyeX, eyeY) {
                     if (!GoSmoothPursuit && EyeStay(eyeX, eyeY)) {
 
                         PursuitPointCount = 0;
-                        EyeGestureOriX = eyeX;
-                        EyeGestureOriY = eyeY;
                         console.log("go SmoothPursuit");
 
                         $('#circle-orbit-container').show();
@@ -590,8 +582,6 @@ function showTarget() {
     ErrorCount = 0;
     DwellSelectionCount = 0;
     MouseClickCount = 0;
-    EyeGestureOriX = null;
-    EyeGestureOriY = null;
 
     // select target
     var tar;
@@ -960,7 +950,8 @@ function DeterminePursuit(eyeX, eyeY) {
     }
 
     pursuitID = null;
-    if (PursuitPointCount > PURSUIT_HISTORY) { //only more than 100 point can go to calculate
+    // only more than PURSUIT_HISTORY point can go to calculate
+    if (PursuitPointCount > PURSUIT_HISTORY) {
         for (var i = 0; i < 4; i++) {
             var Xcorrelation = getPearsonCorrelation(PursuitX[i], EyeArrayX);
             var Ycorrelation = getPearsonCorrelation(PursuitY[i], EyeArrayY);
