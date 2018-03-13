@@ -131,7 +131,7 @@ $(document).keyup((e) => {
         e.preventDefault();
         socket.emit('start');
         trial_num = DEFAULT_TRIAL_NUM;
-        JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0); //have to set to zero
+        JumpDistance.fill(0); //have to set to zero
         $(".block").show();
         AssignTargetAlgo();
         showTarget();
@@ -519,8 +519,8 @@ function changePos(eyeX, eyeY) {
                         $('#circle-orbit-container').show();
 
                         GoSmoothPursuit = true;
-                        EyeGestureTimeStart = new Array(buttons.length).fill(0.0);
-                        EyeGestureTimeEnd = new Array(buttons.length).fill(0.0);
+                        EyeGestureTimeStart.fill(0.0);
+                        EyeGestureTimeEnd.fill(0.0);
                     }
 
                 }
@@ -543,8 +543,8 @@ function changePos(eyeX, eyeY) {
 }
 
 function setBtnSize(element, size) {
-    $(element).height(size);
-    $(element).width(size);
+    $(element).height(size - 2);
+    $(element).width(size - 2);
     $(element).css('margin-top', -size / 2);
     $(element).css('margin-left', -size / 2);
     $(element).show();
@@ -562,7 +562,7 @@ function showTarget() {
     if (trial_num == 0) {
         socket.emit('end');
         alert(`You finished ` + DEFAULT_TRIAL_NUM + ` trials. Please press space when you are ready for the next round.`);
-        JumpDistance = new Array(DEFAULT_TRIAL_NUM).fill(0);
+        JumpDistance.fill(0);
         $(".block").hide();
         return;
     }
@@ -747,8 +747,8 @@ function AssignTargetAlgo() {
 }
 
 function ButtonCandidate(midX, midY, trialNum, btn_num) {
-    CandidateButtonArray = new Array(buttons.length).fill(0);
-    CandidateButtonDistance = new Array(buttons.length).fill(0.0);
+    CandidateButtonArray.fill(0);
+    CandidateButtonDistance.fill(0.0);
     var CandidateBtnX = 0.0;
     var CandidateBtnY = 0.0;
     var CandidateNum = 0;
@@ -758,7 +758,7 @@ function ButtonCandidate(midX, midY, trialNum, btn_num) {
 
     // THIS TRIAL POSITION
     while (CandidateNum == 0 || CandidateButtonArray[NextTargetIndex] == 0) {
-        CandidateButtonArray = new Array(buttons.length).fill(0);
+        CandidateButtonArray.fill(0);
         CandidateNum = 0;
         esilon = esilon + 100.0
         for (var i = 0; i < btn_num; i++) {
