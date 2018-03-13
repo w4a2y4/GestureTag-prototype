@@ -95,7 +95,7 @@ var EyeStayY = new Array(10).fill(0.0);
 var preTimeStamp = 0.0;
 
 // smooth pursuit
-const PURSUIT_HISTORY = 500;
+const PURSUIT_HISTORY = 120;
 var TotalCorrelationRecord = 0.8;
 var PursuitY = new Array(4);
 var PursuitX = new Array(4);
@@ -186,7 +186,7 @@ $(document).on('click', 'button', (function(e) {
 socket.on('eyemove', (x, y, ts) => {
     // please add some comments about where the magic number is
     // and the reason.
-    let magicScale = 0.8; //surface pro should be 0.8
+    let magicScale = 1.0; //surface pro should be 0.8
     if (GoEyeGesture) UserState(ts);
     changePos(x * magicScale, y * magicScale);
     Eyespacingerror(x * magicScale, y * magicScale);
@@ -339,7 +339,7 @@ function changePos(eyeX, eyeY) {
     if (type === 'tap') return;
 
     if (GoSmoothPursuit) {
-        if ( GetPursuitPosition ) {
+        if (GetPursuitPosition) {
             GetPursuitPosition = false;
             var pursuitID = DeterminePursuit(eyeX, eyeY);
             if (pursuitID !== null) {
@@ -349,11 +349,11 @@ function changePos(eyeX, eyeY) {
             }
             setTimeout(() => {
                 GetPursuitPosition = true;
-            }, 1);
+            }, 0.01);
         }
         return;
     }
-    
+
     $('#circle-orbit-container').hide();
 
     if (touchLock) return;
@@ -448,7 +448,7 @@ function changePos(eyeX, eyeY) {
             if (curr_dist < dist[j]) {
                 candidate[j] = i;
                 dist[j] = curr_dist;
-                if (dynamic && type==='swipe') {
+                if (dynamic && type === 'swipe') {
                     $(btn).find('img').attr('src', img_prefix + 'arrow_' + j + '.png');
                 }
             }
@@ -505,9 +505,9 @@ function changePos(eyeX, eyeY) {
                 var j = getBtnType(btn, eyeX, eyeY);
                 $(btn).css("border-color", color[j]);
 
-                if (theTimeInterval > 600.0) {
+                if (theTimeInterval > 300.0) {
 
-                    if ( LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i] ) {
+                    if (LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
                         postBtnId[j] = i;
                         currBtn[j] = btn;
                         isShown[j] = true;
@@ -866,7 +866,7 @@ function EyeStay(x, y) {
         }
     }
     EyeStayTimeEnd = Date.now();
-    if (EyeStayTimeEnd - EyeStayTimeStart > 1000) {
+    if (EyeStayTimeEnd - EyeStayTimeStart > 300) {
         console.log("Dwell Stay!!");
         return true;
         EyeStayTimeEnd = Date.now();
@@ -928,8 +928,8 @@ function DeterminePursuit(eyeX, eyeY) {
 
     var x = [0, 0, 0, 0];
     var y = [0, 0, 0, 0];
-    for ( var i = 0; i < 4; i++ ) {
-        var dot = document.getElementById('pursuit' + (i+1));
+    for (var i = 0; i < 4; i++) {
+        var dot = document.getElementById('pursuit' + (i + 1));
         x[i] = $(dot).offset().left + 0.5 * dot.offsetWidth;
         y[i] = $(dot).offset().top + 0.5 * dot.offsetHeight;
     }
@@ -938,7 +938,7 @@ function DeterminePursuit(eyeX, eyeY) {
     EyeArrayX[PursuitIndex] = eyeX;
     EyeArrayY[PursuitIndex] = eyeY;
 
-    for ( var i = 0; i < 4; i++ ) {
+    for (var i = 0; i < 4; i++) {
         PursuitX[i][PursuitIndex] = x[i];
         PursuitY[i][PursuitIndex] = y[i];
     }
