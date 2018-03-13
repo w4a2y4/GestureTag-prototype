@@ -105,7 +105,7 @@ for (i = 0; i < 4; i++) {
 }
 var PursuitPointCount = 0;
 var GoSmoothPursuit = false;
-var GetPursuitPosition = false;
+var GetPursuitPosition = true;
 var PursuitIndex = 0;
 var EyeArrayX = new Array(PURSUIT_HISTORY).fill(0.0);
 var EyeArrayY = new Array(PURSUIT_HISTORY).fill(0.0);
@@ -340,24 +340,21 @@ function changePos(eyeX, eyeY) {
     if (type === 'tap') return;
 
     if (GoSmoothPursuit) {
-
-        var x = [0, 0, 0, 0];
-        var y = [0, 0, 0, 0];
-        for ( var i = 0; i < 4; i++ ) {
-            var dot = document.getElementById('pursuit' + (i+1));
-            x[i] = $(dot).offset().left + 0.5 * dot.offsetWidth;
-            y[i] = $(dot).offset().top + 0.5 * dot.offsetHeight;
+        if ( GetPursuitPosition ) {
+            GetPursuitPosition = false;
+            var pursuitID = DeterminePursuit(eyeX, eyeY);
+            // var pursuitID = DeterminePursuit(eyeX, eyeY, x, y);
+            if (pursuitID !== null) {
+                console.log("Choose orbit:" + pursuitID)
+                buttons[postBtnId[pursuitID]].click();
+                $('#circle-orbit-container').hide()
+                EyeGestureOriX = null;
+                EyeGestureOriY = null;
+            }
+            setTimeout(() => {
+                GetPursuitPosition = true;
+            }, 1);
         }
-
-        var pursuitID = DeterminePursuit(eyeX, eyeY, x, y);
-        if (pursuitID !== null) {
-            console.log("Choose orbit:" + pursuitID)
-            buttons[postBtnId[pursuitID]].click();
-            // $('#circle-orbit-container').hide()
-            EyeGestureOriX = null;
-            EyeGestureOriY = null;
-        }
-
         return;
     }
     
@@ -943,7 +940,15 @@ function getPearsonCorrelation(x, y) {
     return (minLen * sum_xy - sum_x * sum_y) / Math.sqrt((minLen * sum_x2 - sum_x * sum_x) * (minLen * sum_y2 - sum_y * sum_y));
 }
 
-function DeterminePursuit(eyeX, eyeY, x, y) {
+function DeterminePursuit(eyeX, eyeY) {
+
+    var x = [0, 0, 0, 0];
+    var y = [0, 0, 0, 0];
+    for ( var i = 0; i < 4; i++ ) {
+        var dot = document.getElementById('pursuit' + (i+1));
+        x[i] = $(dot).offset().left + 0.5 * dot.offsetWidth;
+        y[i] = $(dot).offset().top + 0.5 * dot.offsetHeight;
+    }
 
     PursuitIndex = (PursuitIndex + 1) % PURSUIT_HISTORY;
     EyeArrayX[PursuitIndex] = eyeX;
