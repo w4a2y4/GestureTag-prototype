@@ -27,42 +27,42 @@
         <p><b class="calibration" id="Calibration7" style="font-size:100px;">+</b></p>
         <p><b class="calibration" id="Calibration8" style="font-size:100px;">+</b></p>
         <p><b class="calibration" id="Calibration9" style="font-size:100px;">+</b></p>
-        <% } %>
-            <% for(var i=0; i<15; i++) { %>
-                <% for(var j=0; j<24; j++) { %>
+    <% } %>
 
-                    <div class="block" id="blk_<%=i%>_<%=j%>">
-                        <button value="">
+    <% for(var i=0; i<15; i++) { %>
+        <% for(var j=0; j<24; j++) { %>
+
+            <div class="block" id="blk_<%=i%>_<%=j%>">
+                <button value="">
                 <% if(process.argv[2] === 'swipe'||process.argv[2] === 'EyeGesture'){ %>
                     <% var op = 2 * ( i % 2 ) + ( j % 2 ); %>
                     <img src="../resources/arrow_<%=op%>.png">
                     <div class="dot"></div>
                 <% } %>
                 </button>
-                    </div>
+            </div>
 
-                    <% } %>
-                        <% } %>
+        <% } %>
+    <% } %>
 
-                            <% if(process.argv[4] === 'mobile' && process.argv[2] === 'swipe'){ %>
+    <% if(process.argv[4] === 'mobile' && process.argv[2] === 'swipe'){ %>
+        <div id="MobileContainer"></div>
+    <% } %>
 
-                                <div id="MobileContainer"></div>
-                                <% } %>
+    <div id="canvas_container">
+        <canvas id="canvas" width="1400" height="1000"></canvas>
+    </div>
 
-                                    <div id="canvas_container">
-                                        <canvas id="canvas" width="1400" height="1000"></canvas>
-                                    </div>
+    <% if(process.argv[2] !== 'tap'){ %>
+        <div id="eye_tracker" class="<%=EYETRACKER%>">
+            <% if(process.argv[2] === 'dwell'){ %>
+                <div id="circle"></div>
+            <% } %>
+        </div>
+    <% } %>
 
-                                    <% if(process.argv[2] !== 'tap'){ %>
-                                        <div id="eye_tracker" class="<%=EYETRACKER%>">
-                                            <% if(process.argv[2] === 'dwell'){ %>
-                                                <div id="circle"></div>
-                                                <% } %>
-                                        </div>
-                                        <% } %>
-
-                                            <script src="/socket.io/socket.io.js"></script>
-                                            <script src="resources/tofu.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="resources/tofu.js"></script>
 
 </body>
 
