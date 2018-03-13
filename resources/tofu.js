@@ -97,8 +97,7 @@ var preTimeStamp = 0.0;
 
 
 ////smooth pursuit
-var InitialThreshold = 0.8
-var TotalCorrelationRecord = InitialThreshold
+var TotalCorrelationRecord = 0.8;
 var d1 = 4;
 var d2 = 500;
 var PursuitY = new Array(d1);
@@ -107,9 +106,9 @@ for (i = 0; i < d1; i++) {
     PursuitY[i] = new Array(d2).fill(0.0);
     PursuitX[i] = new Array(d2).fill(0.0);
 }
-var PursuitPointCount = 0
-var GoSmoothPursuit = false
-var PursuitIndex = 0
+var PursuitPointCount = 0;
+var GoSmoothPursuit = false;
+var PursuitIndex = 0;
 var EyeArrayX = new Array(d2).fill(0.0);
 var EyeArrayY = new Array(d2).fill(0.0);
 ////smooth pursuit
@@ -177,18 +176,13 @@ $(document).on('click', 'button', (function(e) {
 
     LockerTimeEnd.fill(0.0);
     LockerTimeStart.fill(0.0);
-    EyeGestureOriX = null
-    EyeGestureOriY = null //reset eyegesture origin
+    EyeGestureOriX = null;
+    EyeGestureOriY = null ;//reset eyegesture origin
     clicked_btn = $(this).parent().attr('id');
-    if (!$(this).hasClass('target')) {
-        ErrorCount++;
-        // setTimeout(() => { $(this).removeClass('clicked') }, 100);
-    }
+    if (!$(this).hasClass('target')) ErrorCount++;
     log();
-    //if ($(this).hasClass('target')) {
 
     setTimeout(() => {
-        // $(this).removeClass('target');
         $('.target').removeClass('target');
         $(this).removeClass('clicked');
         showTarget();
@@ -349,49 +343,18 @@ function isIn(x, arr, len) {
 
 function changePos(eyeX, eyeY) {
 
-
-
-    //console.log("this circle X: "+mmmmmidX+" Y: "+mmmmmidY+" myX: "+eyeX+"myY: "+eyeY)
-
     if (type === 'tap') return;
 
-    if (GoEyeGesture) {
-        var eyedir = EyeGesture(eyeX, eyeY, EyeGestureOriX, EyeGestureOriY);
-        if (eyedir !== -1) {
-            swipeAndUnlock(eyedir);
-            $('.gif').remove();
-            EyeGestureOriX = null;
-            EyeGestureOriY = null;
-        }
-        return;
+    if (GoSmoothPursuit) {
+        SmoothPursuit(eyeX, eyeY);
     }
 
-    SmoothPursuit(eyeX, eyeY)
-        /*
-        setTimeout(() => {
-         	 		var pursuitID = SmoothPursuit(eyeX,eyeY,X1,Y1,X2,Y2,X3,Y3,X4,Y4);
-        			        if (pursuitID !== null) {
-        			        	//console.log(pursuitID)
-        			            //swipeAndUnlock(eyedir);
-        			            //ClickBtnByPursuit(pursuitID)
-        			            $('.gif').remove();
-        			            EyeGestureOriX = null;
-        			            EyeGestureOriY = null;
-        			        }
-        			        return;
-        			        
-        			    }, 1);
-
-        */
-
-
-
     if (touchLock) return;
+
     $('#eye_tracker').css({
         "left": eyeX,
         "top": eyeY
     });
-
 
     $('#canvas_container').css({
         "left": eyeX - 700,
@@ -570,49 +533,12 @@ function changePos(eyeX, eyeY) {
                     already[i] = 0;
                 }
             }
-        } else if (type === 'SmoothPursuit') {
-            if (isIn(i, candidate, 4)) {
-                if (already[i]) { // Have already looked at the target
-                    LockerTimeEnd[i] = Date.now(); // Record time then
-                    EyeGestureTimeEnd[i] = Date.now();
-                } else {
-                    already[i] = 1; //First time to look at the target
-                    LockerTimeStart[i] = Date.now(); // Record time then
-                    EyeGestureTimeStart[i] = Date.now();
-                }
-                theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
-                $(btn).find('img').show();
-
-                if (theTimeInterval > 600.0) {
-                    for (var j = 0; j < 4; j++) {
-                        if (getBtnType(btn) == j && LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
-                            postBtnId[j] = i;
-                            currBtn[j] = btn;
-                            isShown[j] = true;
-                        }
-                    }
-                    if (!GoSmoothPursuit && EyeStay(eyeX, eyeY)) {
-                        //PursuitPointCount=0;
-                        EyeGestureOriX = eyeX;
-                        EyeGestureOriY = eyeY;
-                        GoSmoothPursuit = true;
-                        EyeGestureTimeStart = new Array(buttons.length).fill(0.0);
-                        EyeGestureTimeEnd = new Array(buttons.length).fill(0.0);
-                    }
-                }
-            } else {
-                isShown.fill(true);
-                for (var j = 0; j < 4; j++) { currBtn[j] = buttons[postBtnId[j]]; }
-                if (!isIn(i, postBtnId, 4)) {
-                    LockerTimeEnd[i] = Date.now(); // Record time then
-                    LockerTimeStart[i] = LockerTimeEnd[i]; // Record time then
-                    already[i] = 0;
-                }
-            }
-
-
         }
     }
+
+    // free the memory
+    candidate = null;
+    dist = null;
 
 }
 
@@ -779,7 +705,6 @@ var swipeAndUnlock = (dir) => {
     if (isShown[dir]) {
         console.log("swipe currbtn " + buttons[postBtnId[dir]]);
         buttons[postBtnId[dir]].click();
-        //currBtn[dir].click();
         already[postBtnId[dir]] = 0;
         touchLock = false;
         console.log("swipe " + dir + ":" + String(postBtnId[dir]));
@@ -832,7 +757,7 @@ function ButtonCandidate(midX, midY, trialNum, btn_num) {
     var NextTargetIndex
     var dis = JumpDistance[trialNum - 1];
 
-    //THIS TRIAL POSITION
+    // THIS TRIAL POSITION
     while (CandidateNum == 0 || CandidateButtonArray[NextTargetIndex] == 0) {
         CandidateButtonArray = new Array(buttons.length).fill(0);
         CandidateNum = 0;
@@ -879,33 +804,6 @@ function Eyespacingerror(x, y) {
         ErrorTimeStart = Date.now();
         ErrorTimeEnd = Date.now();
     }
-}
-
-function EyeGesture(x, y, OriX, OriY) {
-
-    if (OriX != null && OriY != null) {
-        var vectorX = x - OriX;
-        var vectorY = -(y - OriY);
-        var VectorLength = Math.pow(vectorX * vectorX + vectorY * vectorY, 0.5);
-
-        if (VectorLength > 200 || OntheEdge(x, y)) {
-
-            var Theta;
-            var CTheta = Math.acos(vectorX / VectorLength) * 180 / 3.1415926;
-            var STheta = Math.asin(vectorY / VectorLength) * 180 / 3.1415926;
-
-            if (vectorY > 0) Theta = CTheta; //1 quagent
-            else Theta = 360 - CTheta; //3 quagent
-
-            if (Theta > 45 && Theta < 135) return UP;
-            else if (Theta > 135 && Theta < 225) return LEFT;
-            else if (Theta > 225 && Theta < 315) return DOWN;
-            else return RIGHT;
-
-        }
-    }
-
-    return -1;
 }
 
 function OntheEdge(x, y) {
@@ -1033,9 +931,6 @@ function getPearsonCorrelation(x, y) {
     return (minLen * sum_xy - sum_x * sum_y) / Math.sqrt((minLen * sum_x2 - sum_x * sum_x) * (minLen * sum_y2 - sum_y * sum_y));
 }
 
-
-
-
 function DeterminePursuit(eyeX, eyeY, X1, Y1, X2, Y2, X3, Y3, X4, Y4) {
 
     PursuitIndex = (PursuitIndex + 1) % 500;
@@ -1052,71 +947,48 @@ function DeterminePursuit(eyeX, eyeY, X1, Y1, X2, Y2, X3, Y3, X4, Y4) {
     pursuitID = null
     if (PursuitPointCount > 500) { //only more than 100 point can go to calculate
         for (var i = 0; i < 4; i++) {
-            //console.log(PursuitX[i])
-            //eeconsole.log(EyeArrayX)
             var Xcorrelation = getPearsonCorrelation(PursuitX[i], EyeArrayX)
             var Ycorrelation = getPearsonCorrelation(PursuitY[i], EyeArrayY)
             var totalcorrelation = Ycorrelation * Xcorrelation;
-            //console.log("i:"+i+" correlation "+totalcorrelation)
             if (Xcorrelation > 0 && Ycorrelation > 0 && totalcorrelation > TotalCorrelationRecord) {
                 TotalCorrelationRecord = totalcorrelation;
                 pursuitID = i;
-                //console.log(totalcorrelation)
-
             }
         }
-        //if(i!=null)console.log("Orbit ID:"+pursuitID)
-
     }
 
     PursuitPointCount++;
-    //console.log(PursuitPointCount)
-    return pursuitID
+    return pursuitID;
 }
 
-
 function SmoothPursuit(eyeX, eyeY) {
-    console.log("Go?:" + GoSmoothPursuit)
-    if (GoSmoothPursuit) {
-        touchLock = true
-        $('#circle-orbit-container').show()
 
-        var X1 = $(document.getElementById("pursuit1")).offset().left + 0.5 * document.getElementById("pursuit1").offsetWidth;
-        var Y1 = $(document.getElementById("pursuit1")).offset().top + 0.5 * document.getElementById("pursuit1").offsetHeight;
-        var X2 = $(document.getElementById("pursuit2")).offset().left + 0.5 * document.getElementById("pursuit2").offsetWidth;
-        var Y2 = $(document.getElementById("pursuit2")).offset().top + 0.5 * document.getElementById("pursuit2").offsetHeight;
-        var X3 = $(document.getElementById("pursuit3")).offset().left + 0.5 * document.getElementById("pursuit3").offsetWidth;
-        var Y3 = $(document.getElementById("pursuit3")).offset().top + 0.5 * document.getElementById("pursuit3").offsetHeight;
-        var X4 = $(document.getElementById("pursuit4")).offset().left + 0.5 * document.getElementById("pursuit4").offsetWidth;
-        var Y4 = $(document.getElementById("pursuit4")).offset().top + 0.5 * document.getElementById("pursuit4").offsetHeight;
+    $('#circle-orbit-container').show();
 
-        $('#circle-orbit-container').css({
-            "left": EyeGestureOriX,
-            "top": EyeGestureOriY
-        });
+    var X1 = $(document.getElementById("pursuit1")).offset().left + 0.5 * document.getElementById("pursuit1").offsetWidth;
+    var Y1 = $(document.getElementById("pursuit1")).offset().top + 0.5 * document.getElementById("pursuit1").offsetHeight;
+    var X2 = $(document.getElementById("pursuit2")).offset().left + 0.5 * document.getElementById("pursuit2").offsetWidth;
+    var Y2 = $(document.getElementById("pursuit2")).offset().top + 0.5 * document.getElementById("pursuit2").offsetHeight;
+    var X3 = $(document.getElementById("pursuit3")).offset().left + 0.5 * document.getElementById("pursuit3").offsetWidth;
+    var Y3 = $(document.getElementById("pursuit3")).offset().top + 0.5 * document.getElementById("pursuit3").offsetHeight;
+    var X4 = $(document.getElementById("pursuit4")).offset().left + 0.5 * document.getElementById("pursuit4").offsetWidth;
+    var Y4 = $(document.getElementById("pursuit4")).offset().top + 0.5 * document.getElementById("pursuit4").offsetHeight;
 
+    $('#circle-orbit-container').css({
+        "left": EyeGestureOriX,
+        "top": EyeGestureOriY
+    });
 
-        //console.log( EyeGestureOriX+" "+ EyeGestureOriY)
-        setTimeout(() => {
-            var pursuitID = DeterminePursuit(eyeX, eyeY, X1, Y1, X2, Y2, X3, Y3, X4, Y4);
-            if (pursuitID !== null) {
-                console.log("Choose orbit:" + pursuitID)
-                    //swipeAndUnlock(eyedir);
-                    //ClickBtnByPursuit(pursuitID)
-                buttons[postBtnId[pursuitID]].click();
-                $('#circle-orbit-container').hide()
-                EyeGestureOriX = null;
-                EyeGestureOriY = null;
-                GoSmoothPursuit = false
-                touchLock = false
-            }
-            return;
-
-        }, 1);
-    } else {
-        console.log("here")
-        $('#circle-orbit-container').hide()
-
-    }
+    setTimeout(() => {
+        var pursuitID = DeterminePursuit(eyeX, eyeY, X1, Y1, X2, Y2, X3, Y3, X4, Y4);
+        if (pursuitID !== null) {
+            console.log("Choose orbit:" + pursuitID)
+            buttons[postBtnId[pursuitID]].click();
+            $('#circle-orbit-container').hide()
+            EyeGestureOriX = null;
+            EyeGestureOriY = null;
+            GoSmoothPursuit = false;
+        }
+    }, 1);
 
 }
