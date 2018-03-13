@@ -540,8 +540,8 @@ function changePos(eyeX, eyeY) {
 }
 
 function setBtnSize(element, size) {
-    $(element).height(size);
-    $(element).width(size);
+    $(element).height(size - 2);
+    $(element).width(size - 2);
     $(element).css('margin-top', -size / 2);
     $(element).css('margin-left', -size / 2);
     $(element).show();
