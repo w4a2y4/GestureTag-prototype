@@ -80,24 +80,10 @@ button {
     background-color: #e7e7e7;
 }
 
-.orbit0 {
-    border: 2px #4A437F dashed;
+/*default orbit*/
+.orbit {
+    border: 2px dashed;
     animation: spin-right 5s linear infinite;
-}
-
-.orbit1 {
-    border: 2px #4A437F dashed;
-    animation: spin-left 5s linear infinite;
-}
-
-.orbit2 {
-    border: 2px #4A437F dashed;
-    animation: spin-right 20s linear infinite;
-}
-
-.orbit3 {
-    border: 2px #4A437F dashed;
-    animation: spin-left 20s linear infinite;
 }
 
 @keyframes spin-right {

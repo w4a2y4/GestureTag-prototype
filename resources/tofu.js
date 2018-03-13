@@ -507,13 +507,6 @@ function changePos(eyeX, eyeY) {
                         }
                         EyeGestureTimeStart.fill(0.0);
                         EyeGestureTimeEnd.fill(0.0);
-                        setInterval(() => {
-                            for (var i = 0; i < 4; i++) {
-                                console.log('x' + i + ': ' + $('.orbit' + i + ' > .dot').position().left);
-                                console.log('y' + i + ': ' + $('.orbit' + i + ' > .dot').position().top);
-                            }
-                        }, 500);
-
                     }
                 }
 
