@@ -21,6 +21,9 @@ body {
     position: absolute;
 }
 
+
+
+
 #MobileContainer {
     height: 100%;
     width: 100%;
@@ -164,23 +167,30 @@ button img {
 /* ---------- Container for the orbiting circles animation ---------- */
 #circle-orbit-container {
   position: relative;
-  top: 100px;
-  left: 100px;
-  height: 300px;
-  width: 300px;
+  top: -100px;
+  left: -100px;
+  height: 100%;
+  width: 100%;
+
+    pointer-events: none;
+    position: absolute;
+
+
 }
+
+
 
 /* ---------- Inner orbit - This is the circles closest to the central point ---------- */
 #inner-orbit {
   position: absolute;
-  top: 100px;
-  left: 100px;
-  width: 150px;
-  height: 150px;
+  top: -100px;
+  left: -100px;
+  width: 200px;
+  height: 200px;
   border: 2px #4A437F dashed;
   border-radius: 100%;
-  -webkit-animation: spin-right 60s linear infinite;
-  animation: spin-right 60s linear infinite;
+  -webkit-animation: spin-right 10s linear infinite;
+  animation: spin-right 10s linear infinite;
 }
 
 /* ---------- Repeating styles for the inner orbiting circles ---------- */
@@ -197,14 +207,14 @@ button img {
 /* ---------- Middle orbit - This is the circles second closest to the central point ---------- */
 #middle-orbit {
   position: absolute;
-  top: 75px;
-  left: 75px;
-  width: 225px;
-  height: 225px;
+  top: -125px;
+  left: -125px;
+  width: 250px;
+  height: 250px;
   border: 2px #4A437F dashed;
   border-radius: 100%;
-  -webkit-animation: spin-left 60s linear infinite;
-  animation: spin-left 60s linear infinite;
+  -webkit-animation: spin-left 10s linear infinite;
+  animation: spin-left 10s linear infinite;
 }
 
 /* ---------- Repeating styles for the inner orbiting circles ---------- */
@@ -221,10 +231,10 @@ button img {
 /* ---------- Outer orbit - This is the circles furthest away from the central point ---------- */
 #outer-orbit {
   position: absolute;
-  top: 30;
-  left: 30;
-  width: 350px;
-  height: 350px;
+  top: -150px;
+  left: -150px;
+  width: 300px;
+  height: 300px;
   border: 2px #4A437F dashed;
   border-radius: 100%;
   -webkit-animation: spin-right 20s linear infinite;
@@ -245,10 +255,10 @@ button img {
 /* ---------- Outer orbit - This is the circles furthest away from the central point ---------- */
 #Max-outer-orbit {
   position: absolute;
-  top: 0;
-  left: 20px;
-  width: 450px;
-  height: 450px;
+  top: -175px;
+  left: -175px;
+  width: 350px;
+  height: 350px;
   border: 2px #4A437F dashed;
   border-radius: 100%;
   -webkit-animation: spin-left 20s linear infinite;
@@ -286,3 +296,5 @@ button img {
     transform: rotate(-360deg);
   }
 }
+
+
