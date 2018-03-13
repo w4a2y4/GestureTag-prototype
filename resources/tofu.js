@@ -332,15 +332,15 @@ function changePos(eyeX, eyeY) {
 
     // Need to modified to followAndUnlock
     if (GoEyeGesture) {
-        // var eyedir = EyeGesture(eyeX, eyeY, EyeGestureOriX, EyeGestureOriY);
-        let eyedir = -1;
-        if (eyedir !== -1) {
-            // swipeAndUnlock(eyedir);
-            // $('.gif').remove();
-            for (let i = 0; i < 4; i++) $(':button').removeClass('orbit' + i);
-            EyeGestureOriX = null;
-            EyeGestureOriY = null;
-        }
+        // // var eyedir = EyeGesture(eyeX, eyeY, EyeGestureOriX, EyeGestureOriY);
+
+        // if (eyedir !== -1) {
+        //     // swipeAndUnlock(eyedir);
+        //     // $('.gif').remove();
+        //     for (let i = 0; i < 4; i++) $(':button').removeClass('orbit' + i);
+        //     EyeGestureOriX = null;
+        //     EyeGestureOriY = null;
+        // }
         return;
     }
 
@@ -503,7 +503,7 @@ function changePos(eyeX, eyeY) {
                         EyeGestureTimeStart.fill(0.0);
                         EyeGestureTimeEnd.fill(0.0);
                         setInterval(() => {
-                            for (var i = 0; i < 1; i++) {
+                            for (var i = 0; i < 4; i++) {
                                 console.log('x' + i + ': ' + $('.orbit' + i + ' > .dot').position().left);
                                 console.log('y' + i + ': ' + $('.orbit' + i + ' > .dot').position().top);
                             }
