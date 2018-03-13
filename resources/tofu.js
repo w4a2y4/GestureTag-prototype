@@ -94,6 +94,8 @@ var EyeStayY = new Array(10).fill(0.0);
 
 var preTimeStamp = 0.0;
 
+const color = ["yellow", "green", "blue", "brown"];
+
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
 const swipeImages = {
@@ -147,7 +149,10 @@ $(document).on('click', 'button', (function(e) {
     clearTimeout(trialTimer);
     $(this).addClass('clicked');
     // $('.gif').remove();
-    for (let i = 0; i < 4; i++) $(':button').removeClass('orbit' + i);
+    for (let i = 0; i < 4; i++) {
+        $(currBtn[i]).css("border-color", "transparent");
+        $(':button').removeClass('orbit' + i);
+    }
     TrialTimeEnd = Date.now();
 
     TrialCompletionTime = TrialTimeEnd - TrialTimeStart
@@ -490,7 +495,6 @@ function changePos(eyeX, eyeY) {
                 var jj = getBtnType(btn, eyeX, eyeY);
                 currBtn[jj] = btn;
                 isShown[jj] = true;
-
                 if (theTimeInterval > 600.0) {
                     if (!GoEyeGesture && EyeStay(eyeX, eyeY)) {
                         EyeGestureOriX = eyeX;
@@ -498,6 +502,7 @@ function changePos(eyeX, eyeY) {
                         GoEyeGesture = true;
                         for (var j = 0; j < 4; j++) {
                             $(currBtn[j]).addClass('orbit' + j);
+                            $(currBtn[j]).css("border-color", color[j]);
                             console.log(j + ' ' + currBtn);
                         }
                         EyeGestureTimeStart.fill(0.0);
@@ -513,7 +518,10 @@ function changePos(eyeX, eyeY) {
                 }
 
             } else {
-                for (let i = 0; i < 4; i++) $(btn).removeClass('orbit' + i);
+                for (let i = 0; i < 4; i++) {
+                    // $(currBtn[i]).css("border-color", "transparent");
+                    $(btn).removeClass('orbit' + i);
+                }
                 $(btn).find('.dot').hide();
                 isShown.fill(true);
                 // for (var j = 0; j < 4; j++) { currBtn[j] = buttons[postBtnId[j]]; }
@@ -531,7 +539,11 @@ function changePos(eyeX, eyeY) {
         for (var k = 0; k < buttons.length; k++) {
             var btn = buttons[k];
             if ($(btn).is(':visible') && !isIn(btn, currBtn, 4)) {
-                for (let i = 0; i < 4; i++) $(btn).removeClass('orbit' + i);
+
+                for (let i = 0; i < 4; i++) {
+                    // $(currBtn[i]).css("border-color", "transparent");
+                    $(btn).removeClass('orbit' + i);
+                }
                 $(btn).find('.dot').hide();
             }
         }
@@ -553,7 +565,10 @@ function showTarget() {
     ready = false;
     GoEyeGesture = false;
     // $('.gif').remove();
-    for (let i = 0; i < 4; i++) $(':button').removeClass('orbit' + i);
+    for (let i = 0; i < 4; i++) {
+        $(currBtn[i]).css("border-color", "transparent");
+        $(':button').removeClass('orbit' + i);
+    }
     $('.dot').hide();
     pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
 
@@ -846,7 +861,10 @@ function UserState(ts) {
         console.log("close eyes");
         GoEyeGesture = false;
         $('.gif').remove();
-        for (let i = 0; i < 4; i++) $(btn).removeClass('orbit' + i);
+        for (let i = 0; i < 4; i++) {
+            $(currBtn[j]).css("border-color", "transparent");
+            $(btn).removeClass('orbit' + i);
+        }
         preTimeStamp = ts;
     }
 }
