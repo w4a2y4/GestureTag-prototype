@@ -10,7 +10,7 @@ const UP = 0,
     LEFT = 2,
     RIGHT = 3;
 
-const color = ["yellow", "green", "blue", "brown"];
+const color = ["yellow", "green", "blue", "deepskyblue"];
 
 var currBtn = new Array(4).fill(null);
 var isShown = new Array(4).fill(false);
@@ -95,7 +95,7 @@ var EyeStayY = new Array(10).fill(0.0);
 var preTimeStamp = 0.0;
 
 // smooth pursuit
-const PURSUIT_HISTORY = 120;
+const PURSUIT_HISTORY = 150;
 var TotalCorrelationRecord = 0.8;
 var PursuitY = new Array(4);
 var PursuitX = new Array(4);
@@ -505,7 +505,7 @@ function changePos(eyeX, eyeY) {
                 var j = getBtnType(btn, eyeX, eyeY);
                 $(btn).css("border-color", color[j]);
 
-                if (theTimeInterval > 300.0) {
+                if (theTimeInterval > 500.0) {
 
                     if (LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
                         postBtnId[j] = i;
@@ -866,7 +866,7 @@ function EyeStay(x, y) {
         }
     }
     EyeStayTimeEnd = Date.now();
-    if (EyeStayTimeEnd - EyeStayTimeStart > 300) {
+    if (EyeStayTimeEnd - EyeStayTimeStart > 500) {
         console.log("Dwell Stay!!");
         return true;
         EyeStayTimeEnd = Date.now();
