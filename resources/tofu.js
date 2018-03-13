@@ -94,25 +94,20 @@ var EyeStayY = new Array(10).fill(0.0);
 
 var preTimeStamp = 0.0;
 
-
-
-////smooth pursuit
+// smooth pursuit
+const PURSUIT_HISTORY = 500;
 var TotalCorrelationRecord = 0.8;
-var d1 = 4;
-var d2 = 500;
-var PursuitY = new Array(d1);
-var PursuitX = new Array(d1);
-for (i = 0; i < d1; i++) {
-    PursuitY[i] = new Array(d2).fill(0.0);
-    PursuitX[i] = new Array(d2).fill(0.0);
+var PursuitY = new Array(4);
+var PursuitX = new Array(4);
+for (i = 0; i < 4; i++) {
+    PursuitY[i] = new Array(PURSUIT_HISTORY).fill(0.0);
+    PursuitX[i] = new Array(PURSUIT_HISTORY).fill(0.0);
 }
 var PursuitPointCount = 0;
 var GoSmoothPursuit = false;
 var PursuitIndex = 0;
-var EyeArrayX = new Array(d2).fill(0.0);
-var EyeArrayY = new Array(d2).fill(0.0);
-////smooth pursuit
-
+var EyeArrayX = new Array(PURSUIT_HISTORY).fill(0.0);
+var EyeArrayY = new Array(PURSUIT_HISTORY).fill(0.0);
 
 
 var imgSet;
@@ -123,8 +118,6 @@ const swipeImages = {
     left: img_prefix + 'arrow_2.png',
     right: img_prefix + 'arrow_3.png'
 };
-
-
 
 const tapImages = {
     up: img_prefix + 'tap_topright.png',
@@ -347,6 +340,7 @@ function changePos(eyeX, eyeY) {
 
     if (GoSmoothPursuit) {
         SmoothPursuit(eyeX, eyeY);
+        return;
     }
 
     if (touchLock) return;
@@ -931,24 +925,22 @@ function getPearsonCorrelation(x, y) {
     return (minLen * sum_xy - sum_x * sum_y) / Math.sqrt((minLen * sum_x2 - sum_x * sum_x) * (minLen * sum_y2 - sum_y * sum_y));
 }
 
-function DeterminePursuit(eyeX, eyeY, X1, Y1, X2, Y2, X3, Y3, X4, Y4) {
+function DeterminePursuit(eyeX, eyeY, x, y) {
 
-    PursuitIndex = (PursuitIndex + 1) % 500;
+    PursuitIndex = (PursuitIndex + 1) % PURSUIT_HISTORY;
     EyeArrayX[PursuitIndex] = eyeX;
     EyeArrayY[PursuitIndex] = eyeY;
-    PursuitX[0][PursuitIndex] = X1;
-    PursuitY[0][PursuitIndex] = Y1;
-    PursuitX[1][PursuitIndex] = X2;
-    PursuitY[1][PursuitIndex] = Y2;
-    PursuitX[2][PursuitIndex] = X3;
-    PursuitY[2][PursuitIndex] = Y3;
-    PursuitX[3][PursuitIndex] = X4;
-    PursuitY[3][PursuitIndex] = Y4;
-    pursuitID = null
-    if (PursuitPointCount > 500) { //only more than 100 point can go to calculate
+
+    for ( var i = 0; i < 4; i++ ) {
+        PursuitX[i][PursuitIndex] = x[i];
+        PursuitY[i][PursuitIndex] = y[i];
+    }
+
+    pursuitID = null;
+    if (PursuitPointCount > PURSUIT_HISTORY) { //only more than 100 point can go to calculate
         for (var i = 0; i < 4; i++) {
-            var Xcorrelation = getPearsonCorrelation(PursuitX[i], EyeArrayX)
-            var Ycorrelation = getPearsonCorrelation(PursuitY[i], EyeArrayY)
+            var Xcorrelation = getPearsonCorrelation(PursuitX[i], EyeArrayX);
+            var Ycorrelation = getPearsonCorrelation(PursuitY[i], EyeArrayY);
             var totalcorrelation = Ycorrelation * Xcorrelation;
             if (Xcorrelation > 0 && Ycorrelation > 0 && totalcorrelation > TotalCorrelationRecord) {
                 TotalCorrelationRecord = totalcorrelation;
@@ -965,14 +957,13 @@ function SmoothPursuit(eyeX, eyeY) {
 
     $('#circle-orbit-container').show();
 
-    var X1 = $(document.getElementById("pursuit1")).offset().left + 0.5 * document.getElementById("pursuit1").offsetWidth;
-    var Y1 = $(document.getElementById("pursuit1")).offset().top + 0.5 * document.getElementById("pursuit1").offsetHeight;
-    var X2 = $(document.getElementById("pursuit2")).offset().left + 0.5 * document.getElementById("pursuit2").offsetWidth;
-    var Y2 = $(document.getElementById("pursuit2")).offset().top + 0.5 * document.getElementById("pursuit2").offsetHeight;
-    var X3 = $(document.getElementById("pursuit3")).offset().left + 0.5 * document.getElementById("pursuit3").offsetWidth;
-    var Y3 = $(document.getElementById("pursuit3")).offset().top + 0.5 * document.getElementById("pursuit3").offsetHeight;
-    var X4 = $(document.getElementById("pursuit4")).offset().left + 0.5 * document.getElementById("pursuit4").offsetWidth;
-    var Y4 = $(document.getElementById("pursuit4")).offset().top + 0.5 * document.getElementById("pursuit4").offsetHeight;
+    var x = [0, 0, 0, 0];
+    var y = [0, 0, 0, 0];
+    for ( var i = 0; i < 4; i++ ) {
+        var dot = document.getElementById('pursuit' + (i+1));
+        x[i] = $(dot).offset().left + 0.5 * dot.offsetWidth;
+        y[i] = $(dot).offset().top + 0.5 * dot.offsetHeight;
+    }
 
     $('#circle-orbit-container').css({
         "left": EyeGestureOriX,
@@ -980,7 +971,7 @@ function SmoothPursuit(eyeX, eyeY) {
     });
 
     setTimeout(() => {
-        var pursuitID = DeterminePursuit(eyeX, eyeY, X1, Y1, X2, Y2, X3, Y3, X4, Y4);
+        var pursuitID = DeterminePursuit(eyeX, eyeY, x, y);
         if (pursuitID !== null) {
             console.log("Choose orbit:" + pursuitID)
             buttons[postBtnId[pursuitID]].click();
