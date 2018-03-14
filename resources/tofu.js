@@ -163,10 +163,10 @@ $(document).on('click', 'button', (function(e) {
 
     clearTimeout(trialTimer);
     $(this).addClass('clicked');
+    GoSmoothPursuit = false;
     $(':button').css("border-color", "transparent");
 
     TrialTimeEnd = Date.now();
-
     TrialCompletionTime = TrialTimeEnd - TrialTimeStart
 
     LockerTimeEnd.fill(0.0);
@@ -336,6 +336,7 @@ function isIn(x, arr, len) {
 
 function changePos(eyeX, eyeY) {
 
+    if (!ready) return;
     if (type === 'tap') return;
 
     if (GoSmoothPursuit) {
@@ -381,8 +382,6 @@ function changePos(eyeX, eyeY) {
         Calibration(eyeX, eyeY);
         return;
     }
-
-    if (!ready) return;
 
     var btn_num = buttons.length;
 
@@ -436,8 +435,6 @@ function changePos(eyeX, eyeY) {
     ];
     isShown.fill(false);
     $('img').hide();
-    $(':button').css("border-color", "transparent");
-
 
     // for each type of gesture, put the nearest's index in candidate[]
     for (var k = 0; k < 9; k++) {
@@ -543,6 +540,10 @@ function changePos(eyeX, eyeY) {
             }
         }
     }
+
+    for ( var i = 0; i < buttons.length; i++ )
+        if ( !isIn(i, candidate, 4 ))
+            $(buttons[i]).css('border-color', 'transparent');
 
     // free the memory
     candidate = null;
@@ -825,7 +826,6 @@ function UserState(ts) {
         // cancel eyeGesture
         console.log("close eyes");
         GoEyeGesture = false;
-        $(currBtn[i]).css("border-color", "transparent");
         preTimeStamp = ts;
     }
 }
