@@ -65,20 +65,22 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="resources/tofu.js"></script>
 
-    <div id="circle-orbit-container">
-        <div id="track0" class="track">
-            <div class="pursuit" id="pursuit0"></div>
+    <% if(process.argv[2] === 'EyeGesture'){ %>
+        <div id="circle-orbit-container">
+            <div id="track0" class="track">
+                <div class="pursuit" id="pursuit0"></div>
+            </div>
+            <div id="track1" class="track">
+                <div class="pursuit" id="pursuit1"></div>
+            </div>
+            <div id="track2" class="track">
+                <div class="pursuit" id="pursuit2"></div>
+            </div>
+            <div id="track3" class="track">
+                <div class="pursuit" id="pursuit3"></div>
+            </div>
         </div>
-        <div id="track1" class="track">
-            <div class="pursuit" id="pursuit1"></div>
-        </div>
-        <div id="track2" class="track">
-            <div class="pursuit" id="pursuit2"></div>
-        </div>
-        <div id="track3" class="track">
-            <div class="pursuit" id="pursuit3"></div>
-        </div>
-    </div>
+    <% } %>
 
 </body>
 
