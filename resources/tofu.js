@@ -349,13 +349,6 @@ function changePos(eyeX, eyeY) {
             closeEye = true;
         }, 2000);
 
-        PreventOrbitEdge(eyeX,eyeY);
-        $('#circle-orbit-container').css({
-            "left": adjustOrbitX,
-            "top": adjustOrbitY
-        });
-
-
         if (GetPursuitPosition) {
             GetPursuitPosition = false;
             var pursuitID = DeterminePursuit(eyeX, eyeY);
@@ -535,6 +528,12 @@ function changePos(eyeX, eyeY) {
                         }, 2000);
 
                         $('#circle-orbit-container').show();
+                        PreventOrbitEdge(eyeX,eyeY);
+                        $('#circle-orbit-container').css({
+                            "left": adjustOrbitX,
+                            "top": adjustOrbitY
+                        });
+
                         for (var k = 0; k < 4; k++) {
                             if (candidate[k] === -1)
                                 $('#track' + k).hide();
