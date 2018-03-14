@@ -345,7 +345,8 @@ function changePos(eyeX, eyeY) {
             if (pursuitID !== null) {
                 console.log("Choose orbit:" + pursuitID)
                 buttons[postBtnId[pursuitID]].click();
-                $('#circle-orbit-container').hide()
+                $('.track').show();
+                $('#circle-orbit-container').hide();
             }
             setTimeout(() => {
                 GetPursuitPosition = true;
@@ -354,6 +355,7 @@ function changePos(eyeX, eyeY) {
         return;
     }
 
+    $('.track').show();
     $('#circle-orbit-container').hide();
 
     if (touchLock) return;
@@ -520,6 +522,11 @@ function changePos(eyeX, eyeY) {
                         GoSmoothPursuit = true;
 
                         $('#circle-orbit-container').show();
+                        for (var k = 0; k < 4; k++) {
+                            if( candidate[k] === -1 )
+                                $('#track'+k).hide();
+                        }
+
                         EyeGestureTimeStart.fill(0.0);
                         EyeGestureTimeEnd.fill(0.0);
                     }
