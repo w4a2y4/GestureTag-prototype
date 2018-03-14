@@ -91,10 +91,10 @@ button {
 button img {
     display: none;
     height: 100%;
-    width: auto;
+    width: 100%;
 }
 
-.gif{
+.gif {
     position: absolute;
     top: 0;
     left: 0;
