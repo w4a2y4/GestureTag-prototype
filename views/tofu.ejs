@@ -31,65 +31,55 @@
         <p><b class="calibration" id="Calibration7" style="font-size:100px;">+</b></p>
         <p><b class="calibration" id="Calibration8" style="font-size:100px;">+</b></p>
         <p><b class="calibration" id="Calibration9" style="font-size:100px;">+</b></p>
-        <% } %>
-            <% for(var i=0; i<15; i++) { %>
-                <% for(var j=0; j<24; j++) { %>
+    <% } %>
 
-                    <div class="block" id="blk_<%=i%>_<%=j%>">
-                        <button value="">
+    <% for(var i=0; i<15; i++) { %>
+        <% for(var j=0; j<24; j++) { %>
+            <div class="block" id="blk_<%=i%>_<%=j%>">
+                <button value="">
                 <% if(process.argv[2] === 'swipe'||process.argv[2] === 'EyeGesture'){ %>
                     <% var op = 2 * ( i % 2 ) + ( j % 2 ); %>
                     <img src="../resources/arrow_<%=op%>.png">
                 <% } %>
                 </button>
-                    </div>
+            </div>
+        <% } %>
+    <% } %>
 
-                    <% } %>
-                        <% } %>
+    <% if(process.argv[4] === 'mobile' && process.argv[2] === 'swipe'){ %>
+        <div id="MobileContainer"></div>
+    <% } %>
 
-                            <% if(process.argv[4] === 'mobile' && process.argv[2] === 'swipe'){ %>
+    <div id="canvas_container">
+        <canvas id="canvas" width="1400" height="1000"></canvas>
+    </div>
 
-                                <div id="MobileContainer"></div>
-                                <% } %>
+    <% if(process.argv[2] !== 'tap'){ %>
+        <div id="eye_tracker" class="<%=EYETRACKER%>">
+            <% if(process.argv[2] === 'dwell'){ %>
+                <div id="circle"></div>
+            <% } %>
+        </div>
+    <% } %>
 
-                                    <div id="canvas_container">
-                                        <canvas id="canvas" width="1400" height="1000"></canvas>
-                                    </div>
-
-                                    <% if(process.argv[2] !== 'tap'){ %>
-                                        <div id="eye_tracker" class="<%=EYETRACKER%>">
-                                            <% if(process.argv[2] === 'dwell'){ %>
-                                                <div id="circle"></div>
-                                                <% } %>
-                                        </div>
-                                        <% } %>
-
-                                            <script src="/socket.io/socket.io.js"></script>
-                                            <script src="resources/tofu.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="resources/tofu.js"></script>
 
 
     <div id="circle-orbit-container">
-
-  <!-- Circles closest to the central point -->
-  <div id="inner-orbit">
-    <div class="inner-orbit-cirlces" id="pursuit1"></div>
-  </div>
-
-  <!-- Circles second closest to the central point -->
-  <div id="middle-orbit">
-    <div class="middle-orbit-cirlces" id="pursuit2"></div>
-  </div>
-
-  <!-- Circles furthest away to the central point -->
-  <div id="outer-orbit">
-    <div class="outer-orbit-cirlces" id="pursuit3"></div>
-  </div>
-
-  <div id="Max-outer-orbit">
-    <div class="Max-outer-orbit-cirlces" id="pursuit4"></div>
-  </div>
-
-</div>
+        <div id="inner-orbit">
+            <div class="inner-orbit-cirlces" id="pursuit1"></div>
+        </div>
+        <div id="middle-orbit">
+            <div class="middle-orbit-cirlces" id="pursuit2"></div>
+        </div>
+        <div id="outer-orbit">
+            <div class="outer-orbit-cirlces" id="pursuit3"></div>
+        </div>
+        <div id="Max-outer-orbit">
+            <div class="Max-outer-orbit-cirlces" id="pursuit4"></div>
+        </div>
+    </div>
 
 </body>
 
