@@ -349,6 +349,13 @@ function changePos(eyeX, eyeY) {
             closeEye = true;
         }, 2000);
 
+        PreventOrbitEdge(eyeX,eyeY);
+        $('#circle-orbit-container').css({
+            "left": adjustOrbitX,
+            "top": adjustOrbitY
+        });
+
+
         if (GetPursuitPosition) {
             GetPursuitPosition = false;
             var pursuitID = DeterminePursuit(eyeX, eyeY);
@@ -375,14 +382,6 @@ function changePos(eyeX, eyeY) {
         "left": eyeX,
         "top": eyeY
     });
-
-
-    PreventOrbitEdge(eyeX,eyeY);
-    $('#circle-orbit-container').css({
-        "left": adjustOrbitX,
-        "top": adjustOrbitY
-    });
-
 
     $('#canvas_container').css({
         "left": eyeX - 700,
@@ -715,11 +714,8 @@ function enableSwipe() {
         console.log(ev);
         if (ev.maxPointers > 1) {
             if (ev.isFinal === true) {
-                let multidir = ev.direction;
-                if (multidir === Hammer.DIRECTION_UP) swipeAndUnlock(UP);
-                else if (multidir === Hammer.DIRECTION_DOWN) swipeAndUnlock(DOWN);
-                else if (multidir === Hammer.DIRECTION_LEFT) swipeAndUnlock(LEFT);
-                else if (multidir === Hammer.DIRECTION_RIGHT) swipeAndUnlock(RIGHT);
+                let multidir = swipeAndUnlock(ev.direction);
+                swipeAndUnlock(multidir);
             }
         }
     });
@@ -818,14 +814,12 @@ function Eyespacingerror(x, y) {
     for (var i = 0; i < 10; i++) {
         if ((EyeXave - EyeErrorX[i]) * (EyeXave - EyeErrorX[i]) + (EyeYave - EyeErrorY[i]) * (EyeYave - EyeErrorY[i]) > BTN_SIZE * BTN_SIZE) {
             ErrorTimeStart = Date.now();
-            ErrorTimeEnd = Date.now();
         }
     }
     ErrorTimeEnd = Date.now();
     if (ErrorTimeEnd - ErrorTimeStart > 330) {
         DwellSelectionCount++;
         ErrorTimeStart = Date.now();
-        ErrorTimeEnd = Date.now();
     }
 }
 
@@ -852,9 +846,9 @@ function Calibration(eyeX, eyeY) {
 }
 
 function EyeStay(x, y) {
-	console.log(closeEye)
+    console.log(closeEye);
     if (closeEye === true){
-    	closeEye = false;
+        closeEye = false;
         return false
     }
     StayIndex = (StayIndex + 1) % 10;
@@ -879,7 +873,6 @@ function EyeStay(x, y) {
     if (EyeStayTimeEnd - EyeStayTimeStart > 500) {
         console.log("Dwell Stay!!");
         return true;
-        EyeStayTimeEnd = Date.now();
     }
 
     return false;
