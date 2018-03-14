@@ -28,7 +28,7 @@ namespace Interaction_Streams_101
         static OneEuroFilter oneEuroFilterX = new OneEuroFilter(mincutoff, beta);
         static OneEuroFilter oneEuroFilterY = new OneEuroFilter(mincutoff, beta);
 
-        static Boolean isGaze = false;
+        static Boolean isGaze = true;
         
         public static void Main(string[] args)
         {
@@ -42,7 +42,7 @@ namespace Interaction_Streams_101
             if (isGaze)
             {
                 var gazePointDataStream = host.Streams.CreateGazePointDataStream();
-                gazePointDataStream.GazePoint((x, y, ts) => Write(x, y, ts));
+                // gazePointDataStream.GazePoint((x, y, ts) => Write(x, y, ts));
                 gazePointDataStream.GazePoint((x, y, ts) => SendGazeData(x, y, ts));
 
             }
@@ -117,8 +117,8 @@ namespace Interaction_Streams_101
                 kk = 0;
                 aveX = XData / 10;
                 aveY = YData / 10;
-                //socket.Emit("eyemove", aveX, aveY,ts);
-                socket.Emit("eyemove", x, y, ts);
+                socket.Emit("eyemove", aveX, aveY,ts);
+                // socket.Emit("eyemove", x, y, ts);
 
                 //XData = 0.0;
                 //YData = 0.0;
