@@ -92,11 +92,12 @@ var EyeStayTimeStart = new Date().getTime();
 var EyeStayX = new Array(10).fill(0.0);
 var EyeStayY = new Array(10).fill(0.0);
 
+var LockedBtn = new Array()
 var preTimeStamp = 0.0;
 
 // smooth pursuit
 const PURSUIT_HISTORY = 150;
-var TotalCorrelationRecord = 0.8;
+var TotalCorrelationRecord = 0.7;
 var PursuitY = new Array(4);
 var PursuitX = new Array(4);
 for (i = 0; i < 4; i++) {
@@ -188,12 +189,13 @@ $(document).on('click', 'button', (function(e) {
 
 }));
 
-socket.on('eyemove', (x, y, ts) => {
+socket.on('eyemove', (x, y) => {
     // please add some comments about where the magic number is
     // and the reason.
-    let magicScale = 1.0; //surface pro should be 0.8
+    let magicScale = 1; //surface pro should be 0.8
     // if (GoEyeGesture) UserState(ts);
     // closeEye = false;
+    //UserState(ts) ;
     changePos(x * magicScale, y * magicScale);
 
     Eyespacingerror(x * magicScale, y * magicScale);
@@ -299,12 +301,13 @@ function getBtnType(btn, x, y) {
 
 function overlap(element, X, Y) {
     if ($(element).is(':hidden')) return;
+    if($(element)!=null){
     var top = $(element).offset().top;
     var left = $(element).offset().left;
     var right = Number($(element).offset().left) + Number($(element).width());
     var bottom = Number($(element).offset().top) + Number($(element).height());
     var threshold;
-
+	}
     if (type === 'dwell') threshold = 0;
     else threshold = RADIUS;
     // in the element
@@ -342,7 +345,7 @@ function isIn(x, arr, len) {
 }
 
 function changePos(eyeX, eyeY) {
-
+	console.log(eyeX, eyeY)
     if (!ready) return;
     if (type === 'tap') return;
 
@@ -366,7 +369,7 @@ function changePos(eyeX, eyeY) {
             }
             setTimeout(() => {
                 GetPursuitPosition = true;
-            }, 0.01);
+            }, 0.02);
         }
 
         return;
@@ -409,7 +412,7 @@ function changePos(eyeX, eyeY) {
     var tofuX = Math.floor(eyeX / TOFU_WIDTH),
         tofuY = Math.floor(eyeY / TOFU_HEIGHT);
     var me = tofuX + tofuY * COL_NUM;
-
+   
     if (type === 'dwell') {
 
         if (!overlap(buttons[me], eyeX, eyeY)) {
@@ -455,7 +458,7 @@ function changePos(eyeX, eyeY) {
     ];
     isShown.fill(false);
     $('img').hide();
-
+	
     // for each type of gesture, put the nearest's index in candidate[]
     for (var k = 0; k < 9; k++) {
         var i = neighborhood[k];
@@ -487,6 +490,7 @@ function changePos(eyeX, eyeY) {
                 } else {
                     already[i] = 1; //First time to look at the target
                     LockerTimeStart[i] = Date.now(); // Record time then
+                    LockedBtn.push(i);
                 }
                 theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
                 $(btn).find('img').show();
@@ -504,8 +508,10 @@ function changePos(eyeX, eyeY) {
                 for (var j = 0; j < 4; j++)
                     currBtn[j] = buttons[postBtnId[j]];
                 if (!isIn(i, postBtnId, 4)) {
+
                     LockerTimeEnd[i] = Date.now(); // Record time then
                     LockerTimeStart[i] = LockerTimeEnd[i]; // Record time then
+
                     already[i] = 0;
                 }
             }
@@ -519,6 +525,7 @@ function changePos(eyeX, eyeY) {
                     already[i] = 1; //First time to look at the target
                     LockerTimeStart[i] = Date.now(); // Record time then
                     EyeGestureTimeStart[i] = Date.now();
+                    LockedBtn.push(i);
                 }
                 theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
                 var j = getBtnType(btn, eyeX, eyeY);
@@ -847,10 +854,11 @@ function OntheEdge(x, y) {
 }
 
 function UserState(ts) {
-    if (ts - preTimeStamp > 1000) {
+    if (ts - preTimeStamp > 20000) {
         // cancel eyeGesture
+        closeEye=true
         console.log("close eyes");
-        GoEyeGesture = false;
+        //GoEyeGesture = false;
         preTimeStamp = ts;
     }
 }
@@ -878,7 +886,7 @@ function Calibration(eyeX, eyeY) {
 }
 
 function EyeStay(x, y) {
-	console.log(closeEye)
+	
     if (closeEye === true){
     	closeEye = false;
         return false
@@ -896,7 +904,8 @@ function EyeStay(x, y) {
     EyeStayX[StayIndex] = x;
     EyeStayY[StayIndex] = y;
     for (var i = 0; i < 10; i++) {
-        if ((EyeXave - EyeStayX[i]) * (EyeXave - EyeStayX[i]) + (EyeYave - EyeStayY[i]) * (EyeYave - EyeStayY[i]) > BTN_SIZE * BTN_SIZE) {
+    	//console.log(BTN_SIZE)
+        if ((EyeXave - EyeStayX[i]) * (EyeXave - EyeStayX[i]) + (EyeYave - EyeStayY[i]) * (EyeYave - EyeStayY[i]) > BTN_SIZE * BTN_SIZE*2) {
             EyeStayTimeStart = Date.now();
             EyeStayTimeEnd = Date.now();
         }
@@ -920,6 +929,27 @@ function DwellLockerReset(eyeX, eyeY) {
                 already[k] = 0;
             }
         }
+    }
+}
+
+
+function DwellLockerReset(eyeX, eyeY) {
+    if (type === 'swipe' || type === 'EyeGesture') {
+    	var TempLockedBtn=new Array();
+    	console.log(LockedBtn.length)
+        for (var k = 0; k < LockedBtn.length; k++) {
+            if (!(overlap(buttons[k], eyeX, eyeY) || isIn(k, postBtnId, 4))) {
+                LockerTimeEnd[k] = Date.now(); // Record time then
+                LockerTimeStart[k] = LockerTimeEnd[k]; // Record time then
+                already[k] = 0;
+            }
+            else
+            {
+            	TempLockedBtn.push(k)
+            }
+        }
+        LockedBtn = TempLockedBtn;
+
     }
 }
 
@@ -999,8 +1029,7 @@ function DeterminePursuit(eyeX, eyeY) {
 
 
 function PreventOrbitEdge(x, y) {
-
-	var edgeradius=100;
+	var edgeradius=200;
     if (x < edgeradius&&y<edgeradius){adjustOrbitX=edgeradius;adjustOrbitY=edgeradius;}
     else if(x < edgeradius&&y>edgeradius&&y<server_height - edgeradius){adjustOrbitX=edgeradius;adjustOrbitY=y;}
     else if(x < edgeradius&&y>server_height - edgeradius){adjustOrbitX=edgeradius;adjustOrbitY=server_height - edgeradius;}
@@ -1010,6 +1039,6 @@ function PreventOrbitEdge(x, y) {
     else if (x > server_width - edgeradius&&y < edgeradius){adjustOrbitX=server_width - edgeradius;adjustOrbitY=edgeradius;}
     else if (x < server_width - edgeradius&&x > edgeradius&&y < edgeradius){adjustOrbitX=x;adjustOrbitY=edgeradius;}
     else{adjustOrbitX=x;adjustOrbitY=y}
-    
+   
     return false;
 }

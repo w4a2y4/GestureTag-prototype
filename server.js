@@ -144,8 +144,8 @@ io.on('connection', function(socket) {
     })
 
     // recieve eye-tracker position
-    socket.on('eyemove', function(x, y, ts) {
-        io.emit('eyemove', x, y, ts);
+    socket.on('eyemove', function(x, y) {
+        io.emit('eyemove', x, y);
     });
 
     // recieve swiping event

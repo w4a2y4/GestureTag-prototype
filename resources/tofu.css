@@ -176,27 +176,27 @@ button img {
 }
 
 #track0 {
-    top: -100px;
-    left: -100px;
-    width: 200px;
-    height: 200px;
+    top: -137px;
+    left: -137px;
+    width: 274px;
+    height: 274px;
     animation: spin-right 3s linear infinite;
 }
 
 #track1 {
-    top: -125px;
-    left: -125px;
-    width: 250px;
-    height: 250px;
-    animation: spin-left 3s linear infinite;
-}
-
-#track2 {
     top: -150px;
     left: -150px;
     width: 300px;
     height: 300px;
-    animation: spin-right 3s linear infinite;
+    animation: spin-left 4s linear infinite;
+}
+
+#track2 {
+    top: -162px;
+    left: -162px;
+    width: 324px;
+    height: 324px;
+    animation: spin-right 5s linear infinite;
 }
 
 #track3 {
@@ -204,7 +204,7 @@ button img {
     left: -175px;
     width: 350px;
     height: 350px;
-    animation: spin-left 3s linear infinite;
+    animation: spin-left 6s linear infinite;
 }
 
 .pursuit {
@@ -215,16 +215,16 @@ button img {
 #pursuit0 {
     top: 85px;
     left: -6px;
-    height: 10px;
-    width: 10px;
+    height: 30px;
+    width: 30px;
     background-color: yellow;
 }
 
 #pursuit1 {
     top: 190px;
     left: 17px;
-    height: 20px;
-    width: 20px;
+    height: 30px;
+    width: 30px;
     background-color: green;
 }
 
