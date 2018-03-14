@@ -110,6 +110,11 @@ var PursuitIndex = 0;
 var EyeArrayX = new Array(PURSUIT_HISTORY).fill(0.0);
 var EyeArrayY = new Array(PURSUIT_HISTORY).fill(0.0);
 
+var LeaveTimer;
+var closeEye = false;
+
+var adjustOrbitX=0.0;
+var adjustOrbitY=0.0;
 
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
@@ -187,8 +192,10 @@ socket.on('eyemove', (x, y, ts) => {
     // please add some comments about where the magic number is
     // and the reason.
     let magicScale = 1.0; //surface pro should be 0.8
-    if (GoEyeGesture) UserState(ts);
+    // if (GoEyeGesture) UserState(ts);
+    // closeEye = false;
     changePos(x * magicScale, y * magicScale);
+
     Eyespacingerror(x * magicScale, y * magicScale);
 });
 
@@ -340,6 +347,14 @@ function changePos(eyeX, eyeY) {
     if (type === 'tap') return;
 
     if (GoSmoothPursuit) {
+        clearTimeout(LeaveTimer);
+        closeEye = false;
+
+        LeaveTimer = setTimeout(() => {
+            GoSmoothPursuit = false;
+            closeEye = true;
+        }, 2000);
+
         if (GetPursuitPosition) {
             GetPursuitPosition = false;
             var pursuitID = DeterminePursuit(eyeX, eyeY);
@@ -353,6 +368,7 @@ function changePos(eyeX, eyeY) {
                 GetPursuitPosition = true;
             }, 0.01);
         }
+
         return;
     }
 
@@ -366,11 +382,15 @@ function changePos(eyeX, eyeY) {
         "top": eyeY
     });
 
+    
+  
+    PreventOrbitEdge(eyeX,eyeY);
     $('#circle-orbit-container').css({
-        "left": eyeX,
-        "top": eyeY
+        "left": adjustOrbitX,
+        "top": adjustOrbitY
     });
 
+	
 
     $('#canvas_container').css({
         "left": eyeX - 700,
@@ -518,10 +538,15 @@ function changePos(eyeX, eyeY) {
                         console.log("go SmoothPursuit");
                         GoSmoothPursuit = true;
 
+                        LeaveTimer = setTimeout(() => {
+                            GoSmoothPursuit = false;
+                            closeEye = true;
+                        }, 2000);
+
                         $('#circle-orbit-container').show();
                         for (var k = 0; k < 4; k++) {
-                            if( candidate[k] === -1 )
-                                $('#track'+k).hide();
+                            if (candidate[k] === -1)
+                                $('#track' + k).hide();
                         }
 
                         EyeGestureTimeStart.fill(0.0);
@@ -541,11 +566,11 @@ function changePos(eyeX, eyeY) {
         }
     }
 
-    for ( var i = 0; i < buttons.length; i++ )
-        if ( !isIn(i, candidate, 4 ))
+    for (var i = 0; i < buttons.length; i++)
+        if (!isIn(i, candidate, 4))
             $(buttons[i]).css('border-color', 'transparent');
 
-    // free the memory
+        // free the memory
     candidate = null;
     dist = null;
 
@@ -853,7 +878,11 @@ function Calibration(eyeX, eyeY) {
 }
 
 function EyeStay(x, y) {
-
+	console.log(closeEye)
+    if (closeEye === true){
+    	closeEye = false;
+        return false
+    }
     StayIndex = (StayIndex + 1) % 10;
     var XData = 0.0,
         YData = 0.0;
@@ -966,4 +995,21 @@ function DeterminePursuit(eyeX, eyeY) {
 
     PursuitPointCount++;
     return pursuitID;
+}
+
+
+function PreventOrbitEdge(x, y) {
+
+	var edgeradius=100;
+    if (x < edgeradius&&y<edgeradius){adjustOrbitX=edgeradius;adjustOrbitY=edgeradius;}
+    else if(x < edgeradius&&y>edgeradius&&y<server_height - edgeradius){adjustOrbitX=edgeradius;adjustOrbitY=y;}
+    else if(x < edgeradius&&y>server_height - edgeradius){adjustOrbitX=edgeradius;adjustOrbitY=server_height - edgeradius;}
+    else if(x > edgeradius&&x<server_width - edgeradius&&y>server_height - edgeradius){adjustOrbitX=x;adjustOrbitY=server_height - edgeradius;}
+    else if (x > server_width - edgeradius&&y > server_height - edgeradius){adjustOrbitX=server_width - edgeradius;adjustOrbitY=server_height - edgeradius;}
+    else if (x > server_width - edgeradius&&y < server_height - edgeradius&&y>edgeradius){adjustOrbitX=server_width - edgeradius;adjustOrbitY=y;}
+    else if (x > server_width - edgeradius&&y < edgeradius){adjustOrbitX=server_width - edgeradius;adjustOrbitY=edgeradius;}
+    else if (x < server_width - edgeradius&&x > edgeradius&&y < edgeradius){adjustOrbitX=x;adjustOrbitY=edgeradius;}
+    else{adjustOrbitX=x;adjustOrbitY=y}
+    
+    return false;
 }
