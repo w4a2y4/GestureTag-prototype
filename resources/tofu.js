@@ -966,7 +966,7 @@ function DeterminePursuit(eyeX, eyeY) {
 
 function PreventOrbitEdge(x, y) {
 
-    var edgeradius = 100;
+    var edgeradius = 200;
     if (x < edgeradius && y < edgeradius) {
         adjustOrbitX = edgeradius;
         adjustOrbitY = edgeradius;
@@ -995,6 +995,4 @@ function PreventOrbitEdge(x, y) {
         adjustOrbitX = x;
         adjustOrbitY = y
     }
-
-    return false;
 }
