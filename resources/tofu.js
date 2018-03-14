@@ -929,7 +929,7 @@ function DeterminePursuit(eyeX, eyeY) {
     var x = [0, 0, 0, 0];
     var y = [0, 0, 0, 0];
     for (var i = 0; i < 4; i++) {
-        var dot = document.getElementById('pursuit' + (i + 1));
+        var dot = document.getElementById('pursuit' + i);
         x[i] = $(dot).offset().left + 0.5 * dot.offsetWidth;
         y[i] = $(dot).offset().top + 0.5 * dot.offsetHeight;
     }
