@@ -15,8 +15,7 @@ const color = ["yellow", "green", "blue", "deepskyblue"];
 var currBtn = new Array(4).fill(null);
 var isShown = new Array(4).fill(false);
 
-var type;
-var platform;
+var type, platform;
 var dynamic = false;
 
 const TOTAL_DISTANCE = 5000;
@@ -80,10 +79,6 @@ var MouseClickCount = 0;
 var CalibrationStartTime = new Date().getTime();
 var CalibrationState = false;
 
-var EyeGestureX = new Array(10).fill(0.0);
-var EyeGestureY = new Array(10).fill(0.0);
-var GoEyeGesture = false;
-var EyeGestureIndex = 0;
 var EyeGestureTimeStart = new Array(buttons.length).fill(0.0);
 var EyeGestureTimeEnd = new Array(buttons.length).fill(0.0);
 var StayIndex = 0;
@@ -192,7 +187,6 @@ socket.on('eyemove', (x, y, ts) => {
     // please add some comments about where the magic number is
     // and the reason.
     let magicScale = 1.0; //surface pro should be 0.8
-    // if (GoEyeGesture) UserState(ts);
     // closeEye = false;
     changePos(x * magicScale, y * magicScale);
 
@@ -382,15 +376,13 @@ function changePos(eyeX, eyeY) {
         "top": eyeY
     });
 
-    
-  
+
     PreventOrbitEdge(eyeX,eyeY);
     $('#circle-orbit-container').css({
         "left": adjustOrbitX,
         "top": adjustOrbitY
     });
 
-	
 
     $('#canvas_container').css({
         "left": eyeX - 700,
@@ -588,7 +580,6 @@ function showTarget() {
 
     clearTimeout(trialTimer);
     ready = false;
-    GoEyeGesture = false;
     GoSmoothPursuit = false;
     $(':button').css("border-color", "transparent");
     pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
@@ -838,23 +829,6 @@ function Eyespacingerror(x, y) {
     }
 }
 
-function OntheEdge(x, y) {
-    if (x < 10) return true;
-    else if (x > server_width - 10) return true;
-    else if (y < 10) return true;
-    else if (y > server_height - 10) return true;
-    return false;
-}
-
-function UserState(ts) {
-    if (ts - preTimeStamp > 1000) {
-        // cancel eyeGesture
-        console.log("close eyes");
-        GoEyeGesture = false;
-        preTimeStamp = ts;
-    }
-}
-
 function Calibration(eyeX, eyeY) {
 
     var CalibrateID = Math.ceil((Date.now() - CalibrationStartTime) / 3000);
@@ -1000,7 +974,7 @@ function DeterminePursuit(eyeX, eyeY) {
 
 function PreventOrbitEdge(x, y) {
 
-	var edgeradius=100;
+    var edgeradius=100;
     if (x < edgeradius&&y<edgeradius){adjustOrbitX=edgeradius;adjustOrbitY=edgeradius;}
     else if(x < edgeradius&&y>edgeradius&&y<server_height - edgeradius){adjustOrbitX=edgeradius;adjustOrbitY=y;}
     else if(x < edgeradius&&y>server_height - edgeradius){adjustOrbitX=edgeradius;adjustOrbitY=server_height - edgeradius;}
