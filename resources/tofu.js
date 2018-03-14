@@ -113,6 +113,9 @@ var EyeArrayY = new Array(PURSUIT_HISTORY).fill(0.0);
 var LeaveTimer;
 var closeEye = false;
 
+var adjustOrbitX=0.0;
+var adjustOrbitY=0.0;
+
 var imgSet;
 const img_prefix = 'http://localhost:3000/resources/';
 const swipeImages = {
@@ -345,7 +348,7 @@ function changePos(eyeX, eyeY) {
 
     if (GoSmoothPursuit) {
         clearTimeout(LeaveTimer);
-        // closeEye = false;
+        closeEye = false;
 
         LeaveTimer = setTimeout(() => {
             GoSmoothPursuit = false;
@@ -379,11 +382,15 @@ function changePos(eyeX, eyeY) {
         "top": eyeY
     });
 
+    
+  
+    PreventOrbitEdge(eyeX,eyeY);
     $('#circle-orbit-container').css({
-        "left": eyeX,
-        "top": eyeY
+        "left": adjustOrbitX,
+        "top": adjustOrbitY
     });
 
+	
 
     $('#canvas_container').css({
         "left": eyeX - 700,
@@ -871,9 +878,11 @@ function Calibration(eyeX, eyeY) {
 }
 
 function EyeStay(x, y) {
-
-    if (closeEye === true)
+	console.log(closeEye)
+    if (closeEye === true){
+    	closeEye = false;
         return false
+    }
     StayIndex = (StayIndex + 1) % 10;
     var XData = 0.0,
         YData = 0.0;
@@ -986,4 +995,21 @@ function DeterminePursuit(eyeX, eyeY) {
 
     PursuitPointCount++;
     return pursuitID;
+}
+
+
+function PreventOrbitEdge(x, y) {
+
+	var edgeradius=100;
+    if (x < edgeradius&&y<edgeradius){adjustOrbitX=edgeradius;adjustOrbitY=edgeradius;}
+    else if(x < edgeradius&&y>edgeradius&&y<server_height - edgeradius){adjustOrbitX=edgeradius;adjustOrbitY=y;}
+    else if(x < edgeradius&&y>server_height - edgeradius){adjustOrbitX=edgeradius;adjustOrbitY=server_height - edgeradius;}
+    else if(x > edgeradius&&x<server_width - edgeradius&&y>server_height - edgeradius){adjustOrbitX=x;adjustOrbitY=server_height - edgeradius;}
+    else if (x > server_width - edgeradius&&y > server_height - edgeradius){adjustOrbitX=server_width - edgeradius;adjustOrbitY=server_height - edgeradius;}
+    else if (x > server_width - edgeradius&&y < server_height - edgeradius&&y>edgeradius){adjustOrbitX=server_width - edgeradius;adjustOrbitY=y;}
+    else if (x > server_width - edgeradius&&y < edgeradius){adjustOrbitX=server_width - edgeradius;adjustOrbitY=edgeradius;}
+    else if (x < server_width - edgeradius&&x > edgeradius&&y < edgeradius){adjustOrbitX=x;adjustOrbitY=edgeradius;}
+    else{adjustOrbitX=x;adjustOrbitY=y}
+    
+    return false;
 }
