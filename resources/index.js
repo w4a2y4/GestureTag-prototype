@@ -33,9 +33,11 @@ var client_width, client_height;
 
 var LockerTimeEnd = new Array(buttons.length).fill(0.0);
 var LockerTimeStart = new Array(buttons.length).fill(0.0);
+var theTimeInterval = 0.0;
+
 
 var postBtnId = new Array(4).fill(0);
-var touchLock;
+var touchLock = false;
 var trialTimer;
 
 var imgSet;
@@ -87,6 +89,8 @@ $(document).on('click', 'button', (function(e) {
     $(this).addClass('clicked');
     clicked_btn = $(this).parent().attr('id');
     log();
+    LockerTimeEnd.fill(0.0);
+    LockerTimeStart.fill(0.0);
     if ($(this).hasClass('target')) {
         $(this).removeClass('target');
         showTarget();
@@ -225,6 +229,7 @@ function isIn(x, arr, len) {
 
 function changePos(eyeX, eyeY) {
 
+    if (touchLock) return;
     $('#eye_tracker').css({
         "left": eyeX,
         "top": eyeY
@@ -241,6 +246,9 @@ function changePos(eyeX, eyeY) {
     var btn_num = buttons.length;
     var candidate = new Array(4).fill(-1);
     var dist = new Array(4).fill(5000000);
+
+    //Dwell time locker reset
+    // DwellLockerReset(eyeX, eyeY);
 
     // for each type of gesture, put the nearest's index in candidate[]
     if (type === 'swipe') {
@@ -315,8 +323,8 @@ function changePos(eyeX, eyeY) {
                 for (var j = 0; j < 4; j++)
                     currBtn[j] = buttons[postBtnId[j]];
                 if (!isIn(i, postBtnId, 4)) {
-                    LockerTimeEnd[i] = 0.0; // Record time then
-                    LockerTimeStart[i] = 0.0; // Record time then
+                    LockerTimeEnd[i] = Date.now(); // Record time then
+                    LockerTimeStart[i] = LockerTimeEnd[i]; // Record time then
                     already[i] = 0;
                 }
             }
@@ -419,5 +427,17 @@ var swipeAndUnlock = (dir) => {
         already[postBtnId[dir]] = 0;
         touchLock = false;
         console.log("swipe " + dir + ":" + String(postBtnId[dir]));
+    }
+}
+
+function DwellLockerReset(eyeX, eyeY) {
+    if (type === 'swipe' || type === 'EyeGesture') {
+        for (var k = 0; k < buttons.length; k++) {
+            if (!(overlap(buttons[k], eyeX, eyeY) || isIn(k, postBtnId, 4))) {
+                LockerTimeEnd[k] = Date.now(); // Record time then
+                LockerTimeStart[k] = LockerTimeEnd[k]; // Record time then
+                already[k] = 0;
+            }
+        }
     }
 }
