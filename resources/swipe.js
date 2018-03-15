@@ -37,23 +37,23 @@ manager.on('hammer.input', (ev) => {
     // console.log(ev);
 
     // If one can only do multi-touch swipe
-    if (ev.maxPointers > 1) {
-        if (ev.isFinal === true) {
-            let multidir = ev.direction;
-            if (multidir === Hammer.DIRECTION_RIGHT) {
-                dir = 'right';
-            } else if (multidir === Hammer.DIRECTION_UP) {
-                dir = 'up';
-            } else if (multidir === Hammer.DIRECTION_LEFT) {
-                dir = 'left';
-            } else if (multidir === Hammer.DIRECTION_DOWN) {
-                dir = 'down';
-            }
-            emitSwipeGesture(dir);
-            console.log("M: " + dir);
-            ev.target.innerText = `${dir}`
-        }
-    }
+    // if (ev.maxPointers > 1) {
+    //     if (ev.isFinal === true) {
+    //         let multidir = ev.direction;
+    //         if (multidir === Hammer.DIRECTION_RIGHT) {
+    //             dir = 'right';
+    //         } else if (multidir === Hammer.DIRECTION_UP) {
+    //             dir = 'up';
+    //         } else if (multidir === Hammer.DIRECTION_LEFT) {
+    //             dir = 'left';
+    //         } else if (multidir === Hammer.DIRECTION_DOWN) {
+    //             dir = 'down';
+    //         }
+    //         emitSwipeGesture(dir);
+    //         console.log("M: " + dir);
+    //         ev.target.innerText = `${dir}`
+    //     }
+    // }
 });
 
 // If one can do single-touch swipe
