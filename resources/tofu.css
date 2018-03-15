@@ -182,7 +182,7 @@ button img {
 
 .orbit1 {
     border: 2px dashed;
-    animation: spin-right 6s linear infinite;
+    animation: spin-right 1.5s linear infinite;
 }
 
 .orbit2 {
@@ -192,7 +192,7 @@ button img {
 
 .orbit3 {
     border: 2px dashed;
-    animation: spin-left 6s linear infinite;
+    animation: spin-left 1.5s linear infinite;
 }
 
 .dot {
