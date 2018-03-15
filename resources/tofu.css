@@ -73,7 +73,7 @@ button {
     height: calc( 12px / 0.6);
     width: calc( 12px / 0.6);
     border-radius: 50%;
-    border: solid 5px;
+    border-color: transparent;
     top: 50%;
     left: 50%;
     margin-top: calc( -16px / 0.6);
@@ -173,6 +173,35 @@ button img {
     position: absolute;
     border: 2px #4A437F dashed;
     border-radius: 100%;
+}
+
+.orbit0 {
+    border: 2px dashed;
+    animation: spin-right 3s linear infinite;
+}
+
+.orbit1 {
+    border: 2px dashed;
+    animation: spin-right 6s linear infinite;
+}
+
+.orbit2 {
+    border: 2px dashed;
+    animation: spin-left 3s linear infinite;
+}
+
+.orbit3 {
+    border: 2px dashed;
+    animation: spin-left 6s linear infinite;
+}
+
+.dot {
+    display: none;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: black;
+    border-radius: 50%;
 }
 
 #track0 {
