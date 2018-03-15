@@ -165,7 +165,8 @@ $(document).on('click', 'button', (function(e) {
     clearTimeout(trialTimer);
     $(this).addClass('clicked');
     GoSmoothPursuit = false;
-    $(':button').css("border-color", "transparent");
+    // $(':button').css("border-color", "transparent");
+    $('.dot').hide();
 
     TrialTimeEnd = Date.now();
     TrialCompletionTime = TrialTimeEnd - TrialTimeStart
@@ -357,8 +358,12 @@ function changePos(eyeX, eyeY) {
             if (pursuitID !== null) {
                 console.log("Choose orbit:" + pursuitID)
                 buttons[postBtnId[pursuitID]].click();
-                $('.track').show();
-                $('#circle-orbit-container').hide();
+                // $('.track').show();
+                // $('#circle-orbit-container').hide();
+                for (let l = 0; l < 4; l++) {
+                    // $(currBtn[i]).css("border-color", "transparent");
+                    $(':button').removeClass('orbit' + l);
+                }
             }
             setTimeout(() => {
                 GetPursuitPosition = true;
@@ -368,8 +373,12 @@ function changePos(eyeX, eyeY) {
         return;
     }
 
-    $('.track').show();
-    $('#circle-orbit-container').hide();
+    // $('.track').show();
+    // $('#circle-orbit-container').hide();
+    for (let l = 0; l < 4; l++) {
+        // $(currBtn[i]).css("border-color", "transparent");
+        $(':button').removeClass('orbit' + l);
+    }
 
     if (touchLock) return;
 
@@ -509,8 +518,9 @@ function changePos(eyeX, eyeY) {
                      LockedBtn.push(i);
                 }
                 theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
-                var j = getBtnType(btn, eyeX, eyeY);
-                $(btn).css("border-color", color[j]);
+                // var j = getBtnType(btn, eyeX, eyeY);
+                // $(btn).css("border-color", color[j]);
+                $(btn).find('.dot').show();
 
                 if (theTimeInterval > 300.0) {
 
@@ -526,17 +536,23 @@ function changePos(eyeX, eyeY) {
                         console.log("go SmoothPursuit");
                         GoSmoothPursuit = true;
 
+                        for (var l = 0; l < 4; l++) {
+                            $(buttons[candidate[l]]).addClass('orbit' + l);
+                            // $(currBtn[j]).css("border-color", color[j]);
+                            console.log(l + ' ' + currBtn);
+                        }
+
                         LeaveTimer = setTimeout(() => {
                             GoSmoothPursuit = false;
                             closeEye = true;
                         }, 2000);
 
-                        $('#circle-orbit-container').show();
-                        PreventOrbitEdge(eyeX, eyeY);
-                        $('#circle-orbit-container').css({
-                            "left": adjustOrbitX,
-                            "top": adjustOrbitY
-                        });
+                        // $('#circle-orbit-container').show();
+                        // PreventOrbitEdge(eyeX, eyeY);
+                        // $('#circle-orbit-container').css({
+                        //     "left": adjustOrbitX,
+                        //     "top": adjustOrbitY
+                        // });
 
                         for (var k = 0; k < 4; k++) {
                             if (candidate[k] === -1)
@@ -562,7 +578,8 @@ function changePos(eyeX, eyeY) {
 
     for (var i = 0; i < buttons.length; i++)
         if (!isIn(i, candidate, 4))
-            $(buttons[i]).css('border-color', 'transparent');
+            $(buttons[i]).find('.dot').hide();
+            // $(buttons[i]).css('border-color', 'transparent');
 
         // free the memory
     candidate = null;
@@ -583,7 +600,8 @@ function showTarget() {
     clearTimeout(trialTimer);
     ready = false;
     GoSmoothPursuit = false;
-    $(':button').css("border-color", "transparent");
+    // $(':button').css("border-color", "transparent");
+    $('.dot').hide();
     pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
 
     if (trial_num == 0) {
