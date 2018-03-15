@@ -188,7 +188,7 @@ button img {
     left: -125px;
     width: 250px;
     height: 250px;
-    animation: spin-left 3s linear infinite;
+    animation: spin-left 2.7s linear infinite;
 }
 
 #track2 {
@@ -196,7 +196,7 @@ button img {
     left: -150px;
     width: 300px;
     height: 300px;
-    animation: spin-right 3s linear infinite;
+    animation: spin-right 2.7s linear infinite;
 }
 
 #track3 {
@@ -204,7 +204,7 @@ button img {
     left: -175px;
     width: 350px;
     height: 350px;
-    animation: spin-left 3s linear infinite;
+    animation: spin-left 2.9s linear infinite;
 }
 
 .pursuit {
@@ -215,16 +215,16 @@ button img {
 #pursuit0 {
     top: 85px;
     left: -6px;
-    height: 10px;
-    width: 10px;
+    height: 40px;
+    width: 40px;
     background-color: yellow;
 }
 
 #pursuit1 {
     top: 190px;
     left: 17px;
-    height: 20px;
-    width: 20px;
+    height: 40px;
+    width: 40px;
     background-color: green;
 }
 

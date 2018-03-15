@@ -43,6 +43,7 @@ const TOFU_HEIGHT = server_height / RAW_NUM;
 var LockerTimeEnd = new Array(buttons.length).fill(0.0);
 var LockerTimeStart = new Array(buttons.length).fill(0.0);
 var theTimeInterval = 0.0;
+var LockedBtn = new Array();
 
 var postBtnId = new Array(4).fill(0);
 var touchLock = false;
@@ -188,6 +189,7 @@ socket.on('eyemove', (x, y, ts) => {
     // and the reason.
     let magicScale = 1.0; //surface pro should be 0.8
     // closeEye = false;
+    console.log(x+" "+y)
     changePos(x * magicScale, y * magicScale);
 
     Eyespacingerror(x * magicScale, y * magicScale);
@@ -471,6 +473,7 @@ function changePos(eyeX, eyeY) {
                 } else {
                     already[i] = 1; //First time to look at the target
                     LockerTimeStart[i] = Date.now(); // Record time then
+                     LockedBtn.push(i);
                 }
                 theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
                 $(btn).find('img').show();
@@ -503,12 +506,13 @@ function changePos(eyeX, eyeY) {
                     already[i] = 1; //First time to look at the target
                     LockerTimeStart[i] = Date.now(); // Record time then
                     EyeGestureTimeStart[i] = Date.now();
+                     LockedBtn.push(i);
                 }
                 theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
                 var j = getBtnType(btn, eyeX, eyeY);
                 $(btn).css("border-color", color[j]);
 
-                if (theTimeInterval > 500.0) {
+                if (theTimeInterval > 300.0) {
 
                     if (LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
                         postBtnId[j] = i;
@@ -869,7 +873,7 @@ function EyeStay(x, y) {
         }
     }
     EyeStayTimeEnd = Date.now();
-    if (EyeStayTimeEnd - EyeStayTimeStart > 500) {
+    if (EyeStayTimeEnd - EyeStayTimeStart > 300) {
         console.log("Dwell Stay!!");
         return true;
     }
@@ -877,15 +881,24 @@ function EyeStay(x, y) {
     return false;
 }
 
+
 function DwellLockerReset(eyeX, eyeY) {
     if (type === 'swipe' || type === 'EyeGesture') {
-        for (var k = 0; k < buttons.length; k++) {
+        var TempLockedBtn=new Array();
+        console.log(LockedBtn.length)
+        for (var k = 0; k < LockedBtn.length; k++) {
             if (!(overlap(buttons[k], eyeX, eyeY) || isIn(k, postBtnId, 4))) {
-                LockerTimeEnd[k] = Date.now(); // Record time then
-                LockerTimeStart[k] = LockerTimeEnd[k]; // Record time then
-                already[k] = 0;
+                LockerTimeEnd[LockedBtn[k]] = Date.now(); // Record time then
+                LockerTimeStart[LockedBtn[k]] = LockerTimeEnd[LockedBtn[k]]; // Record time then
+                already[LockedBtn[k]] = 0;
+            }
+            elseLockedBtn[k]
+            {
+                TempLockedBtn.push(LockedBtn[k])
             }
         }
+        LockedBtn = TempLockedBtn;
+
     }
 }
 

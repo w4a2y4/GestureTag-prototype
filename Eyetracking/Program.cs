@@ -120,8 +120,8 @@ namespace Interaction_Streams_101
                 socket.Emit("eyemove", aveX, aveY,ts);
                 // socket.Emit("eyemove", x, y, ts);
 
-                //XData = 0.0;
-                //YData = 0.0;
+                XData = 0.0;
+                YData = 0.0;
 
                 //aveX = oneEuroFilterX.Filter(x, 60);
                 //aveY = oneEuroFilterY.Filter(y, 60);
