@@ -18,9 +18,7 @@ var isShown = new Array(4).fill(false);
 var type, platform;
 var dynamic = false;
 
-const TOTAL_DISTANCE = 5000;
-const DEFAULT_TRIAL_NUM = 10;
-var trial_num = DEFAULT_TRIAL_NUM;
+
 
 var clicked_button, target_btn, gesture;
 var buttons = document.getElementsByTagName('button');
@@ -36,6 +34,17 @@ var cxt = c.getContext("2d");
 var server_width = document.documentElement.clientWidth;
 var server_height = document.documentElement.clientHeight;
 var client_width, client_height;
+
+
+var SkipBtnEdgePixel=0
+const DistanceUpbound=600
+const DEFAULT_TRIAL_NUM = 8;
+const TOTAL_DISTANCE=4000
+// (0,600,5000)    //(100,500,3200)    //(200,400,2400) 
+
+var trial_num = DEFAULT_TRIAL_NUM;
+
+
 
 const TOFU_WIDTH = server_width / COL_NUM;
 const TOFU_HEIGHT = server_height / RAW_NUM;
@@ -617,7 +626,9 @@ function showTarget() {
         var temptar;
 
         if (trial_num == DEFAULT_TRIAL_NUM)
-            temptar = Math.floor(Math.random() * btn_num) + RAW_NUM + 1;
+            //temptar = ButtonCandidate((server_width+server_height)/2, (server_width+server_height)/2, trial_num, btn_num);
+            //temptar = Math.floor(Math.random() * btn_num) + RAW_NUM + 1;
+            temptar = 180;
         else
             temptar = ButtonCandidate(CurrentTarX, CurrentTarY, trial_num, btn_num);
 
@@ -665,7 +676,7 @@ function showTarget() {
     CurrentTarX = $(buttons[tar]).offset().left + 0.5 * buttons[tar].offsetWidth;
     CurrentTarY = $(buttons[tar]).offset().top + 0.5 * buttons[tar].offsetHeight;
     trial_num -= 1;
-
+    console.log("CurrentTarX"+CurrentTarX+"CurrentTarY"+CurrentTarY)
     setTimeout(() => {
         ready = true;
     }, 500);
@@ -737,13 +748,13 @@ var swipeAndUnlock = (dir) => {
 function AssignTargetAlgo() {
 
     let Res = TOTAL_DISTANCE - 200 * DEFAULT_TRIAL_NUM;
-
+    
     for (let i = 0; i < DEFAULT_TRIAL_NUM; i++) {
-        while (JumpDistance[i] < 600 && Res > 0) {
+        while (JumpDistance[i] < DistanceUpbound && Res > 0) {
             let randnum = Math.ceil(Math.random() * Res);
             JumpDistance[i] += randnum;
             // Adjustment after adding the randnum on jump_distance
-            if (JumpDistance[i] < 600) {
+            if (JumpDistance[i] < DistanceUpbound) {
                 Res -= randnum;
                 break;
             } else {
@@ -790,7 +801,7 @@ function ButtonCandidate(midX, midY, trialNum, btn_num) {
             var thisbtndistance = Math.pow((CandidateBtnX - midX), 2) + Math.pow((CandidateBtnY - midY), 2)
             var upbound = dis * dis + esilon;
             var lowbound = dis * dis - esilon;
-            if (thisbtndistance < upbound && thisbtndistance > lowbound) {
+            if (thisbtndistance < upbound && thisbtndistance > lowbound && PreventBtnEdge(CandidateBtnX,CandidateBtnY)) {
                 CandidateButtonArray[CandidateNum] = i;
                 CandidateNum++;
             }
@@ -1009,3 +1020,11 @@ function PreventOrbitEdge(x, y) {
         adjustOrbitY = y
     }
 }
+
+
+function PreventBtnEdge(x, y) {
+
+    if(x>SkipBtnEdgePixel&&x<server_width-SkipBtnEdgePixel&&y>SkipBtnEdgePixel&&x<server_height-SkipBtnEdgePixel){return true}
+    else{return false}
+}
+
