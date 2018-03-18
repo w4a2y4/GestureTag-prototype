@@ -73,6 +73,7 @@ button {
     height: calc( 12px / 0.6);
     width: calc( 12px / 0.6);
     border-radius: 50%;
+    border: solid 5px;
     top: 50%;
     left: 50%;
     margin-top: calc( -16px / 0.6);
@@ -92,12 +93,6 @@ button img {
     display: none;
     height: 100%;
     width: 100%;
-}
-
-.gif {
-    position: absolute;
-    top: 0;
-    left: 0;
 }
 
 .calibration {
@@ -159,4 +154,115 @@ button img {
     left: 85%;
     top: 77%;
     /* left:2500px; top: 1600px; */
+}
+
+
+/* ---------- Container for the orbiting circles animation ---------- */
+
+#circle-orbit-container {
+    position: relative;
+    top: -100px;
+    left: -100px;
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+    position: absolute;
+}
+
+.track {
+    position: absolute;
+    border: 2px #4A437F dashed;
+    border-radius: 100%;
+}
+
+#track0 {
+    top: -35px;
+    left: -35px;
+    width: 70px;
+    height: 70px;
+    animation: spin-right 3s linear infinite;
+}
+
+#track1 {
+    top: -40px;
+    left: -40px;
+    width: 80px;
+    height: 80px;
+    animation: spin-left 2.7s linear infinite;
+}
+
+#track2 {
+    top: -45px;
+    left: -45px;
+    width: 90px;
+    height: 90px;
+    animation: spin-right 2.7s linear infinite;
+}
+
+#track3 {
+    top: -50px;
+    left: -50px;
+    width: 100px;
+    height: 100px;
+    animation: spin-left 2.9s linear infinite;
+}
+
+.pursuit {
+    position: absolute;
+    border-radius: 100%;
+}
+
+#pursuit0 {
+    top: 0px;
+    left: 0px;
+    height: 20px;
+    width: 20px;
+    background-color: yellow;
+}
+
+#pursuit1 {
+    top: 0px;
+    left: 0px;
+    height: 20px;
+    width: 20px;
+    background-color: green;
+}
+
+#pursuit2 {
+    top: 0px;
+    left: 0px;
+    height: 20px;
+    width: 20px;
+    background-color: blue;
+}
+
+#pursuit3 {
+    top: 0px;
+    left: 0px;
+    height: 20px;
+    width: 20px;
+    background-color: deepskyblue;
+}
+
+
+/* ---------- Animation ---------- */
+
+@-webkit-keyframes spin-right {
+    100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spin-left {
+    100% {
+        -webkit-transform: rotate(-360deg);
+        -moz-transform: rotate(-360deg);
+        -ms-transform: rotate(-360deg);
+        -o-transform: rotate(-360deg);
+        transform: rotate(-360deg);
+    }
 }

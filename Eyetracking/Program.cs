@@ -28,7 +28,7 @@ namespace Interaction_Streams_101
         static OneEuroFilter oneEuroFilterX = new OneEuroFilter(mincutoff, beta);
         static OneEuroFilter oneEuroFilterY = new OneEuroFilter(mincutoff, beta);
 
-        static Boolean isGaze = false;
+        static Boolean isGaze = true;
         
         public static void Main(string[] args)
         {
@@ -42,7 +42,7 @@ namespace Interaction_Streams_101
             if (isGaze)
             {
                 var gazePointDataStream = host.Streams.CreateGazePointDataStream();
-                gazePointDataStream.GazePoint((x, y, ts) => Write(x, y, ts));
+                // gazePointDataStream.GazePoint((x, y, ts) => Write(x, y, ts));
                 gazePointDataStream.GazePoint((x, y, ts) => SendGazeData(x, y, ts));
 
             }
@@ -101,31 +101,31 @@ namespace Interaction_Streams_101
         {
             if (Program.isRecording)
             {
-                //Xarray[insert_index] = x;
-                //Yarray[insert_index] = y;
-                //kk = 0;
+                Xarray[insert_index] = x;
+                Yarray[insert_index] = y;
+                kk = 0;
 
-                //insert_index = (insert_index + 1) % 10;
-                //while (kk <= 9)
-                //{
-                //    XData += Xarray[kk];
-                //    YData += Yarray[kk];
-                //    kk++;
-                //}
+                insert_index = (insert_index + 1) % 10;
+                while (kk <= 9)
+                {
+                    XData += Xarray[kk];
+                    YData += Yarray[kk];
+                    kk++;
+                }
 
                 //console.writeline(avex);
-                //kk = 0;
-                //aveX = XData / 10;
-                //aveY = YData / 10;
+                kk = 0;
+                aveX = XData / 10;
+                aveY = YData / 10;
+                socket.Emit("eyemove", aveX, aveY,ts);
+                // socket.Emit("eyemove", x, y, ts);
+
+                XData = 0.0;
+                YData = 0.0;
+
+                //aveX = oneEuroFilterX.Filter(x, 60);
+                //aveY = oneEuroFilterY.Filter(y, 60);
                 //socket.Emit("eyemove", aveX, aveY);
-
-
-                //XData = 0.0;
-                //YData = 0.0;
-
-                aveX = oneEuroFilterX.Filter(x, 60);
-                aveY = oneEuroFilterY.Filter(y, 60);
-                socket.Emit("eyemove", aveX, aveY);
 
             }
         }
