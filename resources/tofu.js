@@ -366,7 +366,7 @@ function changePos(eyeX, eyeY) {
             GetPursuitPosition = false;
             var pursuitID = DeterminePursuit(eyeX, eyeY);
             if (pursuitID !== null) {
-                console.log("Choose orbit:" + pursuitID)
+                // console.log("Choose orbit:" + pursuitID)
                 buttons[postBtnId[pursuitID]].click();
                 // $('.track').show();
                 // $('#circle-orbit-container').hide();
@@ -541,14 +541,14 @@ function changePos(eyeX, eyeY) {
                     if (!GoSmoothPursuit && EyeStay(eyeX, eyeY)) {
 
                         PursuitPointCount = 0;
-                        console.log("go SmoothPursuit");
+                        // console.log("go SmoothPursuit");
                         GoSmoothPursuit = true;
 
                         for (var l = 0; l < 4; l++) {
                             $(buttons[candidate[l]]).addClass('orbit' + l);
                             $(buttons[candidate[l]]).find('.dot').show();
                             // $(currBtn[j]).css("border-color", color[j]);
-                            console.log(l + ' ' + currBtn);
+                            // console.log(l + ' ' + currBtn);
                         }
 
                         for (var k = 0; k < 4; k++) {
@@ -914,7 +914,7 @@ function EyeStay(x, y) {
     }
     EyeStayTimeEnd = Date.now();
     if (EyeStayTimeEnd - EyeStayTimeStart > 300) {
-        console.log("Dwell Stay!!");
+        // console.log("Dwell Stay!!");
         return true;
     }
 
@@ -925,7 +925,7 @@ function EyeStay(x, y) {
 function DwellLockerReset(eyeX, eyeY) {
     if (type === 'swipe' || type === 'EyeGesture') {
         var TempLockedBtn = new Array();
-        console.log(LockedBtn)
+        // console.log(LockedBtn)
         for (var k = 0; k < LockedBtn.length; k++) {
             if (!(overlap(buttons[LockedBtn[k]], eyeX, eyeY) && !isIn(LockedBtn[k], postBtnId, 4))) {
                 LockerTimeEnd[LockedBtn[k]] = Date.now(); // Record time then
@@ -934,7 +934,7 @@ function DwellLockerReset(eyeX, eyeY) {
             } else {
                 TempLockedBtn.push(LockedBtn[k])
             }
-            console.log()
+            // console.log()
         }
         LockedBtn = TempLockedBtn;
 
@@ -1061,13 +1061,13 @@ function PreventBtnEdge(x, y) {
 function UserState(ts) {
     //console.log(ts)
     var timestampinterval = ts - preTimeStamp
-    console.log("interval: " + timestampinterval)
+        // console.log("interval: " + timestampinterval)
     if (timestampinterval > 3000) {
         preTimeStamp = ts;
         UserAlready = false;
         GoSmoothPursuit = false;
         closeEye = true;
-        console.log("close eyes");
+        // console.log("close eyes");
     } else {
         UserAlready = true;
         preTimeStamp = ts;
