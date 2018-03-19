@@ -175,6 +175,10 @@ button img {
     border-radius: 100%;
 }
 
+
+/* original size same as curosr size */
+
+
 /*
 #track0 {
     top: -100px;
@@ -249,11 +253,13 @@ button img {
     z-index: 10;
 }
 
-<<<<<<< HEAD
 */
 
-/*
 
+/* large trajectory */
+
+
+/*
 #track0 {
     top: -50px;
     left: -50px;
@@ -263,11 +269,11 @@ button img {
 }
 
 #track1 {
-   top: -50px;
+    top: -50px;
     left: -50px;
     width: 100px;
     height: 100px;
-     animation: spin-left 2s linear infinite;
+    animation: spin-left 2s linear infinite;
 }
 
 #track2 {
@@ -275,7 +281,7 @@ button img {
     left: -50px;
     width: 100px;
     height: 100px;
-     animation: spin-right 2s linear infinite;
+    animation: spin-right 2s linear infinite;
 }
 
 #track3 {
@@ -283,7 +289,7 @@ button img {
     left: -50px;
     width: 100px;
     height: 100px;
-     animation: spin-left 2s linear infinite;
+    animation: spin-left 2s linear infinite;
 }
 
 .pursuit {
@@ -309,7 +315,7 @@ button img {
 
 #pursuit2 {
     top: 75px;
-    left:75px;
+    left: 75px;
     height: 20px;
     width: 20px;
     background-color: blue;
@@ -322,10 +328,10 @@ button img {
     width: 20px;
     background-color: deepskyblue;
 }
-
 */
 
 
+/* medium trajectory */
 
 #track0 {
     top: -35px;
@@ -336,11 +342,11 @@ button img {
 }
 
 #track1 {
-   top: -35px;
+    top: -35px;
     left: -35px;
     width: 70px;
     height: 70px;
-     animation: spin-left 2s linear infinite;
+    animation: spin-left 2s linear infinite;
 }
 
 #track2 {
@@ -348,7 +354,7 @@ button img {
     left: -35px;
     width: 70px;
     height: 70px;
-     animation: spin-right 2s linear infinite;
+    animation: spin-right 2s linear infinite;
 }
 
 #track3 {
@@ -356,7 +362,7 @@ button img {
     left: -35px;
     width: 70px;
     height: 70px;
-     animation: spin-left 2s linear infinite;
+    animation: spin-left 2s linear infinite;
 }
 
 .pursuit {
@@ -382,7 +388,7 @@ button img {
 
 #pursuit2 {
     top: 45px;
-    left:45px;
+    left: 45px;
     height: 20px;
     width: 20px;
     background-color: blue;
@@ -397,6 +403,7 @@ button img {
 }
 
 
+/* small trajectory */
 
 
 /*
@@ -409,19 +416,19 @@ button img {
 }
 
 #track1 {
-   top: -20px;
+    top: -20px;
     left: -20px;
     width: 40px;
     height: 40px;
-     animation: spin-left 2s linear infinite;
+    animation: spin-left 2s linear infinite;
 }
 
 #track2 {
-     top: -20px;
+    top: -20px;
     left: -20px;
     width: 40px;
     height: 40px;
-     animation: spin-right 2s linear infinite;
+    animation: spin-right 2s linear infinite;
 }
 
 #track3 {
@@ -429,7 +436,7 @@ button img {
     left: -20px;
     width: 40px;
     height: 40px;
-     animation: spin-left 2s linear infinite;
+    animation: spin-left 2s linear infinite;
 }
 
 .pursuit {
@@ -440,7 +447,7 @@ button img {
 #pursuit0 {
     top: 0px;
     left: 0px;
-     height: 15px;
+    height: 15px;
     width: 15px;
     background-color: yellow;
 }
@@ -455,7 +462,7 @@ button img {
 
 #pursuit2 {
     top: 22px;
-    left:22px;
+    left: 22px;
     height: 15px;
     width: 15px;
     background-color: blue;
@@ -468,7 +475,6 @@ button img {
     width: 15px;
     background-color: deepskyblue;
 }
-
 */
 
 
