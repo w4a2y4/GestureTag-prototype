@@ -161,6 +161,7 @@ $(document).keyup((e) => {
 })
 
 $(document).mousemove((e) => {
+    UserState(Date.now());
     if (show_mouse)
         changePos(e.pageX, e.pageY);
 });
@@ -884,6 +885,7 @@ function Calibration(eyeX, eyeY) {
 function EyeStay(x, y) {
     //console.log(closeEye);
     if (closeEye === true) {
+        EyeStayTimeStart = Date.now();
         closeEye = false;
         return false
     }
