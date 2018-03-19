@@ -528,7 +528,7 @@ function changePos(eyeX, eyeY) {
 
                 }
                 theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
-                // var j = getBtnType(btn, eyeX, eyeY);
+                var j = getBtnType(btn, eyeX, eyeY);
                 // $(btn).css("border-color", color[j]);
                 $(btn).find('.dot').show();
 
