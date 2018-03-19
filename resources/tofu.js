@@ -100,7 +100,7 @@ var EyeStayY = new Array(10).fill(0.0);
 var preTimeStamp = 0.0;
 
 // smooth pursuit
-const PURSUIT_HISTORY = 150;
+const PURSUIT_HISTORY = 30;
 var TotalCorrelationRecord = 0.8;
 var PursuitY = new Array(4);
 var PursuitX = new Array(4);
@@ -377,7 +377,7 @@ function changePos(eyeX, eyeY) {
             }
             setTimeout(() => {
                 GetPursuitPosition = true;
-            }, 0.01);
+            }, 33);
         }
 
         return;
