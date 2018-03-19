@@ -23,10 +23,11 @@ namespace Interaction_Streams_101
         static List<string> buffer = new List<string>();
         static string log_file_name = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\New_eye_tracking_log.txt";
         static Socket socket;
-        static double mincutoff = 0.1;
-        static double beta = 0.005;
+        static double mincutoff = 0.00001;
+        static double beta = 0.01;
         static OneEuroFilter oneEuroFilterX = new OneEuroFilter(mincutoff, beta);
         static OneEuroFilter oneEuroFilterY = new OneEuroFilter(mincutoff, beta);
+        static double prevTs = 0.0;
 
         static Boolean isGaze = true;
         
@@ -113,20 +114,26 @@ namespace Interaction_Streams_101
                     kk++;
                 }
 
-                //console.writeline(avex);
+                ////console.writeline(avex);
                 kk = 0;
                 aveX = XData / 10;
                 aveY = YData / 10;
-                socket.Emit("eyemove", aveX, aveY,ts);
-                // socket.Emit("eyemove", x, y, ts);
+                 socket.Emit("eyemove", aveX, aveY, ts);
+                //socket.Emit("eyemove", x, y, ts);
 
                 XData = 0.0;
                 YData = 0.0;
 
-                //aveX = oneEuroFilterX.Filter(x, 60);
-                //aveY = oneEuroFilterY.Filter(y, 60);
-                //socket.Emit("eyemove", aveX, aveY);
+                /*
+                double timeDiff = ts - Program.prevTs;
+                if (timeDiff < 33.33)
+                    return;
 
+                aveX = oneEuroFilterX.Filter(x, 30);
+                aveY = oneEuroFilterY.Filter(y, 30);
+                socket.Emit("eyemove", aveX, aveY, ts);
+                Program.prevTs = ts;
+                */
             }
         }
 

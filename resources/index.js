@@ -247,7 +247,7 @@ function changePos(eyeX, eyeY) {
     var candidate = new Array(4).fill(-1);
     var dist = new Array(4).fill(5000000);
 
-    //Dwell time locker reset
+    // Dwell time locker reset
     // DwellLockerReset(eyeX, eyeY);
 
     // for each type of gesture, put the nearest's index in candidate[]
