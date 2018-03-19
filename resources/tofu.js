@@ -100,8 +100,8 @@ var EyeStayY = new Array(10).fill(0.0);
 var preTimeStamp = 0.0;
 
 // smooth pursuit
-const PURSUIT_HISTORY = 150;
-var TotalCorrelationRecord = 0.8;
+const PURSUIT_HISTORY = 30;
+var TotalCorrelationRecord = 0.0;
 var PursuitY = new Array(4);
 var PursuitX = new Array(4);
 for (i = 0; i < 4; i++) {
@@ -351,9 +351,9 @@ function changePos(eyeX, eyeY) {
 
     if (!ready) return;
     if (type === 'tap') return;
-
+    clearTimeout(LeaveTimer);
     if (GoSmoothPursuit) {
-        clearTimeout(LeaveTimer);
+        
         closeEye = false;
         
         LeaveTimer = setTimeout(() => {
@@ -366,12 +366,13 @@ function changePos(eyeX, eyeY) {
             if (pursuitID !== null) {
                 console.log("Choose orbit:" + pursuitID)
                 buttons[postBtnId[pursuitID]].click();
+                TotalCorrelationRecord=0.0;
                 $('.track').show();
                 $('#circle-orbit-container').hide();
             }
             setTimeout(() => {
                 GetPursuitPosition = true;
-            }, 0.01);
+            }, 33);
         }
 
         return;
@@ -999,7 +1000,7 @@ function DeterminePursuit(eyeX, eyeY) {
             var Xcorrelation = getPearsonCorrelation(PursuitX[i], EyeArrayX);
             var Ycorrelation = getPearsonCorrelation(PursuitY[i], EyeArrayY);
             var totalcorrelation = Ycorrelation * Xcorrelation;
-            if (Xcorrelation > 0 && Ycorrelation > 0 && totalcorrelation > TotalCorrelationRecord) {
+            if (Xcorrelation > 0.8 && Ycorrelation > 0.8 && totalcorrelation > TotalCorrelationRecord) {
                 TotalCorrelationRecord = totalcorrelation;
                 pursuitID = i;
             }
@@ -1063,7 +1064,7 @@ function UserState(ts) {
         GoSmoothPursuit = false;
         closeEye = true;
         console.log("close eyes")
-        //playSound()
+        
     } else { UserAlready = true ;
             preTimeStamp = ts;}
 }
