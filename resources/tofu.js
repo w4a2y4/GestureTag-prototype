@@ -354,6 +354,7 @@ function changePos(eyeX, eyeY) {
     if (type === 'tap') return;
 
     clearTimeout(LeaveTimer);
+
     if (GoSmoothPursuit) {
         closeEye = false;
         LeaveTimer = setTimeout(() => {
@@ -366,7 +367,7 @@ function changePos(eyeX, eyeY) {
             if (pursuitID !== null) {
                 console.log("Choose orbit:" + pursuitID)
                 buttons[postBtnId[pursuitID]].click();
-                TotalCorrelationRecord=0.0;
+                TotalCorrelationRecord = 0.0; // reset the overall threshold value
                 $('.track').show();
                 $('#circle-orbit-container').hide();
             }
@@ -912,7 +913,6 @@ function EyeStay(x, y) {
 function DwellLockerReset(eyeX, eyeY) {
     if (type === 'swipe' || type === 'EyeGesture') {
         var TempLockedBtn = new Array();
-        console.log(LockedBtn)
         for (var k = 0; k < LockedBtn.length; k++) {
             if (!(overlap(buttons[LockedBtn[k]], eyeX, eyeY) && !isIn(LockedBtn[k], postBtnId, 4))) {
                 LockerTimeEnd[LockedBtn[k]] = Date.now(); // Record time then
@@ -921,7 +921,6 @@ function DwellLockerReset(eyeX, eyeY) {
             } else {
                 TempLockedBtn.push(LockedBtn[k])
             }
-            console.log()
         }
         LockedBtn = TempLockedBtn;
 
@@ -1038,7 +1037,6 @@ function PreventOrbitEdge(x, y) {
 
 
 function PreventBtnEdge(x, y) {
-
     if (x > SkipBtnEdgePixel && x < server_width - SkipBtnEdgePixel && y > SkipBtnEdgePixel && x < server_height - SkipBtnEdgePixel) { return true } else { return false }
 }
 
@@ -1054,7 +1052,9 @@ function UserState(ts) {
         GoSmoothPursuit = false;
         closeEye = true;
         console.log("close eyes")
-        
-    } else { UserAlready = true ;
-            preTimeStamp = ts;}
+
+    } else {
+        UserAlready = true;
+        preTimeStamp = ts;
+    }
 }
