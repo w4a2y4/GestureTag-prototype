@@ -100,8 +100,8 @@ var EyeStayY = new Array(10).fill(0.0);
 var preTimeStamp = 0.0;
 
 // smooth pursuit
-const PURSUIT_HISTORY = 150;
-var TotalCorrelationRecord = 0.8;
+const PURSUIT_HISTORY = 30;
+var TotalCorrelationRecord = 0.0;
 var PursuitY = new Array(4);
 var PursuitX = new Array(4);
 for (i = 0; i < 4; i++) {
@@ -367,12 +367,13 @@ function changePos(eyeX, eyeY) {
             if (pursuitID !== null) {
                 console.log("Choose orbit:" + pursuitID)
                 buttons[postBtnId[pursuitID]].click();
+                TotalCorrelationRecord = 0.0; // reset the overall threshold value
                 $('.track').show();
                 $('#circle-orbit-container').hide();
             }
             setTimeout(() => {
                 GetPursuitPosition = true;
-            }, 0.01);
+            }, 33);
         }
 
         return;
@@ -909,11 +910,9 @@ function EyeStay(x, y) {
     return false;
 }
 
-
 function DwellLockerReset(eyeX, eyeY) {
     if (type === 'swipe' || type === 'EyeGesture') {
         var TempLockedBtn = new Array();
-        console.log(LockedBtn)
         for (var k = 0; k < LockedBtn.length; k++) {
             if (!(overlap(buttons[LockedBtn[k]], eyeX, eyeY) && !isIn(LockedBtn[k], postBtnId, 4))) {
                 LockerTimeEnd[LockedBtn[k]] = Date.now(); // Record time then
@@ -922,7 +921,6 @@ function DwellLockerReset(eyeX, eyeY) {
             } else {
                 TempLockedBtn.push(LockedBtn[k])
             }
-            console.log()
         }
         LockedBtn = TempLockedBtn;
 
@@ -992,7 +990,7 @@ function DeterminePursuit(eyeX, eyeY) {
             var Xcorrelation = getPearsonCorrelation(PursuitX[i], EyeArrayX);
             var Ycorrelation = getPearsonCorrelation(PursuitY[i], EyeArrayY);
             var totalcorrelation = Ycorrelation * Xcorrelation;
-            if (Xcorrelation > 0 && Ycorrelation > 0 && totalcorrelation > TotalCorrelationRecord) {
+            if (Xcorrelation > 0.8 && Ycorrelation > 0.8 && totalcorrelation > TotalCorrelationRecord) {
                 TotalCorrelationRecord = totalcorrelation;
                 pursuitID = i;
             }
@@ -1039,7 +1037,6 @@ function PreventOrbitEdge(x, y) {
 
 
 function PreventBtnEdge(x, y) {
-
     if (x > SkipBtnEdgePixel && x < server_width - SkipBtnEdgePixel && y > SkipBtnEdgePixel && x < server_height - SkipBtnEdgePixel) { return true } else { return false }
 }
 
@@ -1054,7 +1051,8 @@ function UserState(ts) {
         UserAlready = false;
         GoSmoothPursuit = false;
         closeEye = true;
-        console.log("close eyes");
+        console.log("close eyes")
+
     } else {
         UserAlready = true;
         preTimeStamp = ts;
