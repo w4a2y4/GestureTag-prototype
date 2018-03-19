@@ -40,7 +40,7 @@ var SkipBtnEdgePixel = 200;
 const DistanceUpbound = 400;
 const DEFAULT_TRIAL_NUM = 8;
 const TOTAL_DISTANCE = 2400;
-// (0,600,5000)    //(100,500,3200)    //(200,400,2400)
+// (0,600,4000)    //(100,500,3200)    //(200,400,2400)
 
 var trial_num = DEFAULT_TRIAL_NUM;
 
@@ -353,14 +353,13 @@ function changePos(eyeX, eyeY) {
     if (type === 'tap') return;
 
     if (GoSmoothPursuit) {
-        //clearTimeout(LeaveTimer);
+        clearTimeout(LeaveTimer);
         closeEye = false;
-        /*
+        
         LeaveTimer = setTimeout(() => {
-            GoSmoothPursuit = false;
-            closeEye = true;
-        }, 2000);
-        */
+           playSound()
+        }, 3000);
+        
         if (GetPursuitPosition) {
             GetPursuitPosition = false;
             var pursuitID = DeterminePursuit(eyeX, eyeY);
@@ -441,7 +440,7 @@ function changePos(eyeX, eyeY) {
     var dist = new Array(4).fill(5000000);
 
     //Dwell time locker reset
-    // DwellLockerReset(eyeX, eyeY);
+    DwellLockerReset(eyeX, eyeY);
 
     var neighborhood = [me, me - 1, me + 1,
         me - COL_NUM, me - COL_NUM - 1, me - COL_NUM + 1,
@@ -514,14 +513,14 @@ function changePos(eyeX, eyeY) {
                     already[i] = 1; //First time to look at the target
                     LockerTimeStart[i] = Date.now(); // Record time then
                     EyeGestureTimeStart[i] = Date.now();
-                     LockedBtn.push(i);
+                     
                 }
                 theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
                 var j = getBtnType(btn, eyeX, eyeY);
                 $(btn).css("border-color", color[j]);
 
                 if (theTimeInterval > 300.0) {
-
+                    LockedBtn.push(i);
                     if (LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
                         postBtnId[j] = i;
                         currBtn[j] = btn;
@@ -919,17 +918,18 @@ function EyeStay(x, y) {
 function DwellLockerReset(eyeX, eyeY) {
     if (type === 'swipe' || type === 'EyeGesture') {
         var TempLockedBtn=new Array();
-        console.log(LockedBtn.length)
+        console.log(LockedBtn)
         for (var k = 0; k < LockedBtn.length; k++) {
-            if (!(overlap(buttons[k], eyeX, eyeY) || isIn(k, postBtnId, 4))) {
+            if (!(overlap(buttons[LockedBtn[k]], eyeX, eyeY) && !isIn(LockedBtn[k], postBtnId, 4))) {
                 LockerTimeEnd[LockedBtn[k]] = Date.now(); // Record time then
                 LockerTimeStart[LockedBtn[k]] = LockerTimeEnd[LockedBtn[k]]; // Record time then
                 already[LockedBtn[k]] = 0;
             }
-            elseLockedBtn[k]
+            else
             {
                 TempLockedBtn.push(LockedBtn[k])
             }
+            console.log()
         }
         LockedBtn = TempLockedBtn;
 
@@ -1052,6 +1052,7 @@ function PreventBtnEdge(x, y) {
 }
 
 
+
 function UserState(ts) {
     //console.log(ts)
     var timestampinterval = ts - preTimeStamp
@@ -1062,7 +1063,7 @@ function UserState(ts) {
         GoSmoothPursuit = false;
         closeEye = true;
         console.log("close eyes")
-        playSound()
+        //playSound()
     } else { UserAlready = true ;
             preTimeStamp = ts;}
 }
