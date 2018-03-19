@@ -43,7 +43,7 @@ namespace Interaction_Streams_101
             if (isGaze)
             {
                 var gazePointDataStream = host.Streams.CreateGazePointDataStream();
-                // gazePointDataStream.GazePoint((x, y, ts) => Write(x, y, ts));
+                 gazePointDataStream.GazePoint((x, y, ts) => Write(x, y, ts));
                 gazePointDataStream.GazePoint((x, y, ts) => SendGazeData(x, y, ts));
 
             }

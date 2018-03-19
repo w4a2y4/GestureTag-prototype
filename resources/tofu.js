@@ -17,7 +17,7 @@ var isShown = new Array(4).fill(false);
 
 var type, platform;
 var dynamic = false;
-const timeoutThreshold = 15000;
+const timeoutThreshold = 150000;
 
 
 var clicked_button, target_btn, gesture;
@@ -198,7 +198,8 @@ socket.on('eyemove', (x, y, ts) => {
     // and the reason.
     let magicScale = 1.0; //surface pro should be 0.8
     // closeEye = false;
-    console.log(x+" "+y)
+    UserState(ts)
+    //console.log(x+" "+y)
     changePos(x * magicScale, y * magicScale);
 
     Eyespacingerror(x * magicScale, y * magicScale);
@@ -352,14 +353,14 @@ function changePos(eyeX, eyeY) {
     if (type === 'tap') return;
 
     if (GoSmoothPursuit) {
-        clearTimeout(LeaveTimer);
+        //clearTimeout(LeaveTimer);
         closeEye = false;
-
+        /*
         LeaveTimer = setTimeout(() => {
             GoSmoothPursuit = false;
             closeEye = true;
         }, 2000);
-
+        */
         if (GetPursuitPosition) {
             GetPursuitPosition = false;
             var pursuitID = DeterminePursuit(eyeX, eyeY);
@@ -412,9 +413,7 @@ function changePos(eyeX, eyeY) {
             pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
             return;
         }
-
         if (dwelling === me && overlap(buttons[me], eyeX, eyeY)) {
-
             // Have already looked at the target
             TimeEnd = Date.now();
             // check if dwell time is long enough
@@ -535,11 +534,13 @@ function changePos(eyeX, eyeY) {
                         console.log("go SmoothPursuit");
                         GoSmoothPursuit = true;
 
+                        /*
                         LeaveTimer = setTimeout(() => {
                             GoSmoothPursuit = false;
                             closeEye = true;
                         }, 2000);
-
+                        
+                        */
                         $('#circle-orbit-container').show();
                         PreventOrbitEdge(eyeX, eyeY);
                         $('#circle-orbit-container').css({
@@ -698,7 +699,7 @@ function showTarget() {
     CurrentTarX = $(buttons[tar]).offset().left + 0.5 * buttons[tar].offsetWidth;
     CurrentTarY = $(buttons[tar]).offset().top + 0.5 * buttons[tar].offsetHeight;
     trial_num -= 1;
-    console.log("CurrentTarX"+CurrentTarX+"CurrentTarY"+CurrentTarY)
+    //console.log("CurrentTarX"+CurrentTarX+"CurrentTarY"+CurrentTarY)
     setTimeout(() => {
         ready = true;
     }, 500);
@@ -759,11 +760,11 @@ function enableSwipe() {
 
 var swipeAndUnlock = (dir) => {
     if (isShown[dir]) {
-        console.log("swipe currbtn " + buttons[postBtnId[dir]]);
+        //console.log("swipe currbtn " + buttons[postBtnId[dir]]);
         buttons[postBtnId[dir]].click();
         already[postBtnId[dir]] = 0;
         touchLock = false;
-        console.log("swipe " + dir + ":" + String(postBtnId[dir]));
+        //console.log("swipe " + dir + ":" + String(postBtnId[dir]));
     }
 }
 
@@ -800,7 +801,7 @@ function AssignTargetAlgo() {
     for (let i = 0; i < DEFAULT_TRIAL_NUM; i++)
         JumpDistance[i] += 200;
 
-    console.log(JumpDistance);
+    //console.log(JumpDistance);
 }
 
 function ButtonCandidate(midX, midY, trialNum, btn_num) {
@@ -882,7 +883,7 @@ function Calibration(eyeX, eyeY) {
 }
 
 function EyeStay(x, y) {
-    console.log(closeEye);
+    //console.log(closeEye);
     if (closeEye === true) {
         closeEye = false;
         return false
@@ -1048,4 +1049,27 @@ function PreventBtnEdge(x, y) {
 
     if(x>SkipBtnEdgePixel&&x<server_width-SkipBtnEdgePixel&&y>SkipBtnEdgePixel&&x<server_height-SkipBtnEdgePixel){return true}
     else{return false}
+}
+
+
+function UserState(ts) {
+    //console.log(ts)
+    var timestampinterval = ts - preTimeStamp
+        console.log("interval: "+timestampinterval)
+    if (timestampinterval > 3000) {
+        preTimeStamp = ts;
+        UserAlready = false;
+        GoSmoothPursuit = false;
+        closeEye = true;
+        console.log("close eyes")
+        playSound()
+    } else { UserAlready = true ;
+            preTimeStamp = ts;}
+}
+
+
+function playSound(){
+
+document.getElementById("play1").play()
+ 
 }
