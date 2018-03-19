@@ -367,7 +367,8 @@ function changePos(eyeX, eyeY) {
             var pursuitID = DeterminePursuit(eyeX, eyeY);
             if (pursuitID !== null) {
                 // console.log("Choose orbit:" + pursuitID)
-                buttons[postBtnId[pursuitID]].click();
+                // buttons[postBtnId[pursuitID]].click();
+                $('.orbit' + pursuitID).click();
                 // $('.track').show();
                 // $('#circle-orbit-container').hide();
                 for (let l = 0; l < 4; l++) {
@@ -980,7 +981,8 @@ function DeterminePursuit(eyeX, eyeY) {
     var x = [0, 0, 0, 0];
     var y = [0, 0, 0, 0];
     for (var i = 0; i < 4; i++) {
-        var dot = $(currBtn[i]).find('.dot');
+        // var dot = $(currBtn[i]).find('.dot');
+        var dot = $('.orbit' + i).find('.dot');
         // var dot = document.getElementById('pursuit' + i);
         x[i] = dot.offset().left + 0.5 * dot.width();
         y[i] = dot.offset().top + 0.5 * dot.height();
