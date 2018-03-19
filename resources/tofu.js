@@ -17,7 +17,7 @@ var isShown = new Array(4).fill(false);
 
 var type, platform;
 var dynamic = false;
-
+const timeoutThreshold = 15000;
 
 
 var clicked_button, target_btn, gesture;
@@ -36,11 +36,11 @@ var server_height = document.documentElement.clientHeight;
 var client_width, client_height;
 
 
-var SkipBtnEdgePixel=0
-const DistanceUpbound=600
+var SkipBtnEdgePixel = 200;
+const DistanceUpbound = 400;
 const DEFAULT_TRIAL_NUM = 8;
-const TOTAL_DISTANCE=4000
-// (0,600,5000)    //(100,500,3200)    //(200,400,2400) 
+const TOTAL_DISTANCE = 2400;
+// (0,600,5000)    //(100,500,3200)    //(200,400,2400)
 
 var trial_num = DEFAULT_TRIAL_NUM;
 
@@ -310,7 +310,7 @@ function overlap(element, X, Y) {
     var bottom = Number($(element).offset().top) + Number($(element).height());
     var threshold;
 
-    if (type === 'dwell') threshold = 0;
+    if (type === 'dwell') threshold = 8;
     else threshold = RADIUS;
     // in the element
     if (X >= left && X <= right && Y >= top && Y <= bottom) return true;
@@ -410,7 +410,7 @@ function changePos(eyeX, eyeY) {
         if (!overlap(buttons[me], eyeX, eyeY)) {
             dwelling = null;
             pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
-            return
+            return;
         }
 
         if (dwelling === me && overlap(buttons[me], eyeX, eyeY)) {
@@ -587,6 +587,26 @@ function setBtnSize(element, size) {
     $(element).show();
 }
 
+var getSpacingSize = (isU2412) => {
+    if(!isU2412)
+        return 0.5;
+    let size = 0.5;
+    switch(BTN_SIZE) {
+        case 16.0 / DP_RATIO:
+            size = 0.8;
+            break;
+        case 32.0 / DP_RATIO:
+            size = 0.7;
+            break;
+        case 48.0 / DP_RATIO:
+            size = 0.6;
+            break;
+        default:
+            break;
+    }
+    return size;
+};
+
 function showTarget() {
 
     clearTimeout(trialTimer);
@@ -611,7 +631,7 @@ function showTarget() {
         gesture = 'timeout';
         log();
         showTarget();
-    }, 200000);
+    }, timeoutThreshold);
 
     //reset preformance data
     TrialTimeStart = Date.now();
@@ -645,19 +665,21 @@ function showTarget() {
     setBtnSize(buttons[tar], BTN_SIZE);
     target_btn = $(buttons[tar]).parent().attr('id');
 
+
+    const spacingSize = getSpacingSize(true);
     // render neighbor
     // right
     setBtnSize(buttons[tar + 1], BTN_SIZE);
-    $(buttons[tar + 1]).css('margin-left', (BTN_SIZE * (SPACING + 0.5) - BIGGEST_BTN));
+    $(buttons[tar + 1]).css('margin-left', (BTN_SIZE * (SPACING + spacingSize) - BIGGEST_BTN));
     // left
     setBtnSize(buttons[tar - 1], BTN_SIZE);
-    $(buttons[tar - 1]).css('margin-left', (BIGGEST_BTN - BTN_SIZE * (SPACING + 1.5)));
+    $(buttons[tar - 1]).css('margin-left', (BIGGEST_BTN - BTN_SIZE * (SPACING + 1 + spacingSize)));
     // down
     setBtnSize(buttons[tar + COL_NUM], BTN_SIZE);
-    $(buttons[tar + COL_NUM]).css('margin-top', (BTN_SIZE * (SPACING + 0.5) - BIGGEST_BTN));
+    $(buttons[tar + COL_NUM]).css('margin-top', (BTN_SIZE * (SPACING + spacingSize) - BIGGEST_BTN));
     // up
     setBtnSize(buttons[tar - COL_NUM], BTN_SIZE);
-    $(buttons[tar - COL_NUM]).css('margin-top', (BIGGEST_BTN - BTN_SIZE * (SPACING + 1.5)));
+    $(buttons[tar - COL_NUM]).css('margin-top', (BIGGEST_BTN - BTN_SIZE * (SPACING + 1 + spacingSize)));
 
     var skip = [tar + 2, tar - 2, tar + 2 * COL_NUM, tar - 2 * COL_NUM,
         tar - COL_NUM - 1, tar - COL_NUM + 1, tar + COL_NUM - 1, tar + COL_NUM + 1
@@ -748,7 +770,7 @@ var swipeAndUnlock = (dir) => {
 function AssignTargetAlgo() {
 
     let Res = TOTAL_DISTANCE - 200 * DEFAULT_TRIAL_NUM;
-    
+
     for (let i = 0; i < DEFAULT_TRIAL_NUM; i++) {
         while (JumpDistance[i] < DistanceUpbound && Res > 0) {
             let randnum = Math.ceil(Math.random() * Res);
@@ -1027,4 +1049,3 @@ function PreventBtnEdge(x, y) {
     if(x>SkipBtnEdgePixel&&x<server_width-SkipBtnEdgePixel&&y>SkipBtnEdgePixel&&x<server_height-SkipBtnEdgePixel){return true}
     else{return false}
 }
-
