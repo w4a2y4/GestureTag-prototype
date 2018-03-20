@@ -488,7 +488,7 @@ function changePos(eyeX, eyeY) {
                 $(btn).find('img').show();
                 if (theTimeInterval > 150.0 && touchLock == false) {
                     for (var j = 0; j < 4; j++) {
-                        if (getBtnType(btn, eyeX, eyeY) == j & LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
+                        if (getBtnType(btn, eyeX, eyeY) == j && LockerTimeEnd[postBtnId[j]] < LockerTimeEnd[i]) {
                             postBtnId[j] = i;
                             currBtn[j] = btn;
                             isShown[j] = true;
@@ -912,7 +912,7 @@ function EyeStay(x, y) {
 
 function DwellLockerReset(eyeX, eyeY) {
     if (type === 'swipe' || type === 'EyeGesture') {
-        var TempLockedBtn = new Array();
+        var TempLockedBtn = [];
         for (var k = 0; k < LockedBtn.length; k++) {
             if (!(overlap(buttons[LockedBtn[k]], eyeX, eyeY) && !isIn(LockedBtn[k], postBtnId, 4))) {
                 LockerTimeEnd[LockedBtn[k]] = Date.now(); // Record time then
@@ -923,7 +923,6 @@ function DwellLockerReset(eyeX, eyeY) {
             }
         }
         LockedBtn = TempLockedBtn;
-
     }
 }
 
@@ -1001,9 +1000,7 @@ function DeterminePursuit(eyeX, eyeY) {
     return pursuitID;
 }
 
-
 function PreventOrbitEdge(x, y) {
-
     var edgeradius = 200;
     if (x < edgeradius && y < edgeradius) {
         adjustOrbitX = edgeradius;
@@ -1031,16 +1028,13 @@ function PreventOrbitEdge(x, y) {
         adjustOrbitY = edgeradius;
     } else {
         adjustOrbitX = x;
-        adjustOrbitY = y
+        adjustOrbitY = y;
     }
 }
-
 
 function PreventBtnEdge(x, y) {
     if (x > SkipBtnEdgePixel && x < server_width - SkipBtnEdgePixel && y > SkipBtnEdgePixel && x < server_height - SkipBtnEdgePixel) { return true } else { return false }
 }
-
-
 
 function UserState(ts) {
     //console.log(ts)
