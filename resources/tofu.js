@@ -892,7 +892,7 @@ function Calibration(eyeX, eyeY) {
 function EyeStay(x, y) {
     //console.log(closeEye);
     if (closeEye === true) {
-        EyeStayTimeStart = Date.now();
+        EyeStayTimeStart = Date.now(); // reset the start timer for eye-stay
         closeEye = false;
         return false
     }
@@ -1051,7 +1051,9 @@ function PreventOrbitEdge(x, y) {
 
 
 function PreventBtnEdge(x, y) {
-    if (x > SkipBtnEdgePixel && x < server_width - SkipBtnEdgePixel && y > SkipBtnEdgePixel && x < server_height - SkipBtnEdgePixel) { return true } else { return false }
+    if (x > SkipBtnEdgePixel && x < server_width - SkipBtnEdgePixel && y > SkipBtnEdgePixel && x < server_height - SkipBtnEdgePixel)
+        return true;
+    else return false;
 }
 
 
