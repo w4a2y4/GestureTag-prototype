@@ -53,3 +53,17 @@ manager.on('hammer.input', (ev) => {
     }
 
 });
+
+var forceFullScreen = () => {
+    var doc = window.document;
+    var docEl = doc.documentElement;
+
+    var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+    // var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+    console.log('haha');
+    if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+        console.log('not yet');
+        requestFullScreen.call(docEl);
+        document.getElementById('full').remove();
+    }
+}
