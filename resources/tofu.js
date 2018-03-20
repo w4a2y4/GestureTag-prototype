@@ -980,12 +980,14 @@ function DeterminePursuit(eyeX, eyeY) {
 
     var x = [0, 0, 0, 0];
     var y = [0, 0, 0, 0];
+    var canPursit = [0, 0, 0, 0];
     for (var i = 0; i < 4; i++) {
-        // var dot = $(currBtn[i]).find('.dot');
-        var dot = $('.orbit' + i).find('.dot');
-        // var dot = document.getElementById('pursuit' + i);
-        x[i] = dot.offset().left + 0.5 * dot.width();
-        y[i] = dot.offset().top + 0.5 * dot.height();
+        if ($('.orbit' + i).length > 0) {
+            var dot = $('.orbit' + i).find('.dot');
+            canPursit[i] = 1;
+            x[i] = dot.offset().left + 0.5 * dot.width();
+            y[i] = dot.offset().top + 0.5 * dot.height();
+        }
     }
 
     PursuitIndex = (PursuitIndex + 1) % PURSUIT_HISTORY;
@@ -993,6 +995,7 @@ function DeterminePursuit(eyeX, eyeY) {
     EyeArrayY[PursuitIndex] = eyeY;
 
     for (var i = 0; i < 4; i++) {
+        if (canPursit[i] === 0) continue;
         PursuitX[i][PursuitIndex] = x[i];
         PursuitY[i][PursuitIndex] = y[i];
     }
