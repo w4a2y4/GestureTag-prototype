@@ -24,7 +24,7 @@ namespace Interaction_Streams_101
         static string log_file_name = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\New_eye_tracking_log.txt";
         static Socket socket;
         static double mincutoff = 0.00001;
-        static double beta = 0.01;
+        static double beta = 0.002;
         static OneEuroFilter oneEuroFilterX = new OneEuroFilter(mincutoff, beta);
         static OneEuroFilter oneEuroFilterY = new OneEuroFilter(mincutoff, beta);
         static double prevTs = 0.0;
@@ -118,7 +118,7 @@ namespace Interaction_Streams_101
                 kk = 0;
                 aveX = XData / 10;
                 aveY = YData / 10;
-                 socket.Emit("eyemove", aveX, aveY, ts);
+                socket.Emit("eyemove", aveX, aveY, ts);
                 //socket.Emit("eyemove", x, y, ts);
 
                 XData = 0.0;
@@ -157,8 +157,8 @@ namespace Interaction_Streams_101
             //YData = y;
             if (XData == double.NaN || YData == double.NaN)
                 return;
-            //XData = oneEuroFilterX.Filter(x, 10);
-            //YData = oneEuroFilterY.Filter(y, 10);
+            XData = oneEuroFilterX.Filter(x, 30);
+            YData = oneEuroFilterY.Filter(y, 30);
             socket.Emit("eyemove", XData, YData);
         }
         //private static float void movingAverage()
