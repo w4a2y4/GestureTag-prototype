@@ -175,9 +175,7 @@ $(document).on('click', 'button', (function(e) {
     clearTimeout(trialTimer);
     $(this).addClass('clicked');
     GoSmoothPursuit = false;
-    // $(':button').css("border-color", "transparent");
     $('.trajectory').css('border-color', 'transparent');
-    // $('.dot').hide();
 
     TrialTimeEnd = Date.now();
     TrialCompletionTime = TrialTimeEnd - TrialTimeStart
@@ -201,10 +199,8 @@ socket.on('eyemove', (x, y, ts) => {
     // and the reason.
     let magicScale = 1.0; //surface pro should be 0.8
     // closeEye = false;
-    UserState(ts)
-        //console.log(x+" "+y)
+    UserState(ts);
     changePos(x * magicScale, y * magicScale);
-
     Eyespacingerror(x * magicScale, y * magicScale);
 });
 
@@ -387,11 +383,8 @@ function changePos(eyeX, eyeY) {
         return;
     }
 
-    // $('.track').show();
-    // $('#circle-orbit-container').hide();
     for (let l = 0; l < 4; l++) {
-        // $(currBtn[i]).css("border-color", "transparent");
-        $('trajectory').removeClass('orbit' + l);
+        $('.trajectory').removeClass('orbit' + l);
     }
     $('.dot').hide();
 
@@ -532,8 +525,6 @@ function changePos(eyeX, eyeY) {
                 }
                 theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
                 var j = getBtnType(btn, eyeX, eyeY);
-                // $(btn).css("border-color", color[j]);
-                // $(btn).parent().find('.dot').show();
                 $('.trajectory').css('border-color', 'black');
 
                 if (theTimeInterval > 300.0) {
@@ -547,21 +538,13 @@ function changePos(eyeX, eyeY) {
                     if (!GoSmoothPursuit && EyeStay(eyeX, eyeY)) {
 
                         PursuitPointCount = 0;
-                        // console.log("go SmoothPursuit");
                         GoSmoothPursuit = true;
 
                         for (var l = 0; l < 4; l++) {
                             $(buttons[candidate[l]]).parent().addClass('orbit' + l);
                             $(buttons[candidate[l]]).parent().css('border-color', 'black');
                             $(buttons[candidate[l]]).parent().find('.dot').show();
-                            // $(currBtn[j]).css("border-color", color[j]);
-                            // console.log(l + ' ' + currBtn);
                         }
-
-                        // for (var k = 0; k < 4; k++) {
-                        //     if (candidate[k] === -1)
-                        //         $('#track' + k).hide();
-                        // }
 
                         EyeGestureTimeStart.fill(0.0);
                         EyeGestureTimeEnd.fill(0.0);
@@ -582,11 +565,9 @@ function changePos(eyeX, eyeY) {
 
     for (var i = 0; i < buttons.length; i++)
         if (!isIn(i, candidate, 4))
-            // $(buttons[i]).parent().find('.dot').hide();
             $(buttons[i]).parent().css('border-color', 'transparent');
-        // $(buttons[i]).css('border-color', 'transparent');
 
-        // free the memory
+    // free the memory
     candidate = null;
     dist = null;
 
@@ -625,9 +606,7 @@ function showTarget() {
     clearTimeout(trialTimer);
     ready = false;
     GoSmoothPursuit = false;
-    // $(':button').css("border-color", "transparent");
     $('.trajectory').css('border-color', 'black');
-    // $('.dot').hide();
     pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
 
     if (trial_num == 0) {
@@ -713,7 +692,6 @@ function showTarget() {
     CurrentTarX = $(buttons[tar]).offset().left + 0.5 * buttons[tar].offsetWidth;
     CurrentTarY = $(buttons[tar]).offset().top + 0.5 * buttons[tar].offsetHeight;
     trial_num -= 1;
-    //console.log("CurrentTarX"+CurrentTarX+"CurrentTarY"+CurrentTarY)
     setTimeout(() => {
         ready = true;
     }, 500);
@@ -1069,9 +1047,7 @@ function PreventBtnEdge(x, y) {
 
 
 function UserState(ts) {
-    //console.log(ts)
-    var timestampinterval = ts - preTimeStamp
-        // console.log("interval: " + timestampinterval)
+    var timestampinterval = ts - preTimeStamp;
     if (timestampinterval > 3000) {
         preTimeStamp = ts;
         UserAlready = false;

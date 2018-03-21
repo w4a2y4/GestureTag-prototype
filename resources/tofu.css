@@ -183,34 +183,28 @@ button img {
     position: absolute;
 }
 
-/*.track {
-    position: absolute;
-    border: 1px rgb(118, 118, 118) solid;
-    border-radius: 100%;
-}*/
-
 .orbit0 {
-    /*border: 2px dashed;*/
+    border-color: black;
     animation: spin-right 3s linear infinite;
 }
 
 .orbit1 {
-    /*border: 2px dashed;*/
+    border-color: black;
     animation: spin-right 1.5s linear infinite;
 }
 
 .orbit2 {
-    /*border: 2px dashed;*/
+    border-color: black;
     animation: spin-left 3s linear infinite;
 }
 
 .orbit3 {
-    /*border: 2px dashed;*/
+    border-color: black;
     animation: spin-left 1.5s linear infinite;
 }
 
 .dot {
-    /*display: none;*/
+    display: none;
     position: absolute;
     left: 50%;
     margin-left: -5px;
