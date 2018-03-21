@@ -68,24 +68,26 @@ body {
 
 .trajectory {
     position: absolute;
-    height: calc( 48px / 0.6);
-    width: calc( 48px / 0.6);
-    border: blue solid 2px;
+    height: calc( 50px / 0.6);
+    width: calc( 50px / 0.6);
+    border: 2px dashed;
+    border-color: transparent;
     border-radius: 50%;
     top: 50%;
     left: 50%;
-    margin-top: calc( -24px / 0.6);
-    margin-left: calc( -24px / 0.6);
+    margin-top: calc( -25px / 0.6);
+    margin-left: calc( -25px / 0.6);
 }
 
 button {
+    z-index: -1;
     padding: 0;
     display: none;
     position: absolute;
     height: calc( 12px / 0.6);
     width: calc( 12px / 0.6);
     border-radius: 50%;
-    /*border-color: transparent;*/
+    border-color: transparent;
     top: 50%;
     left: 50%;
     margin-top: calc( -16px / 0.6);
@@ -181,29 +183,29 @@ button img {
     position: absolute;
 }
 
-.track {
+/*.track {
     position: absolute;
     border: 1px rgb(118, 118, 118) solid;
     border-radius: 100%;
-}
+}*/
 
 .orbit0 {
-    border: 2px dashed;
+    /*border: 2px dashed;*/
     animation: spin-right 3s linear infinite;
 }
 
 .orbit1 {
-    border: 2px dashed;
+    /*border: 2px dashed;*/
     animation: spin-right 1.5s linear infinite;
 }
 
 .orbit2 {
-    border: 2px dashed;
+    /*border: 2px dashed;*/
     animation: spin-left 3s linear infinite;
 }
 
 .orbit3 {
-    border: 2px dashed;
+    /*border: 2px dashed;*/
     animation: spin-left 1.5s linear infinite;
 }
 

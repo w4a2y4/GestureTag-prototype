@@ -176,7 +176,8 @@ $(document).on('click', 'button', (function(e) {
     $(this).addClass('clicked');
     GoSmoothPursuit = false;
     // $(':button').css("border-color", "transparent");
-    $('.dot').hide();
+    $('.trajectory').css('border-color', 'transparent');
+    // $('.dot').hide();
 
     TrialTimeEnd = Date.now();
     TrialCompletionTime = TrialTimeEnd - TrialTimeStart
@@ -368,13 +369,14 @@ function changePos(eyeX, eyeY) {
             if (pursuitID !== null) {
                 // console.log("Choose orbit:" + pursuitID)
                 // buttons[postBtnId[pursuitID]].click();
-                $('.orbit' + pursuitID).click();
+                $('.orbit' + pursuitID).find(':button').click();
                 // $('.track').show();
                 // $('#circle-orbit-container').hide();
                 for (let l = 0; l < 4; l++) {
                     // $(currBtn[i]).css("border-color", "transparent");
-                    $(':button').removeClass('orbit' + l);
+                    $('trajectory').removeClass('orbit' + l);
                 }
+                $('.dot').hide();
                 TotalCorrelationRecord = 0.0; // reset the overall threshold value
             }
             setTimeout(() => {
@@ -389,8 +391,9 @@ function changePos(eyeX, eyeY) {
     // $('#circle-orbit-container').hide();
     for (let l = 0; l < 4; l++) {
         // $(currBtn[i]).css("border-color", "transparent");
-        $(':button').removeClass('orbit' + l);
+        $('trajectory').removeClass('orbit' + l);
     }
+    $('.dot').hide();
 
     if (touchLock) return;
 
@@ -530,7 +533,8 @@ function changePos(eyeX, eyeY) {
                 theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
                 var j = getBtnType(btn, eyeX, eyeY);
                 // $(btn).css("border-color", color[j]);
-                $(btn).find('.dot').show();
+                // $(btn).parent().find('.dot').show();
+                $('trajectory').css('border-color', 'black');
 
                 if (theTimeInterval > 300.0) {
                     LockedBtn.push(i);
@@ -547,16 +551,17 @@ function changePos(eyeX, eyeY) {
                         GoSmoothPursuit = true;
 
                         for (var l = 0; l < 4; l++) {
-                            $(buttons[candidate[l]]).addClass('orbit' + l);
-                            $(buttons[candidate[l]]).find('.dot').show();
+                            $(buttons[candidate[l]]).parent().addClass('orbit' + l);
+                            $(buttons[candidate[l]]).parent().css('border-color', 'black');
+                            $(buttons[candidate[l]]).parent().find('.dot').show();
                             // $(currBtn[j]).css("border-color", color[j]);
                             // console.log(l + ' ' + currBtn);
                         }
 
-                        for (var k = 0; k < 4; k++) {
-                            if (candidate[k] === -1)
-                                $('#track' + k).hide();
-                        }
+                        // for (var k = 0; k < 4; k++) {
+                        //     if (candidate[k] === -1)
+                        //         $('#track' + k).hide();
+                        // }
 
                         EyeGestureTimeStart.fill(0.0);
                         EyeGestureTimeEnd.fill(0.0);
@@ -577,7 +582,8 @@ function changePos(eyeX, eyeY) {
 
     for (var i = 0; i < buttons.length; i++)
         if (!isIn(i, candidate, 4))
-            $(buttons[i]).find('.dot').hide();
+            // $(buttons[i]).parent().find('.dot').hide();
+            $(buttons[i]).parent().css('border-color', 'transparent');
         // $(buttons[i]).css('border-color', 'transparent');
 
         // free the memory
@@ -620,7 +626,8 @@ function showTarget() {
     ready = false;
     GoSmoothPursuit = false;
     // $(':button').css("border-color", "transparent");
-    $('.dot').hide();
+    $('.trajectory').css('border-color', 'black');
+    // $('.dot').hide();
     pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
 
     if (trial_num == 0) {
@@ -983,7 +990,7 @@ function DeterminePursuit(eyeX, eyeY) {
     var canPursit = [0, 0, 0, 0];
     for (var i = 0; i < 4; i++) {
         if ($('.orbit' + i).length > 0) {
-            var dot = $('.orbit' + i).find('.dot');
+            var dot = $('.orbit' + i).parent().find('.dot');
             canPursit[i] = 1;
             x[i] = dot.offset().left + 0.5 * dot.width();
             y[i] = dot.offset().top + 0.5 * dot.height();
