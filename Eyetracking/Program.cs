@@ -29,6 +29,12 @@ namespace Interaction_Streams_101
         static OneEuroFilter oneEuroFilterY = new OneEuroFilter(mincutoff, beta);
         static double prevTs = 0.0;
 
+        // eye blink parameters
+        static double prevEyeOpenedTimestamp = 0.0;
+        static double blinkTimeThreshold = 500.0;
+        static bool isCounting = false;
+        
+
         static Boolean isGaze = true;
         
         public static void Main(string[] args)
@@ -45,6 +51,10 @@ namespace Interaction_Streams_101
                 var gazePointDataStream = host.Streams.CreateGazePointDataStream();
                 // gazePointDataStream.GazePoint((x, y, ts) => Write(x, y, ts));
                 gazePointDataStream.GazePoint((x, y, ts) => SendGazeData(x, y, ts));
+                
+                // detect eye appearance
+                var eyePositionDataStream = host.Streams.CreateEyePositionStream();
+                eyePositionDataStream.EyePosition((action) => BlinkDetection(action));
 
             }
             else
@@ -224,5 +234,27 @@ namespace Interaction_Streams_101
             }
         }
 
+        private static void BlinkDetection(EyePositionData action)
+        {
+            bool leftEye = action.HasLeftEyePosition;
+            bool rightEye = action.HasRightEyePosition;
+
+            if(leftEye && rightEye)
+            {
+                if (!Program.isCounting)
+                {
+                    Program.isCounting = true;
+                    Program.prevEyeOpenedTimestamp = action.Timestamp;
+                }
+                else
+                {
+                    if (action.Timestamp - Program.prevEyeOpenedTimestamp >= Program.blinkTimeThreshold)
+                    {
+                        Console.WriteLine("blinked");
+                    }
+                    Program.prevEyeOpenedTimestamp = action.Timestamp;
+                }
+            }
+        }
     }
 }
