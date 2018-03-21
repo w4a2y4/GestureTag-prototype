@@ -534,7 +534,7 @@ function changePos(eyeX, eyeY) {
                 var j = getBtnType(btn, eyeX, eyeY);
                 // $(btn).css("border-color", color[j]);
                 // $(btn).parent().find('.dot').show();
-                $('trajectory').css('border-color', 'black');
+                $('.trajectory').css('border-color', 'black');
 
                 if (theTimeInterval > 300.0) {
                     LockedBtn.push(i);
