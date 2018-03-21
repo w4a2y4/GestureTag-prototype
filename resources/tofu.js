@@ -563,7 +563,7 @@ function changePos(eyeX, eyeY) {
         if (!isIn(i, candidate, 4))
             $(buttons[i]).parent().css('border-color', 'transparent');
 
-    // free the memory
+        // free the memory
     candidate = null;
     dist = null;
 
@@ -603,7 +603,6 @@ function showTarget() {
     clearTimeout(trialTimer);
     ready = false;
     GoSmoothPursuit = false;
-    $('.trajectory').css('border-color', 'black');
     pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
 
     if (trial_num == 0) {
