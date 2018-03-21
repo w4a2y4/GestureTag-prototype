@@ -66,6 +66,18 @@ body {
     width: calc( 1/24 * 100%);
 }
 
+.trajectory {
+    position: absolute;
+    height: calc( 48px / 0.6);
+    width: calc( 48px / 0.6);
+    border: blue solid 2px;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    margin-top: calc( -24px / 0.6);
+    margin-left: calc( -24px / 0.6);
+}
+
 button {
     padding: 0;
     display: none;
@@ -73,7 +85,7 @@ button {
     height: calc( 12px / 0.6);
     width: calc( 12px / 0.6);
     border-radius: 50%;
-    border-color: transparent;
+    /*border-color: transparent;*/
     top: 50%;
     left: 50%;
     margin-top: calc( -16px / 0.6);
@@ -196,8 +208,11 @@ button img {
 }
 
 .dot {
-    display: none;
+    /*display: none;*/
     position: absolute;
+    left: 50%;
+    margin-left: -5px;
+    margin-top: -6px;
     width: 10px;
     height: 10px;
     background-color: black;
