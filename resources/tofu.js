@@ -364,12 +364,8 @@ function changePos(eyeX, eyeY) {
             var pursuitID = DeterminePursuit(eyeX, eyeY);
             if (pursuitID !== null) {
                 // console.log("Choose orbit:" + pursuitID)
-                // buttons[postBtnId[pursuitID]].click();
                 $('.orbit' + pursuitID).find(':button').click();
-                // $('.track').show();
-                // $('#circle-orbit-container').hide();
                 for (let l = 0; l < 4; l++) {
-                    // $(currBtn[i]).css("border-color", "transparent");
                     $('trajectory').removeClass('orbit' + l);
                 }
                 $('.dot').hide();
@@ -579,6 +575,7 @@ function setBtnSize(element, size) {
     $(element).css('margin-top', -size / 2);
     $(element).css('margin-left', -size / 2);
     $(element).show();
+    $(element).parent().show();
 }
 
 var getSpacingSize = (isU2412) => {
@@ -653,7 +650,7 @@ function showTarget() {
     }
 
     // render target and its neighbor
-    $(":button").hide();
+    $('.trajectory').hide();
 
     $(buttons[tar]).addClass('target');
     setBtnSize(buttons[tar], BTN_SIZE);
@@ -664,16 +661,16 @@ function showTarget() {
     // render neighbor
     // right
     setBtnSize(buttons[tar + 1], BTN_SIZE);
-    $(buttons[tar + 1]).css('margin-left', (BTN_SIZE * (SPACING + spacingSize) - BIGGEST_BTN));
+    $(buttons[tar + 1]).parent().css('margin-left', (BTN_SIZE * (SPACING + spacingSize) - BIGGEST_BTN));
     // left
     setBtnSize(buttons[tar - 1], BTN_SIZE);
-    $(buttons[tar - 1]).css('margin-left', (BIGGEST_BTN - BTN_SIZE * (SPACING + 1 + spacingSize)));
+    $(buttons[tar - 1]).parent().css('margin-left', (BIGGEST_BTN - BTN_SIZE * (SPACING + 1 + spacingSize)));
     // down
     setBtnSize(buttons[tar + COL_NUM], BTN_SIZE);
-    $(buttons[tar + COL_NUM]).css('margin-top', (BTN_SIZE * (SPACING + spacingSize) - BIGGEST_BTN));
+    $(buttons[tar + COL_NUM]).parent().css('margin-top', (BTN_SIZE * (SPACING + spacingSize) - BIGGEST_BTN));
     // up
     setBtnSize(buttons[tar - COL_NUM], BTN_SIZE);
-    $(buttons[tar - COL_NUM]).css('margin-top', (BIGGEST_BTN - BTN_SIZE * (SPACING + 1 + spacingSize)));
+    $(buttons[tar - COL_NUM]).parent().css('margin-top', (BIGGEST_BTN - BTN_SIZE * (SPACING + 1 + spacingSize)));
 
     var skip = [tar + 2, tar - 2, tar + 2 * COL_NUM, tar - 2 * COL_NUM,
         tar - COL_NUM - 1, tar - COL_NUM + 1, tar + COL_NUM - 1, tar + COL_NUM + 1
