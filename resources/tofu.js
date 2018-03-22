@@ -358,7 +358,7 @@ function changePos(eyeX, eyeY) {
     if (GoSmoothPursuit) {
         closeEye = false;
         LeaveTimer = setTimeout(() => {
-           // document.getElementById("play1").play();
+            // document.getElementById("play1").play();
         }, 400);
 
         if (GetPursuitPosition) {
@@ -530,17 +530,6 @@ function changePos(eyeX, eyeY) {
 
                     if (!GoSmoothPursuit && EyeStay(eyeX, eyeY)) {
 
-                        var tracksize=80
-                        var midX0 = $(buttons[postBtnId[0]]).offset().left + 0.5 * buttons[postBtnId[0]].offsetWidth;
-                        var midY0 = $(buttons[postBtnId[0]]).offset().top + 0.5 * buttons[postBtnId[0]].offsetHeight;
-                        var midX1 = $(buttons[postBtnId[1]]).offset().left + 0.5 * buttons[postBtnId[1]].offsetWidth;
-                        var midY1 = $(buttons[postBtnId[1]]).offset().top + 0.5 * buttons[postBtnId[1]].offsetHeight;
-                        var midX2 = $(buttons[postBtnId[2]]).offset().left + 0.5 * buttons[postBtnId[2]].offsetWidth;
-                        var midY2 = $(buttons[postBtnId[2]]).offset().top + 0.5 * buttons[postBtnId[2]].offsetHeight;
-                        var midX3 = $(buttons[postBtnId[3]]).offset().left + 0.5 *buttons[postBtnId[3]].offsetWidth;
-                        var midY3 = $(buttons[postBtnId[3]]).offset().top + 0.5 * buttons[postBtnId[3]].offsetHeight;
-
-
                         PursuitPointCount = 0;
                         console.log("go SmoothPursuit");
                         GoSmoothPursuit = true;
@@ -552,46 +541,27 @@ function changePos(eyeX, eyeY) {
                             "top": adjustOrbitY
                         });
 
-                        $('#track0').css({
-                            "left": midX0-adjustOrbitX-0.5*tracksize,
-                            "top": midY0-adjustOrbitY-0.5*tracksize,
-                            "width": tracksize,
-                            "height": tracksize
+                        let tracksize = 80;
+                        let midPos = [];
 
-                        });
-
-                         $('#track1').css({
-                             "left": midX1-adjustOrbitX-0.5*tracksize,
-                            "top": midY1-adjustOrbitY-0.5*tracksize,
-                            "width": tracksize,
-                            "height": tracksize
-
-                        });
-
-                         $('#track2').css({
-                            "left": midX2-adjustOrbitX-0.5*tracksize,
-                            "top": midY2-adjustOrbitY-0.5*tracksize,
-                            "width": tracksize,
-                            "height": tracksize
-
-                        });
-
-                         $('#track3').css({
-                          "left": midX3-adjustOrbitX-0.5*tracksize,
-                            "top": midY3-adjustOrbitY-0.5*tracksize,
-                            "width": tracksize,
-                            "height": tracksize
-
-                        });
-
-                        for(var k = 0; k < 4; k++) {
-                            if(!overlap( buttons[postBtnId[k]], eyeX, eyeY)){$('#track' + k).hide();}
-                           
-
+                        for (let i = 0; i < 4; i++) {
+                            // get the suitable track position
+                            midPos.push([$(buttons[postBtnId[i]]).offset().left + 0.5 * buttons[postBtnId[i]].offsetWidth,
+                                $(buttons[postBtnId[i]]).offset().top + 0.5 * buttons[postBtnId[i]].offsetHeight
+                            ]);
+                            // add correspondent track for orbits nearby
+                            $('#track' + i).css({
+                                "left": midPos[i][0] - adjustOrbitX - 0.5 * tracksize,
+                                "top": midPos[i][1] - adjustOrbitY - 0.5 * tracksize,
+                                "width": tracksize,
+                                "height": tracksize
+                            });
                         }
-                        for (var k = 0; k < 4; k++) {
-                            if (candidate[k] === -1)
-                                $('#track' + k).hide();
+
+                        // condition when track should be hidden
+                        for (let i = 0; i < 4; i++) {
+                            if (!overlap(buttons[postBtnId[i]], eyeX, eyeY) || candidate[i] === -1)
+                                $('#track' + i).hide();
                         }
 
                         EyeGestureTimeStart.fill(0.0);
