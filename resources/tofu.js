@@ -175,8 +175,8 @@ $(document).on('click', 'button', (function(e) {
     clearTimeout(trialTimer);
     $(this).addClass('clicked');
     GoSmoothPursuit = false;
-    $('.trajectory').css('border-color', 'transparent');
-
+    // $('.trajectory').css('border-color', 'transparent');
+    $('.trajectory').hide();
     TrialTimeEnd = Date.now();
     TrialCompletionTime = TrialTimeEnd - TrialTimeStart
 
@@ -190,6 +190,7 @@ $(document).on('click', 'button', (function(e) {
         $('.target').removeClass('target');
         $(this).removeClass('clicked');
         showTarget();
+
     }, 200);
 
 }));
@@ -364,7 +365,8 @@ function changePos(eyeX, eyeY) {
             var pursuitID = DeterminePursuit(eyeX, eyeY);
             if (pursuitID !== null) {
                 // console.log("Choose orbit:" + pursuitID)
-                $('.orbit' + pursuitID).find(':button').click();
+                // $('.orbit' + pursuitID).find(':button').click();
+                $('.orbit' + pursuitID).parent().click();
                 for (let l = 0; l < 4; l++) {
                     $('trajectory').removeClass('orbit' + l);
                 }
@@ -537,9 +539,10 @@ function changePos(eyeX, eyeY) {
                         GoSmoothPursuit = true;
 
                         for (var l = 0; l < 4; l++) {
-                            $(buttons[candidate[l]]).parent().addClass('orbit' + l);
-                            $(buttons[candidate[l]]).parent().css('border-color', 'black');
-                            $(buttons[candidate[l]]).parent().find('.dot').show();
+                            $(buttons[candidate[l]]).find('.trajectory').show();
+                            $(buttons[candidate[l]]).find('.trajectory').addClass('orbit' + l);
+                            $(buttons[candidate[l]]).find('.trajectory').css('border-color', 'black');
+                            $(buttons[candidate[l]]).find('.trajectory').find('.dot').show();
                         }
 
                         EyeGestureTimeStart.fill(0.0);
@@ -561,7 +564,8 @@ function changePos(eyeX, eyeY) {
 
     for (var i = 0; i < buttons.length; i++)
         if (!isIn(i, candidate, 4))
-            $(buttons[i]).parent().css('border-color', 'transparent');
+            $(buttons[i]).find('.trajectory').hide();
+            // $(buttons[i]).siblings('.trajectory').css('border-color', 'transparent');
 
         // free the memory
     candidate = null;
@@ -575,7 +579,7 @@ function setBtnSize(element, size) {
     $(element).css('margin-top', -size / 2);
     $(element).css('margin-left', -size / 2);
     $(element).show();
-    $(element).parent().show();
+    // $(element).parent().show();
 }
 
 var getSpacingSize = (isU2412) => {
@@ -605,7 +609,7 @@ function showTarget() {
     GoSmoothPursuit = false;
     pgBar.circleProgress({ 'value': 0.0, animation: { duration: 10 } });
 
-    if (trial_num == 0) {
+    if (trial_num === 0) {
         socket.emit('end');
         alert(`You finished ` + DEFAULT_TRIAL_NUM + ` trials. Please press space when you are ready for the next round.`);
         JumpDistance.fill(0);
@@ -635,7 +639,7 @@ function showTarget() {
         var btn_num = buttons.length - 2 * (RAW_NUM + COL_NUM) - 4;
         var temptar;
 
-        if (trial_num == DEFAULT_TRIAL_NUM)
+        if (trial_num === DEFAULT_TRIAL_NUM)
         //temptar = ButtonCandidate((server_width+server_height)/2, (server_width+server_height)/2, trial_num, btn_num);
         //temptar = Math.floor(Math.random() * btn_num) + RAW_NUM + 1;
             temptar = 180;
@@ -649,7 +653,7 @@ function showTarget() {
     }
 
     // render target and its neighbor
-    $('.trajectory').hide();
+    $(":button").hide();
 
     $(buttons[tar]).addClass('target');
     setBtnSize(buttons[tar], BTN_SIZE);
@@ -660,16 +664,16 @@ function showTarget() {
     // render neighbor
     // right
     setBtnSize(buttons[tar + 1], BTN_SIZE);
-    $(buttons[tar + 1]).parent().css('margin-left', (BTN_SIZE * (SPACING + spacingSize) - BIGGEST_BTN));
+    $(buttons[tar + 1]).css('margin-left', (BTN_SIZE * (SPACING + spacingSize) - BIGGEST_BTN));
     // left
     setBtnSize(buttons[tar - 1], BTN_SIZE);
-    $(buttons[tar - 1]).parent().css('margin-left', (BIGGEST_BTN - BTN_SIZE * (SPACING + 1 + spacingSize)));
+    $(buttons[tar - 1]).css('margin-left', (BIGGEST_BTN - BTN_SIZE * (SPACING + 1 + spacingSize)));
     // down
     setBtnSize(buttons[tar + COL_NUM], BTN_SIZE);
-    $(buttons[tar + COL_NUM]).parent().css('margin-top', (BTN_SIZE * (SPACING + spacingSize) - BIGGEST_BTN));
+    $(buttons[tar + COL_NUM]).css('margin-top', (BTN_SIZE * (SPACING + spacingSize) - BIGGEST_BTN));
     // up
     setBtnSize(buttons[tar - COL_NUM], BTN_SIZE);
-    $(buttons[tar - COL_NUM]).parent().css('margin-top', (BIGGEST_BTN - BTN_SIZE * (SPACING + 1 + spacingSize)));
+    $(buttons[tar - COL_NUM]).css('margin-top', (BIGGEST_BTN - BTN_SIZE * (SPACING + 1 + spacingSize)));
 
     var skip = [tar + 2, tar - 2, tar + 2 * COL_NUM, tar - 2 * COL_NUM,
         tar - COL_NUM - 1, tar - COL_NUM + 1, tar + COL_NUM - 1, tar + COL_NUM + 1
