@@ -358,8 +358,8 @@ function changePos(eyeX, eyeY) {
     if (GoSmoothPursuit) {
         closeEye = false;
         LeaveTimer = setTimeout(() => {
-            document.getElementById("play1").play();
-        }, 3000);
+           // document.getElementById("play1").play();
+        }, 400);
 
         if (GetPursuitPosition) {
             GetPursuitPosition = false;
@@ -1093,7 +1093,7 @@ function UserState(ts) {
     //console.log(ts)
     var timestampinterval = ts - preTimeStamp
     console.log("interval: " + timestampinterval)
-    if (timestampinterval > 3000) {
+    if (timestampinterval > 400) {
         preTimeStamp = ts;
         UserAlready = false;
         GoSmoothPursuit = false;
