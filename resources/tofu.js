@@ -10,7 +10,7 @@ const UP = 0,
     LEFT = 2,
     RIGHT = 3;
 
-const color = ["yellow", "green", "blue", "deepskyblue"];
+const color = [" black", " black", " black", " black"];
 
 var currBtn = new Array(4).fill(null);
 var isShown = new Array(4).fill(false);
@@ -431,7 +431,6 @@ function changePos(eyeX, eyeY) {
             pgBar.circleProgress({ 'value': 1.0, animation: { duration: timeTd + 200 } });
             console.log("START");
         }
-
         return;
     }
 
@@ -531,6 +530,17 @@ function changePos(eyeX, eyeY) {
 
                     if (!GoSmoothPursuit && EyeStay(eyeX, eyeY)) {
 
+                        var tracksize=80
+                        var midX0 = $(buttons[postBtnId[0]]).offset().left + 0.5 * buttons[postBtnId[0]].offsetWidth;
+                        var midY0 = $(buttons[postBtnId[0]]).offset().top + 0.5 * buttons[postBtnId[0]].offsetHeight;
+                        var midX1 = $(buttons[postBtnId[1]]).offset().left + 0.5 * buttons[postBtnId[1]].offsetWidth;
+                        var midY1 = $(buttons[postBtnId[1]]).offset().top + 0.5 * buttons[postBtnId[1]].offsetHeight;
+                        var midX2 = $(buttons[postBtnId[2]]).offset().left + 0.5 * buttons[postBtnId[2]].offsetWidth;
+                        var midY2 = $(buttons[postBtnId[2]]).offset().top + 0.5 * buttons[postBtnId[2]].offsetHeight;
+                        var midX3 = $(buttons[postBtnId[3]]).offset().left + 0.5 *buttons[postBtnId[3]].offsetWidth;
+                        var midY3 = $(buttons[postBtnId[3]]).offset().top + 0.5 * buttons[postBtnId[3]].offsetHeight;
+
+
                         PursuitPointCount = 0;
                         console.log("go SmoothPursuit");
                         GoSmoothPursuit = true;
@@ -542,6 +552,43 @@ function changePos(eyeX, eyeY) {
                             "top": adjustOrbitY
                         });
 
+                        $('#track0').css({
+                            "left": midX0-adjustOrbitX-0.5*tracksize,
+                            "top": midY0-adjustOrbitY-0.5*tracksize,
+                            "width": tracksize,
+                            "height": tracksize
+
+                        });
+
+                         $('#track1').css({
+                             "left": midX1-adjustOrbitX-0.5*tracksize,
+                            "top": midY1-adjustOrbitY-0.5*tracksize,
+                            "width": tracksize,
+                            "height": tracksize
+
+                        });
+
+                         $('#track2').css({
+                            "left": midX2-adjustOrbitX-0.5*tracksize,
+                            "top": midY2-adjustOrbitY-0.5*tracksize,
+                            "width": tracksize,
+                            "height": tracksize
+
+                        });
+
+                         $('#track3').css({
+                          "left": midX3-adjustOrbitX-0.5*tracksize,
+                            "top": midY3-adjustOrbitY-0.5*tracksize,
+                            "width": tracksize,
+                            "height": tracksize
+
+                        });
+
+                        for(var k = 0; k < 4; k++) {
+                            if(!overlap( buttons[postBtnId[k]], eyeX, eyeY)){$('#track' + k).hide();}
+                           
+
+                        }
                         for (var k = 0; k < 4; k++) {
                             if (candidate[k] === -1)
                                 $('#track' + k).hide();
