@@ -190,7 +190,7 @@ button img {
 
 .orbit1 {
     border-color: black;
-    animation: spin-right 1.5s linear infinite;
+    animation: spin-right 2s linear infinite;
 }
 
 .orbit2 {
@@ -200,7 +200,7 @@ button img {
 
 .orbit3 {
     border-color: black;
-    animation: spin-left 1.5s linear infinite;
+    animation: spin-left 2s linear infinite;
 }
 
 .dot {
