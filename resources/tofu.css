@@ -184,22 +184,22 @@ button img {
 }
 
 .orbit0 {
-    border-color: black;
+    /* border-color: black; */
     animation: spin-right 3s linear infinite;
 }
 
 .orbit1 {
-    border-color: black;
+    /* border-color: black; */
     animation: spin-right 2s linear infinite;
 }
 
 .orbit2 {
-    border-color: black;
+    /* border-color: black; */
     animation: spin-left 3s linear infinite;
 }
 
 .orbit3 {
-    border-color: black;
+    /* border-color: black; */
     animation: spin-left 2s linear infinite;
 }
 
