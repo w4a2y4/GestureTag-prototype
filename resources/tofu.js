@@ -695,7 +695,7 @@ function showTarget() {
     trial_num -= 1;
     setTimeout(() => {
         ready = true;
-        TrialTimeStart = Date.now();
+        // TrialTimeStart = Date.now();
     }, 500);
 }
 
