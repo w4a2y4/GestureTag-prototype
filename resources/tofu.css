@@ -66,20 +66,6 @@ body {
     width: calc( 1/24 * 100%);
 }
 
-.trajectory {
-    position: absolute;
-    height: calc( 50px / 0.6);
-    width: calc( 50px / 0.6);
-    border: 2px dashed;
-    border-color: transparent;
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    margin-top: calc( -25px / 0.6);
-    margin-left: calc( -25px / 0.6);
-    z-index: 1;
-}
-
 button {
     padding: 0;
     display: none;
@@ -161,17 +147,18 @@ button img {
     top: 77%;
 }
 
-
-/* ---------- Container for the orbiting circles animation ---------- */
-
-#circle-orbit-container {
-    position: relative;
-    top: -100px;
-    left: -100px;
-    height: 100%;
-    width: 100%;
-    pointer-events: none;
+.trajectory {
     position: absolute;
+    height: calc( 50px / 0.6);
+    width: calc( 50px / 0.6);
+    border: 2px dashed;
+    border-color: transparent;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    margin-top: calc( -25px / 0.6);
+    margin-left: calc( -25px / 0.6);
+    z-index: 1;
 }
 
 .orbit0 {
