@@ -356,7 +356,7 @@ function changePos(eyeX, eyeY) {
         closeEye = false;
         LeaveTimer = setTimeout(() => {
             document.getElementById("play1").play();
-        }, 400);
+        }, 1000);
 
         if (GetPursuitPosition) {
             GetPursuitPosition = false;
@@ -1049,7 +1049,7 @@ function PreventBtnEdge(x, y) {
 
 function UserState(ts) {
     var timestampinterval = ts - preTimeStamp;
-    if (timestampinterval > 400) {
+    if (timestampinterval > 1000) {
         preTimeStamp = ts;
         UserAlready = false;
         GoSmoothPursuit = false;
