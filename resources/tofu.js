@@ -275,7 +275,7 @@ socket.on('spacing', function(spacing) {
 
 function log() {
     cnt = DEFAULT_TRIAL_NUM - trial_num;
-    // console.log(gesture + ' ' + clicked_btn + ' ' + target_btn);
+    console.log(gesture + ' ' + clicked_btn + ' ' + target_btn);
     socket.emit('log', cnt, gesture, clicked_btn, target_btn, TrialCompletionTime, ErrorCount, DwellSelectionCount, MouseClickCount);
 }
 
@@ -521,7 +521,7 @@ function changePos(eyeX, eyeY) {
                 }
                 theTimeInterval = LockerTimeEnd[i] - LockerTimeStart[i];
                 var j = getBtnType(btn, eyeX, eyeY);
-                $('.trajectory').css('border-color', 'black');
+                $(btn).find('.trajectory').show();
 
                 if (theTimeInterval > 300.0) {
                     LockedBtn.push(i);
@@ -537,9 +537,7 @@ function changePos(eyeX, eyeY) {
                         GoSmoothPursuit = true;
 
                         for (var l = 0; l < 4; l++) {
-                            $(buttons[candidate[l]]).find('.trajectory').show();
                             $(buttons[candidate[l]]).find('.trajectory').addClass('orbit' + l);
-                            $(buttons[candidate[l]]).find('.trajectory').css('border-color', 'black');
                             // let trajectory start from different position with same angular speed
                             if (l % 2 !== 0)
                                 $(buttons[candidate[l]]).find('.trajectory').find('.dot').css('top', '103%');

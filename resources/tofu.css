@@ -73,7 +73,7 @@ button {
     height: calc( 12px / 0.6);
     width: calc( 12px / 0.6);
     border-radius: 50%;
-    border-color: transparent;
+    /*border-color: transparent;*/
     top: 50%;
     left: 50%;
     margin-top: calc( -16px / 0.6);
@@ -152,7 +152,7 @@ button img {
     height: calc( 50px / 0.6);
     width: calc( 50px / 0.6);
     border: 2px dashed;
-    border-color: transparent;
+    border-color: black;
     border-radius: 50%;
     top: 50%;
     left: 50%;
