@@ -17,7 +17,7 @@ var isShown = new Array(4).fill(false);
 
 var type, platform;
 var dynamic = false;
-const timeoutThreshold = 150000;
+const timeoutThreshold = 15000;
 
 
 var clicked_button, target_btn, gesture;
@@ -630,7 +630,6 @@ function showTarget() {
     }, timeoutThreshold);
 
     //reset preformance data
-    TrialTimeStart = Date.now();
     ErrorCount = 0;
     DwellSelectionCount = 0;
     MouseClickCount = 0;
@@ -696,6 +695,7 @@ function showTarget() {
     trial_num -= 1;
     setTimeout(() => {
         ready = true;
+        TrialTimeStart = Date.now();
     }, 500);
 }
 
