@@ -540,7 +540,11 @@ function changePos(eyeX, eyeY) {
                             $(buttons[candidate[l]]).find('.trajectory').show();
                             $(buttons[candidate[l]]).find('.trajectory').addClass('orbit' + l);
                             $(buttons[candidate[l]]).find('.trajectory').css('border-color', 'black');
+                            // let trajectory start from different position with same angular speed
+                            if (l % 2 !== 0)
+                                $(buttons[candidate[l]]).find('.trajectory').find('.dot').css('top', '103%');
                             $(buttons[candidate[l]]).find('.trajectory').find('.dot').show();
+
                         }
 
                         EyeGestureTimeStart.fill(0.0);
@@ -563,7 +567,7 @@ function changePos(eyeX, eyeY) {
     for (var i = 0; i < buttons.length; i++)
         if (!isIn(i, candidate, 4))
             $(buttons[i]).find('.trajectory').hide();
-            // $(buttons[i]).siblings('.trajectory').css('border-color', 'transparent');
+
 
         // free the memory
     candidate = null;
