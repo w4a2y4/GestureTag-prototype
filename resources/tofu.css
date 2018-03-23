@@ -80,7 +80,8 @@ body {
 }
 
 button {
-    z-index: -1;
+    /* z-index: -1 made the button unclickalbe for mouse input condition */
+    /* z-index: 0; */
     padding: 0;
     display: none;
     position: absolute;
