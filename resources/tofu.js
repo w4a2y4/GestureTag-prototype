@@ -630,6 +630,7 @@ function showTarget() {
     }, timeoutThreshold);
 
     //reset preformance data
+    TrialTimeStart = 0;
     ErrorCount = 0;
     DwellSelectionCount = 0;
     MouseClickCount = 0;
