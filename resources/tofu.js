@@ -366,7 +366,7 @@ function changePos(eyeX, eyeY) {
                 // $('.orbit' + pursuitID).find(':button').click();
                 $('.orbit' + pursuitID).parent().click();
                 for (let l = 0; l < 4; l++) {
-                    $('trajectory').removeClass('orbit' + l);
+                    $('.trajectory').removeClass('orbit' + l);
                 }
                 $('.dot').hide();
                 TotalCorrelationRecord = 0.0; // reset the overall threshold value
