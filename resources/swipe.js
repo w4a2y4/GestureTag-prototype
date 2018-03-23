@@ -38,6 +38,7 @@ manager.on('hammer.input', (ev) => {
 
     if (ev.isFinal === true) {
         let multidir = ev.direction;
+        let dir = '';
         if (multidir === Hammer.DIRECTION_RIGHT) {
             dir = 'right';
         } else if (multidir === Hammer.DIRECTION_UP) {
@@ -48,7 +49,6 @@ manager.on('hammer.input', (ev) => {
             dir = 'down';
         }
         emitSwipeGesture(dir);
-        console.log("M: " + dir);
         ev.target.innerText = `${dir}`
     }
 
@@ -61,7 +61,7 @@ var forceFullScreen = () => {
     var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
     // var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
     console.log('haha');
-    if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+    if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
         console.log('not yet');
         requestFullScreen.call(docEl);
         document.getElementById('full').remove();
