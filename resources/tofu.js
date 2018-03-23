@@ -175,8 +175,6 @@ $(document).on('click', 'button', (function(e) {
     clearTimeout(trialTimer);
     $(this).addClass('clicked');
     GoSmoothPursuit = false;
-    // $('.trajectory').css('border-color', 'transparent');
-    $('.trajectory').hide();
     TrialTimeEnd = Date.now();
     TrialCompletionTime = TrialTimeEnd - TrialTimeStart
 
