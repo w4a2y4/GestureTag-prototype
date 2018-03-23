@@ -275,7 +275,7 @@ socket.on('spacing', function(spacing) {
 
 function log() {
     cnt = DEFAULT_TRIAL_NUM - trial_num;
-    console.log(gesture + ' ' + clicked_btn + ' ' + target_btn);
+    // console.log(gesture + ' ' + clicked_btn + ' ' + target_btn);
     socket.emit('log', cnt, gesture, clicked_btn, target_btn, TrialCompletionTime, ErrorCount, DwellSelectionCount, MouseClickCount);
 }
 
@@ -630,7 +630,7 @@ function showTarget() {
     }, timeoutThreshold);
 
     //reset preformance data
-    TrialTimeStart = Date.now();
+    // TrialTimeStart = Date.now();
     ErrorCount = 0;
     DwellSelectionCount = 0;
     MouseClickCount = 0;
@@ -696,7 +696,7 @@ function showTarget() {
     trial_num -= 1;
     setTimeout(() => {
         ready = true;
-        // TrialTimeStart = Date.now();
+        TrialTimeStart = Date.now();
     }, 500);
 }
 
@@ -796,7 +796,7 @@ function AssignTargetAlgo() {
     for (let i = 0; i < DEFAULT_TRIAL_NUM; i++)
         JumpDistance[i] += 200;
 
-    //console.log(JumpDistance);
+    console.log(JumpDistance);
 }
 
 function ButtonCandidate(midX, midY, trialNum, btn_num) {
