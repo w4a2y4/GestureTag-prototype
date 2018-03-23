@@ -66,6 +66,20 @@ body {
     width: calc( 1/24 * 100%);
 }
 
+.trajectory {
+    position: absolute;
+    height: calc( 50px / 0.6);
+    width: calc( 50px / 0.6);
+    border: 2px dashed;
+    border-color: transparent;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    margin-top: calc( -25px / 0.6);
+    margin-left: calc( -25px / 0.6);
+    z-index: 1;
+}
+
 button {
     padding: 0;
     display: none;
@@ -105,55 +119,46 @@ button img {
 #Calibration1 {
     left: 5%;
     top: 3%;
-    /* left:100px; top: 100px; */
 }
 
 #Calibration2 {
     left: 45%;
     top: 3%;
-    /* left:1300px; top: 100px; */
 }
 
 #Calibration3 {
     left: 85%;
     top: 3%;
-    /* left:2500px; top: 100px; */
 }
 
 #Calibration4 {
     left: 5%;
     top: 40%;
-    /* left:100px; top: 850px; */
 }
 
 #Calibration5 {
     left: 45%;
     top: 40%;
-    /* left:1300px; top: 850px; */
 }
 
 #Calibration6 {
     left: 85%;
     top: 40%;
-    /* position:absolute; left:2500px; top: 850px; */
 }
 
 #Calibration7 {
     left: 5%;
     top: 77%;
-    /* position:absolute; left:100px; top: 1600px;s */
 }
 
 #Calibration8 {
     left: 45%;
     top: 77%;
-    /* left:1300px; top: 1600px; */
 }
 
 #Calibration9 {
     left: 85%;
     top: 77%;
-    /* left:2500px; top: 1600px; */
 }
 
 
@@ -169,342 +174,34 @@ button img {
     position: absolute;
 }
 
-.track {
-    position: absolute;
-    border: 1px rgb(118, 118, 118) solid;
-    border-radius: 100%;
-}
-
 .orbit0 {
-    border: 2px dashed;
     animation: spin-right 3s linear infinite;
 }
 
 .orbit1 {
-    border: 2px dashed;
-    animation: spin-right 2s linear infinite;
+    animation: spin-right 3s linear infinite;
 }
 
 .orbit2 {
-    border: 2px dashed;
     animation: spin-left 3s linear infinite;
 }
 
 .orbit3 {
-    border: 2px dashed;
-    animation: spin-left 2s linear infinite;
+    animation: spin-left 3s linear infinite;
 }
 
 .dot {
+    z-index: 10;
     display: none;
     position: absolute;
+    left: 50%;
+    margin-left: -5px;
+    margin-top: -6px;
     width: 10px;
     height: 10px;
     background-color: black;
     border-radius: 50%;
 }
-
-
-/* original size same as curosr size */
-
-
-/*
-#track0 {
-    top: -100px;
-    left: -100px;
-    width: 200px;
-    height: 200px;
-    animation: spin-right 3s linear infinite;
-}
-
-#track1 {
-    top: -100px;
-    left: -100px;
-    width: 200px;
-    height: 200px;
-    animation: spin-left 3s linear infinite;
-}
-
-#track2 {
-    top: -100px;
-    left: -100px;
-    width: 200px;
-    height: 200px;
-    animation: spin-right 3s linear infinite;
-}
-
-#track3 {
-    top: -100px;
-    left: -100px;
-    width: 200px;
-    height: 200px;
-    animation: spin-left 3s linear infinite;
-}
-
-.pursuit {
-    position: absolute;
-    border-radius: 100%;
-}
-
-#pursuit0 {
-    top: 20px;
-    left: 20px;
-    height: 20px;
-    width: 20px;
-    background-color: yellow;
-    z-index: 10;
-}
-
-#pursuit1 {
-    top: 20px;
-    left: 20px;
-    height: 20px;
-    width: 20px;
-    background-color: green;
-    z-index: 10;
-}
-
-#pursuit2 {
-    top: 155px;
-    left: 155px;
-    height: 20px;
-    width: 20px;
-    background-color: blue;
-    z-index: 10;
-}
-
-#pursuit3 {
-    top: 155px;
-    left: 155px;
-    height: 20px;
-    width: 20px;
-    background-color: deepskyblue;
-    z-index: 10;
-}
-
-*/
-
-
-/* large trajectory */
-
-
-/*
-#track0 {
-    top: -50px;
-    left: -50px;
-    width: 100px;
-    height: 100px;
-    animation: spin-right 2s linear infinite;
-}
-
-#track1 {
-    top: -50px;
-    left: -50px;
-    width: 100px;
-    height: 100px;
-    animation: spin-left 2s linear infinite;
-}
-
-#track2 {
-    top: -50px;
-    left: -50px;
-    width: 100px;
-    height: 100px;
-    animation: spin-right 2s linear infinite;
-}
-
-#track3 {
-    top: -50px;
-    left: -50px;
-    width: 100px;
-    height: 100px;
-    animation: spin-left 2s linear infinite;
-}
-
-.pursuit {
-    position: absolute;
-    border-radius: 100%;
-}
-
-#pursuit0 {
-    top: 0px;
-    left: 0px;
-    height: 20px;
-    width: 20px;
-    background-color: yellow;
-}
-
-#pursuit1 {
-    top: 0px;
-    left: 0px;
-    height: 20px;
-    width: 20px;
-    background-color: green;
-}
-
-#pursuit2 {
-    top: 75px;
-    left: 75px;
-    height: 20px;
-    width: 20px;
-    background-color: blue;
-}
-
-#pursuit3 {
-    top: 75px;
-    left: 75px;
-    height: 20px;
-    width: 20px;
-    background-color: deepskyblue;
-}
-*/
-
-
-/* medium trajectory */
-
-#track0 {
-    top: -35px;
-    left: -35px;
-    width: 70px;
-    height: 70px;
-    animation: spin-right 2s linear infinite;
-}
-
-#track1 {
-    top: -35px;
-    left: -35px;
-    width: 70px;
-    height: 70px;
-    animation: spin-left 2s linear infinite;
-}
-
-#track2 {
-    top: -35px;
-    left: -35px;
-    width: 70px;
-    height: 70px;
-    animation: spin-right 2s linear infinite;
-}
-
-#track3 {
-    top: -35px;
-    left: -35px;
-    width: 70px;
-    height: 70px;
-    animation: spin-left 2s linear infinite;
-}
-
-.pursuit {
-    position: absolute;
-    border-radius: 100%;
-}
-
-#pursuit0 {
-    top: 0px;
-    left: 0px;
-    height: 20px;
-    width: 20px;
-    background-color: yellow;
-}
-
-#pursuit1 {
-    top: 0px;
-    left: 0px;
-    height: 20px;
-    width: 20px;
-    background-color: green;
-}
-
-#pursuit2 {
-    top: 45px;
-    left: 45px;
-    height: 20px;
-    width: 20px;
-    background-color: blue;
-}
-
-#pursuit3 {
-    top: 45px;
-    left: 45px;
-    height: 20px;
-    width: 20px;
-    background-color: deepskyblue;
-}
-
-
-/* small trajectory */
-
-
-/*
-#track0 {
-    top: -20px;
-    left: -20px;
-    width: 40px;
-    height: 40px;
-    animation: spin-right 2s linear infinite;
-}
-
-#track1 {
-    top: -20px;
-    left: -20px;
-    width: 40px;
-    height: 40px;
-    animation: spin-left 2s linear infinite;
-}
-
-#track2 {
-    top: -20px;
-    left: -20px;
-    width: 40px;
-    height: 40px;
-    animation: spin-right 2s linear infinite;
-}
-
-#track3 {
-    top: -20px;
-    left: -20px;
-    width: 40px;
-    height: 40px;
-    animation: spin-left 2s linear infinite;
-}
-
-.pursuit {
-    position: absolute;
-    border-radius: 100%;
-}
-
-#pursuit0 {
-    top: 0px;
-    left: 0px;
-    height: 15px;
-    width: 15px;
-    background-color: yellow;
-}
-
-#pursuit1 {
-    top: 0px;
-    left: 0px;
-    height: 15px;
-    width: 15px;
-    background-color: green;
-}
-
-#pursuit2 {
-    top: 22px;
-    left: 22px;
-    height: 15px;
-    width: 15px;
-    background-color: blue;
-}
-
-#pursuit3 {
-    top: 22px;
-    left: 22px;
-    height: 15px;
-    width: 15px;
-    background-color: deepskyblue;
-}
-*/
 
 
 /* ---------- Animation ---------- */
