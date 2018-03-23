@@ -188,7 +188,7 @@ $(document).on('click', 'button', (function(e) {
         $('.target').removeClass('target');
         $(this).removeClass('clicked');
         showTarget();
-
+        clearTimeout(LeaveTimer);
     }, 200);
 
 }));
