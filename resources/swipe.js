@@ -38,6 +38,7 @@ manager.on('hammer.input', (ev) => {
 
     if (ev.isFinal === true) {
         let multidir = ev.direction;
+        let dir = '';
         if (multidir === Hammer.DIRECTION_RIGHT) {
             dir = 'right';
         } else if (multidir === Hammer.DIRECTION_UP) {
