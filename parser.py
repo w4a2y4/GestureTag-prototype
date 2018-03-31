@@ -7,15 +7,18 @@ if re.search('CalibrationLog', sys.argv[1]):
     sys.exit()
 
 method = ''
+size = '-1 '
+spacing = '-1\n'
+
 in_path = os.path.dirname(sys.argv[1])
 in_file = os.path.basename(sys.argv[1])
 
 try:
-    os.mkdir( os.path.join(in_path, 'parsed') )
+    os.makedirs( os.path.join('parsed', in_path) )
 except:
     pass
 
-out_path = os.path.join(in_path, 'parsed', in_file[10:14])
+out_path = os.path.join('parsed', in_path, in_file[10:15])
 
 fout = open(out_path, 'w')
 fout.write('CompletionTime, ErrorCount, DwellSelectionCount, MouseClickCount, Size, Spacing\n')
@@ -46,5 +49,5 @@ with open(sys.argv[1]) as fp:
 
         head = fp.readline()
 
-os.rename(out_path, out_path + '_' + method + '.log')
+os.rename(out_path, out_path + '_' + method + '.csv')
 
