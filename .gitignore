@@ -1,6 +1,6 @@
 **/.DS_Store
 node_modules
-log/*.log
+**.log
 **/npm-debug.log
 
 # Created by https://www.gitignore.io/api/macos,xcode,cocoapods,objective-c
