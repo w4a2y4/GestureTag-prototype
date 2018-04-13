@@ -23,6 +23,15 @@ body {
     position: absolute;
 }
 
+#Fake_Container {
+	top:82;
+	left:286;
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+    position: absolute;
+}
+
 #MobileContainer {
     height: 100%;
     width: 100%;
@@ -198,16 +207,16 @@ img {
 }
 
 #main-video {
-    height: 615px;
+    height: 595px;
     width: 100%;
 }
 
 #control-bar {
-    height: 35px;
+    height: 55px;
 }
 
 #control-bar div {
-    width: 35px;
+    width: 70px;
     float: left;
 }
 
@@ -216,7 +225,7 @@ img {
 }
 
 #control-icon4 {
-    margin-left: 920px;
+    margin-left: 710px;
 }
 
 #reaction {

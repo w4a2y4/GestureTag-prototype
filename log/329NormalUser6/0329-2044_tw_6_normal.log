@@ -1,0 +1,10 @@
+03/29 20:45:35:337	trials start ( tap ), size: 48, spacing: 0.5
+03/29 20:45:41:737	#1	event:null	target:blk_7_12	click:blk_7_12	CompletionTime: 5266	ErrorCount: 0	DwellSelectionCount: 0	MouseClickCount: 1
+03/29 20:45:41:904	#1	event:null	target:blk_7_12	click:blk_7_12	CompletionTime: 5434	ErrorCount: 0	DwellSelectionCount: 0	MouseClickCount: 2
+03/29 20:45:45:577	#3	event:null	target:blk_11_10	click:blk_11_10	CompletionTime: 1681	ErrorCount: 0	DwellSelectionCount: 0	MouseClickCount: 1
+03/29 20:45:47:345	#4	event:null	target:blk_11_7	click:blk_11_7	CompletionTime: 418	ErrorCount: 0	DwellSelectionCount: 0	MouseClickCount: 1
+03/29 20:45:49:137	#5	event:null	target:blk_9_9	click:blk_9_9	CompletionTime: 290	ErrorCount: 0	DwellSelectionCount: 0	MouseClickCount: 1
+03/29 20:45:51:017	#6	event:null	target:blk_6_10	click:blk_6_10	CompletionTime: 336	ErrorCount: 0	DwellSelectionCount: 0	MouseClickCount: 1
+03/29 20:45:52:930	#7	event:null	target:blk_11_6	click:blk_11_6	CompletionTime: 304	ErrorCount: 0	DwellSelectionCount: 0	MouseClickCount: 1
+03/29 20:45:53:025	#7	event:null	target:blk_11_6	click:blk_11_6	CompletionTime: 399	ErrorCount: 0	DwellSelectionCount: 0	MouseClickCount: 2
+03/29 20:45:53:756	trial end

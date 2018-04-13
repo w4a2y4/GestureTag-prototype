@@ -356,7 +356,7 @@ function changePos(eyeX, eyeY) {
         closeEye = false;
         LeaveTimer = setTimeout(() => {
             document.getElementById("play1").play();
-        }, 400);
+        }, 1000);
 
         if (GetPursuitPosition) {
             GetPursuitPosition = false;
@@ -445,7 +445,7 @@ function changePos(eyeX, eyeY) {
 
     //Dwell time locker reset
     DwellLockerReset(eyeX, eyeY);
-
+    
     var neighborhood = [me, me - 1, me + 1,
         me - COL_NUM, me - COL_NUM - 1, me - COL_NUM + 1,
         me + COL_NUM, me + COL_NUM - 1, me + COL_NUM + 1
@@ -535,16 +535,13 @@ function changePos(eyeX, eyeY) {
 
                         PursuitPointCount = 0;
                         GoSmoothPursuit = true;
-
                         for (var l = 0; l < 4; l++) {
                             $(buttons[candidate[l]]).find('.trajectory').addClass('orbit' + l);
                             // let trajectory start from different position with same angular speed
                             if (l % 2 !== 0)
                                 $(buttons[candidate[l]]).find('.trajectory').find('.dot').css('top', '103%');
                             $(buttons[candidate[l]]).find('.trajectory').find('.dot').show();
-
                         }
-
                         EyeGestureTimeStart.fill(0.0);
                         EyeGestureTimeEnd.fill(0.0);
                     }
@@ -866,7 +863,6 @@ function Calibration(eyeX, eyeY) {
         CalibrateBtnY = $(c).offset().top + 0.5 * c.offsetHeight;
         for (var i = 0; i < 10; i++)
             if (i != CalibrateID) $(document.getElementById("Calibration" + i)).hide();
-
     } else {
         $(document.getElementById("Calibration9")).hide();
         CalibrationState = false;
@@ -895,7 +891,11 @@ function EyeStay(x, y) {
     EyeStayX[StayIndex] = x;
     EyeStayY[StayIndex] = y;
     for (var i = 0; i < 10; i++) {
-        if ((EyeXave - EyeStayX[i]) * (EyeXave - EyeStayX[i]) + (EyeYave - EyeStayY[i]) * (EyeYave - EyeStayY[i]) > BTN_SIZE * BTN_SIZE) {
+    	//var EyeRange=BTN_SIZE * BTN_SIZE;
+    	var EyeRange = RADIUS*RADIUS;
+    	//var EyeRange =TOFU_WIDTH *TOFU_HEIGHT;
+    	//var EyeRange = BIGGEST_BTN*BIGGEST_BTN
+        if ((EyeXave - EyeStayX[i]) * (EyeXave - EyeStayX[i]) + (EyeYave - EyeStayY[i]) * (EyeYave - EyeStayY[i]) >EyeRange) {
             EyeStayTimeStart = Date.now();
             EyeStayTimeEnd = Date.now();
         }
@@ -1049,7 +1049,7 @@ function PreventBtnEdge(x, y) {
 
 function UserState(ts) {
     var timestampinterval = ts - preTimeStamp;
-    if (timestampinterval > 400) {
+    if (timestampinterval > 1000) {
         preTimeStamp = ts;
         UserAlready = false;
         GoSmoothPursuit = false;

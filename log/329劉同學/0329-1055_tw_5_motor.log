@@ -1,0 +1,97 @@
+03/29 10:57:07:791	trials start ( swipe ), size: 16, spacing: 0.5
+03/29 10:57:24:029	trials start ( swipe ), size: 16, spacing: 0.5
+03/29 10:57:26:214	#1	event:null	target:blk_7_12	click:blk_7_12	CompletionTime: 979	ErrorCount: 0	DwellSelectionCount: 2	MouseClickCount: 0
+03/29 10:57:29:450	#2	event:null	target:blk_9_10	click:blk_9_10	CompletionTime: 1652	ErrorCount: 0	DwellSelectionCount: 2	MouseClickCount: 0
+03/29 10:57:32:345	#3	event:null	target:blk_11_8	click:blk_11_8	CompletionTime: 1458	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 10:57:35:447	#4	event:null	target:blk_9_10	click:blk_9_10	CompletionTime: 1584	ErrorCount: 0	DwellSelectionCount: 2	MouseClickCount: 0
+03/29 10:57:38:358	#5	event:null	target:blk_11_6	click:blk_11_6	CompletionTime: 1298	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 10:57:42:515	#6	event:null	target:blk_4_7	click:blk_4_7	CompletionTime: 2487	ErrorCount: 0	DwellSelectionCount: 4	MouseClickCount: 0
+03/29 10:57:45:412	#7	event:null	target:blk_8_7	click:blk_8_7	CompletionTime: 1357	ErrorCount: 0	DwellSelectionCount: 4	MouseClickCount: 0
+03/29 10:57:48:195	#8	event:null	target:blk_11_8	click:blk_11_8	CompletionTime: 1248	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 10:57:48:396	trial end
+03/29 10:57:53:612	trials start ( swipe ), size: 32, spacing: 0
+03/29 10:57:56:214	#1	event:null	target:blk_7_12	click:blk_7_12	CompletionTime: 1335	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 10:57:59:762	#2	event:null	target:blk_10_11	click:blk_10_11	CompletionTime: 1981	ErrorCount: 0	DwellSelectionCount: 5	MouseClickCount: 0
+03/29 10:58:04:685	#3	event:null	target:blk_10_8	click:blk_10_8	CompletionTime: 3494	ErrorCount: 0	DwellSelectionCount: 5	MouseClickCount: 0
+03/29 10:58:08:296	#4	event:null	target:blk_11_6	click:blk_11_6	CompletionTime: 1970	ErrorCount: 0	DwellSelectionCount: 6	MouseClickCount: 0
+03/29 10:58:11:446	#5	event:null	target:blk_11_9	click:blk_11_9	CompletionTime: 1610	ErrorCount: 0	DwellSelectionCount: 2	MouseClickCount: 0
+03/29 10:58:14:257	#6	event:null	target:blk_8_11	click:blk_8_11	CompletionTime: 1293	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 10:58:17:112	#7	event:null	target:blk_11_5	click:blk_11_5	CompletionTime: 1410	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 10:58:20:051	#8	event:null	target:blk_8_10	click:blk_8_10	CompletionTime: 1462	ErrorCount: 0	DwellSelectionCount: 4	MouseClickCount: 0
+03/29 10:58:20:252	trial end
+03/29 10:58:23:631	trials start ( swipe ), size: 32, spacing: 1
+03/29 10:58:26:244	#1	event:null	target:blk_7_12	click:blk_7_12	CompletionTime: 1296	ErrorCount: 0	DwellSelectionCount: 1	MouseClickCount: 0
+03/29 10:58:29:539	#2	event:null	target:blk_6_10	click:blk_6_10	CompletionTime: 1782	ErrorCount: 0	DwellSelectionCount: 4	MouseClickCount: 0
+03/29 10:58:33:202	#3	event:null	target:blk_5_8	click:blk_5_8	CompletionTime: 2085	ErrorCount: 0	DwellSelectionCount: 4	MouseClickCount: 0
+03/29 10:58:35:765	#4	event:null	target:blk_7_10	click:blk_7_10	CompletionTime: 935	ErrorCount: 0	DwellSelectionCount: 4	MouseClickCount: 0
+03/29 10:58:38:430	#5	event:null	target:blk_9_8	click:blk_9_8	CompletionTime: 1174	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 10:58:41:148	#6	event:null	target:blk_8_3	click:blk_8_3	CompletionTime: 1207	ErrorCount: 0	DwellSelectionCount: 2	MouseClickCount: 0
+03/29 10:58:43:715	#7	event:null	target:blk_7_10	click:blk_7_10	CompletionTime: 1092	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 10:58:46:917	#8	event:null	target:blk_4_6	click:blk_4_6	CompletionTime: 1687	ErrorCount: 0	DwellSelectionCount: 5	MouseClickCount: 0
+03/29 10:58:47:117	trial end
+03/29 10:58:50:182	trials start ( swipe ), size: 48, spacing: 0
+03/29 10:58:52:879	#1	event:null	target:blk_7_12	click:blk_7_12	CompletionTime: 1289	ErrorCount: 0	DwellSelectionCount: 2	MouseClickCount: 0
+03/29 10:58:56:415	#2	event:null	target:blk_8_10	click:blk_8_10	CompletionTime: 1913	ErrorCount: 0	DwellSelectionCount: 6	MouseClickCount: 0
+03/29 10:58:59:180	#3	event:null	target:blk_6_11	click:blk_6_11	CompletionTime: 1200	ErrorCount: 0	DwellSelectionCount: 4	MouseClickCount: 0
+03/29 10:59:01:901	#4	event:null	target:blk_8_10	click:blk_8_10	CompletionTime: 1143	ErrorCount: 0	DwellSelectionCount: 5	MouseClickCount: 0
+03/29 10:59:05:443	#5	event:null	target:blk_10_11	click:blk_10_11	CompletionTime: 1864	ErrorCount: 0	DwellSelectionCount: 6	MouseClickCount: 0
+03/29 10:59:08:001	#6	event:null	target:blk_10_7	click:blk_10_7	CompletionTime: 1134	ErrorCount: 0	DwellSelectionCount: 4	MouseClickCount: 0
+03/29 10:59:11:299	#7	event:null	target:blk_4_10	click:blk_4_10	CompletionTime: 1680	ErrorCount: 0	DwellSelectionCount: 5	MouseClickCount: 0
+03/29 10:59:14:068	#8	event:null	target:blk_10_7	click:blk_10_7	CompletionTime: 1105	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 10:59:14:278	trial end
+03/29 10:59:17:291	trials start ( swipe ), size: 48, spacing: 1
+03/29 10:59:19:951	#1	event:null	target:blk_7_12	click:blk_7_12	CompletionTime: 1362	ErrorCount: 0	DwellSelectionCount: 2	MouseClickCount: 0
+03/29 10:59:23:101	#2	event:null	target:blk_9_10	click:blk_9_10	CompletionTime: 1408	ErrorCount: 0	DwellSelectionCount: 4	MouseClickCount: 0
+03/29 10:59:26:378	#3	event:null	target:blk_11_8	click:blk_11_8	CompletionTime: 1613	ErrorCount: 0	DwellSelectionCount: 1	MouseClickCount: 0
+03/29 10:59:29:182	#4	event:null	target:blk_7_11	click:blk_9_9	CompletionTime: 1243	ErrorCount: 1	DwellSelectionCount: 2	MouseClickCount: 0
+03/29 10:59:31:935	#5	event:null	target:blk_10_11	click:blk_10_11	CompletionTime: 1265	ErrorCount: 0	DwellSelectionCount: 2	MouseClickCount: 0
+03/29 11:01:27:785	trials start ( swipe ), size: 48, spacing: 1
+03/29 11:01:30:912	#1	event:null	target:blk_7_12	click:blk_7_12	CompletionTime: 1886	ErrorCount: 0	DwellSelectionCount: 4	MouseClickCount: 0
+03/29 11:01:33:592	#2	event:null	target:blk_9_11	click:blk_9_11	CompletionTime: 997	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 11:01:36:557	#3	event:null	target:blk_11_9	click:blk_12_11	CompletionTime: 1306	ErrorCount: 1	DwellSelectionCount: 4	MouseClickCount: 0
+03/29 11:01:38:967	#4	event:null	target:blk_9_11	click:blk_9_11	CompletionTime: 1041	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 11:01:41:758	#5	event:null	target:blk_8_8	click:blk_8_8	CompletionTime: 1265	ErrorCount: 0	DwellSelectionCount: 4	MouseClickCount: 0
+03/29 11:01:44:494	#6	event:null	target:blk_4_3	click:blk_4_3	CompletionTime: 1078	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 11:01:47:434	#7	event:null	target:blk_5_8	click:blk_5_8	CompletionTime: 1354	ErrorCount: 0	DwellSelectionCount: 5	MouseClickCount: 0
+03/29 11:01:50:163	#8	event:null	target:blk_9_6	click:blk_9_6	CompletionTime: 1224	ErrorCount: 0	DwellSelectionCount: 4	MouseClickCount: 0
+03/29 11:01:50:421	trial end
+03/29 11:01:54:197	trials start ( swipe ), size: 48, spacing: 0.5
+03/29 11:01:57:877	#1	event:null	target:blk_7_12	click:blk_7_12	CompletionTime: 2400	ErrorCount: 0	DwellSelectionCount: 2	MouseClickCount: 0
+03/29 11:02:00:693	#2	event:null	target:blk_8_10	click:blk_8_10	CompletionTime: 1195	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 11:02:03:423	#3	event:null	target:blk_10_8	click:blk_10_8	CompletionTime: 1119	ErrorCount: 0	DwellSelectionCount: 4	MouseClickCount: 0
+03/29 11:02:05:780	#4	event:null	target:blk_10_11	click:blk_10_11	CompletionTime: 950	ErrorCount: 0	DwellSelectionCount: 4	MouseClickCount: 0
+03/29 11:02:09:275	#5	event:null	target:blk_6_6	click:blk_6_6	CompletionTime: 2032	ErrorCount: 0	DwellSelectionCount: 5	MouseClickCount: 0
+03/29 11:02:12:327	#6	event:null	target:blk_11_3	click:blk_11_3	CompletionTime: 1364	ErrorCount: 0	DwellSelectionCount: 4	MouseClickCount: 0
+03/29 11:02:15:013	#7	event:null	target:blk_11_6	click:blk_11_6	CompletionTime: 1127	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 11:02:17:639	#8	event:null	target:blk_8_9	click:blk_8_9	CompletionTime: 1151	ErrorCount: 0	DwellSelectionCount: 4	MouseClickCount: 0
+03/29 11:02:17:841	trial end
+03/29 11:02:22:095	trials start ( swipe ), size: 16, spacing: 1
+03/29 11:02:24:600	#1	event:null	target:blk_7_12	click:blk_7_12	CompletionTime: 1280	ErrorCount: 0	DwellSelectionCount: 2	MouseClickCount: 0
+03/29 11:02:27:546	#2	event:null	target:blk_9_11	click:blk_9_11	CompletionTime: 1357	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 11:02:30:211	#3	event:null	target:blk_11_10	click:blk_11_10	CompletionTime: 1081	ErrorCount: 0	DwellSelectionCount: 2	MouseClickCount: 0
+03/29 11:02:32:912	#4	event:null	target:blk_10_8	click:blk_10_8	CompletionTime: 1053	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 11:02:35:513	#5	event:null	target:blk_11_2	click:blk_11_2	CompletionTime: 1195	ErrorCount: 0	DwellSelectionCount: 2	MouseClickCount: 0
+03/29 11:02:38:279	#6	event:null	target:blk_9_4	click:blk_9_4	CompletionTime: 1063	ErrorCount: 0	DwellSelectionCount: 2	MouseClickCount: 0
+03/29 11:02:40:892	#7	event:null	target:blk_11_9	click:blk_11_9	CompletionTime: 1150	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 11:02:43:651	#8	event:null	target:blk_8_4	click:blk_8_4	CompletionTime: 1227	ErrorCount: 0	DwellSelectionCount: 2	MouseClickCount: 0
+03/29 11:02:43:853	trial end
+03/29 11:02:47:095	trials start ( swipe ), size: 32, spacing: 0.5
+03/29 11:02:49:615	#1	event:null	target:blk_7_12	click:blk_7_12	CompletionTime: 1361	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 11:02:52:130	#2	event:null	target:blk_9_10	click:blk_9_10	CompletionTime: 971	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 11:02:54:844	#3	event:null	target:blk_11_7	click:blk_11_7	CompletionTime: 1181	ErrorCount: 0	DwellSelectionCount: 4	MouseClickCount: 0
+03/29 11:02:57:643	#4	event:null	target:blk_10_5	click:blk_10_5	CompletionTime: 1098	ErrorCount: 0	DwellSelectionCount: 4	MouseClickCount: 0
+03/29 11:03:00:120	#5	event:null	target:blk_8_7	click:blk_8_7	CompletionTime: 1070	ErrorCount: 0	DwellSelectionCount: 4	MouseClickCount: 0
+03/29 11:03:03:037	#6	event:null	target:blk_4_9	click:blk_4_9	CompletionTime: 1197	ErrorCount: 0	DwellSelectionCount: 4	MouseClickCount: 0
+03/29 11:03:06:096	#7	event:null	target:blk_5_2	click:blk_5_2	CompletionTime: 1652	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 11:03:09:266	#8	event:null	target:blk_4_5	click:blk_4_5	CompletionTime: 1521	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 11:03:09:466	trial end
+03/29 11:03:15:025	trials start ( swipe ), size: 16, spacing: 0
+03/29 11:03:17:446	#1	event:null	target:blk_7_12	click:blk_7_12	CompletionTime: 1219	ErrorCount: 0	DwellSelectionCount: 1	MouseClickCount: 0
+03/29 11:03:20:129	#2	event:null	target:blk_9_10	click:blk_9_10	CompletionTime: 1001	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 11:03:22:869	#3	event:null	target:blk_11_9	click:blk_11_9	CompletionTime: 1069	ErrorCount: 0	DwellSelectionCount: 2	MouseClickCount: 0
+03/29 11:03:25:534	#4	event:null	target:blk_10_11	click:blk_10_11	CompletionTime: 1046	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 11:03:28:013	#5	event:null	target:blk_9_8	click:blk_9_8	CompletionTime: 1044	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 11:03:30:870	#6	event:null	target:blk_11_5	click:blk_11_5	CompletionTime: 1328	ErrorCount: 0	DwellSelectionCount: 1	MouseClickCount: 0
+03/29 11:03:33:551	#7	event:null	target:blk_7_10	click:blk_7_10	CompletionTime: 1116	ErrorCount: 0	DwellSelectionCount: 3	MouseClickCount: 0
+03/29 11:03:36:255	#8	event:null	target:blk_10_4	click:blk_10_4	CompletionTime: 1166	ErrorCount: 0	DwellSelectionCount: 0	MouseClickCount: 0
+03/29 11:03:36:459	trial end

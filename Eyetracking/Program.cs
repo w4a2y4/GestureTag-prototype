@@ -116,7 +116,7 @@ namespace Interaction_Streams_101
 
                 ////console.writeline(avex);
                 kk = 0;
-                aveX = XData / 10;
+                aveX = XData / 10; 
                 aveY = YData / 10;
                  socket.Emit("eyemove", aveX, aveY, ts);
                 //socket.Emit("eyemove", x, y, ts);

@@ -1,0 +1,4 @@
+03/29 20:48:18:572	trials start ( tap ), size: 48, spacing: 0.5
+03/29 20:48:20:513	#1	event:null	target:blk_7_12	click:blk_7_12	CompletionTime: 822	ErrorCount: 0	DwellSelectionCount: 0	MouseClickCount: 1
+03/29 20:48:22:297	#2	event:null	target:blk_9_10	click:blk_9_10	CompletionTime: 339	ErrorCount: 0	DwellSelectionCount: 0	MouseClickCount: 1
+03/29 20:48:22:361	#2	event:null	target:blk_9_10	click:blk_9_10	CompletionTime: 403	ErrorCount: 0	DwellSelectionCount: 0	MouseClickCount: 2
