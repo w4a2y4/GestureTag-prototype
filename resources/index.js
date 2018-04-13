@@ -13,6 +13,7 @@ var isShown = new Array(4).fill(false);
 var tester;
 var type;
 var platform;
+var dynamic = false;
 
 const DEFAULT_TRIAL_NUM = 10;
 var trial_num = DEFAULT_TRIAL_NUM;
@@ -100,6 +101,10 @@ $(document).on('click', 'button', (function(e) {
     }, 500);
 }));
 
+socket.on('assign', (assign) => {
+    if (assign === 'dynamic') dynamic = true;
+});
+
 socket.on('start_mobile', () => {
     console.log('START_MOBILE');
     trial_num = DEFAULT_TRIAL_NUM;
@@ -176,12 +181,27 @@ function log() {
     socket.emit('log', cnt, gesture, clicked_btn, target_btn);
 }
 
-function getBtnType(btn) {
-    if (imgSet["up"] == btn.children[0].src) return UP;
-    else if (imgSet["down"] == btn.children[0].src) return DOWN;
-    else if (imgSet["left"] == btn.children[0].src) return LEFT;
-    else if (imgSet["right"] == btn.children[0].src) return RIGHT;
-    return -1;
+function getBtnType(btn, x, y) {
+
+    if (!dynamic) {
+        if (imgSet["up"] == btn.children[0].src) return UP;
+        else if (imgSet["down"] == btn.children[0].src) return DOWN;
+        else if (imgSet["left"] == btn.children[0].src) return LEFT;
+        else if (imgSet["right"] == btn.children[0].src) return RIGHT;
+        return -1;
+    }
+
+    var midX = $(btn).offset().left + 0.5 * btn.offsetWidth;
+    var midY = $(btn).offset().top + 0.5 * btn.offsetHeight;
+    var diffX = midX - x;
+    var diffY = midY - y;
+    var slope = diffY / diffX;
+
+    if (diffX > 0 && slope < 1 && slope > -1) return RIGHT;
+    else if (diffX < 0 && slope < 1 && slope > -1) return LEFT;
+    else if (diffY > 0 && (slope > 1 || slope < -1)) return DOWN;
+    return UP;
+
 }
 
 function overlap(element, X, Y) {
@@ -256,11 +276,12 @@ function changePos(eyeX, eyeY) {
             var btn = buttons[i];
             if (overlap(btn, eyeX, eyeY)) {
                 var curr_dist = distance(btn, eyeX, eyeY);
-                for (var j = 0; j < 4; j++) {
-                    if (getBtnType(btn) == j && curr_dist < dist[j]) {
-                        candidate[j] = i;
-                        dist[j] = curr_dist;
-                    }
+                var j = getBtnType(btn, eyeX, eyeY);
+                if (curr_dist < dist[j]) {
+                    candidate[j] = i;
+                    dist[j] = curr_dist;
+                    if (dynamic)
+                        $(btn).find('img').attr('src', img_prefix + 'arrow_' + j + '.png');
                 }
             }
         }
